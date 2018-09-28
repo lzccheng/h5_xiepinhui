@@ -1,18 +1,15 @@
 <template>
     <div class="wrap">
         <router-view></router-view>
-        <bottom></bottom>
     </div>
 </template>
 
 <script>
-import bottom from "@/components/bottom";
 
 export default {
   name: "index",
   props: {},
   components: {
-    bottom
   },
   data() {
     return {};
@@ -26,7 +23,6 @@ export default {
 <style scoped>
 .wrap{
   box-sizing: border-box;
-  padding-bottom: 0.6rem;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }

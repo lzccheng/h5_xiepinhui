@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import corpAuth from '@/components/corpAuth'
 import constant from '../utils/constant'
 import config from '../common'
+import store from '@/store'
 
 // index
 import indexWrap from '@/page/index/indexWrap'
@@ -11,6 +12,7 @@ import home from '@/page/index/home'
 // center
 import centerWrap from '@/page/center/centerWrap'
 import center from '@/page/center/center'
+import partner from '@/page/center/365partner/code'
 
 //user
 import userWrap from '@/page/user/userWrap'
@@ -55,8 +57,11 @@ let router = new Router({
           component: center
         },
         {
-          path: 'login',
-          component: login
+          path: 'partner',
+          component: partner,
+          meta: {
+            title: '365合伙人邀请码'
+          }
         },
       ],
       meta: {
@@ -150,7 +155,12 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  next()
+  if(!store.state.comm.indexUrl){
+    store.commit('updateUrl',window.location.href)
+    next()
+  }else{
+    next()
+  }
   // if (to.name == 'corpAuth') {
   //   next();
   //   return;

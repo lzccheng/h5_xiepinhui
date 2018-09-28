@@ -1,4 +1,7 @@
 <style lang="less" scoped>
+.bge {
+  background-color: #f9f9f9;
+}
 .icon {
   width: 0.6rem;
   height: 0.6rem;
@@ -115,7 +118,7 @@
           white-space: nowrap;
           margin-top: 0.25rem;
           width: 1.27rem;
-          height: 0.4rem;
+          height: 0.33rem;
           flex: 0 0 1.27rem;
           font-size: 0.22rem;
           color: #fff;
@@ -124,6 +127,23 @@
           border-radius: 0.8rem;
           background: rgba(0, 0, 0, 0.36);
           background: rgba(24, 131, 124, 1);
+          .vip-text {
+            position: relative;
+          }
+          .vip-text::after {
+            position: absolute;
+            top: 0;
+            right: -0.06rem;
+            height: 6px;
+            width: 6px;
+            border-top: 1px solid #fff;
+            border-right: 1px solid #fff;
+            transform: rotate(45deg);
+          }
+          img {
+            width: 1.27rem;
+            margin-left: -0.12rem;
+          }
         }
       }
       .info-right {
@@ -223,11 +243,22 @@
     width: 100%;
     border-bottom: 1px solid #eee;
     .menu-item {
+      position: relative;
       width: 20%;
       height: 1.35rem;
       text-align: center;
       box-sizing: border-box;
       padding: 0.2rem 0;
+      .red-dot {
+        position: absolute;
+        top: 0.2rem;
+        left: 0.2rem;
+        font-size: 0.18rem;
+        display: flex;
+        justify-content: center;
+        width: 0.25rem;
+        height: 0.25rem;
+      }
       .text {
         font-size: 0.22rem;
         color: #333;
@@ -465,6 +496,7 @@
 
 <template>
   <div class="wrap">
+    <!-- 个人信息 -->
     <div class="header">
       <div class="top">
         <div class="icon i1"></div>
@@ -481,9 +513,10 @@
               <span class="user-name">{{user?user.nick||'请设置用户名':'请登录'}}</span>
               <span class="user-edit icon"></span>
             </div>
-            <div class="start-vip">
-              <span class="vip-text">开通VIP</span>
-              <span class="arrows"></span>
+            <div class="start-vip" v-if="redmessageInfo">
+              <img src="~@/assets/images/center/vip0.png" v-if="redmessageInfo.member_info.member_grade==0" alt="">
+              <img src="~@/assets/images/center/vip1.png" v-if="redmessageInfo.member_info.member_grade==1" alt="">
+              <img src="~@/assets/images/center/vip2.png" v-if="redmessageInfo.member_info.member_grade==2" alt="">
             </div>
           </div>
           <div class="info-right">
@@ -495,33 +528,45 @@
           </div>
         </div>
       </div>
-      <div class="invitation-code">
-        <span>我的邀请码: AAJUN</span>
-        <span>&nbsp;&nbsp;复制</span>
+      <div class="invitation-code" v-if="redmessageInfo">
+        <span>我的邀请码: {{redmessageInfo.member_info.member_code}}</span>
+        <span 
+          v-clipboard:copy="redmessageInfo.member_info.member_code"
+          v-clipboard:success="onCopy"
+          v-clipboard:error="onCopyErr"
+        >&nbsp;&nbsp;复制</span>
       </div>
     </div>
+    <!-- 浮动栏 -->
     <div class="lab">
       <div class="icon-item" v-for="(item,index) in ['商品收藏','店铺收藏','退款/售后']" :key="index">
         <div class="icon" :class="'icon'+index"></div>
         <div class="item-text">{{item}}</div>
       </div>
     </div>
-    <div class="ad">
-      <img src="http://img.xiepinhui.com.cn/small_app/mine/vip_center.png" alt="">
+    <!-- 隐藏广告 -->
+    <div class="ad" v-if="false&&redmessageInfo">
+      <img :src="redmessageInfo.member_centre_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
     </div>
+    <!-- 订单操作栏 -->
     <div class="menu-wrap" v-if="redmessageInfo">
       <div class="menu-row" v-for="(item,index) in Math.ceil((redmessageInfo.order_status.length)/5)" :key="index">
-        <div class="menu-item" v-for="(it,id) in redmessageInfo.order_status" v-if="id>=(index*5)&&id<(index+1)*5" :key="id">
+        <div class="menu-item" v-for="(it,id) in redmessageInfo.order_status" :key="id" 
+             v-if="id>=(index*5) && id<(index+1)*5" :class="{'bge':it.bgColor}"
+        >
+          <badge :text="it.num" v-if="it.num>0" class="red-dot"></badge>
           <div class="icon" :style="{backgroundImage:'url(' + it.imageContent + ')'}" v-if="!!it.imageContent"></div>
           <div class="text" v-else>{{it.amout}}</div>
           <div class="menu-text">{{it.stateTitle}}</div>
         </div>
       </div>
     </div>
-    <div class="ad">
+    <!-- 会员广告 -->
+    <div class="ad" v-if="redmessageInfo">
       <img :src="redmessageInfo.member_centre_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
     </div>
-    <div class="item-gounp gounp server">
+    <!-- 我的服务 -->
+    <div class="item-gounp gounp server" v-if="redmessageInfo">
       <span class="title">我的服务</span>
       <div class="gounp-wrap">
         <div class="gounp-row">
@@ -538,14 +583,16 @@
         </div>
       </div>
     </div>
-    <group class="gounp_top">
+    <!-- 我的店铺 or 365 -->
+    <group class="gounp_top" v-if="redmessageInfo">
       <cell :title="item.name" class="_cell" is-link v-for="(item,index) in redmessageInfo.membert_shopInfo" :key="index">
         <div slot="icon" class="imgwrap">
           <img  style="display:block;margin-right:5px;backgound-size:cover;" :src="item.image">
         </div>
       </cell>
     </group>
-    <div class="item-gounp gounp earnings">
+    <!-- 我的收益 -->
+    <div class="item-gounp gounp earnings" v-if="redmessageInfo">
       <span class="title">我的收益</span>
       <div class="gounp-wrap">
         <p class="earn-title"><span>总收益:&nbsp;</span><span class="earn-count">{{redmessageInfo.member_info.received||0}}</span></p>
@@ -556,7 +603,8 @@
         <div class="btn">我的收益</div>
       </div>
     </div>
-    <div class="item-gounp gounp fans">
+    <!-- 我的粉丝 -->
+    <div class="item-gounp gounp fans" v-if="redmessageInfo">
       <div class="title"> 
         <div>我的粉丝</div>
         <div class="user-box">
@@ -584,6 +632,9 @@
         <div class="btn">查看更多</div>
       </div>
     </div>
+    <!-- loading -->
+    <loading type="type3" v-if="showLoding"></loading>
+    <!-- login -->
     <x-button @click.native="exitLogin" type="primary" class="exit-btn">{{!user?'登录':'退出登录'}}</x-button>
   </div>
 </template>
@@ -591,46 +642,63 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { api } from "@/utils/api.js";
-import { Group, Cell, XButton } from "vux";
+import loading from "@/components/loading.vue";
+import { Group, Cell, XButton, Badge } from "vux";
 export default {
   name: "center",
   props: {},
   components: {
     Group,
     Cell,
-    XButton
+    XButton,
+    Badge,
+    loading
   },
   data() {
     return {
       redmessageInfo: "", //个人中心数据
+      showLoding: false,
       params: {
         plat: 3
       }
     };
   },
   created() {
-    if(this.token){
+    if (this.token) {
       this.newredmessage();
     }
   },
   methods: {
-    ...mapActions(["updateUser"]),
+    ...mapActions([
+      "updateUser",
+      "updateCenter",
+      "updateToken",
+      "updateAccount"
+    ]),
+    onCopy() {
+      this.$vux.toast.text("复制成功", "top");
+    },
+    onCopyErr() {
+      console.log("onCopyErr");
+    },
     // 个人中心首页接口
     async newredmessage() {
       let that = this;
+      this.showLoding = true;
       let data = {
         account: that.account,
         token: that.token
       };
       data = Object.assign(this.params, data);
       const [err, res] = await api.newredmessage(data);
-      console.log(err,res)
       if (err) {
-        console.log('err',err)
+        that.showLoding = false;
         that.$vux.toast.text(err.msg);
         return;
       }
+      this.showLoding = false;
       this.redmessageInfo = res.data;
+      this.updateCenter(JSON.stringify(res.data));
     },
     // 订单列表数量接口
     async newgetorderlist_num_info() {
@@ -642,8 +710,12 @@ export default {
       if (!this.user) {
         this.$router.push("/user/login");
       } else {
-        localStorage.user = "";
+        this.redmessageInfo=""
         this.updateUser("");
+        this.updateToken("");
+        this.updateAccount("");
+        this.updateCenter("");
+        localStorage["user"] = "";
         localStorage["account"] = "";
         localStorage["token"] = "";
         this.$vux.toast.text("退出成功");

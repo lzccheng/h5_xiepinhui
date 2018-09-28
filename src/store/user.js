@@ -10,25 +10,35 @@ for (let key in state) {
 }
 
 const actions = {
-  updateManager({
-    commit
-  }) {
-    commit('updateManager')
-  },
   updateUser({
     commit,
     state
   }, info) {
     commit('updateUser', info)
   },
+  updateToken({
+    commit,
+    state
+  }, token) {
+    commit('updateToken', token)
+  },
+  updateAccount({
+    commit,
+    state
+  }, account) {
+    commit('updateAccount', account)
+  },
 }
 
 const mutations = {
-  updateManager(state) {
-    console.log('111111')
-  },
   updateUser(state, info) {
     state.user = info
+  },
+  updateToken(state, token) {
+    state.token = token
+  },
+  updateAccount(state, account) {
+    state.account = account
   }
 }
 

@@ -64,7 +64,7 @@ export default {
   },
   mounted() {},
   methods: {
-    ...mapMutations(["updateManager"]),
+    ...mapMutations(["updateManager", "updateToken", "updateAccount"]),
     ...mapActions(["updateUser"]),
     // 校验信息
     async checkInfo() {
@@ -106,11 +106,13 @@ export default {
       });
       // 存储token
       this.updateUser(res.data);
+      this.updateToken(res.data.token);
+      this.updateAccount(res.data.account);
       localStorage["user"] = JSON.stringify(res.data);
       localStorage["account"] = res.data.account;
       localStorage["token"] = res.data.token;
       if (this.url === "/") {
-        this.$router.push("/");
+        this.$router.replace("/");
       } else {
         window.location.href = unescape(this.url);
       }
@@ -183,10 +185,12 @@ export default {
         return;
       }
       //第三方登录成功 => 存储token
-      localStorage["account"] = res.data.account;
+      this.updateToken(res.data.token);
+      this.updateAccount(res.data.account);
       localStorage["token"] = res.data.token;
+      localStorage["account"] = res.data.account;
       if (that.url === "/") {
-        that.$router.push("/");
+        that.$router.replace("/");
       } else {
         window.location.href = unescape(that.url);
       }

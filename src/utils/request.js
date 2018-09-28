@@ -61,7 +61,7 @@ function request(method) {
         return [res.data, null]
       }
     }).catch((err) => {
-      console.log('axios-err', err)
+      console.log('axios-err', err, typeof err)
       if (typeof err === 'string') {
         err = {
           info: err
