@@ -35,4 +35,10 @@ export default {};
   background: #61d8d0;
   color: #fff;
 }
+#vux-header .vux-header-left a,
+.vux-header .vux-header-left button,
+.vux-header .vux-header-right a,
+.vux-header .vux-header-right button {
+  color: #fff !important;
+}
 </style>

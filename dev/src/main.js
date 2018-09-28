@@ -1,19 +1,21 @@
 require('es6-promise').polyfill()
 import Vue from 'vue'
-import FastClick from 'fastclick'
-import router from "./router";
-import store from './store'
 import App from './App'
-import { LoadingPlugin, ToastPlugin, ConfirmPlugin } from 'vux'
-import { WechatPlugin } from 'vux'
+import store from './store'
+import router from "./router";
+import FastClick from 'fastclick'
+import Vant from 'vant';
+import 'vant/lib/vant-css/index.css';
 import { encrypt } from 'utils/encrypt.js' // encrypt
-import VueClipboard from 'vue-clipboard2'
+import VueClipboard from 'vue-clipboard2' // 剪切板
+import { LoadingPlugin, ToastPlugin, ConfirmPlugin, WechatPlugin } from 'vux'
+Vue.use(Vant);
 Vue.use(WechatPlugin)
 Vue.use(LoadingPlugin)
 Vue.use(ConfirmPlugin)
+Vue.use(VueClipboard)
 Vue.use(ToastPlugin, {position: 'middle'})
 Vue.use(require('vue-wechat-title'))
-Vue.use(VueClipboard)
 FastClick.attach(document.body)
 
 Vue.prototype.$encrypt = encrypt
