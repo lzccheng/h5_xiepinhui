@@ -21,8 +21,10 @@
   padding: 0.2rem 0 0 0.2rem;
   font-weight: bold;
 }
-.wrap {
+.center-box {
   background: #f5f5f5;
+  min-height: 100%;
+  box-sizing: border-box;
 }
 .arrows {
   width: 6px;
@@ -495,7 +497,7 @@
 </style>
 
 <template>
-  <div class="wrap">
+  <div class="center-box">
     <!-- 个人信息 -->
     <div class="header">
       <div class="top">
@@ -585,7 +587,9 @@
     </div>
     <!-- 我的店铺 or 365 -->
     <group class="gounp_top" v-if="redmessageInfo">
-      <cell :title="item.name" class="_cell" is-link v-for="(item,index) in redmessageInfo.membert_shopInfo" :key="index">
+      <cell :title="item.name" class="_cell" is-link v-for="(item,index) in redmessageInfo.membert_shopInfo" :key="index"
+            @click.native="linkTo(item.name)" :data-name="item.name"
+      >
         <div slot="icon" class="imgwrap">
           <img  style="display:block;margin-right:5px;backgound-size:cover;" :src="item.image">
         </div>
@@ -675,11 +679,23 @@ export default {
       "updateToken",
       "updateAccount"
     ]),
+    // 邀请码拷贝
     onCopy() {
       this.$vux.toast.text("复制成功", "top");
     },
     onCopyErr() {
       console.log("onCopyErr");
+    },
+    // 跳转
+    linkTo(link){
+      switch(link){
+        case '我的店铺':
+          this.$router.push('/centerFull/mystore');
+          break;
+        case '365合伙人':
+          this.$router.push('/centerFull/partner');
+          break;
+      }
     },
     // 个人中心首页接口
     async newredmessage() {
@@ -710,14 +726,12 @@ export default {
       if (!this.user) {
         this.$router.push("/user/login");
       } else {
-        this.redmessageInfo=""
+        this.redmessageInfo = "";
         this.updateUser("");
         this.updateToken("");
         this.updateAccount("");
         this.updateCenter("");
-        localStorage["user"] = "";
-        localStorage["account"] = "";
-        localStorage["token"] = "";
+        localStorage.clear();
         this.$vux.toast.text("退出成功");
       }
     }

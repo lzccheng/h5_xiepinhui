@@ -1,5 +1,5 @@
 <template>
-    <div class="wrap">
+    <div class="index-box">
         home
     </div>
 </template>
@@ -10,17 +10,18 @@
 export default {
   name: "index",
   props: {},
-  components: {
-    
-  },
+  components: {},
   data() {
     return {};
   },
-  created() {
-    
-  }
+  created() {}
 };
 </script>
 
 <style scoped>
+.index-box {
+  background: #f5f5f5;
+  min-height: 100%;
+  box-sizing: border-box;
+}
 </style>

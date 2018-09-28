@@ -73,7 +73,7 @@
     <div class="top"></div>
     <div class="input-wrap">
       <input type="text" v-model="code" placeholder="请输入邀请码">
-      <button @click="step(false)">下一步</button>
+      <button @click="step">下一步</button>
     </div>
     <div class="rule">
       <span>填写规则:</span>
@@ -92,6 +92,9 @@
 
 <script>
 import { api } from "@/utils/api.js";
+import { isWeiXin, getQueryString } from "@/utils/comm.js";
+import { mapActions, mapMutations, mapGetters } from "vuex";
+import { wxShare } from "@/utils/wx.js";
 import { XHeader } from "vux";
 export default {
   name: "",
@@ -104,28 +107,25 @@ export default {
       code: ""
     };
   },
-  created() {},
+  created() {
+    wxShare({}, () => {
+      console.log(111);
+    });
+  },
   mounted() {},
   methods: {
+    ...mapMutations(["updateManager", "updateToken", "updateAccount"]),
+    ...mapActions(["updateUser"]),
     step(jump) {
-      console.log("jump", jump);
       if (jump) {
-        this.$router.push("apply");
+        this.$router.push("next");
       } else {
-        if (!this.code) {
-          this.$vux.toast.text("邀请码不能为空");
-          return;
-        }
-        this.$router.push({
-          path: "apply",
-          query: {
-            invite: this.code
-          }
-        });
       }
     }
   },
-  computed: {}
+  computed: {
+    ...mapGetters(["user", "account", "token", "indexUrl"])
+  }
 };
 </script>
 

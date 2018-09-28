@@ -7,12 +7,17 @@ import store from '@/store'
 
 // index
 import indexWrap from '@/page/index/indexWrap'
-import home from '@/page/index/home'
+import home from '@/page/index/home' //首页
 
 // center
 import centerWrap from '@/page/center/centerWrap'
-import center from '@/page/center/center'
-import partner from '@/page/center/365partner/code'
+import centerFull from '@/page/center/centerFull'
+import center from '@/page/center/center' //个人中心
+import partnerWrap from '@/page/center/365partner/partnerWrap'
+import code from '@/page/center/365partner/code' //365 
+import apply from '@/page/center/365partner/apply' //365 
+import applySuccess from '@/page/center/365partner/applySuccess' //365 
+import applyError from '@/page/center/365partner/applyError' //365 
 
 //user
 import userWrap from '@/page/user/userWrap'
@@ -53,27 +58,60 @@ let router = new Router({
       name: 'center',
       component: centerWrap,
       children: [{
-          path: '/',
-          component: center
-        },
-        {
-          path: 'partner',
-          component: partner,
-          meta: {
-            title: '365合伙人邀请码'
-          }
-        },
-      ],
+        path: '',
+        component: center
+      }],
       meta: {
         title: '个人中心'
       }
+    },
+    {
+      path: '/centerFull',
+      name: 'centerFull',
+      component: centerFull,
+      children: [{
+        path: 'partner',
+        component: partnerWrap,
+        children: [{
+          path: '',
+          redirect: 'code'
+        }, {
+          path: 'code',
+          name: 'code',
+          component: code,
+          meta: {
+            title: '365合伙人邀请码'
+          }
+        }, {
+          path: 'apply',
+          name: 'apply',
+          component: apply,
+          meta: {
+            title: '开店申请'
+          }
+        }, {
+          path: 'applySuccess',
+          name: 'applySuccess',
+          component: applySuccess,
+          meta: {
+            title: '申请成功'
+          }
+        }, {
+          path: 'applyError',
+          name: 'applyError',
+          component: applyError,
+          meta: {
+            title: '申请失败'
+          }
+        }]
+      }]
     },
     {
       path: '/user',
       name: 'user',
       component: userWrap,
       children: [{
-          path: '/',
+          path: '',
           redirect: 'login'
         },
         {
@@ -155,10 +193,16 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if(!store.state.comm.indexUrl){
-    store.commit('updateUrl',window.location.href)
+  console.log(`----------- from Router --------------`)
+  console.log(from)
+  console.log(`----------- to   Router --------------`)
+  console.log(to)
+  console.log(`----------- End  Router --------------`)
+
+  if (!store.state.comm.indexUrl) {
+    store.commit('updateUrl', window.location.href)
     next()
-  }else{
+  } else {
     next()
   }
   // if (to.name == 'corpAuth') {

@@ -45,7 +45,7 @@ export default {
   },
   created() {
     this.isWX = isWeiXin();
-    this.url = window.location.search.split("?url=")[1]; //登录回退页
+    this.url = window.location.search.split("?url=")[1] || "/"; //登录回退页
     this.access_code = getQueryString("code");
     if (this.user && !this.token) {
       let data = {
@@ -126,7 +126,7 @@ export default {
         this.access_code !== undefined
       ) {
         //设置回调页
-        if (this.url == undefined) {
+        if (this.url == undefined || this.url == "/") {
           this.url = "/";
         } else {
           this.url = this.url.substring(0, this.url.indexOf("&code"));
@@ -209,7 +209,9 @@ export default {
 
 <style lang="less" scoped>
 .wrap {
-  height: 110vh;
+  height: 110%;
+  min-height: 100%;
+  min-height: 110vh;
   -webkit-overflow-scrolling: touch;
   overflow-y: scroll;
 }

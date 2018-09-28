@@ -11,27 +11,30 @@ let axiosUtil = axios.create({
 
 axiosUtil.interceptors.response.use(
   response => {
-    if(Vue.$vux.loading.isVisible()){
+    if (Vue.$vux.loading.isVisible()) {
       Vue.$vux.loading.hide()
     }
     return response;
   },
   error => {
-    if(Vue.$vux.loading.isVisible()){
+    if (Vue.$vux.loading.isVisible()) {
       Vue.$vux.loading.hide()
     }
+    console.log('error.response', error.response)
     if (error.response) {
       switch (error.response.status) {
         case 401:
           // 返回 401 清除token信息并跳转到登录页面
           localStorage.clear();
-          router.replace({
-            path: '/login',
+          router.push({
+            path: '/user/login',
           });
           break;
       }
+      return Promise.reject(error.response.data) // 返回接口返回的错误信息
+    }else{
+      return Promise.reject({msg:'网络连接超时'}) // 返回接口返回的错误信息
     }
-    return Promise.reject(error.response.data) // 返回接口返回的错误信息
   });
 
 function request(method) {
@@ -47,11 +50,14 @@ function request(method) {
       }
     }
     return await axiosUtil(options).then((res) => {
-      if (res.data.code === 5000) {
-      store.dispatch('updateUser',"")
-      localStorage.clear();
-        router.replace({
-          path: '/login',
+      if (res.data.code === 5000) { // tokan过期
+        store.dispatch('updateUser', "");
+        store.dispatch('updateToken', "");
+        store.dispatch('updateAccount', "");
+        store.dispatch('updateCenter', "");
+        localStorage.clear();
+        router.push({
+          path: '/user/login',
         });
         return;
       }
@@ -68,7 +74,7 @@ function request(method) {
         }
         err.msg = '请稍后重试'
       }
-      console.log('err',err)
+      console.log('err', err)
       return [err, null]
     })
   }

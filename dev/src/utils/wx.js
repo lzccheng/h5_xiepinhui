@@ -12,17 +12,6 @@ export {
 
 //微信分享
 const wxShare = (obj, callback) => {
-  function getUrl() {
-    let url = "";
-    // 判断是否是ios微信浏览器
-    if (window.__wxjs_is_wkwebview === true) {
-      url = store.state.comm.indexUrl.split("#")[0];
-    } else {
-      url = window.location.href.split("#")[0];
-    }
-    console.log('wxUrl:', url)
-    return url;
-  }
   if (obj) {
     var title = obj.title == undefined || obj.title == null ? '鞋品荟' : obj.title;
     var link = obj.link == undefined || obj.link == null ? window.location.href : obj.link;
@@ -33,8 +22,8 @@ const wxShare = (obj, callback) => {
     alert('请传分享参数');
   }
   //微信分享
-  //   axios.post(`${domain}/nine/wxshared?url=${getUrl()}`)
-  axios.get(`https://m.xiepinhui.com.cn/nine/wxshared?url=${encodeURIComponent(getUrl())}`)
+  //   axios.post(`${domain}/nine/wxshared?url=${_getUrl()}`)
+  axios.get(`https://m.xiepinhui.com.cn/nine/wxshared?url=${encodeURIComponent(_getUrl())}`)
     .then(res => {
       let {
         code,
@@ -45,8 +34,8 @@ const wxShare = (obj, callback) => {
         let nonceStr = data.noncestr;
         let jsapi_ticket = data.jsapi_ticket;
         let signature = data.sign;
-        let appId = data.app_id;
-        // let appId = 'wxa4142cc3047c6dff';
+        // let appId = data.app_id;
+        let appId = 'wxa4142cc3047c6dff';
         Vue.wechat.config({
           debug: true,
           appId,
@@ -131,4 +120,50 @@ const wxShare = (obj, callback) => {
         // });
       })
     })
+}
+
+// 微信支付(旧版)
+const wxPay = () => {
+  axios.post(`https://m.xiepinhui.com.cn/nine/directbuy`)
+    .then(res => {
+      if (res.code == 2000) {
+        const {
+          data
+        } = res
+        WeixinJSBridge.invoke(
+          'getBrandWCPayRequest', {
+            "appId": data.pay_param.appId, //公众号名称，由商户传入
+            "timeStamp": data.pay_param.timeStamp, //时间戳，自1970年以来的秒数
+            "nonceStr": data.pay_param.nonceStr, //随机串
+            "package": data.pay_param.package,
+            "signType": "MD5", //微信签名方式：
+            "paySign": data.pay_param.paySign //微信签名
+          },
+          function (res) {
+            var sHref = "/webnine/state_detail?order_id=" + data.order_id + "&order_sn=" + data.order_sn;
+            var orderId = data.order_id;
+            if (res.err_msg == "get_brand_wcpay_request:ok") {
+              window.location.href = sHref;
+            } else if (res.err_msg == "get_brand_wcpay_request:cancel" || res.err_msg == "get_brand_wcpay_request:fail") {
+              if (order.use_coupon == '1') {
+                returned(orderId);
+              }
+            }
+          }
+        );
+      }
+    })
+}
+
+// 获取url
+function _getUrl() {
+  let url = "";
+  // 判断是否是ios微信浏览器
+  if (window.__wxjs_is_wkwebview === true) {
+    url = store.state.comm.indexUrl.split("#")[0];
+  } else {
+    url = window.location.href.split("#")[0];
+  }
+  console.log('wxUrl:', url)
+  return url;
 }

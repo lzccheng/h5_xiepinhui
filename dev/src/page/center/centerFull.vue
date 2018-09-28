@@ -1,5 +1,5 @@
 <template>
-    <div class="wrap">
+    <div class="center-wrap">
         <router-view></router-view>
     </div>
 </template>
@@ -14,15 +14,14 @@ export default {
   data() {
     return {};
   },
-  created() {
-    
-  }
+  created() {}
 };
 </script>
 
 <style scoped>
-.wrap{
-  box-sizing: border-box;
+.center-wrap {
+  width: 100%;
+  min-height: 100%;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }

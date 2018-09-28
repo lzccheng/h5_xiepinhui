@@ -61,5 +61,6 @@ export default {
 }
 .bottom{
   height: 1.03rem;
+  align-items: center;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="wrap">
+    <div class="index-wrap">
         <router-view></router-view>
         <bottom></bottom>
     </div>
@@ -17,14 +17,14 @@ export default {
   data() {
     return {};
   },
-  created() {
-    
-  }
+  created() {}
 };
 </script>
 
 <style scoped>
-.wrap{
+.index-wrap {
+  width: 100%;
+  min-height: 100%;
   box-sizing: border-box;
   padding-bottom: 1.03rem;
   overflow-y: scroll;
