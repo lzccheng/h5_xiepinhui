@@ -14,10 +14,11 @@ import centerWrap from '@/page/center/centerWrap'
 import centerFull from '@/page/center/centerFull'
 import center from '@/page/center/center' //个人中心
 import partnerWrap from '@/page/center/365partner/partnerWrap'
-import code from '@/page/center/365partner/code' //365 
-import apply from '@/page/center/365partner/apply' //365 
-import applySuccess from '@/page/center/365partner/applySuccess' //365 
-import applyError from '@/page/center/365partner/applyError' //365 
+import code from '@/page/center/365partner/code' //365邀请码
+import apply from '@/page/center/365partner/apply' //365开通
+import inviteList from '@/page/center/365partner/inviteList' //365排行
+import inviteRelu from '@/page/center/365partner/inviteRelu' //365规则
+import applyStatic from '@/page/center/365partner/applyStatic' //365开通状态
 
 //user
 import userWrap from '@/page/user/userWrap'
@@ -90,18 +91,25 @@ let router = new Router({
             title: '开店申请'
           }
         }, {
-          path: 'applySuccess',
-          name: 'applySuccess',
-          component: applySuccess,
+          path: 'applyStatic',
+          name: 'applyStatic',
+          component: applyStatic,
           meta: {
-            title: '申请成功'
+            title: '365合伙人'
           }
-        }, {
-          path: 'applyError',
-          name: 'applyError',
-          component: applyError,
+        },{
+          path: 'inviteRelu',
+          name: 'inviteRelu',
+          component: inviteRelu,
           meta: {
-            title: '申请失败'
+            title: '邀请好友'
+          }
+        },{
+          path: 'inviteList',
+          name: 'inviteList',
+          component: inviteList,
+          meta: {
+            title: '邀请好友'
           }
         }]
       }]

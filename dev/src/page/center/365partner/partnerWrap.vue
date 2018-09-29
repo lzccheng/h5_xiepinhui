@@ -26,6 +26,7 @@ export default {};
   left: 7px;
 }
 #vux-header {
+  z-index: 3;
   width: 100%;
   height: 0.92rem;
   position: fixed;

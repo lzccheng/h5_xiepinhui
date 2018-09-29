@@ -1,3 +1,83 @@
+<template>
+  <div class="scroll-wrap">
+    <x-header :left-options="{backText:''}" title="365合伙人邀请码" id="vux-header"><a slot="right"></a></x-header>
+    <div class="top"></div>
+    <div class="input-wrap">
+      <input type="text" v-model="code" placeholder="请输入邀请码">
+      <button @click="step(false)">下一步</button>
+    </div>
+    <div class="rule">
+      <span>填写规则:</span>
+      <ul>
+        <li>
+          1、填写好友的邀请码后，你开通365合伙人后您将是他鞋品荟的合伙人
+        </li>
+        <li>
+          2、如有任何问题，请联系客服 <a href="tel:4009639299">4009639299</a>
+        </li>
+      </ul>
+    </div>
+    <div class="tis" @click="step(true)">跳过此步骤</div>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+import { api } from "@/utils/api.js";
+import { XHeader } from "vux";
+export default {
+  name: "",
+  props: {},
+  components: {
+    XHeader
+  },
+  data() {
+    return {
+      code: ""
+    };
+  },
+  created() {},
+  mounted() {},
+  methods: {
+    async step(jump) {
+      console.log("jump", jump);
+      if (jump) {
+        this.$router.push("apply");
+      } else {
+        if (!this.code) {
+          this.$vux.toast.text("邀请码不能为空");
+          return;
+        }
+        let data = {
+          plat: 4,
+          account: this.account,
+          token: this.token,
+          code: this.code
+        };
+        const [err, res] = await api.receiveweidian(data);
+        if (err) {
+          this.$vux.toast.text(err.msg);
+          return;
+        }
+        let info = res.data;
+        console.log("info", info);
+        let userName = info.data.member_name;
+        this.$router.push({
+          path: "apply",
+          query: {
+            codeKey: this.code,
+            userName: userName
+          }
+        });
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(["user", "account", "token"])
+  }
+};
+</script>
+
 <style lang="less" scoped>
 .scroll-wrap {
   height: 100%;
@@ -65,69 +145,4 @@
   margin-bottom: 1.62rem;
   text-align: center;
 }
-</style>
-
-<template>
-  <div class="scroll-wrap">
-    <x-header :left-options="{backText:''}" title="365合伙人邀请码" id="vux-header"><a slot="right"></a></x-header>
-    <div class="top"></div>
-    <div class="input-wrap">
-      <input type="text" v-model="code" placeholder="请输入邀请码">
-      <button @click="step(false)">下一步</button>
-    </div>
-    <div class="rule">
-      <span>填写规则:</span>
-      <ul>
-        <li>
-          1、填写好友的邀请码后，你开通365合伙人后您将是他鞋品荟的合伙人
-        </li>
-        <li>
-          2、如有任何问题，请联系客服 <a href="tel:4009639299">4009639299</a>
-        </li>
-      </ul>
-    </div>
-    <div class="tis" @click="step(true)">跳过此步骤</div>
-  </div>
-</template>
-
-<script>
-import { api } from "@/utils/api.js";
-import { XHeader } from "vux";
-export default {
-  name: "",
-  props: {},
-  components: {
-    XHeader
-  },
-  data() {
-    return {
-      code: ""
-    };
-  },
-  created() {},
-  mounted() {},
-  methods: {
-    step(jump) {
-      console.log("jump", jump);
-      if (jump) {
-        this.$router.push("apply");
-      } else {
-        if (!this.code) {
-          this.$vux.toast.text("邀请码不能为空");
-          return;
-        }
-        this.$router.push({
-          path: "apply",
-          query: {
-            invite: this.code
-          }
-        });
-      }
-    }
-  },
-  computed: {}
-};
-</script>
-
-<style lang="less" scoped>
 </style>
