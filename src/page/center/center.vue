@@ -710,7 +710,7 @@ export default {
       if (!this.user) {
         this.$router.push("/user/login");
       } else {
-        this.redmessageInfo=""
+        this.redmessageInfo = "";
         this.updateUser("");
         this.updateToken("");
         this.updateAccount("");
