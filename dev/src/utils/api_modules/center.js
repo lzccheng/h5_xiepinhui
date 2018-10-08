@@ -40,7 +40,7 @@ export const storefan1 = (data) => {
     const url = `${domain}/restore/storefan1`
     return POST(url,data)
 } 
-// 365粉丝列表接口
+// 365邀请列表接口
 export const inviterankingweidian = (data) => { 
     const url = `${domain}/restore/inviterankingweidian`
     return POST(url,data)
