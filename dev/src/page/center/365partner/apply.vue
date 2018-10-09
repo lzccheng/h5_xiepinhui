@@ -105,7 +105,6 @@ export default {
     return {
       codeKey: "",
       userName: "",
-
       name: "",
       phone: "",
       store: "",
@@ -528,21 +527,22 @@ export default {
     }
     .rule-center {
       width: 100%;
-      height: 90%;
+      height: 100%;
       list-style: none;
       box-sizing: border-box;
       overflow: hidden;
       padding: 0 0.3rem 0.8rem 0.3rem;
       ul {
         width: 100%;
+        max-height: 6.5rem;
         height: 100%;
         overflow: auto;
         list-style: none;
         li {
           font-size: 0.24rem;
           color: #333;
-          height: 0.75rem;
-          line-height: 0.75rem;
+          box-sizing: border-box;
+          padding: 0.2rem 0;
           border-top: 1px solid #eee;
         }
       }

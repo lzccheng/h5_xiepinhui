@@ -17,8 +17,11 @@ import partnerWrap from '@/page/center/365partner/partnerWrap'
 import code from '@/page/center/365partner/code' //365邀请码
 import apply from '@/page/center/365partner/apply' //365开通
 import inviteList from '@/page/center/365partner/inviteList' //365排行
+import inviteFriendRecord from '@/page/center/365partner/inviteFriendRecord' //邀请规则
 import inviteRelu from '@/page/center/365partner/inviteRelu' //365规则
-import applyStatic from '@/page/center/365partner/applyStatic' //365开通状态
+import applyStatic from '@/page/center/365partner/applyStatic' //365开通状态 
+import inviteFansMy365 from '@/page/center/365partner/inviteFansMy365' //我的粉丝   
+import redenvelope from '@/page/center/365partner/redenvelope' //我的收益 
 
 //user
 import userWrap from '@/page/user/userWrap'
@@ -74,44 +77,67 @@ let router = new Router({
         path: 'partner',
         component: partnerWrap,
         children: [{
-          path: '',
-          redirect: 'code'
-        }, {
-          path: 'code',
-          name: 'code',
-          component: code,
-          meta: {
-            title: '365合伙人邀请码'
+            path: '',
+            redirect: 'code'
+          }, {
+            path: 'code',
+            name: 'code',
+            component: code,
+            meta: {
+              title: '365合伙人邀请码'
+            }
+          }, {
+            path: 'apply',
+            name: 'apply',
+            component: apply,
+            meta: {
+              title: '开店申请'
+            }
+          }, {
+            path: 'applyStatic',
+            name: 'applyStatic',
+            component: applyStatic,
+            meta: {
+              title: '365合伙人'
+            }
+          }, {
+            path: 'inviteFansMy365',
+            name: 'inviteFansMy365',
+            component: inviteFansMy365,
+            meta: {
+              title: '我的粉丝'
+            }
+          }, {
+            path: 'redenvelope',
+            name: 'redenvelope',
+            component: redenvelope,
+            meta: {
+              title: '我的收益'
+            }
+          }, {
+            path: 'inviteRelu',
+            name: 'inviteRelu',
+            component: inviteRelu,
+            meta: {
+              title: '邀请好友'
+            }
+          }, {
+            path: 'inviteFriendRecord',
+            name: 'inviteFriendRecord',
+            component: inviteFriendRecord,
+            meta: {
+              title: '邀请规则'
+            }
+          },
+          {
+            path: 'inviteList',
+            name: 'inviteList',
+            component: inviteList,
+            meta: {
+              title: '邀请好友'
+            }
           }
-        }, {
-          path: 'apply',
-          name: 'apply',
-          component: apply,
-          meta: {
-            title: '开店申请'
-          }
-        }, {
-          path: 'applyStatic',
-          name: 'applyStatic',
-          component: applyStatic,
-          meta: {
-            title: '365合伙人'
-          }
-        },{
-          path: 'inviteRelu',
-          name: 'inviteRelu',
-          component: inviteRelu,
-          meta: {
-            title: '邀请好友'
-          }
-        },{
-          path: 'inviteList',
-          name: 'inviteList',
-          component: inviteList,
-          meta: {
-            title: '邀请好友'
-          }
-        }]
+        ]
       }]
     },
     {

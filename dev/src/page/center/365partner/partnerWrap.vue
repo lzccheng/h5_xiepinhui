@@ -10,6 +10,7 @@ export default {};
 
 <style>
 .partner-wrap {
+  min-height: 100vh;
   box-sizing: border-box;
   padding-top: 0.92rem;
 }

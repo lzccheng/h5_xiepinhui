@@ -3,17 +3,17 @@
     <x-header :left-options="{backText:''}" title="365合伙人" id="vux-header"><a slot="right"></a></x-header>
     <div class="middlePart">
         <div class="hehuoBox">
-            <img src="http://img.xiepinhui.com.cn/small_app/mine/hehuo_fail.png" v-if="status===0">
-            <img src="http://img.xiepinhui.com.cn/small_app/mine/hehuo_pay_success.png" v-if="status===1">
+            <img src="http://img.xiepinhui.com.cn/small_app/mine/hehuo_fail.png" v-if="status==0">
+            <img src="http://img.xiepinhui.com.cn/small_app/mine/hehuo_pay_success.png" v-if="status==1">
         </div>
         <div class="hehuoTxt">
-            <div class="txt_one" v-if="status===1">升级365合伙人已支付成功</div>
-            <div class="txt_one" v-if="status===0">升级365合伙人审核失败</div>
-            <div class="txt_gray_tip" v-if="status===1">请耐心等待俩个工作日</div>
-            <div class="txt_gray_tip" v-if="status===0">请重新提交申请</div>
+            <div class="txt_one" v-if="status==1">升级365合伙人已支付成功</div>
+            <div class="txt_one" v-if="status==0">升级365合伙人审核失败</div>
+            <div class="txt_gray_tip" v-if="status==1">请耐心等待俩个工作日</div>
+            <div class="txt_gray_tip" v-if="status==0">请重新提交申请</div>
         </div>
-        <div class="btn_submit" v-if="status===1" @click="$router.push('/')">完成</div>
-        <div class="btn_submit" v-if="status===0" @click="$router.push('/centerFull/partner/code')">重新申请</div>
+        <div class="btn_submit" v-if="status==1" @click="$router.push('/')">完成</div>
+        <div class="btn_submit" v-if="status==0" @click="$router.push('/centerFull/partner/code')">重新申请</div>
     </div>
     
   </div>
@@ -36,6 +36,7 @@ export default {
   },
   created() {
     this.status = this.$route.query.status || 0;
+    console.log(this.status)
   },
   mounted() {},
   methods: {},

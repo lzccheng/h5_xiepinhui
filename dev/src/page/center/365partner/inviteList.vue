@@ -6,7 +6,7 @@
       <div class="bg_invite_box" style="position:relative;">
         <!-- box圈 -->
         <div class="about_inviteInfo_box">
-          <div class="invite_rule_box" @click="myRewardFun">我的奖励</div>
+          <div class="invite_rule_box" @click="show_reward=true">我的奖励</div>
           <div class="myReward_tip_box" @click='goRecordFun'>邀请规则</div>
         </div>
         <!-- box圈end -->
@@ -22,7 +22,7 @@
           </div>
           <div class="invite_num_box">
             <div class="yaoqingma">{{inviteCode||'暂无数据'}}</div>
-            <div class="copy_btn" @click="copyFunction" selectable='true'>复制</div>
+            <div class="copy_btn tag-read" v-clipboard:copy="inviteCode" v-clipboard:success="copybtn" selectable='true'>复制</div>
           </div>
           <div class="btn_invite_box" @click="inviteFriendFun"></div>
         </div>
@@ -38,7 +38,7 @@
             <!-- 我的粉丝 -->
             <div class="content_view_per" v-if="isTabOne">
               <div class="tab_content_box myfan">
-                <van-list class="contentLi" v-model="vant_loading1" :finished="vant_finished1" @load="getFans_list">
+                <van-list class="contentLi" v-model="vant_loading1" :finished="true" @load="getFans_list">
                   <van-cell class="fansContentLi" v-for="(item,index) in fans_list" :key="index">
                     <img :src="item.member_avatar" class="avatarPic" />
                     <div class="right_part">
@@ -69,16 +69,10 @@
                 </van-list>
               </div>
             </div>
-          </div>
-          <!-- 我的粉丝 end-->
-          <!-- 邀请排行榜 -->
-          <div class="content_view_per" v-if="isTabTwo">
-            <div class="tab_content_box myfan" style="margin-bottom:24/100rpx;">
-              <van-list class="contentLi"
-                    v-model="vant_loading2"
-                    :finished="vant_finished2"
-                    @load="getYaoqingList"
-                >
+            <!-- 邀请排行榜 -->
+            <div class="content_view_per" v-if="isTabTwo">
+              <div class="tab_content_box myfan" style="margin-bottom:24/100rpx;">
+                <van-list class="contentLi" v-model="vant_loading2" :finished="vant_finished2" @load="getYaoqingList">
                   <van-cell v-for="(item,index) in yaoqing_list" :key="index">
                     <div class="content_item_li">
                       <img v-if="item.rank==1" src="http://img.xiepinhui.com.cn/small_app/inviteModel/rank1.jpg" class="phb-paixu" />
@@ -87,45 +81,47 @@
                       <div class="left_rank_num_box" v-if="item.rank>3">{{item.rank}}</div>
                       <img :src='item.member_avatar' class="pic_avatar" />
                       <div class="name_txt">{{item.member_name}}</div>
-                      <div class="txt_lingqu">已邀请<text :style="color=item.rank<=3?'#f00':''">{{item.member_invite_num}}</text>位好友</div>
+                      <div class="txt_lingqu">已邀请<span :style="color=item.rank<=3?'#f00':''">{{item.member_invite_num}}</span>位好友</div>
                     </div>
                   </van-cell>
                 </van-list>
+              </div>
             </div>
           </div>
-          <!-- 邀请排行榜 end-->
+
           <div class="bottom_box" v-if="show_bottom">
             已经到达底部~
           </div>
-          <!--big_content_container结束-->
         </div>
       </div>
 
       <!-- 我的奖励弹窗 -->
-      <!-- <div class="rewardPopUp" v-if="show_reward"></div>
-        <div class="rewardContentBox">
-          <img :src="'~@/assets/imgs/close_gray.png'" class="close_img" />
-          <div class="title_reward">我的奖励</div>
-          <div class="content_reward">
-            <div class="rewardLi" style="float:left;">
-              <div class="num_reward">{{total_amount || 0}}<text style="font-size:26/100rem;">元</text></div>
-              <div class="txt_reward">累计获得返利</div>
+      <div v-if="show_reward">
+        <div class="rewardPopUp">
+          <div class="rewardContentBox">
+            <div class="close_img" @click="show_reward=false"></div>
+            <div class="title_reward">我的奖励</div>
+            <div class="content_reward">
+              <div class="rewardLi" style="float:left;">
+                <div class="num_reward">{{total_amount || 0}}<span style="font-size:26/100rem;">元</span></div>
+                <div class="txt_reward">累计获得返利</div>
+              </div>
+              <div class="rewardLi" style='float:right;'>
+                <div class="num_reward">{{available_amount || 0}}<span style="font-size:26/100rem;">元</span></div>
+                <div class="txt_reward">可提取返利</div>
+              </div>
             </div>
-            <div class="rewardLi" style='float:right;'>
-              <div class="num_reward">{{available_amount || 0}}<text style="font-size:26/100rem;">元</text></div>
-              <div class="txt_reward">可提取返利</div>
+            <div style="padding:0/100rem;">
+              <div class="btn_invite_reward">立邀好友 再得{{amountInvite}}元</div>
+            </div>
+            <div url="../../../User/pages/balance/remain/remain" class="btn_remount_reward">
+              <div>我的余额</div>
             </div>
           </div>
-          <button open-type="share" style="padding:0/100rem;">
-            <div class="btn_invite_reward">立邀好友 再得{{amountInvite}}元</div>
-          </button>
-          <div url="../../../User/pages/balance/remain/remain" class="btn_remount_reward">
-            <div>我的余额</div>
-          </div>
-        </div> -->
+        </div>
+      </div>
     </div>
     <!-- 我的奖励弹窗end -->
-  </div>
   </div>
 </template>
 
@@ -149,7 +145,7 @@
     },
     data() {
       return {
-        show_reward: false,
+        show_reward: false, //奖励弹窗
         inviteCode: "",
         isTabOne: true,
         menuTop: "",
@@ -163,44 +159,11 @@
         vant_finished1: false,
         vant_loading2: false,
         vant_finished2: false,
+        fans_list: [],
         fans_list_page: 1,
+        yaoqing_list: [],
         yaoqing_list_page: 1,
-        fans_list: [{
-            member_avatar: "http://img.xiepinhui.com.cn/user/3141/avatar/15380184551.jpg?x-oss-process=image/resize,m_mfit,h_200,w_200",
-            member_name: "333",
-            order_amount: "1111",
-            is_smallshop: 1,
-            amount: 333,
-            is_smallshop: 0
-          },
-          {
-            member_avatar: "http://img.xiepinhui.com.cn/user/3141/avatar/15380184551.jpg?x-oss-process=image/resize,m_mfit,h_200,w_200",
-            member_name: "333",
-            order_amount: "1111",
-            is_smallshop: 1,
-            amount: 333,
-            is_smallshop: 0
-          }
-        ],
-        yaoqing_list: [{
-            member_avatar: "http://img.xiepinhui.com.cn/user/3141/avatar/15380184551.jpg?x-oss-process=image/resize,m_mfit,h_200,w_200",
-            member_id: "97",
-            member_invite_num: "17",
-            member_mobile: "15217336505",
-            member_name: "本宝宝",
-            rank: 1
-          },
-          {
-            member_avatar: "http://img.xiepinhui.com.cn/user/3141/avatar/15380184551.jpg?x-oss-process=image/resize,m_mfit,h_200,w_200",
-            member_id: "97",
-            member_invite_num: "17",
-            member_mobile: "15217336505",
-            member_name: "本宝宝",
-            rank: 2
-          }
-        ],
-        show_bottom: false,
-        showload: false
+        show_bottom: false
       };
     },
     created() {
@@ -209,6 +172,9 @@
     },
     mounted() {},
     methods: {
+      copybtn() {
+        this.$vux.toast.text("复制成功", "top");
+      },
       async getfanred() {
         let data = {
           plat: 3,
@@ -222,55 +188,62 @@
           this.amountInvite = res.data.twomoney;
           this.available_amount = res.data.red_amout; //可提取的返利
           this.total_amount = res.data.total_amout; //总共获取的返利
-          // this.bindFans(res.data.member_code);
+          let codeInvite = this.$route.query.codeInvite;
+          console.log("codeInvite", this.$route.query.codeInvite);
+          if (codeInvite) {
+            this.bindFans(codeInvite);
+          }
         }
       },
-      bindFans(codeInvite) {
+      async bindFans(codeInvite) {
         let data = {
           plat: 3,
           account: this.account,
           token: this.token,
           code: codeInvite
         };
-        const [err, res] = api.inviteweidian(data);
+        const [err, res] = await api.inviteweidian(data);
         if (res) {
           let codeStatus = res.data.code;
           console.log("bindFans:", res);
-          if (codeStatus == 5001) {
+          switch (codeStatus) {
             //绑定码不存在的情况
-            this.$router.push("/center");
-          } else if (codeStatus == 5002) {
-            //是店主或者子店铺
-            //
-          } else if (codeStatus == 5000) {
-            //已经绑定过其他粉丝，要在付款后修改
-            this.$router.push("/centerFull/partner/code");
-          } else if (codeStatus == 5003) {
-            //此人已经是365
-          } else if (codeStatus == 5004) {
-            //审核中
-            // wx.navigateTo({
-            //   url:
-            //     "../../../User/pages/store_application_status/store_application_status?status=" +
-            //     1
-            // });
-          } else if (codeStatus == 4029) {
-            //审核失败
-            this.$router.push({
-              path: "/centerFull/partner/applyStatic",
-              query: {
-                status: 0
-              }
-            });
-          } else if (codeStatus == 4020) {
-            //用户没有注册登陆
-            this.$router.push("/center");
+            case 5006:
+            case 5008:
+            case 5009:
+            case 2000:
+              this.$router.push("/centerFull/partner/code");
+              break;
+            case 5002:
+            case 5003:
+              //是店主或者子店铺
+              //停留在分享页面
+              break;
+              //审核中
+            case 5004:
+              this.$router.push({
+                path: "/centerFull/partner/applyStatic",
+                query: {
+                  status: 0
+                }
+              });
+              break;
+              //审核失败
+            case 5010:
+              this.$router.push({
+                path: "/centerFull/partner/applyStatic",
+                query: {
+                  status: 1
+                }
+              });
+              break;
           }
         }
       },
       //这个是我的粉丝列表请求方法
       async getFans_list() {
-        this.showload = true;
+        this.vant_loading1 = true;
+        this.show_bottom = false;
         let data = {
           plat: 3,
           account: this.account,
@@ -278,21 +251,24 @@
           page: this.fans_list_page
         };
         const [err, res] = await api.storefan1(data);
-        this.showload = false;
         if (err) {
           console.log("err", err);
           return;
         }
         this.vant_loading1 = false;
-        this.fans_list = res.data.list;
-        this.fans_list_page++;
+        this.show_bottom = false;
         if (res.data && res.data.list.length < 1) {
           this.vant_finished1 = true;
+          this.show_bottom = true;
           return;
         }
+        this.vant_finished1 = false;
+        this.fans_list = res.data.list;
+        this.fans_list_page++;
       },
       async getYaoqingList() {
-        this.showload = true;
+        this.vant_loading2 = true;
+        this.show_bottom = false;
         let data = {
           plat: 3,
           account: this.account,
@@ -300,25 +276,29 @@
           page: this.yaoqing_list_page
         };
         const [err, res] = await api.inviterankingweidian(data);
-        this.showload = false;
         if (err) {
           console.log("err", err);
           return;
         }
         this.vant_loading2 = false;
-        this.yaoqing_list = res.data.list;
-        this.yaoqing_list_page++;
+        this.show_bottom = false;
         if (res.data && res.data.list.length < 1) {
           this.vant_finished2 = true;
+          this.show_bottom = true;
           return;
         }
+        this.vant_loading2 = false;
+        this.yaoqing_list = res.data.list;
+        this.yaoqing_list_page++;
       },
       myRewardFun() {},
-      goRecordFun() {},
+      goRecordFun() {
+        this.$router.push("inviteFriendRecord");
+      },
       myRewardFun() {},
-      goRecordFun() {},
-      copyFunction() {},
-      inviteFriendFun() {},
+      inviteFriendFun() {
+        this.show_reward = true;
+      },
       choseTab1() {
         this.isTabOne = true;
         this.isTabTwo = false;
@@ -350,7 +330,7 @@
   }
 
   .myfan {
-    min-height: 5rem;
+    min-height: 1rem;
   }
 
   .bg_content_box {
@@ -675,6 +655,9 @@
     right: 24/100rem;
     top: 21/100rem;
     width: 30/100rem;
+    height: 30/100rem;
+    background: url("~@/assets/images/center/partner/x.png");
+    background-size: contain;
   }
 
   /* 重新修改的 */

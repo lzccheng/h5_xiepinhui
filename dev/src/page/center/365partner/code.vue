@@ -49,7 +49,7 @@ export default {
           return;
         }
         let data = {
-          plat: 4,
+          plat: 3,
           account: this.account,
           token: this.token,
           code: this.code
