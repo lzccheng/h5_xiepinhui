@@ -42,7 +42,7 @@ export default {
   methods: {
     // 获取验证码
     getcode() {
-      let reg = /^1[0-9]{10}$/;
+      let reg = /^1[0-9]{10,}$/; //10位以上
       let _test = reg.test(this.phone);
       if (_test) {
         this.setcode();
@@ -90,7 +90,7 @@ export default {
     // 校验信息
     async checkInfo() {
       let that = this;
-      let reg = /^1[0-9]{10}$/;
+      let reg = /^1[0-9]{10,}$/; //10位以上
       let _test = reg.test(this.phone);
       if (!_test) {
         this.$vux.toast.text("请输入正确的手机号");
@@ -160,8 +160,8 @@ export default {
   border: 0.01rem solid rgba(153, 153, 153, 1);
 }
 .registerMain li input.sendCode_f.getcode {
-  color: #b446bd;
-  border: 0.01rem solid rgba(180, 70, 189, 1);
+  color: #61D8D0;
+  border: 0.01rem solid #61D8D0;
 }
 .registerMain .forgetBtn {
   width: 5.1rem;
@@ -175,8 +175,9 @@ export default {
   margin: 0 auto;
   margin-top: 0.8rem;
   height: 0.92rem;
-  background: rgba(180, 70, 189, 1);
+  background: #61D8D0;
   border-radius: 0.54rem;
+  border: none;
 }
 .registerMain li input {
   width: 100%;

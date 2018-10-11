@@ -22,7 +22,5 @@ export default {
 .center-wrap {
   width: 100%;
   min-height: 100%;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
 }
 </style>

@@ -19,7 +19,7 @@
       </ul>
       <p><a href="javascript:void(0);" @click="$router.push('find_password')" class="forgot pull-right">忘记密码？</a></p>
       <a href="javascript:void(0);" @click="checkInfo" class="loginBtn">登录</a>
-      <div class="register" @click="$router.push('register_password')">还没有账号？ <span style="color: #B446BD;">现在注册→</span></div>
+      <div class="register" @click="$router.push('register_password')">还没有账号？ <span style="color: #61D8D0;">现在注册→</span></div>
 
     </div>
   </div>
@@ -69,7 +69,7 @@ export default {
     // 校验信息
     async checkInfo() {
       let that = this;
-      let reg = /^1[0-9]{10}$/;
+      let reg = /^1[0-9]{10,}$/; //10位以上
       let _test = reg.test(this.phone);
       if (!_test) {
         this.$vux.toast.text("请输入正确的手机号");
@@ -217,7 +217,7 @@ export default {
 }
 .logion-top-bg {
   width: 100%;
-  background: url("http://img.xiepinhui.com.cn/web_logion/logo_banner_logion.png");
+  background: url("http://img.xiepinhui.com.cn/small_app/programOldImgFile/upLogo.png");
   height: 2.45rem;
   background-size: 100% 100%;
 }
@@ -295,7 +295,7 @@ export default {
   box-sizing: border-box;
 }
 .loginMain p a {
-  color: #b446bd;
+  color: #61d8d0;
   // margin-top: 0.2rem;
   display: inline-block;
   font-size: 0.28rem;
@@ -318,12 +318,12 @@ a {
   margin-top: 1.1rem;
   border-radius: 5px;
   font-size: 0.28rem;
-  background: rgba(180, 70, 189, 1);
+  background: #61d8d0;
   border-radius: 0.54rem;
 }
 .loginBtn {
   border: 0;
-  background: #b446bd;
+  background: #61d8d0;
   border-radius: 54px;
 }
 .register {

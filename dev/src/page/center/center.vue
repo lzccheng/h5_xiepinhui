@@ -281,6 +281,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    flex-wrap: wrap;
     width: 100%;
     border-bottom: 1px solid #eee;
 
@@ -294,13 +295,14 @@
 
       .red-dot {
         position: absolute;
-        top: 0.2rem;
-        left: 0.2rem;
+        top: 0.25rem;
+        right: 0.4rem;
         font-size: 0.18rem;
         display: flex;
         justify-content: center;
-        width: 0.25rem;
-        height: 0.25rem;
+        align-items: center;
+        width: 0.28rem;
+        height: 0.28rem;
       }
 
       .text {
@@ -311,6 +313,7 @@
         text-align: center;
         line-height: 0.6rem;
         margin: 0 auto;
+        white-space: nowrap;
       }
 
       .icon {
@@ -320,44 +323,6 @@
         color: #333;
         background: url(http://img.xiepinhui.com.cn/small_app/mine/jifen_shop.png)
           no-repeat center;
-        background-size: contain;
-      }
-
-      .icon00 {
-        background: url("~@/assets/images/center/daifukuan.png") no-repeat
-          center;
-        background-size: contain;
-      }
-
-      .icon01 {
-        background: url("~@/assets/images/center/fahuo.png") no-repeat center;
-        background-size: contain;
-      }
-
-      .icon02 {
-        background: url("~@/assets/images/center/daishouhuo.png") no-repeat
-          center;
-        background-size: contain;
-      }
-
-      .icon03 {
-        background: url("~@/assets/images/center/daipinjia.png") no-repeat
-          center;
-        background-size: contain;
-      }
-
-      .icon04 {
-        background: url("~@/assets/images/center/dingdan.png") no-repeat center;
-        background-size: contain;
-      }
-
-      .icon13 {
-        background: url("~@/assets/images/center/mingxi.png") no-repeat center;
-        background-size: contain;
-      }
-
-      .icon14 {
-        background: url("~@/assets/images/center/qianbao.png") no-repeat center;
         background-size: contain;
       }
 
@@ -379,6 +344,7 @@
       display: flex;
       justify-content: flex-start;
       align-items: center;
+      flex-wrap: wrap;
       width: 100%;
       border-bottom: 1px solid #eee;
 
@@ -411,43 +377,8 @@
 .server {
   .gounp-wrap .gounp-row .gounp-item {
     .icon {
-      width: 0.42rem;
-      height: 0.42rem;
-    }
-
-    .icon00 {
-      background: url("~@/assets/images/center/jifen.png") no-repeat center;
-      background-size: contain;
-    }
-
-    .icon01 {
-      background: url("~@/assets/images/center/jifen2.png") no-repeat center;
-      background-size: contain;
-    }
-
-    .icon02 {
-      background: url("~@/assets/images/center/shangcheng.png") no-repeat center;
-      background-size: contain;
-    }
-
-    .icon03 {
-      background: url("~@/assets/images/center/kefu.png") no-repeat center;
-      background-size: contain;
-    }
-
-    .icon10 {
-      background: url("~@/assets/images/center/zixun.png") no-repeat center;
-      background-size: contain;
-    }
-
-    .icon11 {
-      background: url("~@/assets/images/center/center.png") no-repeat center;
-      background-size: contain;
-    }
-
-    .icon12 {
-      background: url("~@/assets/images/center/dizhi.png") no-repeat center;
-      background-size: contain;
+      width: 0.62rem;
+      height: 0.62rem;
     }
   }
 }
@@ -465,6 +396,7 @@
   padding: 0 0.2rem;
   line-height: 0.41rem;
   margin-bottom: 0.16rem;
+  white-space: nowrap;
 }
 
 .gounp_top {
@@ -806,9 +738,9 @@
               <span class="user-edit icon"></span>
             </div>
             <div class="start-vip" v-if="redmessageInfo">
-              <img src="~@/assets/images/center/vip0.png" v-if="redmessageInfo.member_info.member_grade==0" alt="">
               <img src="~@/assets/images/center/vip1.png" v-if="redmessageInfo.member_info.member_grade==1" alt="">
               <img src="~@/assets/images/center/vip2.png" v-if="redmessageInfo.member_info.member_grade==2" alt="">
+              <img src="~@/assets/images/center/vip0.png" v-else alt="">
             </div>
           </div>
           <div class="info-right">
@@ -838,12 +770,12 @@
     </div>
     <!-- 订单操作栏 -->
     <div class="menu-wrap" v-if="redmessageInfo">
-      <div class="menu-row" v-for="(item,index) in Math.ceil((redmessageInfo.order_status.length)/5)" :key="index">
-        <div class="menu-item" v-for="(it,id) in redmessageInfo.order_status" :key="id" v-if="id>=(index*5) && id<(index+1)*5"
+      <div class="menu-row">
+        <div class="menu-item" v-for="(it,id) in redmessageInfo.order_status" :key="id" @click="orderDetail(id)"
           :class="{'bge':it.bgColor}">
           <badge :text="it.num" v-if="it.num>0" class="red-dot"></badge>
-          <div class="icon" :style="{backgroundImage:'url(' + it.imageContent + ')'}" v-if="!!it.imageContent"></div>
-          <div class="text" v-else>{{it.amout}}</div>
+          <div class="icon" :style="{backgroundImage:'url(' + it.imageContent + ')'}" v-if="!!it.showImage"></div>
+          <div class="text" v-else>{{it.amout|money_fil}}</div>
           <div class="menu-text">{{it.stateTitle}}</div>
         </div>
       </div>
@@ -853,19 +785,13 @@
       <img :src="redmessageInfo.member_centre_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
     </div>
     <!-- 我的服务 -->
-    <div class="item-gounp gounp server" v-if="redmessageInfo">
+    <div class="item-gounp gounp server" v-if="redmessageInfo.list">
       <span class="title">我的服务</span>
       <div class="gounp-wrap">
         <div class="gounp-row">
-          <div class="gounp-item" v-for="(item,index) in ['优惠券','我的积分','积分商城','在线商城']" :key="index">
-            <div class="icon" :class="'icon0'+index"></div>
-            <div class="gounp-text">{{item}}</div>
-          </div>
-        </div>
-        <div class="gounp-row">
-          <div class="gounp-item" v-for="(item,index) in ['服务咨询','帮助中心','地址管理']" :key="index">
-            <div class="icon" :class="'icon1'+index"></div>
-            <div class="gounp-text">{{item}}</div>
+          <div class="gounp-item" v-for="(item,index) in redmessageInfo.list" :key="index">
+            <div class="icon" :style="{backgroundImage:'url(' + item.url_img + ')'}" v-if="!!item.url_img"></div>
+            <div class="gounp-text">{{item.title}}</div>
           </div>
         </div>
       </div>
@@ -930,7 +856,9 @@
     <!-- loading -->
     <loading type="type3" v-if="showLoding"></loading>
     <!-- login -->
-    <x-button @click.native="exitLogin" type="primary" class="exit-btn">{{!user?'登录':'退出登录'}}</x-button>
+    <div>
+      <x-button @click.native="exitLogin" type="primary" class="exit-btn">{{!user?'登录':'退出登录'}}</x-button>
+    </div>
 
     <!-- 弹窗 -->
     <div style="height:100%;overflow:hidden;position:fixed;top:0px;width:100%;z-index:999;" v-if="isShowModalRedPack">
@@ -1058,6 +986,59 @@ export default {
       let data = {};
       const [err, res] = api.newgetorderlist_num();
     },
+    // 订单模块
+    orderDetail(index) {
+      let title = this.redmessageInfo.order_status[index].stateTitle || "";
+      let tabindex = "";
+      if (!title) {
+        this.$vux.toast.text("没有权限哦");
+        return;
+      }
+      switch (title) {
+        case "代付款":
+          tabindex = 2;
+          break;
+        case "待发货":
+          tabindex = 3;
+          break;
+        case "待收货":
+          tabindex = 4;
+          break;
+        case "待评价":
+          tabindex = 5;
+          break;
+        case "全部订单":
+          tabindex = 1;
+          break;
+        case "余额":
+          tabindex = 6;
+          break;
+        case "荟币":
+          tabindex = 7;
+          break;
+        case "积分":
+          tabindex = 8;
+          break;
+        case "余额明细":
+          tabindex = 9;
+          break;
+        case "我的钱包":
+          tabindex = 10;
+          break;
+      }
+      if (tabindex < 6) {
+        this.$router.push({
+          path: "/centerFull/orderFull/orderlist",
+          query: {
+            tabindex
+          }
+        });
+      } else {
+        this.$vux.toast.show({
+          text: "极速开发中"
+        });
+      }
+    },
     //返利弹窗
     async redpackethtml() {
       let data = {
@@ -1139,11 +1120,16 @@ export default {
         }
       }
     },
-    // 跳转
+    //跳转365or我的店铺
     linkTo(link) {
+      console.log(this.user.user_type);
       switch (link) {
         case "我的店铺":
-          this.$router.push("/centerFull/mystore");
+          if (this.user.user_type == 1) {
+            this.$vux.toast.text("清先开通店铺", "top");
+            return;
+          }
+          this.$router.push("/centerFull/myshop/index");
           break;
         case "365合伙人":
           //0 普通用户 1 店主非365店 2 365店主
@@ -1151,7 +1137,7 @@ export default {
             this.$router.push("/centerFull/partner/inviteList");
           } else {
             let issmallshop = this.redmessageInfo.is_smallshop;
-            let store_state  = this.redmessageInfo.store_state;
+            let store_state = this.redmessageInfo.store_state;
             //判断是否已开通
             if (issmallshop == 0) {
               //没开通
@@ -1191,8 +1177,8 @@ export default {
       }
     },
     // 跳转收益
-    linkEarnings(){
-      this.$router.push('/centerFull/partner/redenvelope')
+    linkEarnings() {
+      this.$router.push("/centerFull/partner/redenvelope");
     },
     // 退出登录
     exitLogin() {
@@ -1221,6 +1207,15 @@ export default {
       "updateToken",
       "updateAccount"
     ])
+  },
+  filters: {
+    money_fil(val) {
+      Number(val);
+      if (val > 9999) {
+        val = val / 10000 + "万";
+      }
+      return val;
+    }
   },
   computed: {
     ...mapGetters(["user", "account", "token"])

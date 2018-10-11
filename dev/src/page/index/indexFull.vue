@@ -1,18 +1,15 @@
 <template>
-    <div class="center-wrap">
+    <div class="index-full-wrap">
         <router-view></router-view>
-        <bottom></bottom>
     </div>
 </template>
 
 <script>
-import bottom from "@/components/bottom";
 
 export default {
   name: "index",
   props: {},
   components: {
-    bottom
   },
   data() {
     return {};
@@ -22,10 +19,8 @@ export default {
 </script>
 
 <style scoped>
-.center-wrap {
+.index-full-wrap {
   width: 100%;
   min-height: 100%;
-  box-sizing: border-box;
-  padding-bottom: 1.03rem;
 }
 </style>

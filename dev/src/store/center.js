@@ -1,5 +1,6 @@
 let state = {
-  center: localStorage['center'] ? JSON.parse(localStorage['center']) : '',
+  center: localStorage['center'] ? JSON.parse(localStorage['center']) : '', //个人中心数据缓存
+  _storeInfo: {} // 我的店铺数据缓存
 }
 
 let getters = {}
@@ -14,12 +15,21 @@ const actions = {
   }, info) {
     commit('updateCenter', info)
   },
+  update_storeInfo({
+    commit,
+    state
+  }, info) {
+    commit('update_storeInfo', info)
+  },
 }
 
 const mutations = {
-    updateCenter(state, info) {
+  updateCenter(state, info) {
     state.center = info
-  }
+  },
+  update_storeInfo(state, info) {
+    state._storeInfo = info
+  },
 }
 
 module.exports = {

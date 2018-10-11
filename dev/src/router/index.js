@@ -7,7 +7,11 @@ import store from '@/store'
 
 // index
 import indexWrap from '@/page/index/indexWrap'
+import indexFull from '@/page/index/indexFull'
 import home from '@/page/index/home' //首页
+import goodsFull from '@/page/index/goods/goodsFull' //商品
+import fbPingjia from '@/page/index/goods/fbPingjia'
+
 
 // center
 import centerWrap from '@/page/center/centerWrap'
@@ -22,6 +26,13 @@ import inviteRelu from '@/page/center/365partner/inviteRelu' //365规则
 import applyStatic from '@/page/center/365partner/applyStatic' //365开通状态 
 import inviteFansMy365 from '@/page/center/365partner/inviteFansMy365' //我的粉丝   
 import redenvelope from '@/page/center/365partner/redenvelope' //我的收益 
+// 订单
+import orderFull from '@/page/center/orderlist/orderFull'
+import orderlist from '@/page/center/orderlist/orderlist'
+
+// 我的店铺
+import myShopFull from '@/page/center/myShop/myShopFull'
+import shopIndex from '@/page/center/myShop/shopIndex'
 
 //user
 import userWrap from '@/page/user/userWrap'
@@ -55,6 +66,32 @@ let router = new Router({
       }],
       meta: {
         title: '首页'
+      }
+    },
+    {
+      path: '/indexFull',
+      name: 'indexFull',
+      component: indexFull,
+      children: [{
+        path: '',
+        redirect: 'goodsFull'
+      }, {
+        path: 'goodsFull',
+        component: goodsFull,
+        children: [{
+          path: '',
+          redirect: 'fbPingjia'
+        }, {
+          path: 'fbPingjia',
+          name: 'fbPingjia',
+          component: fbPingjia,
+          meta: {
+            title: '发布评论'
+          }
+        }]
+      }],
+      meta: {
+        title: '鞋品荟'
       }
     },
     {
@@ -138,6 +175,37 @@ let router = new Router({
             }
           }
         ]
+      }, {
+        path: 'myshop',
+        component: myShopFull,
+        children: [{
+          path: '',
+          redirect: 'index'
+        }, {
+          path: 'index',
+          name: 'shopIndex',
+          component: shopIndex,
+          meta: {
+            title: '我的店铺'
+          }
+        }]
+      }, {
+        path: 'orderFull',
+        component: orderFull,
+        meta: {
+          title: '订单列表'
+        },
+        children: [{
+          path: '',
+          redirect: 'orderlist'
+        }, {
+          path: 'orderlist',
+          name: 'orderlist',
+          component: orderlist,
+          meta: {
+            title: '订单列表'
+          }
+        }]
       }]
     },
     {
@@ -233,6 +301,7 @@ router.beforeEach((to, from, next) => {
   console.log(to)
   console.log(`----------- End  Router --------------`)
 
+  // IOS微信浏览器兼容
   if (!store.state.comm.indexUrl) {
     store.commit('updateUrl', window.location.href)
     next()

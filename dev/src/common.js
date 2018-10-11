@@ -1,5 +1,4 @@
 const env = process.env || {};
-console.log('env',env)
 const domain = env.API_ROOT;
 
 let path = '/'

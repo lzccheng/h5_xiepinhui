@@ -46,8 +46,24 @@ export const receivelist = (data) => {
   return POST(url, data)
 }
 
-/**365 */
+/**订单 */
+//订单列表  
+export const getneworderlist = (data) => {
+  const url = `${domain}/ninegroup/getneworderlist`
+  return POST(url, data)
+}
+//删除订单
+export const cancelorder = (data) => {
+  const url = `${domain}/nine/cancelorder`
+  return POST(url, data)
+}
+//评论 
+export const newevaluategoods = (data) => {
+  const url = `${domain}/nine/newevaluategoods`
+  return POST(url, data)
+}
 
+/**365 */
 // 邀请码
 export const receiveweidian = (data) => {
   const url = `${domain}/user/receiveweidian`
@@ -81,5 +97,12 @@ export const inviterankingweidian = (data) => {
 // 绑定粉丝接口信息
 export const inviteweidian = (data) => {
   const url = `${domain}/member/inviteweidian`
+  return POST(url, data)
+}
+
+/**我的店铺 */
+// 我的店铺界面
+export const thelordstore = (data) => {
+  const url = `${domain}/restore/thelordstore`
   return POST(url, data)
 }

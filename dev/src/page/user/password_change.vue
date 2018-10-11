@@ -103,7 +103,8 @@ export default {
   margin: 0 auto;
   margin-top: 0.8rem;
   height: 0.92rem;
-  background: rgba(180, 70, 189, 1);
+  background: #61D8D0;
   border-radius: 0.54rem;
+  border: none;
 }
 </style>

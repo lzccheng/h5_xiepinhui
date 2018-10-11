@@ -1,8 +1,11 @@
 <style lang="less" scoped>
+.sy-wrap {
+  background: #f8f8f8;
+}
 .tips {
   color: #f00;
   font-size: 0.24rem;
-  margin: 0.2rem 0 0 0.2rem;
+  margin: 0.2rem 0 0.2rem 0.2rem;
 }
 
 .on {
@@ -60,6 +63,7 @@
 .out,
 .in {
   min-height: 86vh;
+  background: #f8f8f8;
 }
 
 .switchbar {
@@ -68,7 +72,9 @@
   top: 0.92rem;
   width: 100%;
   height: 0.92rem;
+  background: #f8f8f8;
 }
+
 .dsimg {
   display: inline-block;
   width: 1.3rem;
@@ -76,11 +82,37 @@
   background: url("~@/assets/images/dsRed.png") 100% 100% no-repeat;
   background-size: contain;
 }
+
+.lqimg {
+  display: inline-block;
+  width: 1.3rem;
+  height: 0.4rem;
+  background: url("~@/assets/images/ylRed.png") 100% 100% no-repeat;
+  background-size: contain;
+}
+
+.loading {
+  margin-top: 0.5rem;
+  text-align: center;
+  width: 100%;
+  font-size: 0.2rem;
+  color: #888;
+  line-height: 0.44rem;
+}
+
+.line_xi_after {
+  border-bottom: 1px solid #eee;
+}
+
+.flex-pack-justify {
+  display: flex;
+  justify-content: space-between;
+}
 </style>
 
 
 <template>
-  <div>
+  <div class="sy-wrap">
     <x-header :left-options="{backText:''}" title="我的收益" id="vux-header"></x-header>
     <div class="switchbar">
       <tab v-model="index" default-color="#999" class="switchbar" :scroll-threshold="2" active-color="#fb4c72"
@@ -105,12 +137,31 @@
                 <div class="dsimg"></div>
               </div>
             </div>
-            <div class="loading" v-if="!oneupLoading">加载中...</div>
-            <div class="loading complete" v-if="!oneupLoadingComplete">已加载全部数据</div>
           </div>
+          <div class="loading" v-if="oneupLoading">加载中...</div>
+          <div class="loading complete" v-if="oneupLoadingComplete">已加载全部数据</div>
         </swiper-slide>
         <swiper-slide>
-          <div class="in" v-if="index==1">in</div>
+          <div class="in" v-if="index==1">
+            <div class='avatar-box'>
+              <img class="avatarImg" :src="user.avatar" />
+              <div>共收到红包
+                <span>{{total_amout}}元</span>
+              </div>
+            </div>
+            <div class="red-list line_xi_after" v-if="twolistInfo" v-for="(item,index) in twolistInfo" :key="index">
+              <div class="flex flex-pack-justify">
+                <span>{{item.nick}}</span>
+                <span>{{item.red_amount}}</span>
+              </div>
+              <div class="list-bottom flex flex-pack-justify">
+                <span class="time">{{item.rebate_addtime}}</span>
+                <div class="lqimg"></div>
+              </div>
+            </div>
+          </div>
+          <div class="loading" v-if="twoupLoading">加载中...</div>
+          <div class="loading complete" v-if="twoupLoadingComplete">已加载全部数据</div>
         </swiper-slide>
       </swiper>
     </div>
@@ -138,12 +189,16 @@ export default {
   },
   data() {
     return {
-      index: 0,
-      onelistInfo: [],
-      oneupLoading: false,
-      oneupLoadingComplete: false,
+      index: 0, //tab
       page1: 1,
+      onelistInfo: [],
+      oneupLoading: true,
+      oneupLoadingComplete: false,
       page2: 1,
+      twolistInfo: [],
+      twoupLoading: true,
+      twoupLoadingComplete: false,
+      total_amout: 0, //总收益
       swiperOption: {
         initialSlide: 0, //设定初始化时slide的索引
         direction: "horizontal", //Slides的滑动方向，可设置水平(horizontal)或垂直(vertical)。
@@ -161,11 +216,15 @@ export default {
   },
   created() {
     this.getReceivelist();
+    this.getRebatelist();
   },
   mounted: function() {
     this.$nextTick(function() {
       isScrollBottom(this.scrollBottomCB);
     });
+  },
+  destroyed() {
+    window.onscroll = null;
   },
   methods: {
     //滚动到底部回调
@@ -178,6 +237,9 @@ export default {
     },
     //待收益
     async getReceivelist() {
+      if (this.oneupLoadingComplete) {
+        return;
+      }
       let data = {
         plat: 3,
         account: this.account,
@@ -186,7 +248,15 @@ export default {
       };
       const [err, res] = await api.receivelist(data);
       if (res) {
-        console.log(res);
+        if (res.data.list.length) {
+          this.onelistInfo = this.onelistInfo.concat(res.data.list);
+          this.page1++;
+        } else {
+          if (res.data.page_size == res.data.total_count) {
+            this.oneupLoading = false;
+            this.oneupLoadingComplete = true;
+          }
+        }
       }
       this.onelistInfo.push({
         member_id: "11", //ID
@@ -198,16 +268,34 @@ export default {
     },
     //已收益
     async getRebatelist() {
+      if (this.twoupLoadingComplete) {
+        return;
+      }
       let data = {
         plat: 3,
         account: this.account,
         token: this.token,
-        page: this.page1
+        page: this.page2
       };
       const [err, res] = await api.rebatelist(data);
       if (res) {
-        console.log(res);
+        this.total_amout = res.data.total_amout;
+        if (res.data.list.length) {
+          this.twolistInfo = this.twolistInfo.concat(res.data.list);
+          this.page1++;
+        } else {
+          if (res.data.page_size == res.data.total_count) {
+            this.twoupLoading = false;
+            this.twoupLoadingComplete = true;
+          }
+        }
       }
+      this.twolistInfo.push({
+        member_id: "11",
+        red_amount: "100.00", //金额
+        red_addtime: "2018-08-03", //时间
+        nick: "Thnaos_Liu" //粉丝
+      });
     },
     outEarnings() {
       this.$refs.mySwiper.swiper.slideTo(0);

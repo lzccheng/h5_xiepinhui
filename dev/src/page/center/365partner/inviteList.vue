@@ -38,8 +38,8 @@
             <!-- 我的粉丝 -->
             <div class="content_view_per" v-if="isTabOne">
               <div class="tab_content_box myfan">
-                <van-list class="contentLi" v-model="vant_loading1" :finished="true" @load="getFans_list">
-                  <van-cell class="fansContentLi" v-for="(item,index) in fans_list" :key="index">
+                <div class="contentLi">
+                  <div class="fansContentLi" v-for="(item,index) in fans_list" :key="index">
                     <img :src="item.member_avatar" class="avatarPic" />
                     <div class="right_part">
                       <div class="userInfo">
@@ -65,15 +65,15 @@
                         </div>
                       </div>
                     </div>
-                  </van-cell>
-                </van-list>
+                  </div>
+                </div>
               </div>
             </div>
             <!-- 邀请排行榜 -->
             <div class="content_view_per" v-if="isTabTwo">
               <div class="tab_content_box myfan" style="margin-bottom:24/100rpx;">
-                <van-list class="contentLi" v-model="vant_loading2" :finished="vant_finished2" @load="getYaoqingList">
-                  <van-cell v-for="(item,index) in yaoqing_list" :key="index">
+                <div class="contentLi">
+                  <div v-for="(item,index) in yaoqing_list" :key="index">
                     <div class="content_item_li">
                       <img v-if="item.rank==1" src="http://img.xiepinhui.com.cn/small_app/inviteModel/rank1.jpg" class="phb-paixu" />
                       <img v-if="item.rank==2" src="http://img.xiepinhui.com.cn/small_app/inviteModel/rank2.jpg" class="phb-paixu" />
@@ -83,14 +83,20 @@
                       <div class="name_txt">{{item.member_name}}</div>
                       <div class="txt_lingqu">已邀请<span :style="color=item.rank<=3?'#f00':''">{{item.member_invite_num}}</span>位好友</div>
                     </div>
-                  </van-cell>
-                </van-list>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="bottom_box" v-if="show_bottom">
-            已经到达底部~
+          <div class="bottom_box" v-if="isTabOne&&fanShow_bottom">
+            别戳啦没有更多新数据啦~
+          </div>
+          <div class="bottom_box" v-if="isTabTwo&&Yaoshow_bottom">
+            别戳啦没有更多新数据啦~
+          </div>
+          <div class="bottom_box" v-if="loading_bottom">
+            加载中~
           </div>
         </div>
       </div>
@@ -126,638 +132,674 @@
 </template>
 
 <script>
-  import {
-    mapGetters
-  } from "vuex";
-  import {
-    api
-  } from "@/utils/api.js";
-  import {
-    XHeader
-  } from "vux";
-  import loading from "@/components/loading";
-  export default {
-    name: "",
-    props: {},
-    components: {
-      XHeader,
-      loading
+import { isScrollBottom } from "@/utils/comm.js";
+import { mapGetters } from "vuex";
+import { api } from "@/utils/api.js";
+import { XHeader } from "vux";
+import loading from "@/components/loading";
+export default {
+  name: "",
+  props: {},
+  components: {
+    XHeader,
+    loading
+  },
+  data() {
+    return {
+      show_reward: false, //奖励弹窗
+      inviteCode: "",
+      menuTop: "",
+      page: 0,
+      desc_invite: "",
+      amountInvite: "",
+      total_amount: "",
+      isTabOne: true, // 我的粉丝 邀请榜
+      fans_list: [],
+      fans_list_page: 1,
+      isTabTwo: false,
+      yaoqing_list: [],
+      yaoqing_list_page: 1,
+      fanShow_bottom: false,
+      Yaoshow_bottom: false,
+      loading_bottom: true
+    };
+  },
+  created() {
+    this.getfanred();
+    this.getFans_list();
+  },
+  mounted: function() {
+    this.$nextTick(function() {
+      isScrollBottom(this.scrollBottomCB);
+    });
+  },
+  destroyed() {
+    window.onscroll = null;
+  },
+  methods: {
+    //滚动到底部回调
+    scrollBottomCB() {
+      if (this.isTabOne) {
+        this.getFans_list();
+      } else {
+        this.getYaoqingList();
+      }
     },
-    data() {
-      return {
-        show_reward: false, //奖励弹窗
-        inviteCode: "",
-        isTabOne: true,
-        menuTop: "",
-        page: 0,
-        desc_invite: "",
-        amountInvite: "",
-        total_amount: "",
-        isTabOne: true,
-        isTabTwo: false,
-        vant_loading1: false,
-        vant_finished1: false,
-        vant_loading2: false,
-        vant_finished2: false,
-        fans_list: [],
-        fans_list_page: 1,
-        yaoqing_list: [],
-        yaoqing_list_page: 1,
-        show_bottom: false
+    copybtn() {
+      this.$vux.toast.text("复制成功", "top");
+    },
+    async getfanred() {
+      let data = {
+        plat: 3,
+        account: this.account,
+        token: this.token
       };
+      const [err, res] = await api.fanred(data);
+      if (res) {
+        this.inviteCode = res.data.member_code;
+        this.desc_invite = res.data.desc;
+        this.amountInvite = res.data.twomoney;
+        this.available_amount = res.data.red_amout; //可提取的返利
+        this.total_amount = res.data.total_amout; //总共获取的返利
+        let codeInvite = this.$route.query.codeInvite;
+        console.log("codeInvite", this.$route.query.codeInvite);
+        if (codeInvite) {
+          this.bindFans(codeInvite);
+        }
+      }
     },
-    created() {
-      this.getfanred();
-      this.getFans_list();
+    async bindFans(codeInvite) {
+      let data = {
+        plat: 3,
+        account: this.account,
+        token: this.token,
+        code: codeInvite
+      };
+      const [err, res] = await api.inviteweidian(data);
+      if (res) {
+        let codeStatus = res.data.code;
+        console.log("bindFans:", res);
+        switch (codeStatus) {
+          //绑定码不存在的情况
+          case 5006:
+          case 5008:
+          case 5009:
+          case 2000:
+            this.$router.push("/centerFull/partner/code");
+            break;
+          case 5002:
+          case 5003:
+            //是店主或者子店铺
+            //停留在分享页面
+            break;
+          //审核中
+          case 5004:
+            this.$router.push({
+              path: "/centerFull/partner/applyStatic",
+              query: {
+                status: 0
+              }
+            });
+            break;
+          //审核失败
+          case 5010:
+            this.$router.push({
+              path: "/centerFull/partner/applyStatic",
+              query: {
+                status: 1
+              }
+            });
+            break;
+        }
+      }
     },
-    mounted() {},
-    methods: {
-      copybtn() {
-        this.$vux.toast.text("复制成功", "top");
-      },
-      async getfanred() {
-        let data = {
-          plat: 3,
-          account: this.account,
-          token: this.token
-        };
-        const [err, res] = await api.fanred(data);
-        if (res) {
-          this.inviteCode = res.data.member_code;
-          this.desc_invite = res.data.desc;
-          this.amountInvite = res.data.twomoney;
-          this.available_amount = res.data.red_amout; //可提取的返利
-          this.total_amount = res.data.total_amout; //总共获取的返利
-          let codeInvite = this.$route.query.codeInvite;
-          console.log("codeInvite", this.$route.query.codeInvite);
-          if (codeInvite) {
-            this.bindFans(codeInvite);
-          }
-        }
-      },
-      async bindFans(codeInvite) {
-        let data = {
-          plat: 3,
-          account: this.account,
-          token: this.token,
-          code: codeInvite
-        };
-        const [err, res] = await api.inviteweidian(data);
-        if (res) {
-          let codeStatus = res.data.code;
-          console.log("bindFans:", res);
-          switch (codeStatus) {
-            //绑定码不存在的情况
-            case 5006:
-            case 5008:
-            case 5009:
-            case 2000:
-              this.$router.push("/centerFull/partner/code");
-              break;
-            case 5002:
-            case 5003:
-              //是店主或者子店铺
-              //停留在分享页面
-              break;
-              //审核中
-            case 5004:
-              this.$router.push({
-                path: "/centerFull/partner/applyStatic",
-                query: {
-                  status: 0
-                }
-              });
-              break;
-              //审核失败
-            case 5010:
-              this.$router.push({
-                path: "/centerFull/partner/applyStatic",
-                query: {
-                  status: 1
-                }
-              });
-              break;
-          }
-        }
-      },
-      //这个是我的粉丝列表请求方法
-      async getFans_list() {
-        this.vant_loading1 = true;
-        this.show_bottom = false;
-        let data = {
-          plat: 3,
-          account: this.account,
-          token: this.token,
-          page: this.fans_list_page
-        };
-        const [err, res] = await api.storefan1(data);
-        if (err) {
-          console.log("err", err);
-          return;
-        }
-        this.vant_loading1 = false;
-        this.show_bottom = false;
-        if (res.data && res.data.list.length < 1) {
-          this.vant_finished1 = true;
-          this.show_bottom = true;
-          return;
-        }
-        this.vant_finished1 = false;
-        this.fans_list = res.data.list;
-        this.fans_list_page++;
-      },
-      async getYaoqingList() {
-        this.vant_loading2 = true;
-        this.show_bottom = false;
-        let data = {
-          plat: 3,
-          account: this.account,
-          token: this.token,
-          page: this.yaoqing_list_page
-        };
-        const [err, res] = await api.inviterankingweidian(data);
-        if (err) {
-          console.log("err", err);
-          return;
-        }
-        this.vant_loading2 = false;
-        this.show_bottom = false;
-        if (res.data && res.data.list.length < 1) {
-          this.vant_finished2 = true;
-          this.show_bottom = true;
-          return;
-        }
-        this.vant_loading2 = false;
-        this.yaoqing_list = res.data.list;
-        this.yaoqing_list_page++;
-      },
-      myRewardFun() {},
-      goRecordFun() {
-        this.$router.push("inviteFriendRecord");
-      },
-      myRewardFun() {},
-      inviteFriendFun() {
-        this.show_reward = true;
-      },
-      choseTab1() {
-        this.isTabOne = true;
-        this.isTabTwo = false;
-      },
-      choseTab2() {
-        this.isTabOne = false;
-        this.isTabTwo = true;
-      },
-      close_rewardFun() {}
+    //这个是我的粉丝列表请求方法
+    async getFans_list() {
+      // this.fans_list.push({
+      //   member_id: "106",
+      //   add_time: "2018-07-13",
+      //   is_smallshop: "0",
+      //   member_invite_num: "1",
+      //   member_mobile: "13938132622",
+      //   member_sex: "1",
+      //   member_name: "xph_597c2ef07d48f86",
+      //   member_avatar:
+      //     "http://img.xiepinhui.com.cn/sys/default/user/avatar.jpg",
+      //   amount: 0, //总收益
+      //   red_amount_365: 0, //开通365粉丝总收益
+      //   order_amount: 0, //总消费
+      //   vip_amount: 0
+      // });
+      if (this.fanShow_bottom) {
+        return;
+      }
+      let data = {
+        plat: 3,
+        account: this.account,
+        token: this.token,
+        page: this.fans_list_page
+      };
+      this.loading_bottom = true;
+      this.fans_list_page++;
+      const [err, res] = await api.storefan1(data);
+      if (err) {
+        console.log("err", err);
+        return;
+      }
+      if (res.data && res.data.list.length < 1) {
+        this.fanShow_bottom = true;
+        this.loading_bottom = false;
+        return;
+      }
+      this.fans_list = this.fans_list.concat(res.data.list);
     },
-    computed: {
-      ...mapGetters(["user", "account", "token"])
-    }
-  };
-
+    async getYaoqingList() {
+      // this.yaoqing_list.push({
+      //   member_id: "97",
+      //   member_avatar:
+      //     "http://img.xiepinhui.com.cn/user/3141/avatar/15380184551.jpg?x-oss-process=image/resize,m_mfit,h_200,w_200",
+      //   member_name: "本宝宝",
+      //   member_invite_num: "16",
+      //   member_mobile: "15217336505",
+      //   rank: 1
+      // });
+      if (this.Yaoshow_bottom) {
+        return;
+      }
+      let data = {
+        plat: 3,
+        account: this.account,
+        token: this.token,
+        page: this.yaoqing_list_page
+      };
+      this.loading_bottom = true;
+      this.yaoqing_list_page++;
+      const [err, res] = await api.inviterankingweidian(data);
+      if (err) {
+        console.log("err", err);
+        return;
+      }
+      if (res.data && res.data.list.length < 1) {
+        this.Yaoshow_bottom = true;
+        this.loading_bottom = false;
+        return;
+      }
+      this.yaoqing_list = this.yaoqing_list.concat(res.data.list);
+    },
+    myRewardFun() {},
+    goRecordFun() {
+      this.$router.push("inviteFriendRecord");
+    },
+    myRewardFun() {},
+    inviteFriendFun() {
+      this.show_reward = true;
+    },
+    choseTab1() {
+      this.isTabOne = true;
+      this.isTabTwo = false;
+    },
+    choseTab2() {
+      this.isTabOne = false;
+      this.isTabTwo = true;
+      // this.getYaoqingList();
+    },
+    close_rewardFun() {}
+  },
+  computed: {
+    ...mapGetters(["user", "account", "token"])
+  }
+};
 </script>
 
 <style lang="less" scoped>
-  .scroll-wrap {
-    height: 100%;
-  }
+.scroll-wrap {
+  height: 100%;
+}
 
-  .bg_invite_box {
-    background: #fadba4 url(http://img.xiepinhui.com.cn/small_app/inviteModel/invite_bg1.jpg) no-repeat;
-    width: 100%;
-    height: 1529/100rem;
-    background-size: 100%;
-    padding-top: 333/100rem;
-  }
+.bg_invite_box {
+  background: #fadba4
+    url(http://img.xiepinhui.com.cn/small_app/inviteModel/invite_bg1.jpg)
+    no-repeat;
+  width: 100%;
+  height: 1529/100rem;
+  background-size: 100%;
+  padding-top: 333/100rem;
+}
 
-  .myfan {
-    min-height: 1rem;
-  }
+.myfan {
+  min-height: 1rem;
+}
 
-  .bg_content_box {
-    width: 750/100rem;
-    height: 803/100rem;
-    background: url(http://img.xiepinhui.com.cn/small_app/inviteModel/invite_content_bg.png) no-repeat;
-    background-size: 100%;
-    margin: auto;
-    padding-top: 105/100rem;
-  }
+.bg_content_box {
+  width: 750/100rem;
+  height: 803/100rem;
+  background: url(http://img.xiepinhui.com.cn/small_app/inviteModel/invite_content_bg.png)
+    no-repeat;
+  background-size: 100%;
+  margin: auto;
+  padding-top: 105/100rem;
+}
 
-  .quan_bg_box {
-    width: 569/100rem;
-    height: 349/100rem;
-    background: url(http://img.xiepinhui.com.cn/small_app/inviteModel/quan_bg.jpg) no-repeat;
-    background-size: 100%;
-    margin: auto;
-  }
+.quan_bg_box {
+  width: 569/100rem;
+  height: 349/100rem;
+  background: url(http://img.xiepinhui.com.cn/small_app/inviteModel/quan_bg.jpg)
+    no-repeat;
+  background-size: 100%;
+  margin: auto;
+}
 
-  .price_div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 2rem;
-  }
+.price_div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2rem;
+}
 
-  .price_view {
-    text-align: center;
-    margin: auto;
-    margin-bottom: 15/100rem;
-    padding-top: 15/100rem;
-    overflow: hidden;
-    width: 170px;
-  }
+.price_view {
+  text-align: center;
+  margin: auto;
+  margin-bottom: 15/100rem;
+  padding-top: 15/100rem;
+  overflow: hidden;
+  width: 170px;
+}
 
-  .sign_logo {
-    font-size: 96/100rem;
-    color: #fff;
-    /* line-height: 96/100rem; */
-    /* float: left; */
-  }
+.sign_logo {
+  font-size: 96/100rem;
+  color: #fff;
+  /* line-height: 96/100rem; */
+  /* float: left; */
+}
 
-  .price_num {
-    font-size: 158/100rem;
-    color: #fff;
-    line-height: 158/100rem;
-    /* float: left; */
-  }
+.price_num {
+  font-size: 158/100rem;
+  color: #fff;
+  line-height: 158/100rem;
+  /* float: left; */
+}
 
-  .txt_desc_box {
-    font-size: 28/100rem;
-    color: #fff;
-    text-align: center;
-    padding-top: 34/100rem;
-  }
+.txt_desc_box {
+  font-size: 28/100rem;
+  color: #fff;
+  text-align: center;
+  padding-top: 34/100rem;
+}
 
-  .invite_num_box {
-    width: 570/100rem;
-    height: 120/100rem;
-    background: url(http://img.xiepinhui.com.cn/small_app/inviteModel/invite_num_bg.png) no-repeat;
-    background-size: 100%;
-    margin: auto;
-    margin-top: 30/100rem;
-    overflow: hidden;
-  }
+.invite_num_box {
+  width: 570/100rem;
+  height: 120/100rem;
+  background: url(http://img.xiepinhui.com.cn/small_app/inviteModel/invite_num_bg.png)
+    no-repeat;
+  background-size: 100%;
+  margin: auto;
+  margin-top: 30/100rem;
+  overflow: hidden;
+}
 
-  .yaoqingma {
-    padding-left: 192/100rem;
-    font-size: 42/100rem;
-    color: #9c5c14;
-    line-height: 120/100rem;
-    float: left;
-    min-width: 196/100rem;
-    height: 60px;
-  }
+.yaoqingma {
+  padding-left: 192/100rem;
+  font-size: 42/100rem;
+  color: #9c5c14;
+  line-height: 120/100rem;
+  float: left;
+  min-width: 196/100rem;
+  height: 60px;
+}
 
-  .copy_btn {
-    font-size: 28/100rem;
-    color: #9c5c14;
-    width: 102/100rem;
-    height: 42/100rem;
-    text-align: center;
-    border: 1px solid #9c5c14;
-    line-height: 42/100rem;
-    border-radius: 23/100rem;
-    float: left;
-    margin-left: 46/100rem;
-    margin-top: 38/100rem;
-  }
+.copy_btn {
+  font-size: 28/100rem;
+  color: #9c5c14;
+  width: 102/100rem;
+  height: 42/100rem;
+  text-align: center;
+  border: 1px solid #9c5c14;
+  line-height: 42/100rem;
+  border-radius: 23/100rem;
+  float: left;
+  margin-left: 46/100rem;
+  margin-top: 38/100rem;
+}
 
-  .btn_invite_box {
-    background: url(http://img.xiepinhui.com.cn/small_app/programOldImgFile/lijiyaoqingwinfanli.gif) no-repeat;
-    width: 570/100rem;
-    height: 110/100rem;
-    background-size: 100%;
-    margin: auto;
-    margin-top: 50/100rem;
-  }
+.btn_invite_box {
+  background: url(http://img.xiepinhui.com.cn/small_app/programOldImgFile/lijiyaoqingwinfanli.gif)
+    no-repeat;
+  width: 570/100rem;
+  height: 110/100rem;
+  background-size: 100%;
+  margin: auto;
+  margin-top: 50/100rem;
+}
 
-  .liucheng_box {
-    width: 680/100rem;
-    height: 287/100rem;
-    background: url(http://img.xiepinhui.com.cn/small_app/inviteModel/desc_liucheng.png) no-repeat;
-    background-size: 100%;
-    margin: auto;
-    margin-top: 0.5rem;
-  }
+.liucheng_box {
+  width: 680/100rem;
+  height: 287/100rem;
+  background: url(http://img.xiepinhui.com.cn/small_app/inviteModel/desc_liucheng.png)
+    no-repeat;
+  background-size: 100%;
+  margin: auto;
+  margin-top: 0.5rem;
+}
 
-  .bottom_line_box {
-    width: 750/100rem;
-    height: 86/100rem;
-    background: url(http://img.xiepinhui.com.cn/small_app/inviteModel/bottom_line.jpg) no-repeat;
-    background-size: 100%;
-    margin: auto;
-    margin-top: 15/100rem;
-  }
+.bottom_line_box {
+  width: 750/100rem;
+  height: 86/100rem;
+  background: url(http://img.xiepinhui.com.cn/small_app/inviteModel/bottom_line.jpg)
+    no-repeat;
+  background-size: 100%;
+  margin: auto;
+  margin-top: 15/100rem;
+}
 
-  .invite_tab_box {
-    padding-top: 46/100rem;
-    background: #fff;
-  }
+.invite_tab_box {
+  padding-top: 46/100rem;
+  background: #fff;
+}
 
-  .tab_box {
-    border: 1px solid #9c5c14;
-    width: 690/100rem;
-    height: 80/100rem;
-    border-radius: 40/100rem;
-    margin: auto;
-    background: #fff;
-  }
+.tab_box {
+  border: 1px solid #9c5c14;
+  width: 690/100rem;
+  height: 80/100rem;
+  border-radius: 40/100rem;
+  margin: auto;
+  background: #fff;
+}
 
-  .tabLi {
-    float: left;
-    width: 50%;
-    text-align: center;
-    line-height: 80/100rem;
-    font-size: 30/100rem;
-    color: #9c5c14;
-    border-radius: 40/100rem;
-  }
+.tabLi {
+  float: left;
+  width: 50%;
+  text-align: center;
+  line-height: 80/100rem;
+  font-size: 30/100rem;
+  color: #9c5c14;
+  border-radius: 40/100rem;
+}
 
-  .activeTabLi {
-    background: #fdc049;
-    border-bottom-right-radius: 0/100rem;
-    border-top-right-radius: 0/100rem;
-  }
+.activeTabLi {
+  background: #fdc049;
+  border-bottom-right-radius: 0/100rem;
+  border-top-right-radius: 0/100rem;
+}
 
-  .activeTabTwoLi {
-    background: #fdc049;
-    border-bottom-left-radius: 0/100rem;
-    border-top-left-radius: 0/100rem;
-  }
+.activeTabTwoLi {
+  background: #fdc049;
+  border-bottom-left-radius: 0/100rem;
+  border-top-left-radius: 0/100rem;
+}
 
-  .tab_content_box {
-    /* border:10/100rem solid #fada99; */
-    /* border-radius: 10/100rem; */
-    box-sizing: border-box;
-    /* padding-right: 50/100rem;
+.tab_content_box {
+  /* border:10/100rem solid #fada99; */
+  /* border-radius: 10/100rem; */
+  box-sizing: border-box;
+  /* padding-right: 50/100rem;
   padding-left: 24/100rem; */
-    padding-top: 22/100rem;
-  }
+  padding-top: 22/100rem;
+}
 
-  .content_view_per {
-    width: 690/100rem;
+.content_view_per {
+  width: 690/100rem;
 
-    margin: auto;
-    margin-top: 32/100rem;
-  }
+  margin: auto;
+  margin-top: 32/100rem;
+}
 
-  .content_item_li {
-    padding-top: 32/100rem;
-    padding-bottom: 32/100rem;
-    overflow: hidden;
-    border-bottom: 1/100rem solid #efefef;
-  }
+.content_item_li {
+  padding-top: 32/100rem;
+  padding-bottom: 32/100rem;
+  overflow: hidden;
+  border-bottom: 1/100rem solid #efefef;
+}
 
-  .pic_avatar {
-    width: 59/100rem;
-    height: 59/100rem;
-    border-radius: 50%;
-    float: left;
-  }
+.pic_avatar {
+  width: 59/100rem;
+  height: 59/100rem;
+  border-radius: 50%;
+  float: left;
+}
 
-  .name_txt {
-    font-size: 27.5/100rem;
-    color: #000;
-    float: left;
-    line-height: 59/100rem;
-    margin-left: 20/100rem;
-  }
+.name_txt {
+  font-size: 27.5/100rem;
+  color: #000;
+  float: left;
+  line-height: 59/100rem;
+  margin-left: 20/100rem;
+}
 
-  .txt_lingqu {
-    font-size: 26/100rem;
-    color: #9c5c14;
-    float: right;
-    line-height: 59/100rem;
-  }
+.txt_lingqu {
+  font-size: 26/100rem;
+  color: #9c5c14;
+  float: right;
+  line-height: 59/100rem;
+}
 
-  .phb-paixu {
-    width: 0.6rem;
-    float: left;
-    margin-right: 13/100rem;
-    margin-top: -0.08rem;
-  }
+.phb-paixu {
+  width: 0.6rem;
+  float: left;
+  margin-right: 13/100rem;
+  margin-top: -0.08rem;
+}
 
-  .rank_sign {
-    position: absolute;
-    background: #ff8e01;
-    width: 112/100rem;
-    line-height: 40/100rem;
-    border-radius: 20/100rem;
-    color: #fff;
-    font-size: 24/100rem;
-    text-align: center;
-    top: -25/100rem;
-    left: 50%;
-    margin-left: -56/100rem;
-  }
+.rank_sign {
+  position: absolute;
+  background: #ff8e01;
+  width: 112/100rem;
+  line-height: 40/100rem;
+  border-radius: 20/100rem;
+  color: #fff;
+  font-size: 24/100rem;
+  text-align: center;
+  top: -25/100rem;
+  left: 50%;
+  margin-left: -56/100rem;
+}
 
-  .left_rank_num_box {
-    width: 54/100rem;
-    float: left;
-    margin-right: 24/100rem;
-    text-align: center;
-    font-size: 32/100rem;
-  }
+.left_rank_num_box {
+  width: 54/100rem;
+  float: left;
+  margin-right: 24/100rem;
+  text-align: center;
+  font-size: 32/100rem;
+}
 
-  .about_inviteInfo_box {
-    position: absolute;
-    top: 56/100rem;
-    right: 0/100rem;
-    font-size: 28/100rem;
-  }
+.about_inviteInfo_box {
+  position: absolute;
+  top: 56/100rem;
+  right: 0/100rem;
+  font-size: 28/100rem;
+}
 
-  .invite_rule_box {
-    width: 155/100rem;
-    height: 57/100rem;
-    line-height: 57/100rem;
-    text-align: center;
-    color: #fff;
-    background: #fe6047;
-    border-bottom-left-radius: 28/100rem;
-    border-top-left-radius: 28/100rem;
-    margin-bottom: 30/100rem;
-  }
+.invite_rule_box {
+  width: 155/100rem;
+  height: 57/100rem;
+  line-height: 57/100rem;
+  text-align: center;
+  color: #fff;
+  background: #fe6047;
+  border-bottom-left-radius: 28/100rem;
+  border-top-left-radius: 28/100rem;
+  margin-bottom: 30/100rem;
+}
 
-  .myReward_tip_box {
-    width: 155/100rem;
-    height: 57/100rem;
-    line-height: 57/100rem;
-    text-align: center;
-    color: #000;
-    background: rgba(255, 255, 255, 0.9);
-    border-bottom-left-radius: 28/100rem;
-    border-top-left-radius: 28/100rem;
-  }
+.myReward_tip_box {
+  width: 155/100rem;
+  height: 57/100rem;
+  line-height: 57/100rem;
+  text-align: center;
+  color: #000;
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom-left-radius: 28/100rem;
+  border-top-left-radius: 28/100rem;
+}
 
-  .rewardPopUp {
-    position: fixed;
-    background: rgba(0, 0, 0, 0.6);
-    width: 100%;
-    height: 100%;
-    top: 0/100rem;
-    left: 0/100rem;
-  }
+.rewardPopUp {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  top: 0/100rem;
+  left: 0/100rem;
+}
 
-  .rewardContentBox {
-    width: 536/100rem;
-    height: 509/100rem;
-    border-radius: 30/100rem;
-    background: #fff;
-    top: 347/100rem;
-    left: 50%;
-    margin-left: -268/100rem;
-    position: absolute;
-    padding: 40/100rem 45/100rem;
-    box-sizing: border-box;
-  }
+.rewardContentBox {
+  width: 536/100rem;
+  height: 509/100rem;
+  border-radius: 30/100rem;
+  background: #fff;
+  top: 347/100rem;
+  left: 50%;
+  margin-left: -268/100rem;
+  position: absolute;
+  padding: 40/100rem 45/100rem;
+  box-sizing: border-box;
+}
 
-  .title_reward {
-    text-align: center;
-    font-size: 30/100rem;
-  }
+.title_reward {
+  text-align: center;
+  font-size: 30/100rem;
+}
 
-  .content_reward {
-    overflow: hidden;
-  }
+.content_reward {
+  overflow: hidden;
+}
 
-  .txt_reward {
-    color: #666;
-    font-size: 26/100rem;
-  }
+.txt_reward {
+  color: #666;
+  font-size: 26/100rem;
+}
 
-  .num_reward {
-    font-size: 41/100rem;
-  }
+.num_reward {
+  font-size: 41/100rem;
+}
 
-  .btn_invite_reward {
-    width: 444/100rem;
-    line-height: 80/100rem;
-    background: #fe6047;
-    color: #fff;
-    text-align: center;
-    border-radius: 40/100rem;
-    font-size: 34/100rem;
-    margin-bottom: 42/100rem;
-    margin-top: 48/100rem;
-  }
+.btn_invite_reward {
+  width: 444/100rem;
+  line-height: 80/100rem;
+  background: #fe6047;
+  color: #fff;
+  text-align: center;
+  border-radius: 40/100rem;
+  font-size: 34/100rem;
+  margin-bottom: 42/100rem;
+  margin-top: 48/100rem;
+}
 
-  .btn_remount_reward {
-    width: 444/100rem;
-    line-height: 80/100rem;
-    border: 1px solid #fe6047;
-    color: #fe6047;
-    font-size: 34/100rem;
-    text-align: center;
-    border-radius: 40/100rem;
-  }
+.btn_remount_reward {
+  width: 444/100rem;
+  line-height: 80/100rem;
+  border: 1px solid #fe6047;
+  color: #fe6047;
+  font-size: 34/100rem;
+  text-align: center;
+  border-radius: 40/100rem;
+}
 
-  .close_img {
-    position: absolute;
-    right: 24/100rem;
-    top: 21/100rem;
-    width: 30/100rem;
-    height: 30/100rem;
-    background: url("~@/assets/images/center/partner/x.png");
-    background-size: contain;
-  }
+.close_img {
+  position: absolute;
+  right: 24/100rem;
+  top: 21/100rem;
+  width: 30/100rem;
+  height: 30/100rem;
+  background: url("~@/assets/images/center/partner/x.png");
+  background-size: contain;
+}
 
-  /* 重新修改的 */
-  .fansContentLi {
-    overflow: hidden;
-    padding-top: 32/100rem;
-    padding-bottom: 32/100rem;
-    border-bottom: 1/100rem solid #efefef;
-  }
+/* 重新修改的 */
+.fansContentLi {
+  overflow: hidden;
+  padding-top: 32/100rem;
+  padding-bottom: 32/100rem;
+  border-bottom: 1/100rem solid #efefef;
+}
 
-  .avatarPic {
-    float: left;
-    width: 90/100rem;
-    height: 90/100rem;
-    margin-right: 30/100rem;
-    margin-top: 16/100rem;
-    border-radius: 50%;
-  }
+.avatarPic {
+  float: left;
+  width: 90/100rem;
+  height: 90/100rem;
+  margin-right: 30/100rem;
+  margin-top: 16/100rem;
+  border-radius: 50%;
+}
 
-  .userName {
-    font-size: 28/100rem;
-    color: #333;
-    float: left;
-    width: 170/100rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    margin-right: 56/100rem;
-  }
+.userName {
+  font-size: 28/100rem;
+  color: #333;
+  float: left;
+  width: 170/100rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 56/100rem;
+}
 
-  .zongxiaofei {
-    float: left;
-    font-size: 24/100rem;
-    color: #666;
-  }
+.zongxiaofei {
+  float: left;
+  font-size: 24/100rem;
+  color: #666;
+}
 
-  .tip_when_fun {
-    overflow: hidden;
-  }
+.tip_when_fun {
+  overflow: hidden;
+}
 
-  .binding_box {
-    overflow: hidden;
-    float: left;
-    margin-top: 12/100rem;
-  }
+.binding_box {
+  overflow: hidden;
+  float: left;
+  margin-top: 12/100rem;
+}
 
-  .timeBind {
-    float: left;
-    color: #999;
-    font-size: 22/100rem;
-    margin-right: 56/100rem;
-    width: 170/100rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+.timeBind {
+  float: left;
+  color: #999;
+  font-size: 22/100rem;
+  margin-right: 56/100rem;
+  width: 170/100rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-  .benefit {
-    float: right;
-    color: #666;
-    font-size: 24/100rem;
-  }
+.benefit {
+  float: right;
+  color: #666;
+  font-size: 24/100rem;
+}
 
-  .style_sign {
-    display: inline-block;
-    margin-right: 18/100rem;
-    width: 60/100rem;
-    text-align: center;
-    color: #fff;
-    background: #000;
-    border-top-left-radius: 20/100rem;
-    border-top-right-radius: 10/100rem;
-  }
+.style_sign {
+  display: inline-block;
+  margin-right: 18/100rem;
+  width: 60/100rem;
+  text-align: center;
+  color: #fff;
+  background: #000;
+  border-top-left-radius: 20/100rem;
+  border-top-right-radius: 10/100rem;
+}
 
-  .btnInvite {
-    float: right;
-    color: #ecb67b;
-    width: 140/100rem;
-    line-height: 52/100rem;
-    text-align: center;
-    border: 1/100rem solid #ecb67b;
-    border-radius: 30/100rem;
-    font-size: 28/100rem;
-  }
+.btnInvite {
+  float: right;
+  color: #ecb67b;
+  width: 140/100rem;
+  line-height: 52/100rem;
+  text-align: center;
+  border: 1/100rem solid #ecb67b;
+  border-radius: 30/100rem;
+  font-size: 28/100rem;
+}
 
-  .explain_part {
-    font-size: 22/100rem;
-    color: #ecb67b;
-  }
+.explain_part {
+  font-size: 22/100rem;
+  color: #ecb67b;
+}
 
-  .bottom_box {
-    margin-top: 20/100rem;
-    margin-bottom: 20/100rem;
-    text-align: center;
-    font-size: 24/100rem;
-    color: #666;
-  }
+.bottom_box {
+  margin-top: 20/100rem;
+  margin-bottom: 20/100rem;
+  text-align: center;
+  font-size: 24/100rem;
+  color: #666;
+}
 
-  .userInfo {
-    overflow: hidden;
-  }
-
+.userInfo {
+  overflow: hidden;
+}
 </style>
