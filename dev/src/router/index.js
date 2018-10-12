@@ -1,22 +1,22 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import corpAuth from '@/components/corpAuth'
-import constant from '../utils/constant'
 import config from '../common'
 import store from '@/store'
+// import constant from '../utils/constant'
 
 // index
-import indexWrap from '@/page/index/indexWrap'
+import indexWrap from '@/page/index/indexWrap' //首页
 import indexFull from '@/page/index/indexFull'
-import home from '@/page/index/home' //首页
+import home from '@/page/index/home' 
 import goodsFull from '@/page/index/goods/goodsFull' //商品
 import fbPingjia from '@/page/index/goods/fbPingjia'
 
 
 // center
-import centerWrap from '@/page/center/centerWrap'
+import centerWrap from '@/page/center/centerWrap' //个人中心
 import centerFull from '@/page/center/centerFull'
-import center from '@/page/center/center' //个人中心
+import center from '@/page/center/center' 
 import partnerWrap from '@/page/center/365partner/partnerWrap'
 import code from '@/page/center/365partner/code' //365邀请码
 import apply from '@/page/center/365partner/apply' //365开通
@@ -282,7 +282,7 @@ let router = new Router({
       redirect: '/'
     }
   ],
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) { //模拟原生滑动
     if (savedPosition) {
       return savedPosition
     } else {
@@ -303,7 +303,7 @@ router.beforeEach((to, from, next) => {
 
   // IOS微信浏览器兼容
   if (!store.state.comm.indexUrl) {
-    store.commit('updateUrl', window.location.href)
+    store.commit('updateUrl', window.location.href) //保存初次进来的地址
     next()
   } else {
     next()

@@ -301,8 +301,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 0.28rem;
         height: 0.28rem;
+        min-width: 0.28rem;
+        text-align: center;
+        background: #f74c31;
+        color: #fff;
+        border-radius: 1rem;
+        padding: 0.015rem;
       }
 
       .text {
@@ -773,7 +778,7 @@
       <div class="menu-row">
         <div class="menu-item" v-for="(it,id) in redmessageInfo.order_status" :key="id" @click="orderDetail(id)"
           :class="{'bge':it.bgColor}">
-          <badge :text="it.num" v-if="it.num>0" class="red-dot"></badge>
+          <div v-if="it.num>0" class="red-dot">{{it.num}}</div>
           <div class="icon" :style="{backgroundImage:'url(' + it.imageContent + ')'}" v-if="!!it.showImage"></div>
           <div class="text" v-else>{{it.amout|money_fil}}</div>
           <div class="menu-text">{{it.stateTitle}}</div>
@@ -1035,7 +1040,7 @@ export default {
         });
       } else {
         this.$vux.toast.show({
-          text: "极速开发中"
+          text: `极速开发中`
         });
       }
     },

@@ -32,8 +32,10 @@ axiosUtil.interceptors.response.use(
           break;
       }
       return Promise.reject(error.response.data) // 返回接口返回的错误信息
-    }else{
-      return Promise.reject({msg:'网络连接超时'}) // 返回接口返回的错误信息
+    } else {
+      return Promise.reject({
+        msg: '网络连接超时'
+      }) // 返回接口返回的错误信息
     }
   });
 
@@ -50,7 +52,7 @@ function request(method) {
       }
     }
     return await axiosUtil(options).then((res) => {
-      if (res.data.code === 5000) { // tokan过期
+      if (res.data.code === 5000) { // tokan过期 => 重新登录
         store.dispatch('updateUser', "");
         store.dispatch('updateToken', "");
         store.dispatch('updateAccount', "");

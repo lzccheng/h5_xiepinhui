@@ -16,22 +16,6 @@
         </group>
       </div>
     </scroll>
-    <!-- <pull-to :top-load-method="refresh" :bottom-load-method="onPullupLoading" :bottom-config="{triggerDistance: 20}">
-       <div class="box2">
-        <group>
-          <div v-if="!!list && list.length">
-            <project-box :list="list" v-if="origin==='project'"></project-box>
-            <entrepreneur-box :list="list" v-if="origin==='entrepreneur'"></entrepreneur-box>
-            <enterprise-box :list="list" v-if="origin==='enterprise'"></enterprise-box>
-          </div>
-          <div v-if="!list&&!searchVal.length">
-            {{searchVal||'输入关键词进行搜索'}}
-          </div>
-          <load-more v-if="!!list && !list.length" class="mrt8" tip="暂无数据" :show-loading="false" background-color="#fbf9fe"></load-more>
-          <load-more v-if="!list && isLoading" class="mrt8" tip="正在加载"></load-more>
-        </group>
-      </div>
-    </pull-to> -->
   </div>
 </template>
 <script>
@@ -40,7 +24,6 @@ import projectBox from "./project";
 import entrepreneurBox from "./entrepreneur";
 import enterpriseBox from "./enterprise";
 import scroll from "@/components/vuxscroll";
-// import PullTo from "vue-pull-to";
 
 import {
   Group,
@@ -215,45 +198,6 @@ export default {
         this.$vux.toast.text("刷新成功");
       }, 200);
     }
-    // async onPullupLoading(loaded) { //备用
-    //   //上拉加载
-    //   let that = this;
-    //   if (this.onFetching) {
-    //     return;
-    //   }
-    //   this.onFetching = true;
-    //   this.searchConfig.page++;
-    //   let newlist = [];
-    //   switch (this.origin) {
-    //     case "project":
-    //       newlist = await this.searchProject();
-    //       break;
-    //     case "entrepreneur":
-    //       newlist = await this.searchEntrepreneur();
-    //       break;
-    //     case "enterprise":
-    //       newlist = await this.searchEnterprise();
-    //       break;
-    //   }
-    //   if (!newlist.length) {
-    //     this.$vux.toast.text("暂无更多数据");
-    //   } else {
-    //     this.list = this.list.concat(newlist);
-    //   }
-    //   await setTimeout(() => {
-    //     // that.$refs.scrollerBottom.donePullup();
-    //     that.$nextTick(() => {
-    //       // that.$refs.scrollerBottom.reset();
-    //       loaded('done')
-    //     });
-    //     this.onFetching = false;
-    //   }, 200);
-    // },
-    // async refresh(loaded) {
-    //   await setTimeout(() => {
-    //     loaded("done");
-    //   }, 1000);
-    // },
   },
   beforeDestroy() {
     // 注销
