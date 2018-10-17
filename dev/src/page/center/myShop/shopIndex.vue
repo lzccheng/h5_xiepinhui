@@ -1,107 +1,3 @@
-<style lang="less" scoped>
-.shopindex {
-  background: #f8f8f8;
-}
-.store-user-header {
-  min-height: 4rem;
-  background: url("https://img.xiepinhui.com.cn/small_app/myShop/myShop_bg.png")
-    no-repeat;
-  background-size: 100%;
-}
-.store-user-avatar {
-  height: 2.4rem;
-  text-align: center;
-  box-sizing: border-box;
-  padding-top: 15px;
-  overflow: hidden;
-}
-.store-user-avatar img {
-  height: 1.33rem;
-  width: 1.33rem;
-  border-radius: 50%;
-  border: 0.1rem solid #fff;
-}
-.store-user-name {
-  text-align: center;
-  color: #fff;
-  font-size: 0.28rem;
-}
-.store-fundsInfo {
-  min-height: 1.5rem;
-  overflow: hidden;
-  box-sizing: border-box;
-  padding: 10px 15px;
-}
-.funds-item {
-  width: 25%;
-  color: rgba(224, 255, 253, 1);
-  font-size: 0.26rem;
-  text-align: center;
-}
-.funds-number {
-  font-size: 0.5rem;
-  color: rgba(255, 255, 255, 1);
-}
-.store-income {
-  background: #fff;
-}
-.store-income {
-  padding: 15px 15px;
-}
-.store-income .funds-item {
-  color: rgba(153, 153, 153, 1);
-  font-size: 12px;
-}
-.store-income .funds-number {
-  font-size: 0.4rem;
-  color: rgba(97, 216, 208, 1);
-}
-.store-manage {
-  margin-top: 10px;
-  background: #fff;
-}
-.store-manage-item {
-  width: 25%;
-  text-align: center;
-  padding: 14px 0;
-  border-bottom: 1px rgba(242, 242, 242, 1) solid;
-  border-right: 1px rgba(242, 242, 242, 1) solid;
-  box-sizing: border-box;
-}
-.store-manage-item-img img {
-  width: 0.7rem;
-  height: 0.7rem;
-}
-.store-manage-item-lable {
-  font-size: 13px;
-  color: rgba(51, 51, 51, 1);
-}
-.flex {
-  display: flex;
-}
-.flex-warp {
-  flex-wrap: wrap;
-}
-.smallfont {
-  font-size: 0.3rem;
-  min-height: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  word-break: break-all;
-}
-.store-income .smallfont2 {
-  font-size: 0.32rem;
-  min-height: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  word-break: break-all;
-}
-</style>
-
 <template>
   <div class="shopindex">
     <x-header :left-options="{backText:''}" title="我的店铺" id="vux-header"></x-header>
@@ -329,3 +225,107 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.shopindex {
+  background: #f8f8f8;
+}
+.store-user-header {
+  min-height: 4rem;
+  background: url("https://img.xiepinhui.com.cn/small_app/myShop/myShop_bg.png")
+    no-repeat;
+  background-size: 100%;
+}
+.store-user-avatar {
+  height: 2.4rem;
+  text-align: center;
+  box-sizing: border-box;
+  padding-top: 15px;
+  overflow: hidden;
+}
+.store-user-avatar img {
+  height: 1.33rem;
+  width: 1.33rem;
+  border-radius: 50%;
+  border: 0.1rem solid #fff;
+}
+.store-user-name {
+  text-align: center;
+  color: #fff;
+  font-size: 0.28rem;
+}
+.store-fundsInfo {
+  min-height: 1.5rem;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 10px 15px;
+}
+.funds-item {
+  width: 25%;
+  color: rgba(224, 255, 253, 1);
+  font-size: 0.26rem;
+  text-align: center;
+}
+.funds-number {
+  font-size: 0.5rem;
+  color: rgba(255, 255, 255, 1);
+}
+.store-income {
+  background: #fff;
+}
+.store-income {
+  padding: 15px 15px;
+}
+.store-income .funds-item {
+  color: rgba(153, 153, 153, 1);
+  font-size: 12px;
+}
+.store-income .funds-number {
+  font-size: 0.4rem;
+  color: rgba(97, 216, 208, 1);
+}
+.store-manage {
+  margin-top: 10px;
+  background: #fff;
+}
+.store-manage-item {
+  width: 25%;
+  text-align: center;
+  padding: 14px 0;
+  border-bottom: 1px rgba(242, 242, 242, 1) solid;
+  border-right: 1px rgba(242, 242, 242, 1) solid;
+  box-sizing: border-box;
+}
+.store-manage-item-img img {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+.store-manage-item-lable {
+  font-size: 13px;
+  color: rgba(51, 51, 51, 1);
+}
+.flex {
+  display: flex;
+}
+.flex-warp {
+  flex-wrap: wrap;
+}
+.smallfont {
+  font-size: 0.3rem;
+  min-height: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  word-break: break-all;
+}
+.store-income .smallfont2 {
+  font-size: 0.32rem;
+  min-height: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  word-break: break-all;
+}
+</style>

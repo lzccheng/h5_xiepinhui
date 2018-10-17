@@ -13,7 +13,7 @@ const actions = {
     state
   }, url) {
     commit('updateUrl', url)
-  },
+  }
 }
 
 const mutations = {

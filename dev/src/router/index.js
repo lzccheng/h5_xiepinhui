@@ -1,47 +1,67 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import corpAuth from '@/components/corpAuth'
-import config from '../common'
+import config from '../common'//命令行传参配置
 import store from '@/store'
-// import constant from '../utils/constant'
+// import constant from '../utils/constant'//全局localhost
 
-// index
-import indexWrap from '@/page/index/indexWrap' //首页
+// module index
+//首页
+import indexWrap from '@/page/index/indexWrap'
 import indexFull from '@/page/index/indexFull'
-import home from '@/page/index/home' 
-import goodsFull from '@/page/index/goods/goodsFull' //商品
-import fbPingjia from '@/page/index/goods/fbPingjia'
+import home from '@/page/index/home'
+//商品
+const goodsFull = ()=>import('@/page/index/goods/goodsFull')
+const fbPingjia = ()=>import('@/page/index/goods/fbPingjia')
 
 
-// center
-import centerWrap from '@/page/center/centerWrap' //个人中心
-import centerFull from '@/page/center/centerFull'
-import center from '@/page/center/center' 
-import partnerWrap from '@/page/center/365partner/partnerWrap'
-import code from '@/page/center/365partner/code' //365邀请码
-import apply from '@/page/center/365partner/apply' //365开通
-import inviteList from '@/page/center/365partner/inviteList' //365排行
-import inviteFriendRecord from '@/page/center/365partner/inviteFriendRecord' //邀请规则
-import inviteRelu from '@/page/center/365partner/inviteRelu' //365规则
-import applyStatic from '@/page/center/365partner/applyStatic' //365开通状态 
-import inviteFansMy365 from '@/page/center/365partner/inviteFansMy365' //我的粉丝   
-import redenvelope from '@/page/center/365partner/redenvelope' //我的收益 
-// 订单
-import orderFull from '@/page/center/orderlist/orderFull'
-import orderlist from '@/page/center/orderlist/orderlist'
+// module center
+//个人中心
+const centerWrap = ()=>import('@/page/center/centerWrap')
+const centerFull = ()=>import('@/page/center/centerFull')
+const center = ()=>import('@/page/center/center')
+const partnerWrap = ()=>import('@/page/center/365partner/partnerWrap')
+//365邀请码
+const code = ()=>import('@/page/center/365partner/code')
+//365开通
+const apply = ()=>import('@/page/center/365partner/apply')
+//365排行
+const inviteList = ()=>import('@/page/center/365partner/inviteList')
+//邀请规则
+const inviteFriendRecord = ()=>import('@/page/center/365partner/inviteFriendRecord')
+//365规则
+const inviteRelu = ()=>import('@/page/center/365partner/inviteRelu')
+//365开通状态
+const applyStatic = ()=>import('@/page/center/365partner/applyStatic')
+//我的粉丝
+const inviteFansMy365 = ()=>import('@/page/center/365partner/inviteFansMy365')
+//我的收益
+const redenvelope = ()=>import('@/page/center/365partner/redenvelope')
 
-// 我的店铺
-import myShopFull from '@/page/center/myShop/myShopFull'
-import shopIndex from '@/page/center/myShop/shopIndex'
+// module 订单
+const orderFull = ()=>import('@/page/center/orderlist/orderFull')
+//订单列表
+const orderlist = ()=>import('@/page/center/orderlist/orderlist')
+// 订单详情
+const orderlistinfo = ()=>import('@/page/center/orderlist/orderlistinfo')
 
-//user
-import userWrap from '@/page/user/userWrap'
-import login from '@/page/user/login' //登录
-import find_password from '@/page/user/find_password' //找回密码
-import password_change from '@/page/user/password_change' //修改密码
-import phone_change from '@/page/user/phone_change' //手机号修改
-import register_password from '@/page/user/register_password' //密码注册
-import phone_bind from '@/page/user/phone_bind' //手机号绑定
+// module 我的店铺
+const myShopFull = ()=>import('@/page/center/myShop/myShopFull')
+const shopIndex = ()=>import('@/page/center/myShop/shopIndex')
+
+// module user
+const userWrap = ()=>import('@/page/user/userWrap')
+//登录
+const login = ()=>import('@/page/user/login')
+//找回密码
+const find_password = ()=>import('@/page/user/find_password')
+//修改密码
+const password_change = ()=>import('@/page/user/password_change')
+//手机号修改
+const phone_change = ()=>import('@/page/user/phone_change')
+//密码注册
+const register_password = ()=>import('@/page/user/register_password')
+//手机号绑定
+const phone_bind = ()=>import('@/page/user/phone_bind')
 
 const base = config.path
 
@@ -205,6 +225,13 @@ let router = new Router({
           meta: {
             title: '订单列表'
           }
+        }, {
+          path: 'orderlistinfo',
+          name: 'orderlistinfo',
+          component: orderlistinfo,
+          meta: {
+            title: '订单详情'
+          }
         }]
       }]
     },
@@ -215,14 +242,6 @@ let router = new Router({
       children: [{
           path: '',
           redirect: 'login'
-        },
-        {
-          path: 'corpAuth',
-          name: 'corpAuth',
-          component: corpAuth,
-          meta: {
-            title: '授权认证'
-          }
         },
         {
           path: 'login',
@@ -300,7 +319,7 @@ router.beforeEach((to, from, next) => {
   console.log(`----------- to   Router --------------`)
   console.log(to)
   console.log(`----------- End  Router --------------`)
-
+  
   // IOS微信浏览器兼容
   if (!store.state.comm.indexUrl) {
     store.commit('updateUrl', window.location.href) //保存初次进来的地址

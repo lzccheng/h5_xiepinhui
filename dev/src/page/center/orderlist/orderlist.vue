@@ -2,7 +2,7 @@
 .tab-wrap {
 }
 .orderindex {
-  margin-top: -0.4rem;
+  margin-top: 0.96rem;
 }
 
 .null-bg {
@@ -499,7 +499,17 @@ export default {
         this.upLoading = false;
       }
     },
-    openInfo() {},
+    openInfo(e) {
+      let order_id = e.currentTarget.dataset.orderid;
+      let order_sn = e.currentTarget.dataset.ordersn;
+      this.$router.push({
+        path: "/centerFull/orderFull/orderlistinfo",
+        query: {
+          order_id,
+          order_sn
+        }
+      });
+    },
     //删除订单
     async quxiaoOrder(e) {
       let that = this;

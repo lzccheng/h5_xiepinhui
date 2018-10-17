@@ -52,6 +52,11 @@ export const getneworderlist = (data) => {
   const url = `${domain}/ninegroup/getneworderlist`
   return POST(url, data)
 }
+//订单详情
+export const neworderdetail = (data) => {
+  const url = `${domain}/nine/neworderdetail`
+  return POST(url, data)
+}
 //删除订单
 export const cancelorder = (data) => {
   const url = `${domain}/nine/cancelorder`
@@ -60,6 +65,16 @@ export const cancelorder = (data) => {
 //评论 
 export const newevaluategoods = (data) => {
   const url = `${domain}/nine/newevaluategoods`
+  return POST(url, data)
+}
+//提醒发货 
+export const shipnotify = (data) => {
+  const url = `${domain}/nine/shipnotify`
+  return POST(url, data)
+}
+//确认收货 
+export const orderreceive = (data) => {
+  const url = `${domain}/nine/orderreceive`
   return POST(url, data)
 }
 

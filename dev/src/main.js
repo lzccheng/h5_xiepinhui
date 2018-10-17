@@ -9,12 +9,13 @@ import { Button } from 'vant';
 import 'vant/lib/vant-css/index.css';
 import { encrypt } from 'utils/encrypt.js' // encrypt
 import VueClipboard from 'vue-clipboard2' // 剪切板
-import { LoadingPlugin, ToastPlugin, ConfirmPlugin, WechatPlugin } from 'vux'
+import { LoadingPlugin, ToastPlugin, ConfirmPlugin, WechatPlugin, AlertPlugin } from 'vux'
 
 Vue.use(Vant);
 Vue.use(WechatPlugin)
 Vue.use(LoadingPlugin)
 Vue.use(ConfirmPlugin)
+Vue.use(AlertPlugin)
 Vue.use(VueClipboard)
 Vue.use(require('vue-wechat-title'))
 Vue.use(ToastPlugin, {position: 'middle'})

@@ -21,7 +21,7 @@ export default {
   width: 100%;
   min-height: 100%;
   box-sizing: border-box;
-  padding-top: 1.84rem;
+  padding-top: .92rem;
 }
 </style>
 <style>

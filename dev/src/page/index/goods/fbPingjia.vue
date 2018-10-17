@@ -1,17 +1,3 @@
-<style lang="less" scoped>
-.btn {
-  width: 95%;
-  height: 0.86rem;
-  line-height: 0.86rem;
-  background: #61d8d0;
-  color: #fff;
-  font-size: 0.32rem;
-  text-align: center;
-  margin: 0 auto;
-  margin-top: 0.5rem;
-}
-</style>
-
 <template>
   <div class="fbpj-wrap">
     <!-- header -->
@@ -131,3 +117,17 @@ export default {
   }
 };
 </script>
+
+<style lang="less" scoped>
+.btn {
+  width: 95%;
+  height: 0.86rem;
+  line-height: 0.86rem;
+  background: #61d8d0;
+  color: #fff;
+  font-size: 0.32rem;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 0.5rem;
+}
+</style>
