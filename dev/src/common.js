@@ -10,7 +10,6 @@ let config = Object.assign({
   path,
   domain
 }, env);
-
 console.log(`what is config.debug : ${config.debug}`);
 if(!config.debug){
   if(!window.console) window.console = {};

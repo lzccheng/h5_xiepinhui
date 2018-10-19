@@ -406,7 +406,7 @@ export default {
       switch (link) {
         case "我的店铺":
           if (this.user.user_type == 1) {
-            this.$vux.toast.text("清先开通店铺", "top");
+            this.$vux.toast.text("请先开通店铺", "top");
             return;
           }
           this.$router.push("/centerFull/myshop/index");

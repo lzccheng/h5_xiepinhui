@@ -40,7 +40,3 @@ npm run build
 > Business details please see the specific notes.
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
-
-pig!!
-
-123123
