@@ -122,6 +122,7 @@
 </template>
 
 <script>
+import { isScrollBottom } from "@/utils/comm.js";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { api } from "@/utils/api.js";
 import loading from "@/components/loading.vue";
@@ -156,9 +157,7 @@ export default {
   },
   methods: {
     async getStoreList() {
-      if (this.fanShow_bottom) {
-        return;
-      }
+      
       let data = {
         plat: 3,
         account: this.account,
@@ -168,22 +167,15 @@ export default {
       //this.loading_bottom = true;
       this.store_list_page++;
       const [err, res] = await api.allMyShopList(data);
-      // console.log("resdata", res.data);
-      // console.log(res.code);
-      // if (res && res.code == "2000") {
-      //   console.log("resdata", res.data.data);
-      //   this.storeList = res.data.list;
-      // }
 
        if (err) {
         console.log("err", err);
         return;
       }
-      if (res.data && res.data.list.length < 1) {
-        this.fanShow_bottom = true;
-        this.loading_bottom = false;
-        return;
-      }
+      // if (res.data && res.data.list.length < 1) {
+        
+      //   return;
+      // }
       this.storeList = this.storeList.concat(res.data.list);
 
 
@@ -221,7 +213,7 @@ export default {
     addNewAccount() {},
     //滚动到底部回调
     scrollBottomCB() {
-      this.loading_bottom=true;
+     
       this.getStoreList();
     }
   },

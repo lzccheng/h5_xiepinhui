@@ -54,8 +54,7 @@ import offlineStore from '@/page/center/myShop/offlineStore'
 import offlineStoreOrder from '@/page/center/myShop/offlineStoreOrder'
 import subfanManagement from '@/page/center/myShop/subfanManagement'//总账号的粉丝管理
 import subinventoryManage from '@/page/center/myShop/subinventoryManage/subinventoryManage'//库存管理
-
-
+import fanManagement from '@/page/center/myShop/fanManagement'//子账号的粉丝管理
 
 
 // module user
@@ -265,6 +264,14 @@ let router = new Router({
           component:subinventoryManage,
           meta:{
             title:'库存管理'//库存管理
+          },
+        },
+        {
+          path:'fanManagement',
+          name:'fanManagement',
+          component:fanManagement,
+          meta:{
+            title:'粉丝管理'//子账号的粉丝管理
           }
         }
       ]
