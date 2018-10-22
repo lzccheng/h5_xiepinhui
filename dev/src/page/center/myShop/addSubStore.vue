@@ -221,74 +221,13 @@ export default {
     };
   },
   created() {
-    this.getStoreList();
+    
   },
   mounted(){
-     this.$nextTick(function() {
-      isScrollBottom(this.scrollBottomCB);
-    });
+    
   },
   methods: {
-    async getStoreList() {
-      if (this.fanShow_bottom) {
-        return;
-      }
-      let data = {
-        plat: 3,
-        account: this.account,
-        token: this.token,
-        page: this.store_list_page
-      };
-      //this.loading_bottom = true;
-      this.store_list_page++;
-      const [err, res] = await api.allMyShopList(data);
-      // console.log("resdata", res.data);
-      // console.log(res.code);
-      // if (res && res.code == "2000") {
-      //   console.log("resdata", res.data.data);
-      //   this.storeList = res.data.list;
-      // }
-
-      if (err) {
-        console.log("err", err);
-        return;
-      }
-      if (res.data && res.data.list.length < 1) {
-        this.fanShow_bottom = true;
-        this.loading_bottom = false;
-        return;
-      }
-      this.storeList = this.storeList.concat(res.data.list);
-    },
-    async resetPasswordFun(e) {
-      // 显示
-      const _this = this; // 需要注意 onCancel 和 onConfirm 的 this 指向
-      var shopName = e.target.dataset.name;
-      var shopSubId = e.target.dataset.id;
-      this.$vux.confirm.show({
-        content: "是否将子账号" + shopName + "密码重置为123456？",
-        // 组件除show外的属性
-        onCancel() {
-          console.log(this); // 非当前 vm
-          console.log(_this); // 当前 vm
-        },
-        async onConfirm() {
-          //闭包问题
-          let data = {
-            plat: 3,
-            account: _this.account,
-            token: _this.token,
-            sub_member_id: shopSubId
-          };
-          const [err, res] = await api.resetManagePwd(data);
-          if (res && res.code == "2000") {
-            _this.$vux.toast.show({
-              text: "修改成功"
-            });
-          }
-        }
-      });
-    },
+    
     selectImage() {
       this.selectModelStatus=true;
     },
@@ -320,13 +259,15 @@ export default {
       }
       if (res.code == "2000") {
         this.client = new OSS.Wrapper({//连接阿里云存储
-          secure: true,
-          accessKeyId: res.data.AccessKeyId,
+          region:'oss-cn-shenzhen',
+          //secure: true,
+          accessKeyId: 'LTAIUw12WNr8VYLU',
           accessKeySecret: res.data.AccessKeySecret,
-          bucket: res.data.bucket
+          bucket:res.data.bucket //res.data.bucket
         });
         console.log('img1_sn',res.data.sn);
         console.log('name',name);
+        console.log(this.client)
         this.client
           .multipartUpload(res.data.files, file)
           .then(function(result) {
@@ -384,11 +325,7 @@ export default {
       }
       
     },
-    //滚动到底部回调
-    scrollBottomCB() {
-      this.loading_bottom = true;
-      this.getStoreList();
-    }
+    
   },
   filters: {},
   computed: {

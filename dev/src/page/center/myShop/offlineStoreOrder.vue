@@ -9,7 +9,7 @@
   font-size: 0;
   white-space: nowrap;
   position: fixed;
-  top: 0;
+  top: 0.92rem;
   z-index: 9;
 }
 
@@ -135,7 +135,7 @@
 
 <template>
   <div class="shopindex">
-    <x-header :left-options="{backText:''}" title="线下店铺" id="vux-header"></x-header>
+    <x-header :left-options="{backText:''}" title="线下订单" id="vux-header"></x-header>
     <!-- 主体内容 storeList-->
     <div class="float-tabbar  line_xi_after">
       <div :class="currentTab==1?'float-tabbar-item active':'float-tabbar-item'" @click='checkTabbar' data-index="1">全部</div>
@@ -196,6 +196,7 @@
 </template>
 
 <script>
+import { isScrollBottom } from "@/utils/comm.js";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { api } from "@/utils/api.js";
 import loading from "@/components/loading.vue";
@@ -246,13 +247,15 @@ export default {
         sub_member_id:routerParams
       };
       this.listPage++;
+      this.dataIndex=type;
       const [err, res] = await api.offlineStoreOrderList(data);
       if (err) {
         console.log("err", err);
         return;
       }
       if (res && res.code == "2000") {
-        this.subsaleslist = res.data.list;
+        this.subsaleslist = this.subsaleslist.concat(res.data.list);
+        // this.subsaleslist = res.data.list;
         console.log("线下店铺订单列表", this.subsaleslist);
       }
     },
@@ -263,6 +266,7 @@ export default {
       this.dataIndex=dataIndex;
       this.currentTab=dataIndex;
       this.listPage=1;
+      this.subsaleslist=[];
       this.offlineStoreOrderList(dataIndex);
       console.log(ev.currentTarget.dataset.index);
     },

@@ -12,6 +12,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         // target: 'http://www.xiepinhui.com.cn',
+        // target: 'https://api.xiepinhui.com.cn/',
         target: 'https://api.dev.xiepinhui.com.cn',
         changeOrigin: true,
         pathRewrite: {
@@ -21,7 +22,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: '192.168.0.112', // can be overwritten by process.env.HOST
+    host: '0.0.0.0', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
