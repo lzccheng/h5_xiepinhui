@@ -28,6 +28,11 @@ export const offlineStoreList = (data) => {
   const url = `${domain}/restore/subsaleslist`
   return POST(url, data)
 }
+//获取线下店铺购物车列表接口
+export const cartlist = (data) => {
+  const url = `${domain}/reinventory/cartlist`
+  return POST(url, data)
+}
 //线下店铺订单列表接口
 export const offlineStoreOrderList = (data) => {
   const url = `${domain}/restore/suborder`
