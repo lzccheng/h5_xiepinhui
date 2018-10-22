@@ -48,6 +48,16 @@ const orderlistinfo = ()=>import('@/page/center/orderlist/orderlistinfo')
 const myShopFull = ()=>import('@/page/center/myShop/myShopFull')
 const shopIndex = ()=>import('@/page/center/myShop/shopIndex')
 
+import subStoreList from '@/page/center/myShop/subStoreList'
+import addSubStore from '@/page/center/myShop/addSubStore'
+import offlineStore from '@/page/center/myShop/offlineStore'
+import offlineStoreOrder from '@/page/center/myShop/offlineStoreOrder'
+import subfanManagement from '@/page/center/myShop/subfanManagement'//总账号的粉丝管理
+import subinventoryManage from '@/page/center/myShop/subinventoryManage/subinventoryManage'//库存管理
+
+
+
+
 // module user
 const userWrap = ()=>import('@/page/user/userWrap')
 //登录
@@ -208,7 +218,56 @@ let router = new Router({
           meta: {
             title: '我的店铺'
           }
-        }]
+        },
+        {
+          path:'subStoreList',
+          name:'subStoreList',
+          component:subStoreList,
+          meta:{
+            title:'粉丝管理'
+          }
+        },
+        {
+          path:'addSubStore',
+          name:'addSubStore',
+          component:addSubStore,
+          meta:{
+            title:'添加子账号'
+          }
+        },
+        {
+          path:'offlineStore',
+          name:'offlineStore',
+          component:offlineStore,
+          meta:{
+            title:'线下店铺'
+          }
+        },
+        {
+          path:'offlineStoreOrder',
+          name:'offlineStoreOrder',
+          component:offlineStoreOrder,
+          meta:{
+            title:'订单管理'
+          }
+        },
+        {
+          path:'subfanManagement',
+          name:'subfanManagement',
+          component:subfanManagement,
+          meta:{
+            title:'粉丝管理'//总账号的粉丝管理
+          }
+        },
+        {
+          path:'subinventoryManage',
+          name:'subinventoryManage',
+          component:subinventoryManage,
+          meta:{
+            title:'库存管理'//库存管理
+          }
+        }
+      ]
       }, {
         path: 'orderFull',
         component: orderFull,

@@ -139,15 +139,18 @@ export default {
       };
       const [err, res] = await api.thelordstore(data);
       console.log(res);
-      if (res && res.data.code == "2000") {
-        this.storeInfo = res.data.data;
+      if (res && res.code == "2000") {
+        this.storeInfo = res.data;
+        console.log(9999,this.storeInfo)
       }
     },
     manageClick(e) {
       let type = e.currentTarget.dataset.type;
       let isopen = e.currentTarget.dataset.isopen;
       this.$vux.toast.text(type);
-      return; // test
+      var clickType=type;
+      var _this=this;
+      var clickUrl='';
 
       if (!isopen) {
         this.$vux.toast.text("暂无权限");
@@ -155,10 +158,9 @@ export default {
       }
       switch (clickType) {
         case "1":
-          clickUrl =
-            "centerFull/myshop/offlineStore/offlineStore?type=" + clickType;
+          clickUrl ="offlineStore";//线下店铺
           break;
-        case "2":
+        case "5":
           clickUrl =
             "centerFull/myshop/accountManage/accountManage?type=" + clickType;
           break;
@@ -178,14 +180,14 @@ export default {
           this.update_storeInfo(_storeInfo);
           clickUrl = "centerFull/myshop/shopSettings/shopSettings";
           break;
-        case "5":
-          clickUrl = "centerFull/myshop/fanManagement/fanManagement";
+        case "2":
+          clickUrl = "subStoreList";//子账号管理
           break;
         case "6":
           clickUrl = "centerFull/myshop/orderManage/orderManage";
           break;
         case "7":
-          clickUrl = "centerFull/myshop/subfanManagement/subfanManagement";
+          clickUrl = "subfanManagement";//总账号的粉丝管理
           break;
         case "8":
           clickUrl = "centerFull/myshop/replenishCar/replenishCar";
@@ -194,7 +196,7 @@ export default {
           clickUrl = "centerFull/myshop/replenishmentOrder/replenishmentOrder";
           break;
         case "10":
-          clickUrl = "centerFull/myshop/subinventoryManage/subinventoryManage";
+          clickUrl = "subinventoryManage"; //库存管理
           break;
         case "11":
           clickUrl = "centerFull/myshop/subreplenishCar/subreplenishCar";
@@ -203,7 +205,7 @@ export default {
           clickUrl = "centerFull/myshop/subreplenishOrder/subreplenishOrder";
           break;
       }
-      this.router.push(clickUrl);
+      _this.$router.push(clickUrl);
     },
     ...mapActions(["update_storeInfo"])
   },
