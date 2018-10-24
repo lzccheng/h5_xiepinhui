@@ -38,6 +38,7 @@ export default {
   font-size: 12/50rem;
   color: #666;
   width: 55/50rem;
+  white-space: nowrap;
 }
 .over-scroll{
   width:60%;
