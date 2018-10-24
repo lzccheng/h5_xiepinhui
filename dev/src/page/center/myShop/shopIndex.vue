@@ -86,44 +86,44 @@ export default {
         member_name: "鞋品荟第110店铺",
         member_avatar:
           "http://img.xiepinhui.com.cn/sys/default/user/avatar.jpg",
-        manage_list: [
-          {
-            type: "4",
-            title: "店铺设置",
-            icon: "http://img.xiepinhui.com.cn/mobile/app/set_store.png",
-            is_open: true
-          },
-          {
-            type: "5",
-            title: "粉丝管理",
-            icon: "http://img.xiepinhui.com.cn/mobile/app/fan.png",
-            is_open: true
-          },
-          {
-            type: "6",
-            title: "订单管理",
-            icon: "http://img.xiepinhui.com.cn/mobile/app/order.png",
-            is_open: true
-          },
-          {
-            type: "3",
-            title: "库存管理",
-            icon: "http://img.xiepinhui.com.cn/mobile/app/kucun.png",
-            is_open: true
-          },
-          {
-            type: "3",
-            title: "库存管理",
-            icon: "http://img.xiepinhui.com.cn/mobile/app/kucun.png",
-            is_open: true
-          },
-          {
-            type: "3",
-            title: "库存管理",
-            icon: "http://img.xiepinhui.com.cn/mobile/app/kucun.png",
-            is_open: true
-          }
-        ]
+        // manage_list: [
+        //   {
+        //     type: "4",
+        //     title: "店铺设置",
+        //     icon: "http://img.xiepinhui.com.cn/mobile/app/set_store.png",
+        //     is_open: true
+        //   },
+        //   {
+        //     type: "5",
+        //     title: "粉丝管理",
+        //     icon: "http://img.xiepinhui.com.cn/mobile/app/fan.png",
+        //     is_open: true
+        //   },
+        //   {
+        //     type: "6",
+        //     title: "订单管理",
+        //     icon: "http://img.xiepinhui.com.cn/mobile/app/order.png",
+        //     is_open: true
+        //   },
+        //   {
+        //     type: "3",
+        //     title: "库存管理",
+        //     icon: "http://img.xiepinhui.com.cn/mobile/app/kucun.png",
+        //     is_open: true
+        //   },
+        //   {
+        //     type: "3",
+        //     title: "库存管理",
+        //     icon: "http://img.xiepinhui.com.cn/mobile/app/kucun.png",
+        //     is_open: true
+        //   },
+        //   {
+        //     type: "3",
+        //     title: "库存管理",
+        //     icon: "http://img.xiepinhui.com.cn/mobile/app/kucun.png",
+        //     is_open: true
+        //   }
+        // ]
       }
     };
   },
@@ -164,7 +164,7 @@ export default {
           break;
         case "3":
           clickUrl =
-            "centerFull/myshop/inventoryManage/inventoryManage?type=" +
+            "inventoryManage?type=" +
             clickType;
           break;
         case "4":
@@ -197,7 +197,7 @@ export default {
           clickUrl = "subinventoryManage"; //库存管理
           break;
         case "11":
-          clickUrl = "centerFull/myshop/subreplenishCar/subreplenishCar";
+          clickUrl = "subreplenishCar";
           break;
         case "12":
           clickUrl = "centerFull/myshop/subreplenishOrder/subreplenishOrder";

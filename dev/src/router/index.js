@@ -48,6 +48,15 @@ const orderlistinfo = ()=>import('@/page/center/orderlist/orderlistinfo')
 const myShopFull = ()=>import('@/page/center/myShop/myShopFull')
 const shopIndex = ()=>import('@/page/center/myShop/shopIndex')
 
+//库存管理 type=3
+const inventoryManage = ()=>import('@/page/center/myShop/inventoryManage/inventoryManage')
+//补货
+const replenishInfo = ()=>import('@/page/center/myShop/replenishInfo/replenishInfo')
+//补货购物车
+const subreplenishCar = ()=>import('@/page/center/myShop/subreplenishCar/subreplenishCar')
+
+
+
 import subStoreList from '@/page/center/myShop/subStoreList'
 import addSubStore from '@/page/center/myShop/addSubStore'
 import offlineStore from '@/page/center/myShop/offlineStore'
@@ -78,6 +87,8 @@ const phone_change = ()=>import('@/page/user/phone_change')
 const register_password = ()=>import('@/page/user/register_password')
 //手机号绑定
 const phone_bind = ()=>import('@/page/user/phone_bind')
+
+
 
 const base = config.path
 
@@ -242,6 +253,22 @@ let router = new Router({
           }
         },
         {
+          path:'replenishInfo',
+          name:'replenishInfo',
+          component:replenishInfo,
+          meta:{
+            title:'补货详情'
+          }
+        },
+        {
+          path:'subreplenishCar',
+          name:'subreplenishCar',
+          component:subreplenishCar,
+          meta:{
+            title:'补货购物车'
+          }
+        },
+        {
           path:'offlineStore',
           name:'offlineStore',
           component:offlineStore,
@@ -271,6 +298,14 @@ let router = new Router({
           component:subinventoryManage,
           meta:{
             title:'库存管理'//库存管理
+          },
+        },
+        {
+          path:'inventoryManage',
+          name:'inventoryManage',
+          component:inventoryManage,
+          meta:{
+            title:'库存管理'//库存管理 type=3
           },
         },
         {
