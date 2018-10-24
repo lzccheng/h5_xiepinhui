@@ -28,7 +28,7 @@ const mutations = {
     state.center = info
   },
   update_storeInfo(state, info) {
-    state._storeInfo = info
+    state._storeInfo = info;
   },
 }
 

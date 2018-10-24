@@ -134,21 +134,6 @@
   <div class="shopindex">
     <x-header :left-options="{backText:''}" title="粉丝管理" id="vux-header"></x-header>
     <!-- 主体内容 storeList-->
-    <div class="fan-header df fac">
-    <div class="fan-header-avatar">
-      <img :src='substorefan.user_info.member_avatar'/>
-    </div>
-    <div class="fan-header-userinfo df fs fw">
-      <div class="user-name">{{substorefan.user_info.member_name}}</div>
-      <div class="fan-number df fac">总粉丝：
-        <span>{{substorefan.user_info.total_fan}}</span>
-      </div>
-    </div>
-  </div>
-  <div class="float-tabbar line_xi_after"
-  style="">
-    <div :class="currentTab==index?'float-tabbar-item active':'float-tabbar-item'" @click='checkFan' v-for="(item,index) in substorefan.fan_list" :key="index" :data-index="index" :data-subid='item.sub_member_id'>{{item.shop_name}}</div>
-  </div>
   <div class="fan-list-content" v-if="fanList.length>0">
     <div class="fan-list-item df fac  line_xi_after" data-fanid="34534" v-for="(itemFan,indexFan) in fanList" :key="indexFan">
       <div class="fan-header-avatar">
@@ -158,8 +143,8 @@
         <div class="body-left">
           <div class="fan-name df fac">
             <span>{{itemFan.member_name}}</span>
-            <img class="fan-sex" V-if="itemFan.member_sex && itemFan.member_sex=='1'" src="@/assets/images/myshop/nan.png"/>
-            <img class="fan-sex" V-if="itemFan.member_sex && itemFan.member_sex=='2'" src="@/assets/images/myshop/nv.png"/>
+            <img class="fan-sex" v-if="itemFan.member_sex && itemFan.member_sex=='1'" src="@/assets/images/myshop/nan.png"/>
+            <img class="fan-sex" v-if="itemFan.member_sex && itemFan.member_sex=='2'" src="@/assets/images/myshop/nv.png"/>
           </div>
           <div class="fan-phone df fac">
             <img class="fan-sex" src="@/assets/images/myshop/phone.png"/>
@@ -209,21 +194,13 @@ export default {
     return {
       fanShow_bottom: false,
       loading_bottom: false,
-      substorefan:{
-        user_info:{
-          member_avatar:'',
-          member_name:'',
-          total_fan:0
-        }
-      },
       fanList:[],
-      currentTab: 0,//当前选中的子店铺
       list_page:1,
-      sub_member_id:''
     };
   },
   created() {
-    this.substorefanManage();
+    this.getFansList();
+    
   },
   mounted(){
      this.$nextTick(function() {
@@ -231,90 +208,30 @@ export default {
     });
   },
   methods: {
-    //offlineStoreList
-    //线下店铺列表接口
-    async substorefanManage() {
-      let data = {
-        plat: 3,
-        account: this.account,
-        token: this.token
-      };
-      const [err, res] = await api.substorefanManage(data);//账号总粉丝数和店铺名称
-      if (err) {
-        console.log("err", err);
-        return;
-      }
-      if (res && res.code == "2000") {
-        console.log('res_data',res.data);
-        this.substorefan = res.data;
-        var sub_member_id=res.data.fan_list[0].sub_member_id;
-        this.sub_member_id=sub_member_id;
-        this.getFansList(sub_member_id);
-        //this.fanList=res.data.fan_list[0].list;
-        
-      }
-    },
-    async getFansList(sub_member_id){
-      console.log('sub_member_id',sub_member_id);
+    async getFansList(){
+      
       let data={
         account:this.account,
         token:this.token,
         plat:3,
         page:this.list_page,
-        sub_member_id
       }
       this.list_page++;
-      const [err, res] = await api.substorefanList(data);//账号总粉丝数和店铺名称
+      const [err, res] = await api.storefanList(data);//子店铺粉丝列表
       if (err) {
         console.log("err", err);
         return;
       }
       if (res && res.code == "2000") {
-        console.log('粉丝列表',res.data);
-        // this.substorefan = res.data;
         this.fanList = this.fanList.concat(res.data.list);
-        //this.fanList=res.data.list;
-        console.log(this.fanList);
-        
-        // console.log("线下店铺订单列表", this.subsaleslist);
       }
     },
     //线下店铺列表接口end
-    // 切换店铺查看粉丝
-    checkFan(event) {
-      let index = event.currentTarget.dataset.index;
-      console.log('点击',index)
-      if(index==this.currentTab) return false;
-      let subid = event.currentTarget.dataset.subid;
-      console.log(subid)
-      this.currentTab=index;
-      this.list_page=1;
-      this.fanList=[];
-      this.sub_member_id=subid;
-      this.getFansList(subid);
-      console.log(this.fanList)
-      // this.setData({
-      //   currentTab: index,
-      //   sub_member_id: subid,
-      //   page: 1,
-      //   fanList: null
-      // })
-      // this.checkCor()
-      // this.getSubFan();
-    },
-
     //滚动到底部回调
     scrollBottomCB() {
       console.log('滚动到底部',this.list_page)
-      var sub_member_id=this.sub_member_id;
-      this.getFansList(sub_member_id);
+      this.getFansList();
     }
-
-    // getParams () {
-    //   // 取到路由带过来的参数
-    //   var routerParams = this.$route.params.subOrderId
-    //   console.log('传进来的参数：',routerParams);
-    // },
   },
   filters: {},
   computed: {

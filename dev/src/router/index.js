@@ -55,7 +55,14 @@ import offlineStoreOrder from '@/page/center/myShop/offlineStoreOrder'
 import subfanManagement from '@/page/center/myShop/subfanManagement'//总账号的粉丝管理
 import subinventoryManage from '@/page/center/myShop/subinventoryManage/subinventoryManage'//库存管理
 import fanManagement from '@/page/center/myShop/fanManagement'//子账号的粉丝管理
+import shopSetting from '@/page/center/myShop/shopSetting'//子账号的店铺设置
 
+// 提现模块
+import drawIndex from '@/page/center/drawDeposit/drawIndex'//提现首页
+import moblieCodeTrade from '@/page/center/drawDeposit/moblieCodeTrade'//交易密码
+import setTradeCode from '@/page/center/drawDeposit/setTradeCode'//设置交易密码
+
+///center/drawIndex
 
 // module user
 const userWrap = ()=>import('@/page/user/userWrap')
@@ -77,7 +84,7 @@ const base = config.path
 console.log(`base : ${base}`)
 
 Vue.use(Router)
-
+//center/drawIndex
 let router = new Router({
   mode: 'history',
   base,
@@ -273,6 +280,14 @@ let router = new Router({
           meta:{
             title:'粉丝管理'//子账号的粉丝管理
           }
+        },
+        {
+          path:'shopSetting',
+          name:'shopSetting',
+          component:shopSetting,
+          meta:{
+            title:'店铺设置'//子账号的店铺设置
+          }
         }
       ]
       }, {
@@ -360,6 +375,31 @@ let router = new Router({
       ],
       meta: {
         title: '用户设置'
+      }
+    },
+    //提现模块
+    {
+      path: '/drawIndex',
+      name: 'drawIndex',
+      component: drawIndex,
+      meta: {
+        title: '我的余额'
+      }
+    },
+    {
+      path: '/moblieCodeTrade',
+      name: 'moblieCodeTrade',
+      component: moblieCodeTrade,
+      meta: {
+        title: '交易密码'
+      }
+    },
+    {
+      path: '/setTradeCode',
+      name: 'setTradeCode',
+      component: setTradeCode,
+      meta: {
+        title: '设置交易密码'
       }
     },
     {

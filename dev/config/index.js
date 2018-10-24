@@ -11,15 +11,9 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-<<<<<<< HEAD
         // target: 'http://api.xiepinhui.com.cn',   
         // target: 'http://www.xiepinhui.com.cn',   //正式链接
         target: 'https://api.dev.xiepinhui.com.cn', //测试链接
-=======
-        // target: 'http://www.xiepinhui.com.cn',
-        // target: 'https://api.xiepinhui.com.cn/',
-        target: 'https://api.dev.xiepinhui.com.cn',
->>>>>>> d13369174d96ea0f30e7db132d55b3a717a76998
         changeOrigin: true,
         pathRewrite: {
           "^/api" : "/"

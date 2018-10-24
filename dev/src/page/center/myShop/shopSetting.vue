@@ -119,11 +119,14 @@
   width: 100%;
   height: 100%;
 }
+input[type="number"]:disabled,{
+  background-color:#fff;
+}
 </style>
 
 <template>
   <div class="shopindex">
-    <x-header :left-options="{backText:''}" title="添加子账号" id="vux-header"></x-header>
+    <x-header :left-options="{backText:''}" title="店铺设置" id="vux-header"></x-header>
     <!-- 主体内容 storeList-->
     <div class="select-masker " v-if="selectModelStatus" @click='hideSelectModel'>
       <div class="select-model" catchtap="prevent">
@@ -170,7 +173,7 @@
       <div class="add-item df fac fpj line_xi_after">
         <span class="add-item-lable">店长手机</span>
         <div class="add-item-right df fac">
-          <input class="add-item-title" v-model="shopTel" data-type='tel' maxlength="13" type="number" placeholder='请输入店长手机' placeholder-style="color:#999"/>
+          <input class="add-item-title" disabled v-model="shopTel" data-type='tel' maxlength="13" type="number" placeholder='请输入店长手机' placeholder-style="color:#999"/>
           <span class="iconfont icon-right-jiantou"></span>
         </div>
       </div>
@@ -224,6 +227,10 @@ export default {
     
   },
   mounted(){
+    this.img1=this.user.avatar;
+    this.shopStr=this.$store.state.center._storeInfo.shop_name;
+    this.shopOwnerStr=this.$store.state.center._storeInfo.real_name;
+    this.shopTel=this.user.tel;
     
   },
   methods: {
@@ -289,7 +296,8 @@ export default {
       var shopOwnerStr=this.shopOwnerStr;
       var shopTel=this.shopTel;
       var img1=this.img1;
-      
+      var shopId=this.$route.query.sub_member_id;
+      console.log(shopId);
       console.log('this.img1_sn',this.img1_sn);
       if(!img1){
         this.$vux.toast.text('请设置店铺LOGO');
@@ -307,6 +315,7 @@ export default {
       this.$vux.loading.show({
         text: '添加中...'
       });
+
       let data={
         plat: 3,
         token: this.token,
@@ -314,9 +323,10 @@ export default {
         sn: this.img1_sn,
         shop_name: shopStr,
         real_name: shopOwnerStr,
-        tel: shopTel
+        tel: shopTel,
+        sub_member_id:shopId
       };
-      const [err, res] = await api.addSubStore(data);
+      const [err, res] = await api.editStoreInfo(data);
       if (err) {
         this.$vux.toast.text(err.msg);
         return;

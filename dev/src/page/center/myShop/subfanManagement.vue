@@ -158,8 +158,8 @@
         <div class="body-left">
           <div class="fan-name df fac">
             <span>{{itemFan.member_name}}</span>
-            <img class="fan-sex" V-if="itemFan.member_sex && itemFan.member_sex=='1'" src="@/assets/images/myshop/nan.png"/>
-            <img class="fan-sex" V-if="itemFan.member_sex && itemFan.member_sex=='2'" src="@/assets/images/myshop/nv.png"/>
+            <img class="fan-sex" v-if="itemFan.member_sex && itemFan.member_sex=='1'" src="@/assets/images/myshop/nan.png"/>
+            <img class="fan-sex" v-if="itemFan.member_sex && itemFan.member_sex=='2'" src="@/assets/images/myshop/nv.png"/>
           </div>
           <div class="fan-phone df fac">
             <img class="fan-sex" src="@/assets/images/myshop/phone.png"/>
@@ -264,7 +264,7 @@ export default {
         sub_member_id
       }
       this.list_page++;
-      const [err, res] = await api.substorefanList(data);//账号总粉丝数和店铺名称
+      const [err, res] = await api.substorefanList(data);//总店铺粉丝列表
       if (err) {
         console.log("err", err);
         return;

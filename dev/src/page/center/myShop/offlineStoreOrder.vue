@@ -244,7 +244,7 @@ export default {
         token: this.token,
         page:this.listPage,
         type:type,
-        sub_member_id:routerParams
+        sub_member_id:routerParams || ""
       };
       this.listPage++;
       this.dataIndex=type;

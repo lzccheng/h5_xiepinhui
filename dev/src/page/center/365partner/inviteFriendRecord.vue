@@ -39,7 +39,8 @@ export default {
       let data = {
         plat: 3,
         account: this.account,
-        token: this.token
+        token: this.token,
+        type:3
       };
       const [err, res] = await api.guize(data);
       if (err) {

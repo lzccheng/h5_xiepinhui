@@ -141,7 +141,6 @@ export default {
       console.log(res);
       if (res && res.code == "2000") {
         this.storeInfo = res.data;
-        console.log(9999,this.storeInfo)
       }
     },
     manageClick(e) {
@@ -161,8 +160,7 @@ export default {
           clickUrl ="offlineStore";//线下店铺
           break;
         case "5":
-          clickUrl =
-            "centerFull/myshop/accountManage/accountManage?type=" + clickType;
+          clickUrl = "fanManagement";//子账号的粉丝管理
           break;
         case "3":
           clickUrl =
@@ -178,13 +176,13 @@ export default {
             member_avatar: this.storeInfo.member_avatar
           };
           this.update_storeInfo(_storeInfo);
-          clickUrl = "centerFull/myshop/shopSettings/shopSettings";
+          clickUrl = "shopSetting?sub_member_id="+this.storeInfo.member_id;
           break;
         case "2":
           clickUrl = "subStoreList";//子账号管理
           break;
         case "6":
-          clickUrl = "centerFull/myshop/orderManage/orderManage";
+          clickUrl = "offlineStoreOrder";//子账号的线下订单
           break;
         case "7":
           clickUrl = "subfanManagement";//总账号的粉丝管理

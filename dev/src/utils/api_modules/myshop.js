@@ -43,6 +43,11 @@ export const substorefanList = (data) => {
   const url = `${domain}/restore/subfan`
   return POST(url, data)
 }
+//子店铺粉丝列表接口
+export const storefanList = (data) => {
+  const url = `${domain}/restore/storefan`
+  return POST(url, data)
+}
 //库存管理子店铺
 export const sublist = (data) => {
   const url = `${domain}/restore/sublist`
@@ -53,6 +58,12 @@ export const goodslist = (data) => {
   const url = `${domain}/reinventory/goodslist`
   return POST(url, data)
 }
+//编辑店铺头像
+export const editStoreInfo = (data) => {
+  const url = `${domain}/restore/editsub`
+  return POST(url, data)
+}
+
 //订单列表数量接口
 // export const newgetorderlist_num = (data) => {
 //   const url = `${domain}/ninegroup/newgetorderlist_num`

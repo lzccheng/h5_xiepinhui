@@ -235,6 +235,7 @@ export default {
     };
   },
   created() {
+    console.log(this.user)
     console.log("user", this.user.user_type);
     if (this.token) {
       this.newredmessage();
@@ -270,6 +271,7 @@ export default {
     orderDetail(index) {
       let title = this.redmessageInfo.order_status[index].stateTitle || "";
       let tabindex = "";
+      let clickUrl="";
       if (!title) {
         this.$vux.toast.text("没有权限哦");
         return;
@@ -304,6 +306,7 @@ export default {
           break;
         case "我的钱包":
           tabindex = 10;
+          clickUrl="/drawIndex"
           break;
       }
       if (tabindex < 6) {
@@ -317,6 +320,16 @@ export default {
         this.$vux.toast.show({
           text: `极速开发中`
         });
+        console.log(clickUrl)
+        if(clickUrl!=''){
+          this.$router.push({//跳路由
+            path: clickUrl,
+            query: {
+              sub_member_id:''//这里有个子店铺id,因为从主页进去，所以可以不写，为空
+            }
+          });
+          // this.$router.push('../../index/index');//跳路径
+        }
       }
     },
     //返利弹窗
@@ -907,6 +920,7 @@ export default {
   line-height: 0.41rem;
   margin-bottom: 0.16rem;
   white-space: nowrap;
+  background: #fff;
 }
 
 .gounp_top {
