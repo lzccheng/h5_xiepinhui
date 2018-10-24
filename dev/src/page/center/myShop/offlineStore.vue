@@ -236,7 +236,7 @@
 
           <div class="cards-item-center line_xi_after">
             <div class="body-center-btn">
-              <span class="btn-one"  data-submemberid=''>申请提现</span>
+              <span class="btn-one"  :data-submemberid='item.sub_member_id' @click="applyOrderLink">申请提现</span>
               <span class="btn-two"  :data-submemberid='item.sub_member_id' @click="orderLink">订单管理</span>
             </div>
           </div>
@@ -351,8 +351,18 @@ export default {
           subOrderId:subOrderId
         }
       });
-     
+    },
+    applyOrderLink(e){
+      var subOrderId=e.target.dataset.submemberid;
+      console.log(subOrderId)
+      this.$router.push({//跳路由
+        path: '/drawIndex',
+        query: {
+          sub_member_id:subOrderId//这里有个子店铺id
+        }
+      });
     }
+
   },
   filters: {},
   computed: {

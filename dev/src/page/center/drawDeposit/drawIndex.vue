@@ -186,8 +186,9 @@ export default {
         console.log(res.data)
         this.balance=res.data.rebate_amout;
         var isPwd=res.data.is_paypwd;
-        isPwd=this.isPwd;
+        this.isPwd=isPwd;
         if (!isPwd) {
+          console.log('isPwd是false')
           this.shadowToggle();
           return;
         }
@@ -206,7 +207,15 @@ export default {
         this.shadowToggle();
         return;
       }else{
-        this.$router.push('moblieCodeTrade');
+        var sub_member_id='';
+        sub_member_id=this.$route.query.sub_member_id;
+        //this.$router.push('/drawCash');
+        this.$router.push({//跳路由
+          path: '/drawCash',
+          query: {
+            sub_member_id:sub_member_id
+          }
+        });
       }
     },
     goPage(){

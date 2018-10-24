@@ -28,7 +28,11 @@ export const setTradePassword = (data) => {
   const url = `${domain}/member/setpaypwd`
   return POST(url, data)
 }
-
+//校验支付密码
+export const checkPayPwd = (data) => {
+  const url = `${domain}/member/checkpaypwd`
+  return POST(url, data)
+}
 
 
 //订单列表数量接口

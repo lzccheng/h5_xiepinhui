@@ -4,11 +4,13 @@ import * as wx from './api_modules/wx'
 import * as comm from './api_modules/comm'
 import * as myshop from './api_modules/myshop'
 import * as draw from './api_modules/draw'
+import * as wallet from './api_modules/wallet'
 export const api = {
   ...user,
   ...center,
   ...wx,
   ...comm,
   ...myshop,
-  ...draw
+  ...draw,
+  ...wallet
 }
