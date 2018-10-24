@@ -113,7 +113,7 @@
         </div> -->
         <loading type="type3" v-if="isLoading"></loading>
         <div class="inventory-content">
-            <div class="inventory-item flex flex-align-center" v-for="(item,index) in goodsData">
+            <div class="inventory-item flex flex-align-center" v-for="(item,index) in goodsData" :key="index">
                 <div class="inventory-item-img">
                     <img :src="item.goods_image" alt="">
                 </div>
@@ -222,8 +222,8 @@ export default {
                     this.goodsData = this.goodsData.concat(res.data.list);
                     this.page = this.page + 1;
                 }
-                this.isLoading = false
             }
+            this.isLoading = false
         },
         onTabClick(index){
             if (index == this.currentTab) return;

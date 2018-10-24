@@ -10,7 +10,17 @@
     <div>
         <x-header :left-options="{backText:''}" title="补货购物车" id="vux-header"></x-header>
         <div class="delete-title flex flex-pack-end">删除</div>
-        <tab-bar :data="storeList" @onclick="handlClick" v-show="storeList.length"></tab-bar>
+        <div v-if="storeList.length>0">
+            <tab-bar :data="storeList" @onclick="handlClick" v-show="storeList.length"></tab-bar>
+            <div v-if="storeList[currentTab]">
+                {{storeList[currentTab].list}}
+            </div>
+            <null-data v-else text="您还没有补货订单哦!~"></null-data>
+        </div>
+        
+        <div v-else>
+            <null-data></null-data>
+        </div>
         <loading type="type3" v-if="isLoading"></loading>
     </div>
 </template>
@@ -18,6 +28,7 @@
 import { api } from "@/utils/api.js";
 import loading from "@/components/loading.vue";
 import tabBar from "@/components/tabBar.vue";
+import nullData from "@/components/nullData.vue";
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin } from "vux";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 export default {
@@ -26,7 +37,8 @@ export default {
     components: {
         XHeader,
         loading,
-        tabBar
+        tabBar,
+        nullData
     },
     data(){
         return {
@@ -48,18 +60,18 @@ export default {
     methods: {
         handlClick(item){
             console.log(item)
-            let cleckIndex = item._index;
+            // let cleckIndex = item._index;
 
-            this.storeList[cleckIndex].allNum=0;
-            this.storeList[cleckIndex].allPrice = 0;
-            this.storeList[cleckIndex].carIdString = '';
-            this.storeList[cleckIndex].isAllSelect = false;
-            this.storeList[cleckIndex].list=null;
+            // this.storeList[cleckIndex].allNum=0;
+            // this.storeList[cleckIndex].allPrice = 0;
+            // this.storeList[cleckIndex].carIdString = '';
+            // this.storeList[cleckIndex].isAllSelect = false;
+            // this.storeList[cleckIndex].list=null;
 
-            this.currentTab = cleckIndex;
-            this.page = 1;
-            this.sub_member_id = item.sub_member_id;
-            this.getorcarList();
+            // this.currentTab = cleckIndex;
+            // this.page = 1;
+            // this.sub_member_id = item.sub_member_id;
+            // this.getorcarList();
         },
         async getorcarList(){
             let data = {
@@ -113,7 +125,7 @@ export default {
                     that.storeList = res.data.list;
                     that.sub_member_id = res.data.list[0].sub_member_id;                    
                 }
-                that.getorcarList()
+                // that.getorcarList()
             }
         },
     },

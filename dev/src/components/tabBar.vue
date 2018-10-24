@@ -38,7 +38,7 @@
     <div>
         <div class="tabBar" v-show="data" ref="tab">
             <div class="tabContent" ref="tabContent">
-                <div class="tabItem" :class="{active: currentTab == index}" @click="onclick(item,index)" ref="tabItem" v-for="(item,index) in data">
+                <div class="tabItem" :class="{active: currentTab == index}" :key="index" @click="onclick(item,index)" ref="tabItem" v-for="(item,index) in data">
                     {{item.shop_name}}
                 </div>
             </div>
@@ -71,6 +71,7 @@ export default {
     watch: {
         data(){
             if(this.data && this.data.length){
+                console.log('=====店铺导航栏实例化======')
                 let that = this;
                 let tab = this.$refs.tab;
                 let tabContent = this.$refs.tabContent;

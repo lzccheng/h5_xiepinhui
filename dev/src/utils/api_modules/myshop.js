@@ -53,6 +53,11 @@ export const sublist = (data) => {
   const url = `${domain}/restore/sublist`
   return POST(url, data)
 }
+//获取补货详情接口
+export const goodsdetail = (data) => {
+  const url = `${domain}/reinventory/goodsdetail`
+  return POST(url, data)
+}
 //库存管理导航栏
 export const goodslist = (data) => {
   const url = `${domain}/reinventory/goodslist`
