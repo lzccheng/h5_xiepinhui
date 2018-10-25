@@ -124,8 +124,8 @@ export default {
       // isFocus: false,
       // showSetting:true,
       // showSuccess:false
-      showSetting:false,
-      showSuccess:true
+      showSetting:true,
+      showSuccess:false
     };
   },
   created() {
@@ -138,11 +138,9 @@ export default {
 
     bindPwd(e){
       var password=this.password;
-      console.log(password.length);
       if(password.length>5){
         this.password=password.slice(0,6);
       }
-
     },
     async setPwd(){
       var param={

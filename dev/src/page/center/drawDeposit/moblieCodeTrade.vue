@@ -112,49 +112,20 @@ export default {
   },
   data() {
     return {
-      balance: "",
       isShadow: false,
       isPwd: 0,
-      tel:13726768504,
+      tel:13726768507,
       num: 60,
       code:''
     };
   },
   created() {
-    this.getBalance();
+    
   },
   mounted() {
     this.$nextTick(function() {});
   },
   methods: {
-    async getBalance() {
-      var sub_member_id = "";
-      sub_member_id = this.$route.params.sub_member_id || 0;
-      console.log(sub_member_id);
-      let data = {
-        plat: 3,
-        token: this.token,
-        account: this.account,
-        sub_member_id: sub_member_id
-      };
-      this.store_list_page++;
-      const [err, res] = await api.getBalance(data);
-      if (err) {
-        console.log("err", err);
-        return;
-      } else if (res.code == 2000) {
-        console.log(res.data);
-        this.balance = res.data.rebate_amout;
-        var isPwd = res.data.is_paypwd;
-        if (!isPwd) {
-          this.shadowToggle();
-          return;
-        }
-      } else {
-        console.log(res.code);
-      }
-    },
-    
     countDown () {
       console.log(888)
       console.log(this.num)
@@ -239,7 +210,7 @@ export default {
             return;
           }else{
             if(res.code==2000){
-              this.$route.push("./setTradeCode");
+              this.$router.push("./setTradeCode");
             }
           }
 
@@ -248,6 +219,7 @@ export default {
     },
     //去掉字符串前后所有空格：
     Trim(str) {
+      str=String(str);//注意这里是字符串才有replace函数
       return str.replace(/(^\s*)|(\s*$)/g, "");
     },
     //滚动到底部回调

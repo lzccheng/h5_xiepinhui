@@ -213,7 +213,6 @@ export default {
     addNewAccount() {},
     //滚动到底部回调
     scrollBottomCB() {
-     
       this.getStoreList();
     }
   },

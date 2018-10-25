@@ -317,9 +317,7 @@ export default {
           }
         });
       } else {
-        this.$vux.toast.show({
-          text: `极速开发中`
-        });
+        
         console.log(clickUrl)
         if(clickUrl!=''){
           this.$router.push({//跳路由
@@ -328,8 +326,12 @@ export default {
               sub_member_id:''//这里有个子店铺id,因为从主页进去，所以可以不写，为空
             }
           });
+          return false;
           // this.$router.push('../../index/index');//跳路径
         }
+        this.$vux.toast.show({
+          text: `极速开发中`
+        });
       }
     },
     //返利弹窗

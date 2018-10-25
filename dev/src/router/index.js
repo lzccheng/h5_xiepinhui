@@ -72,6 +72,9 @@ import shopSetting from '@/page/center/myShop/shopSetting'//子账号的店铺�
 import drawIndex from '@/page/center/drawDeposit/drawIndex'//提现首页
 import moblieCodeTrade from '@/page/center/drawDeposit/moblieCodeTrade'//交易密码
 import setTradeCode from '@/page/center/drawDeposit/setTradeCode'//设置交易密码
+import drawCash from '@/page/center/drawDeposit/drawCash'//提现页面
+import addCard from '@/page/center/drawDeposit/addCard'//添加银行卡
+import bindNewCard from '@/page/center/drawDeposit/bindNewCard'//绑定新银行卡
 
 ///center/drawIndex
 
@@ -445,6 +448,30 @@ let router = new Router({
       component: setTradeCode,
       meta: {
         title: '设置交易密码'
+      }
+    },
+    {
+      path: '/drawCash',
+      name: 'drawCash',
+      component: drawCash,
+      meta: {
+        title: '提现'
+      }
+    },
+    {
+      path: '/addCard',
+      name: 'addCard',
+      component: addCard,
+      meta: {
+        title: '银行卡管理'
+      }
+    },
+    {
+      path: '/bindNewCard',
+      name: 'bindNewCard',
+      component: bindNewCard,
+      meta: {
+        title: '绑定银行卡'
       }
     },
     {
