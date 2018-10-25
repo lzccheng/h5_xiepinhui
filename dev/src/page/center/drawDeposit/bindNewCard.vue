@@ -113,38 +113,38 @@
         <div class="cell" v-if="!isInfo">
             <div class="cell-input">
                 <span>姓名</span>
-                <input type="text" placeholder=" 请输入姓名" v-model="name" bindinput="bindName" />
+                <input type="text" placeholder=" 请输入姓名" v-model="name"  v-on:input="bindName"/>
             </div>
             <div class="cell-input">
                 <span>身份证号</span>
-                <input type="text" maxlength="18" placeholder="请输入身份证号" v-model="idCard" bindinput="bindIdCard" />
+                <input type="text" maxlength="18" placeholder="请输入身份证号" v-model="idCard" v-on:input="bindIdCard" />
             </div>
         </div>
         <div class="cell" v-if="isInfo">
             <div class="cell-input">
                 <span>持卡人</span>
                 <input type="text" v-model="name" disabled />
-                <img src="https://img.xiepinhui.com.cn/mobile/wallet/ico_remind.png"  bindtap="shadowToggle"/>
+                <img src="https://img.xiepinhui.com.cn/mobile/wallet/ico_remind.png"  @click="shadowToggle"/>
             </div>
         </div>
         <div class="cell">
             <div class="cell-input">
                 <span>银行卡号</span>
-                <input type="text" maxlength="19" placeholder=" 请输入银行卡号" v-model="cardNum" bindinput="bindNum" />
+                <input type="text" maxlength="19" placeholder=" 请输入银行卡号" v-model="cardNum" v-on:input="bindNum" />
             </div>
             <div class="cell-input">
                 <span>发卡银行</span>
-                <input type="text" disabled :v-model="selected?selected.bank_name:''"/>
+                <input type="text" disabled v-model="selected.bank_name"/>
                 <div class="arrow-left"></div>
-                <div class="shadow-btn" bindtap="selectToggle"></div>
+                <div class="shadow-btn" @click="selectToggle"></div>
             </div>
         </div>
         <div :class="name.length>0 && idCard.length>0 && cardNum.length>0 && selected ? 'btn ' :'btn btn-disabled'"
-              bindtap="name.length>0 && idCard.length>0 && cardNum.length>0 && selected ? 'addCard' :''"
+              @click="name.length>0 && idCard.length>0 && cardNum.length>0 && selected ? 'addCard' :''"
         >确定</div>
     </div>
 
-    <div wx:else>
+    <div v-else>
         <div class="bank-list">
            <!-- <div class="search-main">
                 <image src="../../../../img/search-icon.png" mode="widthFix"></image>
@@ -155,7 +155,7 @@
                     <img :src="item.bank_icon" mode="aspectFit"/>
                     <span>{{item.bank_name}}</span>
                     <div class="arrow-left"></div>
-                    <div class="shadow-btn" :data-index="index" bindtap="selectBank"></div>
+                    <div class="shadow-btn" :data-index="index" @click="selectBank"></div>
                 </div>
             </div>
         </div>
@@ -165,7 +165,7 @@
         <div class="owner-desc center">
             <div class="title">持卡人说明</div>
             <div class="desc">为了保证账户资金安全，只能绑定认 证用户本人的银行卡</div>
-            <div class="close" bindtap="shadowToggle">知道了</div>
+            <div class="close" @click="shadowToggle">知道了</div>
         </div>
     </div>
 </div>
@@ -204,7 +204,7 @@ export default {
     idCard: null,
     cardNum: null,
     bankList: [],
-    selected: null,
+    selected: {},
     };
   },
   created() {
@@ -216,7 +216,54 @@ export default {
     });
   },
   methods: {
+      bindName(){
 
+      },
+      bindIdCard(){
+
+      },
+      shadowToggle(){
+
+      },
+      bindNum(){
+
+      },
+      selectToggle(){
+        const isTrue = this.isSelect ? false :true;
+        this.isSelect=isTrue;
+        if(this.bankList.length < 1){
+          this.getBankList();
+        }
+        
+      },
+      async getBankList () {
+        let data={
+          plat:4
+        }
+        //getBankList
+        const [err, res] = await api.getBankList(data);
+        if(err){
+          this.$vux.toast.text(err.msg);
+          return;
+        }else{
+          if(res.code==2000){
+            this.bankList=res.data.list;
+            
+          }
+        }
+
+        
+      },
+      addCard(){
+
+      },
+      selectBank(e){
+        const index = e.target.dataset.index;
+        this.selected=this.bankList[index];
+        console.log(this.selected);
+        console.log(this.selected.bank_name)
+        this.selectToggle();
+      }
   },
   filters: {},
   computed: {

@@ -28,3 +28,8 @@ export const delBindingBank = (data) => {
   const url = `${domain}/restore/delbank`
   return POST(url, data)
 }
+//获取银行卡列表
+export const getBankList = (data) => {
+  const url = `${domain}/restore/banklist`
+  return POST(url, data)
+}
