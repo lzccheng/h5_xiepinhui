@@ -5,7 +5,7 @@
     <div>
         <div class="null-bg">
             <img src="@/assets/images/null/null_fan.png" alt="" class="null-img">
-            <div class="null-title">{{text}}</div>
+            <div class="null-title">{{text}}<slot></slot></div>
         </div>
     </div>
 </template>
@@ -14,7 +14,7 @@ export default {
     props: {
         text: {
             type: String,
-            default: '当前暂无数据'
+            default: ''
         }
     }
 }

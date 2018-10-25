@@ -1,6 +1,7 @@
 let state = {
   center: localStorage['center'] ? JSON.parse(localStorage['center']) : '', //个人中心数据缓存
-  _storeInfo: {} // 我的店铺数据缓存
+  _storeInfo: {}, // 我的店铺数据缓存
+  carpayInfo: {} //补货购物车结算缓存
 }
 
 let getters = {}
@@ -21,6 +22,12 @@ const actions = {
   }, info) {
     commit('update_storeInfo', info)
   },
+  update_carpayInfo({
+    commit,
+    state
+  }, info){
+    commit('update_carpayInfo', info)
+  }
 }
 
 const mutations = {
@@ -30,6 +37,10 @@ const mutations = {
   update_storeInfo(state, info) {
     state._storeInfo = info;
   },
+  update_carpayInfo(state, info){
+
+    state.carpayInfo = info
+  }
 }
 
 module.exports = {

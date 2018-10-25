@@ -54,6 +54,8 @@ const inventoryManage = ()=>import('@/page/center/myShop/inventoryManage/invento
 const replenishInfo = ()=>import('@/page/center/myShop/replenishInfo/replenishInfo')
 //补货购物车
 const subreplenishCar = ()=>import('@/page/center/myShop/subreplenishCar/subreplenishCar')
+//补货确认订单
+const carPay = ()=>import('@/page/center/myShop/carPay/carPay')
 
 
 
@@ -266,6 +268,14 @@ let router = new Router({
           component:subreplenishCar,
           meta:{
             title:'补货购物车'
+          }
+        },
+        {
+          path:'carPay',
+          name:'carPay',
+          component:carPay,
+          meta:{
+            title:'补货确认订单'
           }
         },
         {
