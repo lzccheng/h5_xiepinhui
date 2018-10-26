@@ -168,7 +168,6 @@ export default {
     },
     created(){
         this.getBarList();
-        // this.nav_item_width = window.innerWidth / 3;
     },
     methods: {
         async getBarList(){

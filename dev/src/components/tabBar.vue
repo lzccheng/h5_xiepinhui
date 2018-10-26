@@ -50,15 +50,31 @@ import BScroll from 'better-scroll';
 
 export default {
     props: {
-        data: Array,
-        default: []
+        data: {
+            type: Array,
+            default: null
+        },
+        
     },
     data(){
         return {
             currentTab: 0,
+            BS: null
         }
     },
     mounted(){
+        if(this.data && this.data.length){
+            console.log('=====店铺导航栏实例化mounted======')
+            let that = this;
+            let tab = this.$refs.tab;
+            let tabContent = this.$refs.tabContent;
+            tabContent.style.width = that.data.length*125/50 + 'rem';
+            let BS = new BScroll(tab,{
+                scrollX: true,
+                eventPassthrough:'vertical'
+            });
+            this.BS = BS;
+        }
     },
     methods: {
         onclick(item,index){
@@ -71,7 +87,8 @@ export default {
     watch: {
         data(){
             if(this.data && this.data.length){
-                console.log('=====店铺导航栏实例化======')
+                if(this.BS)return;
+                console.log('=====店铺导航栏实例化watch======')
                 let that = this;
                 let tab = this.$refs.tab;
                 let tabContent = this.$refs.tabContent;
@@ -80,6 +97,7 @@ export default {
                     scrollX: true,
                     eventPassthrough:'vertical'
                 });
+                this.BS = BS;
             }
         }
     }

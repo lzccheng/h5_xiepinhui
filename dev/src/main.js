@@ -23,6 +23,7 @@ FastClick.attach(document.body)
 
 Vue.prototype.$encrypt = encrypt
 Vue.config.productionTip = false
+window.isClick = false
 
 Vue.use(Button);
 /* eslint-disable no-new */

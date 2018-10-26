@@ -68,6 +68,11 @@ export const goodslist = (data) => {
   const url = `${domain}/reinventory/goodslist`
   return POST(url, data)
 }
+//memberbalance
+export const memberbalance = (data) => {
+  const url = `${domain}/member/memberbalance`
+  return POST(url, data)
+}
 //编辑店铺头像
 export const editStoreInfo = (data) => {
   const url = `${domain}/restore/editsub`

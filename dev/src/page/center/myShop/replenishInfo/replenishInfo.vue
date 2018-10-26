@@ -282,14 +282,14 @@
 }
 </style>
 <template>
-    <div>
+    <div ref="box">
         <div ref="header">
             <x-header :left-options="{backText:''}" title="补货详情" id="vux-header" ></x-header>
         </div>
         
         <loading type="type3" v-if="isLoading"></loading>
         <div v-if="replenishInfo">
-            <div class="replenishInfo-header flex line_xi_after">
+            <div class="replenishInfo-header flex line_xi_after" ref="product">
                 <div class="header-left">
                     <img :src="replenishInfo.goods_image" alt="">
                 </div>
@@ -302,7 +302,7 @@
                 </div>
             </div>
 
-            <div class="stock-table line_xi_after">
+            <div class="stock-table line_xi_after" ref="table">
                 <div class="table-top flex flex-align-center line_xi_after">
                     <span class="table-lable">库存对照表</span>
                     <div class="over-scroll">
@@ -325,7 +325,7 @@
                     <table-item :data="item" list="store_storage_list">店铺库存</table-item>
                 </div>
             </div>
-            <div class="stock-select-panel flex" :style="{height: (windowHeight - 370 - 50) + 'px'}">
+            <div class="stock-select-panel flex" :style="{height: (windowHeight - elseHeight - headerHeight) + 'px'}">
                 <div class="scroll-view_left scroll-view_left1" style="height:100%">
                     <div 
                     class="scroll-view-item_left"
@@ -363,7 +363,7 @@
                         <span class="Information-lable">采购总计：</span>
                         <span class="Information-num">{{replenishInfo.allPrice || 0}}</span>
                     </div>
-                    <div class="Information-right">
+                    <div class="Information-right" ref="total">
                         <span class="Information-lable">共选购</span>
                         <span class="Information-num">{{replenishInfo.allNum || 0}}</span>
                         <span class='Information-lable'>双</span>
@@ -394,7 +394,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bottom-btn" @click="addCar">确认补货</div>
+                <div class="bottom-btn" @click="addCar" ref="sure">确认补货</div>
             </div>
         </div>
     </div>
@@ -405,6 +405,7 @@ import loading from "@/components/loading.vue";
 import tableItem from './tableItem';
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin } from "vux";
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import { setTimeout } from 'timers';
 export default {
     name: "inventoryManage",
     props: {},
@@ -422,7 +423,9 @@ export default {
             sub_member_id: '0',
             isLoading: true,
             itemActive: 0,
-            windowHeight: window.innerHeight,
+            windowHeight: window.innerHeight + 10,
+            headerHeight: 0,
+            elseHeight: 0,
             iSshowList: false,
         }
     },
@@ -430,6 +433,9 @@ export default {
         this.goods_commonid = this.$route.query.goods_commonid? this.$route.query.goods_commonid : '';
         this.sub_member_id = this.$route.query.sub_member_id? this.$route.query.sub_member_id : '0';
         this.getInfo()
+        this.$nextTick(()=>{
+            this.headerHeight = this.$refs.box.offsetHeight;
+        })
     },
     created(){
     },
@@ -446,10 +452,10 @@ export default {
             const [err, res] = await api.goodsdetail(data);
             if (err) {
                 this.$vux.toast.text(err.msg);
+                this.isLoading = false
                 return;
             }
             if(res.code == "2000"){
-                // console.log(res)
                 let winWidth = window.innerWidth;
                 let listObj = res.data.list;
                 for(let t=0;t<listObj.length;t++){
@@ -458,8 +464,12 @@ export default {
                 }
                 this.replenishInfo = res.data;
                 this.replenishInfoList = listObj;
+                this.$nextTick(()=>{
+                    this.elseHeight = this.$refs.product.offsetHeight + this.$refs.table.offsetHeight + this.$refs.total.offsetHeight + this.$refs.sure.offsetHeight;
+                })
             }
-            this.isLoading = false
+            this.isLoading = false;
+            
         },
         // 规格切换
         checkItem(index){
@@ -490,7 +500,6 @@ export default {
                 allNum = parseInt(allNum) - 1;
                 num = num - 1;
             }
-            
             newList.AllselectNum = allNum;
             newList.store_storage_list[idx].selectNum = num;
             let allspace = this.replenishInfo.all_spec_goodid;

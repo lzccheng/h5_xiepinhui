@@ -51,7 +51,12 @@
         </div>
         <div class="store-manage-item-lable">{{item.title||''}}</div>
       </div>
+      
     </div>
+    <div class="bgc">
+      <loading type="type3" v-if="isLoading"></loading>
+    </div>
+    
   </div>
 </template>
 
@@ -73,16 +78,17 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       storeInfo: {
-        total_sales: 99999,
-        date_sales: 99999,
-        total_revenue: 99999,
-        date_revenue: 99999,
-        total_fan: "10000",
-        date_fan: 99999,
-        date_order: 99999,
-        date_visitor: 99999,
-        rebate_amout: "333333.00",
+        total_sales: 0,
+        date_sales: 0,
+        total_revenue: 0,
+        date_revenue: 0,
+        total_fan: "0",
+        date_fan: 0,
+        date_order: 0,
+        date_visitor: 0,
+        rebate_amout: "0.00",
         member_name: "鞋品荟第110店铺",
         member_avatar:
           "http://img.xiepinhui.com.cn/sys/default/user/avatar.jpg",
@@ -138,10 +144,15 @@ export default {
         token: this.token
       };
       const [err, res] = await api.thelordstore(data);
-      console.log(res);
+      if (err) {
+          this.$vux.toast.text(err.msg);
+          this.isLoading = false;
+          return;
+      }
       if (res && res.code == "2000") {
         this.storeInfo = res.data;
       }
+      this.isLoading = false;
     },
     manageClick(e) {
       let type = e.currentTarget.dataset.type;
@@ -327,5 +338,8 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   word-break: break-all;
+}
+.bgc{
+  background-color: #fff;
 }
 </style>
