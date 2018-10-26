@@ -130,7 +130,7 @@
             </div>
           </div>
         </div>
-        <div class="btn">查看更多</div>
+        <div class="btn" @click="searchMoreFans">查看粉丝</div>
       </div>
     </div>
     <!-- loading -->
@@ -243,6 +243,9 @@ export default {
     }
   },
   methods: {
+    searchMoreFans(){
+      this.$router.push('/centerFull/partner/inviteFansMy365');
+    },
     // 个人中心首页接口
     async newredmessage() {
       let that = this;
