@@ -211,7 +211,7 @@ export default {
           clickUrl = "subreplenishCar";
           break;
         case "12":
-          clickUrl = "centerFull/myshop/subreplenishOrder/subreplenishOrder";
+          clickUrl = "subreplenishOrder";
           break;
       }
       _this.$router.push(clickUrl);

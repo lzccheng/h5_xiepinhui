@@ -246,19 +246,21 @@ float:right;
         <x-header :left-options="{backText:''}" title="补货购物车" id="vux-header"></x-header>
         <loading type="type3" v-if="isLoading"></loading>
         <div class="float-header">
-            <div class="delete-title flex flex-pack-end" v-if="storeList">删除</div>
+            <div class="delete-title flex flex-pack-end" @click="deleteList" v-if="storeList">删除</div>
             <div v-if="storeList && storeList.length > 0">
                 <tab-bar :data="storeList" @onclick="checkTabbar" v-if="storeList"></tab-bar>
             </div>
             <div class="offline-roder-content">
                 <loading type="type3" v-if="isLoading2"></loading>
+                <null-data v-if="!isLoading2 && storeList && storeList[currentTab].list && !storeList[currentTab].list.length">您还没有补货订单哦!~</null-data>
                 <div v-if="storeList">
-                    <div class="order-item-body">
+                    <div class="order-item-body" :style="{'height': pageHeight + 'px','overflow-y': 'auto'}">
                         <div 
                         v-for="(item,index) in storeList[currentTab].list"
                         class="item-body-center flex"
                         :key="index"
                         v-if="index!=currentTab"
+                        
                         >
                             <span class="item-select iconfont" @click="switchSelect(index)" :class="{'icon-live-select':item.isSelect,'icon-live-unselect':!item.isSelect}"></span>
                             <div class="left-img">
@@ -306,12 +308,6 @@ float:right;
                         <div class="goSettlement" @click="Settlement">去结算</div>
                     </div>
                 </div>
-                
-                <div v-if="!isLoading2 && storeList">
-                    <div v-if="storeList[currentTab].list && !storeList[currentTab].list.length">
-                        <null-data>您还没有补货订单哦!~</null-data>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -341,11 +337,11 @@ export default {
             currentTab: 0,
             sub_member_id: '',
             isLoading: true,
-            isLoading2: false
+            isLoading2: false,
+            pageHeight: window.innerHeight
         }
     },
     mounted(){
-
     },
     created(){
         this.getBarList()
@@ -464,8 +460,8 @@ export default {
                         //自己补的end
                         // allPrice = allPrice + singlePrice;//(item.goods_num * item.purchase_price)
                         singlePrice = item.goods_num * item.purchase_price;
-                        carIdString = this.setCrdIds(carIdString, item)
                     }
+                    carIdString = this.setCrdIds(carIdString, item)
                     allPrice = allPrice + singlePrice;
                 }
             })
@@ -482,6 +478,7 @@ export default {
             } else {
                 carIdString = carIdString + "," + item.refit_cart_id;
             }
+            console.log(carIdString)
             return carIdString
         },
         // 全选  这里遍历数组将所有的全部选中 然后 计算选中数量 和价钱  
@@ -527,7 +524,6 @@ export default {
                 this.$vux.toast.text("请选择要结算的商品");
                 return;
             }
-            // var carpayInfo = JSON.stringify(storeListItem);
             this.$store.dispatch('update_carpayInfo',storeListItem);
             var token = this.token;
             if(token){
@@ -541,6 +537,56 @@ export default {
                 setTimeout(()=>{
                     window.isClick = false;
                 },1000)
+            }
+        },
+        // 点击删除事件
+        deleteList(){
+            let fatherIndex = this.currentTab;
+            if (this.storeList[fatherIndex].allNum == 0 || !this.storeList[fatherIndex].allNum) {
+                this.$vux.toast.text("请选中一个商品,再进行删除哦!");
+                return;
+            }
+            let that = this;
+            this.$vux.confirm.show({
+                title: '提示',
+                content: '确定要删除该商品?删除后无法恢复!',
+                onConfirm () {
+                    that.deleteListReq();
+                }
+            })
+        },
+        async deleteListReq(){
+            let fatherIndex = this.currentTab;
+            let data = {
+                plat: 3,
+                account: this.account,
+                token: this.token,
+                cart_id: this.storeList[fatherIndex].carIdString,
+                sub_member_id: this.sub_member_id
+            }
+            const [err, res] = await api.delcart(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }  
+            if(res.code == '2000'){
+                let newcarList = this.storeList[fatherIndex];
+                let carList = newcarList.list;
+                if(newcarList.isAllSelect){
+                    carList = newcarList.list = [];
+                }
+                // for (let i = 0; i < carList.length; i++) {
+                //     if (carList[i].isSelect) {
+                //         carList.splice(i, 1);
+                //     }
+                // }
+                newcarList.list = carList.filter((item)=>{
+                    if(!item.isSelect){
+                        return item;
+                    }
+                })
+                this.$set(this.storeList,fatherIndex,newcarList);
+                this.$vux.toast.text("删除成功");
             }
         }
     },

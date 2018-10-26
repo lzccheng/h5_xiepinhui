@@ -302,7 +302,7 @@
         </div>
         <div class='bottom-pay-box flex flex-pack-justify	flex-align-center'>
           <span class="heji">合计金额:￥{{goodsInfo.allPrice}}</span>
-          <span class="payBtn paybtn">微信支付</span>
+          <span class="payBtn paybtn" @click="gopay">微信支付</span>
         </div>
         <!-- <loading type="type3" v-if="isLoading"></loading> -->
     </div>
@@ -312,6 +312,7 @@ import { api } from "@/utils/api.js";
 import loading from "@/components/loading.vue";
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin ,XSwitch } from "vux";
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import { setTimeout } from 'timers';
 export default {
     name: "carPay",
     components: {
@@ -326,14 +327,23 @@ export default {
             blanceInfo: {
                 rebate_amout: 0
             },
-            value: true,
+            value: false,
             isBlance: false,
             oldPrice: 0,
         }
     },
     created() {
-        this.goodsInfo = this.carpayInfo;
         this.getBlance();
+        let carpayInfo = this.carpayInfo;
+        if(carpayInfo.list){
+          carpayInfo.list = carpayInfo.list.filter((item)=>{
+            if(item.isSelect){
+              return item;
+            }
+          })
+        }
+        this.goodsInfo = carpayInfo;
+        console.log(this.$vux.toast)
     },
     methods: {
         async getBlance(){
@@ -374,7 +384,30 @@ export default {
             return;
           }
           window.isClick = true;
-          
+          setTimeout(()=>{
+            window.isClick = false;
+          },2000)
+          this.carPay();
+        },
+        async carPay(){
+          let data = {
+            plat: 3,
+            account: this.account,
+            token: this.token,
+            cart_id: this.goodsInfo.carIdString,
+            use_banlance: this.isBlance?'1':'0',
+            pay_code: 2,
+            sub_member_id: this.goodsInfo.sub_member_id
+          }
+          const [err, res] = await api.addrefit(data);
+          if (err) {
+            this.$vux.toast.text(err.msg);
+            return;
+          }
+          console.log('res',res)
+          if(res.code == '2000'){
+            console.log(Vue.wechat)
+          }
         }
     },
     computed: {

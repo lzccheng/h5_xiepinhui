@@ -68,9 +68,47 @@ export const goodslist = (data) => {
   const url = `${domain}/reinventory/goodslist`
   return POST(url, data)
 }
-//memberbalance
+//余额
 export const memberbalance = (data) => {
   const url = `${domain}/member/memberbalance`
+  return POST(url, data)
+}
+
+
+//补货订单详情
+export const refitdetail = (data) => {
+  const url = `${domain}/reinventory/refitdetail`
+  return POST(url, data)
+}
+//补货添加购物车
+export const addtocart = (data) => {
+  const url = `${domain}/reinventory/addtocart`
+  return POST(url, data)
+}
+//请求删除购物车
+export const delcart = (data) => {
+  const url = `${domain}/reinventory/delcart`
+  return POST(url, data)
+}
+//补货结算
+export const addrefit = (data) => {
+  const url = `${domain}/reinventory/addrefit`
+  return POST(url, data)
+}
+
+//确认收货
+export const confirmrefit = (data) => {
+  const url = `${domain}/reinventory/confirmrefit`
+  return POST(url, data)
+}
+//取消当前订单
+export const delrefit = (data) => {
+  const url = `${domain}/reinventory/delrefit`
+  return POST(url, data)
+}
+//获取线下店铺订单
+export const refitorderlist = (data) => {
+  const url = `${domain}/reinventory/refitorderlist`
   return POST(url, data)
 }
 //编辑店铺头像

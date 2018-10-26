@@ -1,5 +1,7 @@
 <style >
-
+.null-bg{
+    background-color: #fff;
+}
 </style>
 <template>
     <div>

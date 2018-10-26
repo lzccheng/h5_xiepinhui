@@ -56,6 +56,12 @@ const replenishInfo = ()=>import('@/page/center/myShop/replenishInfo/replenishIn
 const subreplenishCar = ()=>import('@/page/center/myShop/subreplenishCar/subreplenishCar')
 //补货确认订单
 const carPay = ()=>import('@/page/center/myShop/carPay/carPay')
+//补货确认订单详情
+const replenishmentOrderinfo = ()=>import('@/page/center/myShop/replenishmentOrderinfo/replenishmentOrderinfo')
+
+//补货订单
+const subreplenishOrder = ()=>import('@/page/center/myShop/subreplenishOrder/subreplenishOrder')
+
 
 
 
@@ -279,6 +285,22 @@ let router = new Router({
           component:carPay,
           meta:{
             title:'补货确认订单'
+          }
+        },
+        {
+          path:'replenishmentOrderinfo',
+          name:'replenishmentOrderinfo',
+          component:replenishmentOrderinfo,
+          meta:{
+            title:'补货确认订单详情'
+          }
+        },
+        {
+          path:'subreplenishOrder',
+          name:'subreplenishOrder',
+          component:subreplenishOrder,
+          meta:{
+            title:'补货订单'
           }
         },
         {

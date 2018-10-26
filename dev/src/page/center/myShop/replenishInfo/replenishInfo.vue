@@ -613,7 +613,7 @@ export default {
                 sub_member_id: this.sub_member_id,
                 json_info: jsonString,
             }
-            const [err, res] = await api.goodsdetail(data);
+            const [err, res] = await api.addtocart(data);
             if (err) {
                 this.$vux.toast.text(err.msg);
                 return;
