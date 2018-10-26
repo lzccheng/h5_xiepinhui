@@ -91,7 +91,9 @@
     color: #61D8D0;
     margin-top: 40/100rem;
 }
-
+.cell .cell-input input{
+    background: none;
+}
 .shadow-btn {
     position: absolute;
     top: 0;
@@ -117,7 +119,7 @@
             </div>
             <div class="cell-input">
                 <span>身份证号</span>
-                <input type="text" maxlength="18" placeholder="请输入身份证号" v-model="idCard" v-on:input="bindIdCard" />
+                <input type="number" maxlength="18" placeholder="请输入身份证号" v-model="idCard" v-on:input="bindIdCard" />
             </div>
         </div>
         <div class="cell" v-if="isInfo">
@@ -130,7 +132,7 @@
         <div class="cell">
             <div class="cell-input">
                 <span>银行卡号</span>
-                <input type="text" maxlength="19" placeholder=" 请输入银行卡号" v-model="cardNum" v-on:input="bindNum" />
+                <input type="number" maxlength="19" placeholder="请输入银行卡号" v-model="cardNum" v-on:input="bindNum" />
             </div>
             <div class="cell-input">
                 <span>发卡银行</span>
@@ -139,9 +141,7 @@
                 <div class="shadow-btn" @click="selectToggle"></div>
             </div>
         </div>
-        <div :class="name.length>0 && idCard.length>0 && cardNum.length>0 && selected ? 'btn ' :'btn btn-disabled'"
-              @click="name.length>0 && idCard.length>0 && cardNum.length>0 && selected ? 'addCard' :''"
-        >确定</div>
+        <div :class="name.length>0 && idCard.length>0 && cardNum.length>0 && selected.bank_name ? 'btn ' :'btn btn-disabled'" @click="addCard">确定</div>
     </div>
 
     <div v-else>
@@ -199,10 +199,10 @@ export default {
     isSelect: false,
     isShadow: false,
     isInfo: false,
-    tmp: null,
+    tmp: '',
     name: '',
-    idCard: null,
-    cardNum: null,
+    idCard: '',
+    cardNum: '',
     bankList: [],
     selected: {},
     };
@@ -254,8 +254,44 @@ export default {
 
         
       },
-      addCard(){
+      async addCard(){
+            if(this.name.length>0 && this.idCard.length>0 && this.cardNum.length>0 && this.selected.bank_name){
+                console.log('addCard')
+                
+                const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+                const regBank = /^([1-9]{1})(\d{15}|\d{18})$/
+                if (!this.isInfo && !reg.test(this.idCard)){
+                    this.$vux.toast.text('身份证输入不合法');
+                    return
+                } else if (!regBank.test( this.cardNum)) {
+                    this.$vux.toast.text('银行卡号输入不合法');
+                    return
+                }
+                let data={
+                    plat: 3,
+                    token:this.token,
+                    account:this.account,
+                    bank_id: this.selected.bank_id,
+                    card_user_name: this.name,
+                    card_number: this.cardNum,
+                    idcard: this.idCard
+                };
+                const [err, res] = await api.BindingNewBank(data);
+                if(err){
+                    this.$vux.toast.text(err.msg);
+                    return;
+                }else{
+                    
+                    if(res.code==2000){
+                        console.log(res)
+                        this.$vux.toast.text('银行卡添加成功！');
+                        this.$router.push('/addCard');
+                    }
+                }
 
+
+            }
+        
       },
       selectBank(e){
         const index = e.target.dataset.index;

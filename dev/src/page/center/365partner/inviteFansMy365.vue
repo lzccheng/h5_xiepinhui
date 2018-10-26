@@ -12,22 +12,22 @@
       </div>
     </div>
     <div class="bottom_content_part">
-      <div class="tab_header_nav" id="fix" :style="menuFixed?'about_h':'position: static;'">
+      <div class="tab_header_nav" id="fix">
         <div class="tabLi">
-          <div style="margin:auto;" v-if="fansContent" class="fans_tab" :class=" isTabOne ? 'active_tab' : ''" @click="choseTab">
+          <div style="margin:auto;" v-if="fansContent" class="fans_tab" :class=" isTabOne ? 'fans_tab active_tab' : 'fans_tab'" @click="choseTab">
             我的粉丝({{fansContent.fansNumber || 0}})
           </div>
         </div>
         <div class="tabLi">
-          <div style="margin:auto;" v-if="fansContent" class="fans_tab" :class=" isTabTwo ? 'active_tab' : ''" @click="choseTab">
-            我邀请的365合伙人({{fansContent.list[1].num || 0}})
+          <div style="margin:auto;" v-if="fansContent" class="fans_tab" :class=" isTabTwo ? 'fans_tab active_tab' : 'fans_tab'" @click="choseTab">
+            <!-- 我邀请的365合伙人({{fansContent.list[1].num || 0}}) -->
           </div>
         </div>
       </div>
       <div class="fans_content_box">
         <!-- 我的粉丝 -->
         <div class="fansContentContainer" v-if="isTabOne">
-          <img v-if="listObj.length<=0" :src="'../../../../pages/img/null/null_fan.png'" class="null_bg" />
+          <img v-if="listObj.length<=0" src="@/assets/images/null/null_fan.png" class="null_bg" />
           <div class="fansContentLi" v-if="listObj" v-for="(item,index) in listObj" :key="index" @click="goFansDetail" :data-fanid="item.member_id">
             <img :src="item.member_avatar" class="avatarPic" />
             <div class="right_part">
@@ -60,7 +60,7 @@
         <!-- 我的粉丝end -->
         <!-- 我邀请的365合伙人 -->
         <div class="fansContentContainer" v-if="isTabTwo">
-          <img v-if="listObj.length<=0" :src="'../../../../pages/img/null/null_fan.png'" class="null_bg" />
+          <img v-if="listObj.length<=0" src="@/assets/images/null/null_fan.png" class="null_bg" />
           <div class="fansContentLi" v-if="listObj" v-for="(item,index) in listObj" :key="index" @click="goFansDetail" :data-fanid="item.member_id">
             <img :src="item.member_avatar" class="avatarPic"/>
             <div class="right_part">
@@ -105,16 +105,28 @@ export default {
   },
   data() {
     return {
-      fansContent: "",
-      show_bottom: false,
-      listObj: ""
+      show_reward:false,
+      isTabOne: true,
+      isTabTwo: false,
+      menuTop: '',
+      listObj: [],
+      page: 0,
+      type_num:0,
+      objData:{},
+      showIncomeModal:false,
+      fansContent:{
+        
+      },
+      show_bottom:false
     };
   },
   methods: {
-    menuFixed() {},
-    isTabOne() {},
-    choseTab() {},
-    isTabTwo() {}
+    choseTab(){
+
+    },
+    fans_list(){
+
+    }
   },
   computed: {
     ...mapGetters(["user", "account", "token"])

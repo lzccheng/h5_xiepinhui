@@ -101,6 +101,7 @@
 
 .popup-list {
     height: 573/100rem;
+    overflow-y: scroll;
 }
 .popup-list-item {
     width: 95%;
@@ -189,8 +190,8 @@
       <div class="cell" style="padding: 0" v-if="methodType.type == 3">
         <div class="cell-input cell-input-code">
           <span>短信验证码</span>
-          <input type="text" v-model="ver_code" :placeholder="tel" maxlength="6" @click="bindCode" />
-          <div class="cell-input-btn" >{{num >= 60 ? '获取验证码' : num+'s'}}</div>
+          <input type="text" v-model="ver_code" placeholder="填写验证码" maxlength="6" @click="bindCode" style="width:auto;"/>
+          <div class="cell-input-btn" @click="getCode">{{num >= 60 ? '获取验证码' : num+'s'}}</div>
         </div>
       </div>
       <div :class="Number(money) >= 100 ? 'btn' : 'btn btn-disabled'" @click="sureWithdraw">
@@ -269,12 +270,13 @@ export default {
     account_number: '',
     account_name: '',
     ver_code: '',
-    tel: null,
+    tel: '',
     num: 60,
     };
   },
   created() {
     
+    this.tel=this.user.tel;
   },
   mounted(){
      this.$nextTick(function() {
@@ -282,6 +284,54 @@ export default {
     });
   },
   methods: {
+    countDown () {
+      console.log(888)
+      console.log(this.num)
+      let c = this.num
+      c--
+      if ( c < 1) {
+        this.num=60;
+        return
+      }
+      this.num=c;
+      setTimeout(()=>{
+        this.countDown();
+      },1000)
+    },
+    async getCode () {
+      this.countDown();
+      console.log(this.tel)
+      var tel_user = this.Trim(this.tel);
+      var that=this;
+
+      var param={
+        tel:tel_user,
+        plat:3,
+        type:3,//类型1设置支付密码验证码，2找回支付密码验证码，3提现验证码
+        time:new Date().getTime(),
+        version:'1.0.1',
+        device_name:'MAX123'
+      };
+      
+      param=JSON.stringify(param);
+      param=this.$encrypt(param);
+      
+      param={
+        param:param
+      };
+      const [err, res] = await api.sendTradePassword(param);
+      if(err){
+        this.$vux.toast.text(err.msg);
+        return;
+      }else{
+        console.log('发送验证码中')
+      }
+    },
+    //去掉字符串前后所有空格：
+    Trim(str) {
+      str=String(str);//注意这里是字符串才有replace函数
+      return str.replace(/(^\s*)|(\s*$)/g, "");
+    },
     showBankList(){
       const isTrue = this.isSelect ? false : true;
       this.isSelect=isTrue;
@@ -322,7 +372,7 @@ export default {
     bindCode(){
 
     },
-    sureWithdraw(){
+    async sureWithdraw(){
       if(this.methodType.type != 3 && this.account_number.length < 1 && this.account_name.length < 1) {
         this.$vux.toast.text('请输入账号或提现姓名');
         return false;
@@ -330,6 +380,30 @@ export default {
         this.$vux.toast.text('请输入手机验证码');
         return false;
       }
+      let data={
+        plat: 3,
+        token:this.token,
+        account:this.account,
+        amount: this.money,
+        payment_code: this.methodType.type,
+        account_number: this.account_number,
+        account_name: this.account_name,
+        card_id: this.methodType.card_id,
+        ver_code: this.ver_code,
+        tel: this.tel,
+        sub_member_id: 0
+      };
+      
+      const [err, res] = await api.withdrawCash(data);
+      if(err){
+        this.$vux.toast.text(err.msg);
+        return;
+      }else{
+        if(res.code==2000){
+          this.$router.push('/drawSuccess');
+        }
+      }
+
     },
     selectType(e){
       

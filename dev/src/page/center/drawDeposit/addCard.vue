@@ -174,7 +174,7 @@
   <div class="shopindex">
     <x-header :left-options="{backText:''}" title="银行卡管理" id="vux-header"></x-header>
     <!-- 主体内容 -->
-    <div>
+    <div style="padding-top:0.92rem;">
     <div class="cell add-card" @click="shadowToggle">+添加银行卡</div>
 
     <div v-if="bankList.length > 0">

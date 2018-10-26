@@ -33,3 +33,13 @@ export const getBankList = (data) => {
   const url = `${domain}/restore/banklist`
   return POST(url, data)
 }
+//绑定银行卡
+export const BindingNewBank = (data) => {
+  const url = `${domain}/restore/addbank`
+  return POST(url, data)
+}
+//提现
+export const withdrawCash = (data) => {
+  const url = `${domain}/restore/withdraw`
+  return POST(url, data)
+}
