@@ -10,7 +10,9 @@ import 'vant/lib/vant-css/index.css';
 import { encrypt } from 'utils/encrypt.js' // encrypt
 import VueClipboard from 'vue-clipboard2' // 剪切板
 import { LoadingPlugin, ToastPlugin, ConfirmPlugin, WechatPlugin, AlertPlugin } from 'vux'
+import VueAwesomeSwiper from 'vue-awesome-swiper';
 
+Vue.use(VueAwesomeSwiper)
 Vue.use(Vant);
 Vue.use(WechatPlugin)
 Vue.use(LoadingPlugin)

@@ -5,6 +5,7 @@ import * as comm from './api_modules/comm'
 import * as myshop from './api_modules/myshop'
 import * as draw from './api_modules/draw'
 import * as wallet from './api_modules/wallet'
+import * as index from './api_modules/index'
 export const api = {
   ...user,
   ...center,
@@ -12,5 +13,6 @@ export const api = {
   ...comm,
   ...myshop,
   ...draw,
-  ...wallet
+  ...wallet,
+  ...index
 }

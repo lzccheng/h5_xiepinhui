@@ -1,6 +1,10 @@
 // 微信jssdk 实例
 
 // 获取签名
+var apiUrl='https://api.dev.xiepinhui.com.cn/'
+
+console.log('获取签名：'+apiUrl)
+
 this.$ajax.post(this.apiUrl + "/api/wxShare/getWxConfig",
   this.$qs.stringify({
     "url": window.location.href.split('#')[0]
