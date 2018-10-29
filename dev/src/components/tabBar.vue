@@ -63,18 +63,8 @@ export default {
         }
     },
     mounted(){
-        if(this.data && this.data.length){
-            console.log('=====店铺导航栏实例化mounted======')
-            let that = this;
-            let tab = this.$refs.tab;
-            let tabContent = this.$refs.tabContent;
-            tabContent.style.width = that.data.length*125/50 + 'rem';
-            let BS = new BScroll(tab,{
-                scrollX: true,
-                eventPassthrough:'vertical'
-            });
-            this.BS = BS;
-        }
+        // console.log('=====店铺导航栏实例化mounted======')
+        this.createBar();
     },
     methods: {
         onclick(item,index){
@@ -82,23 +72,28 @@ export default {
             this.currentTab = index;
             item._index = index;
             this.$emit('onclick',item)
-        }
-    },
-    watch: {
-        data(){
+        },
+        createBar(){
             if(this.data && this.data.length){
                 if(this.BS)return;
-                console.log('=====店铺导航栏实例化watch======')
                 let that = this;
                 let tab = this.$refs.tab;
                 let tabContent = this.$refs.tabContent;
                 tabContent.style.width = that.data.length*125/50 + 'rem';
-                let BS = new BScroll(tab,{
-                    scrollX: true,
-                    eventPassthrough:'vertical'
-                });
-                this.BS = BS;
+                this.$nextTick(()=>{
+                    let BS = new BScroll(tab,{
+                        scrollX: true,
+                        eventPassthrough:'vertical'
+                    });
+                    that.BS = BS;
+                })
             }
+        }
+    },
+    watch: {
+        data(){
+            // console.log('=====店铺导航栏实例化watch======')
+            this.createBar();
         }
     }
     

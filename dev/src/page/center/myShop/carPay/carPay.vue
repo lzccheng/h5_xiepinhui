@@ -343,7 +343,6 @@ export default {
           })
         }
         this.goodsInfo = carpayInfo;
-        console.log(this.$vux.toast)
     },
     methods: {
         async getBlance(){
@@ -370,7 +369,6 @@ export default {
           let val = this.value;
           if(val){
             this.goodsInfo.allPrice = this.goodsInfo.allPrice - this.blanceInfo.rebate_amout;
-            console.log(this.goodsInfo.allPrice)
           }else{
             this.goodsInfo.allPrice = this.oldPrice;
           }
@@ -397,16 +395,68 @@ export default {
             cart_id: this.goodsInfo.carIdString,
             use_banlance: this.isBlance?'1':'0',
             pay_code: 2,
-            sub_member_id: this.goodsInfo.sub_member_id
+            sub_member_id: this.goodsInfo.sub_member_id?this.goodsInfo.sub_member_id: ''
           }
           const [err, res] = await api.addrefit(data);
           if (err) {
             this.$vux.toast.text(err.msg);
             return;
           }
-          console.log('res',res)
           if(res.code == '2000'){
-            console.log(Vue.wechat)
+            console.log(res)
+            let that = this;
+            let dataConfig = res.data.pay_param;
+            let subMemberId = this.sub_member_id;
+            if(dataConfig.pay_status == 2){
+                this.$store.dispatch('update_carpayInfo',{});
+                
+                // if(subMemberId==0){
+                //   this.$router.replace({
+                //     path: ''
+                //   })
+                // }else{
+                //   this.$router.replace({
+                //     path: ''
+                //   })
+                // }
+            }
+            // let config = {
+            //   appId: dataConfig.appid,
+            //   timestamp: dataConfig.timestamp,
+            //   nonceStr: dataConfig.nonce_str,
+            //   signature: dataConfig.sign,
+            //   jsApiList: ['chooseWXPay']
+            // }
+            // this.$wechat.config(config);
+            // this.$wechat.error((err)=>{
+            //   console.log('wechat error',err)
+            // })
+            // this.$wechat.ready(()=>{
+            //   console.log('wechat success', config)
+            //   that.$wechat.checkJsApi({
+            //     jsApiList: ['chooseWXPay'],
+            //     success: (res)=>{
+            //       console.log('check API success')
+            //       if(res.errMsg === 'checkJsApi:ok'){
+            //         console.log('chooseWXPay is can use')
+            //         that.$wechat.chooseWXPay({
+            //           timestamp: dataConfig.timestamp,   // 支付签名时间戳
+            //           noceStr: dataConfig.nonce_str,    // 支付签名随机串，不长于 32 位
+            //           package: "",     // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+            //           signType: "MD5",   // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+            //           paySign: dataConfig.sign,       // 支付签名
+            //           success(res){
+            //               console.log('wechat pay success',res)
+            //           },
+            //           error(err){
+            //             console.log('pay error',err)
+            //           }
+            //         })
+            //       }
+            //     }
+            //   })
+            // })
+            // console.log(this.wechat)
           }
         }
     },

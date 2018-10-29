@@ -120,12 +120,15 @@ export default {
     //微信登录
     async wxLogin() {
       let that = this;
+      console.log(this.access_code)
       if (
         !!this.access_code &&
         this.access_code !== "" &&
         this.access_code !== undefined
       ) {
         //设置回调页
+        console.log(1)
+        return
         if (this.url == undefined || this.url == "/") {
           this.url = "/";
         } else {
@@ -157,10 +160,18 @@ export default {
           });
       } else {
         var fromurl = window.location.href;
+        console.log(9999,fromurl)
+        console.log(encodeURIComponent(fromurl))
+        // return
+        // window.location.href =
+        //   "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa4142cc3047c6dff&redirect_uri=" +
+        //   encodeURIComponent(fromurl) +
+        //   "&response_type=code&scope=snsapi_userinfo&state=getUser#wechat_redirect";
         window.location.href =
-          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa4142cc3047c6dff&redirect_uri=" +
+          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx47d52b6420c14397&redirect_uri=" +
           encodeURIComponent(fromurl) +
           "&response_type=code&scope=snsapi_userinfo&state=getUser#wechat_redirect";
+          
       }
     },
     // 第三方登录

@@ -7,7 +7,8 @@ import Vue from 'vue'
 import timestamp from 'time-stamp';
 
 export {
-  wxShare
+  wxShare,
+  wxPay
 }
 
 //微信分享
