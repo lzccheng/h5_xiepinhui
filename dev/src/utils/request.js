@@ -45,6 +45,7 @@ function request(method) {
       method: method,
       url: url,
       data: qs.stringify(data),
+      params: data.params?data.params:{},
       headers: {
         // 'content-type': 'application/json',
         // 'authorization': `${localStorage.getItem(constant.AUTHORIZATION_KEY)}`
@@ -63,13 +64,20 @@ function request(method) {
         });
         return;
       }
-      if (res.data.code === 2000) {
+     // var resObj=JSON.parse(res);
+      //console.log(resObj.data.code)
+      // console.log('axios res:',res.data.code)
+      if(data.params){
+        try{
+          res.data = JSON.parse(res.data.slice(1,-1));
+        }catch(err){}
+      }
+      if (res.data.code == 2000) {
         return [null, res.data]
       } else {
         return [res.data, null]
       }
     }).catch((err) => {
-      console.log('axios-err', err, typeof err)
       if (typeof err === 'string') {
         err = {
           info: err

@@ -380,6 +380,10 @@ export default {
         this.$vux.toast.text('请输入手机验证码');
         return false;
       }
+
+      var sub_member_id='';
+      sub_member_id=this.$route.query.sub_member_id;
+
       let data={
         plat: 3,
         token:this.token,
@@ -391,7 +395,7 @@ export default {
         card_id: this.methodType.card_id,
         ver_code: this.ver_code,
         tel: this.tel,
-        sub_member_id: 0
+        sub_member_id: sub_member_id
       };
       
       const [err, res] = await api.withdrawCash(data);
