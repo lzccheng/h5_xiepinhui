@@ -541,10 +541,10 @@
                   <img mode='widthFix' :src='allitem.img' bindtap="openActive_tj" :id="allitem.s_id" /></div>
               <div class='scroll-box '>
                   <div class="recommend_scroll_x_box xiaosanjiao" scroll-x="true">
-                      <div class="recommend_hot_box" v-for="(item_list,index) in allitem.goods" :key="index" bindtap='openGoods' :id="item_list.n_goods_id">
+                      <router-link class="recommend_hot_box" tag="div" :to="'/index/goodsInfoPindan?goodsId='+item_list.n_goods_id" v-for="(item_list,index) in allitem.goods" :key="index" bindtap='openGoods' :id="item_list.n_goods_id">
                           <img :src="item_list.goods_image" class="recommend_hot_image" />
                           <div class="goods-duan-name">{{item_list.goods_name}}</div>
-                          <div class="goods-duan-price">￥{{item_list.purchase_price}}</div></div>
+                          <div class="goods-duan-price">￥{{item_list.purchase_price}}</div></router-link>
                       <div class="recommend_hot_box more-box" bindtap="openActive_tj" :id="allitem.s_id">更多</div></div>
               </div>
           </div>
