@@ -25,3 +25,9 @@ export const getLimitData = (data) => {
   const url = `${domain}/nine/newdynamic`
   return GET(url, data)
 }
+
+//首页商品
+export const getGoods = (data) => {
+  const url = `${domain}/nine/ncategoods`
+  return GET(url, data)
+}
