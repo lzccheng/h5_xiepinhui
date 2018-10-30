@@ -2,6 +2,7 @@
 .page{
   width: 100%;
   overflow: hidden;
+  background-color: #F8F8F8;
   // padding-bottom: 44/50rem;
 }
 contact-button {
@@ -825,6 +826,18 @@ contact-button {
               </div>
               
             </div>
+            <div class='eva-title flex flex-pack-justify  flex-align-center '>
+              <span>商品评价({{goodsInfo.eval_num}})</span>
+              <div class="flex flex-align-center more-title" v-if="goodsInfo.eval_num!=0">
+                <div>好评率
+                  <span class='red-color'>{{goodsInfo.eval_percent}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="tj-bottom-more" style="border-top: 2px solid #f8f8f8;">
+                  查看全部评价
+                <span class="iconfont icon-yuanyou"></span>
+              </div>
             <div v-if="tj_info!=''">
               <div class="tj-title">
                 <img src="~@/assets/images/goodsInfo/tj_title.png" alt="">
@@ -864,7 +877,7 @@ contact-button {
                     </div>
                 </div>
             </div>
-            <div class="alert " v-if="actionSheetbindchange">
+            <div class="alert " v-if="actionSheetHidden && goodsInfo">
               <div class="contt">
                 <div class="action-border" >
                   <div class="action-header flex con" >
@@ -945,7 +958,7 @@ export default {
                 // bulletActiveClass: 'my-bullet-active',
               }
             },
-            actionSheetHidden: true,
+            actionSheetHidden: false,
             coupon_actionSheetHidden: false,
             goodsId: "",
             goodsInfo: "",
@@ -1048,7 +1061,7 @@ export default {
             this.showPindan(this);
         },
         actionSheetbindchange(){
-          this.actionSheetbindchange = !this.actionSheetbindchange;
+          this.actionSheetHidden = !this.actionSheetHidden;
         },
         spaceStorage(){
             var nowSpaceTitle = "";
