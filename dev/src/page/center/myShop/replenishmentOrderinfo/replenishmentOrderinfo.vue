@@ -378,7 +378,6 @@ export default {
         this.refit_id = this.$route.query.refit_id;
         this.sub_member_id = this.$route.query.sub_member_id || 0;
         this.goodsImgwidth = window.innerWidth*0.3 -20;
-        
     },
     mounted(){
         this.showdata();
@@ -463,6 +462,58 @@ export default {
           } 
           if(res.code == '2000'){
             this.showdata();
+          }
+        },
+        async gobay(){
+          // this.$wechat.config({})
+          let that = this;
+          let data = {
+            plat: 3,
+            account: this.account,
+            token: this.token,
+            refit_id: this.refit_id,
+            pay_code: 2,
+            sub_member_id: this.sub_member_id?this.sub_member_id: '0'
+          }
+          const [err, res] = await api.topay(data);
+          if (err) {
+              this.$vux.toast.text(err.msg);
+              return;
+          }
+          console.log(res)
+          // return
+          if(res.code == '2000'){
+            this.$wechat.config({
+              debug: true,
+              appId: res.data.pay_param.appid,
+              timestamp: res.data.pay_param.timestamp,
+              nonceStr: res.data.pay_param.nonce_str,
+              signature: res.data.pay_param.sign,
+              jsApiList: ["chooseWXPay"]
+            })
+            this.$wechat.ready(()=>{
+              that.$wechat.checkJsApi({
+                jsApiList: ['chooseWXPay'],
+                success(_res){
+                  if(_res.errMsg === 'checkJsApi:ok'){
+                    console.log('checkJsApi:ok')
+                    that.$wechat.chooseWXPay({
+                      timestamp: res.data.pay_param.timestamp,
+                      nonceStr: res.data.pay_param.nonce_str,
+                      package: 'prepay_id=' + res.data.pay_param.prepay_id,
+                      signType: 'MD5',
+                      paySign: res.data.pay_param.sign,
+                      success(res){
+                        console.log('pay success')
+                      },
+                      fail(err){
+                        console.log('pay err',err)
+                      }
+                    })
+                  }
+                }
+              })
+            })
           }
         }
     },

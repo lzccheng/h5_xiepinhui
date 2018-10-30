@@ -31,3 +31,31 @@ export const getGoods = (data) => {
   const url = `${domain}/nine/ncategoods`
   return GET(url, data)
 }
+//推荐商品
+export const commendgoods = (data) => {
+  const url = `${domain}/nine/commendgoods`
+  return POST(url, data)
+}
+//商品详情
+export const goodsspec = (data) => {
+  const url = `${domain}/nine/goodsspec`
+  return POST(url, data)
+}
+
+//商品详情图片
+export const goodsimgarr = (data) => {
+  const url = `${domain}/nine/goodsimgarr`
+  return POST(url, data)
+}
+
+//商品详情图片
+export const groupinglist = (data) => {
+  const url = `${domain}/ninegroup/groupinglist`
+  return POST(url, data)
+}
+
+//商品详情
+export const newgoodsdetail = (data) => {
+  const url = `${domain}/nine/newgoodsdetail`
+  return POST(url, data)
+}

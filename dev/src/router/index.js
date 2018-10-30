@@ -62,6 +62,8 @@ const replenishmentOrderinfo = ()=>import('@/page/center/myShop/replenishmentOrd
 //补货订单
 const subreplenishOrder = ()=>import('@/page/center/myShop/subreplenishOrder/subreplenishOrder')
 
+//订单详情
+const goodsInfoPindan = ()=>import('@/page/index/goodsInfoPindan/goodsInfoPindan')
 
 
 
@@ -122,7 +124,14 @@ let router = new Router({
       children: [{
         path: '/',
         component: home
-      }],
+      },{
+        path: 'goodsInfoPindan',
+        name: 'goodsInfoPindan',
+        component: goodsInfoPindan,
+        meta: {
+          title: '订单详情'
+        }
+      },],
       meta: {
         title: '首页'
       }
@@ -147,7 +156,7 @@ let router = new Router({
           meta: {
             title: '发布评论'
           }
-        }]
+        },]
       }],
       meta: {
         title: '鞋品荟'

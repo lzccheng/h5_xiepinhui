@@ -478,7 +478,7 @@ export default {
             } else {
                 carIdString = carIdString + "," + item.refit_cart_id;
             }
-            console.log(carIdString)
+            // console.log(carIdString)
             return carIdString
         },
         // 全选  这里遍历数组将所有的全部选中 然后 计算选中数量 和价钱  

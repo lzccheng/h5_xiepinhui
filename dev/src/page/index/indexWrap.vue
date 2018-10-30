@@ -1,7 +1,7 @@
 <template>
     <div class="index-wrap">
-        <router-view></router-view>
-        <bottom></bottom>
+        <router-view :key="$route.fullPath"></router-view>
+        <bottom v-show="$store.state.comm.bottomShow"></bottom>
     </div>
 </template>
 

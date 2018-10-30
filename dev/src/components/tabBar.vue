@@ -75,12 +75,12 @@ export default {
         },
         createBar(){
             if(this.data && this.data.length){
-                if(this.BS)return;
                 let that = this;
-                let tab = this.$refs.tab;
-                let tabContent = this.$refs.tabContent;
-                tabContent.style.width = that.data.length*125/50 + 'rem';
                 this.$nextTick(()=>{
+                    if(that.BS)return;
+                    let tab = that.$refs.tab;
+                    let tabContent = that.$refs.tabContent;
+                    tabContent.style.width = that.data.length*125/50 + 'rem';
                     let BS = new BScroll(tab,{
                         scrollX: true,
                         eventPassthrough:'vertical'
