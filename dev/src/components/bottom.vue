@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      index: 0
+      index: 0,
     };
   },
   methods: {
@@ -39,7 +39,7 @@ export default {
     },
     _watchRouter(to) {
       let path = to.path;
-      this.setTabbarItem(path);
+      this.setTabbarItem(path,to);
     }
   },
   created() {

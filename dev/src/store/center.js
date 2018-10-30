@@ -38,7 +38,6 @@ const mutations = {
     state._storeInfo = info;
   },
   update_carpayInfo(state, info){
-
     state.carpayInfo = info
   }
 }

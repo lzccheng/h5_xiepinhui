@@ -1,5 +1,6 @@
 <template>
     <div class="index-box">
+        <router-link to="/index/goodsInfoPindan?goodsId=991" tag="button">goodsInfoPindan</router-link>
         <!-- 首页内容开始 -->
 
       

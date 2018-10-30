@@ -13,6 +13,12 @@ export const allMyShopList = (data) => {
   const url = `${domain}/restore/sublist`
   return POST(url, data)
 }
+
+//去支付
+export const topay = (data) => {
+  const url = `${domain}/reinventory/topay`
+  return POST(url, data)
+}
 //添加子账号接口
 export const addSubStore = (data) => {
   const url = `${domain}/restore/addsub`
