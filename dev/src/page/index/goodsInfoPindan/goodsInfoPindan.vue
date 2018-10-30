@@ -2,7 +2,7 @@
 .page{
   width: 100%;
   overflow: hidden;
-  padding-bottom: 44/50rem;
+  // padding-bottom: 44/50rem;
 }
 contact-button {
   line-height: 20/50rem;
@@ -37,8 +37,8 @@ contact-button {
   width: 100%;
   background: #de352d;
   color: #fff;
-  height: 58r/50rem;
-  line-height: 58r/50rem;
+  height: 58/50rem;
+  line-height: 58/50rem;
   font-size: 12pt;
   text-align: center;
   position: absolute;
@@ -281,7 +281,8 @@ contact-button {
   width: 100%;
   padding-top: 10/50rem;
   padding-left: 100/50rem;
-  display: -webkit-box;
+  display: flex;
+  flex-direction:column;
 }
 
 .action-right-lable {
@@ -306,7 +307,7 @@ contact-button {
 
 .select {
   text-align: center;
-  border: 2r/50rem solid #979797;
+  border: 1/50rem solid #979797;
   color: #666;
   padding: 0/50rem 15/50rem;
   border-radius: 20/50rem;
@@ -316,7 +317,7 @@ contact-button {
 
 .select-hui {
   text-align: center;
-  border: 2r/50rem solid #ddd;
+  border: 2/50rem solid #ddd;
   color: #ccc;
   padding: 0/50rem 15/50rem;
   border-radius: 20/50rem;
@@ -395,6 +396,7 @@ contact-button {
   width: 100%;
   z-index: 3;
   bottom: 0;
+  background-color: #fff;
 }
 
 .action-btn .btn {
@@ -403,7 +405,13 @@ contact-button {
   text-align: center;
   color: #fff;
 }
-
+.contt{
+  position: absolute;
+  left: 0;
+  bottom: 44/50rem;
+  background: #fff;
+  padding-bottom: 20/50rem;
+}
 .eva-box {
   background: #fff;
 }
@@ -599,7 +607,7 @@ contact-button {
 .close-icon {
   font-size: 20pt;
   position: absolute;
-  right: 30/50rem;
+  right: 10/50rem;
   color: #666;
 }
 
@@ -629,7 +637,7 @@ contact-button {
 
 .recommend_hot_box {
   width: 25%;
-  margin-right: 10r/50rem;
+  margin-right: 10/50rem;
   display: inline-block;
   text-align: center;
   border-radius: 3/50rem;
@@ -662,11 +670,11 @@ contact-button {
 }
 
 .rebate-box {
-  height: 50r/50rem;
-  line-height: 50r/50rem;
-  font-size: 28r/50rem;
+  height: 50/50rem;
+  line-height: 50/50rem;
+  font-size: 28/50rem;
   color: #F75D95;
-  padding: 0 40r/50rem 0 15r/50rem;
+  padding: 0 40/50rem 0 15/50rem;
   position: relative;
   background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO0AAABOCAMAAAD7G2H9AAAAh1BMVEUAAAD7TnT8THP8THL8THL/Xof8TXL/T3T/co78THL8THL8THL8THP8TXP7TXP8TXP8TXP/VHr7TXL7TXL/UHX7TXP8TXL8TXL8TXP9TXT9TXP8T3P/T3f/U3r/U3T/UHf/apf8THL9TXP8TXP9TnP9TXP8TXP7TXT/TnL/TnX7T3T7THL7THI+MyP6AAAALHRSTlMAgP357QisLQT05d+1koldSw7MxyXWwL2admVTIBoXEwKjeqdvbVVCOzdEQ86EPDYAAAFGSURBVHja7dwHboNAEIXhB+xSvKZjMMYF95S5//miXCN/5gafhMROlYGil40RJFKrZZEgkTrP0Z6TShxtZANHm2+24mgXa0DaKawc7WA3cbRlcuZovbuKoz3YB0jbdeJoP+0A0l6LlqO9JKU42tkGjnYNkzjaxhaQdrvJOdpjHImjreITR+tdKo62tjdI2+/E0Wb2BGn3RcvRtsVeHO3DMpB214uj/bIapE2d52hPcSWONoqPHO1vp4ujfVkD0o5BHG1mM0hbJpd/7R8N1pesKawg7YL6A7FeF6yXIywrYGV8eqOyeValRk9UFY5VYWVVz5XZA6Rldb1U2zdIy+pWsyYRYFMmrAkiNfYCadcwgrSaLQNpWRO7rGls2KQ9a4sCtiHj3R2kZW22wbYWNYUcpGVtG7M2yXUjXQmAXYDQ3Xna5RZQdD+yhHIobY9CdAAAAABJRU5ErkJggg==");
   background-size: 100% 100%;
@@ -710,6 +718,7 @@ contact-button {
   z-index: 20;
   .con{
     position: absolute;
+    background-color: #fff;
     left: 0;
     bottom: 44px;
     width: 100%;
@@ -725,6 +734,12 @@ contact-button {
 
 .tj-title img {
   width: 100%;
+}
+.action-border{
+  // position: absolute;
+  // bottom: 0;
+  // left: 0;
+  // width: 100%;
 }
 .shuoming-content .shuoming-title {
   font-size: 12pt;
@@ -843,11 +858,59 @@ contact-button {
                     <span class='bottom-lable shoucang-lable'>收藏</span>
                 </div>
                 <div class="bottom-form">
-                    <div class="bottom-btn one" style="width: 100%;text-align: center">
+                    <div class="bottom-btn one" style="width: 100%;text-align: center" @click="actionSheetTap('buy','')">
                         <div class="newprice">￥{{goodsInfo.purchase_price}}</div>
                         <div class='btn-lable'>购买</div>
                     </div>
                 </div>
+            </div>
+            <div class="alert " v-if="actionSheetbindchange">
+              <div class="contt">
+                <div class="action-border" >
+                  <div class="action-header flex con" >
+                    <img :src="goodsInfo.goods_image_arr[0]" class="moren-img" alt="">
+                    <div class='action-right' style="flex: column;">
+                      <span class="action-right-lable" v-if="btnType=='buy'">￥{{goodsInfo.purchase_price}}</span>
+                      <span class="action-right-lable" v-else>￥{{goodsInfo.group_price}}</span>
+                      <span class="action-right-lable">{{nowSelectspec.spec}}</span>
+                      <span class="action-right-lable" v-if="goodsInfo.is_present=='1'">库存:现生产(7天内发货)</span>
+                      <span class="action-right-lable" v-else-if="goodsInfo.is_present=='2'">库存:15-30天定制</span>
+                      <span class="action-right-lable" v-else>库存：{{nowSelectspec.goods_storage}}</span>
+                    </div>
+                    <div class="close-icon iconfont icon-guanbi" @click="actionSheetbindchange"></div>
+                  </div>
+                </div>
+                <div style="height: 250px;margin-top:100px;padding-bottom:44px; overflow: scroll;" v-if="spec_info">
+                  <div class="info_choose " v-for="(specBox, Idx) in spec_info.goods_specname" :key="Idx">
+                    <div v-if="Idx==0">
+                      <div class="catalog_name">{{specBox.sp_name}}</div>
+                      <div class="catalog_items flex flex-warp ">
+                          <div v-for="(specName, index) in specBox.values" :key="index">
+                              <div @click="clickNum(index,Idx,specBox.sp_name+':'+specName)" :class="{'select-active': specIndex[Idx] === index,'select': specIndex[Idx] !== index}">{{specName}}</div>
+                          </div>
+                      </div>
+                    </div>
+                    <div v-if="Idx==1">
+                      <div class="catalog_name">{{specBox.sp_name}}</div>
+                      <div class="catalog_items flex flex-warp ">
+                          <div v-for="(specName,index) in specBox.values" :key="index">
+                            <div @click="clickNum(index,Idx,specBox.sp_name + ':' + specName)" v-if="nowList[index].goods_storage!=0" :class="{'select-active': specIndex[Idx] === index,'select': specIndex[Idx] !== index}">
+                                {{specName}}
+                            </div>
+                            <div class="select-hui" v-else>{{specName}}</div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="action-btn">
+                  <div class="btn" @click="goBuy">
+                    <span v-if="btnType=='pindan'">确认拼单</span>
+                    <span v-else>确认购买</span>
+                  </div>
+                </div>
+              </div>
+              
             </div>
         </div>
     </div>
@@ -888,6 +951,7 @@ export default {
             goodsInfo: "",
             allIndex: "",
             nowIndex: "",
+            spec_info: "",
             goods_specname: "",
             all_spec_goodid: "",
             nowSelectspec: "",
@@ -926,7 +990,6 @@ export default {
         });
         this.goodsId = this.$route.query.goodsId;
         this.goodstype = this.$route.query.goodstype || 1;
-        console.log(66666)
         this.showXiangqing();
         this.getData();
     },
@@ -983,6 +1046,9 @@ export default {
                 this.goodsinfoImage = _res.data.goods_body
             }
             this.showPindan(this);
+        },
+        actionSheetbindchange(){
+          this.actionSheetbindchange = !this.actionSheetbindchange;
         },
         spaceStorage(){
             var nowSpaceTitle = "";
@@ -1100,6 +1166,97 @@ export default {
             that.tj_info = tuijianInfo;
             that.tj_height = that.tj_height
           }
+        },
+        actionSheetTap(id,groupid){
+          this.isShow = true;
+          this.actionSheetHidden = !this.actionSheetHidden;
+          this.btnType = id;
+          this.group_id = groupid;
+        },
+        clickNum(num,fatherindex,value){
+            let that = this;
+            var ss = this.nowSelectspec.spec.split(",");
+            var spec = this.specIndex;
+            var yiselect = that.select;
+            if (spec[fatherindex] === num) {
+              spec[fatherindex] = "";
+              yiselect[fatherindex] = "";
+            } else {
+              spec[fatherindex] = num;
+              yiselect[fatherindex] = value;
+            }
+            // 当前选择的规格类型
+            this.specIndex = this.specIndex;
+            this.nowClick = fatherindex;
+            this.yiselect = yiselect;
+            //选中的规格组合，拆分成数组然后修改选中的值
+            ss[fatherindex] = value;
+            var str = "";
+            for (var n = 0; n < ss.length; n++) {
+              if (n == 0) {
+                str = ss[n];
+              }
+              else {
+                str = str + "," + ss[n]
+              }
+            }
+            // 匹配相对应的规格组合
+            for (var i = 0; i < that.spec_info.all_spec_goodid.length; i++) {
+              if (str == that.spec_info.all_spec_goodid[i].spec) {
+                this.nowSelectspec = that.spec_info.all_spec_goodid[i];
+              }
+            }
+            this.spaceStorage();
+        },
+        spaceStorage(){
+            var nowSpaceTitle = "";
+            var nowList = [];
+            if (this.specIndex[0] != "") {
+
+            }
+            for (var i in this.select) {
+              if (i == 0) {
+                nowSpaceTitle = this.select[i];
+              }
+            }
+            for (var d = 0; d < this.spec_info.all_spec_goodid.length; d++) {
+              var text = this.spec_info.all_spec_goodid[d].spec;
+              if (text.indexOf(nowSpaceTitle) == 0) {
+                nowList.push(this.spec_info.all_spec_goodid[d])
+              }
+            }
+            this.nowList = nowList;
+        },
+        //去购买
+        goBuy(){
+          if(this.yiselect[0] == "" || this.yiselect[1] == "" || this.nowSelectspec.goods_storage == 0){
+            return this.$vux.toast.text("请选择商品规格");
+          }
+          var that = this;
+          var goodsprice;
+          if (this.btnType == "pindan") {
+            goodsprice = this.goodsInfo.group_price;
+          } else if (this.btnType == "buy") {
+            goodsprice = this.goodsInfo.purchase_price;
+          }
+          this.actionSheetHidden = !this.actionSheetHidden;
+          let goodsInfo = {
+            goodspec: this.nowSelectspec,
+            goodsimg: this.goodsInfo.goods_image_arr[0],
+            goodsname: this.goodsInfo.goods_name,
+            goodsprice: goodsprice,
+            goods_id: this.goodsInfo.n_goods_id,
+            btnType: this.btnType
+          }
+          this.$store.dispatch('update_goodsInfo',goodsInfo);
+          console.log(this.group_id)
+          return
+          this.$router.push({
+            path: '/index/orderInfo_pd',
+            query: {
+              group_id: this.group_id
+            }
+          })
         }
     },
     computed: {

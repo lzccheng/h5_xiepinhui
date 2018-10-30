@@ -1,6 +1,7 @@
 let state = {
   indexUrl: '',
-  bottomShow: true
+  bottomShow: true,
+  goodsInfo: {}
 }
 
 let getters = {}
@@ -17,6 +18,9 @@ const actions = {
   },
   update_bottomShow({commit},bool){
     commit('update_bottomShow',bool)
+  },
+  update_goodsInfo({commit},goodsInfo){
+    commit('update_goodsInfo',goodsInfo)
   }
 }
 
@@ -26,6 +30,9 @@ const mutations = {
   },
   update_bottomShow(state,bool){
     state.bottomShow = bool
+  },
+  update_goodsInfo(state,goodsInfo){
+    state.goodsInfo = goodsInfo
   }
 }
 
