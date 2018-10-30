@@ -26,6 +26,11 @@ export const getLimitData = (data) => {
   return GET(url, data)
 }
 
+//推荐商品
+export const commendgoods = (data) => {
+  const url = `${domain}/nine/commendgoods`
+  return POST(url, data)
+}
 //商品详情
 export const goodsspec = (data) => {
   const url = `${domain}/nine/goodsspec`

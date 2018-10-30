@@ -146,7 +146,7 @@ contact-button {
   color: red;
 }
 
-.shuoming text {
+.shuoming span {
   color: #888;
 }
 
@@ -156,7 +156,7 @@ contact-button {
 
 .bottom-box {
   position: fixed;
-  bottom: 100px;
+  bottom: 0;
   width: 100%;
   height: 51/50rem;
   background: #fff;
@@ -357,7 +357,7 @@ contact-button {
 
 /*加号和减号*/
 
-.stepper text {
+.stepper span {
   width: 28/50rem;
   line-height: 26/50rem;
   text-align: center;
@@ -672,20 +672,167 @@ contact-button {
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
+.icon-youbian:before {
+  content: "\e68c";
+}
+.icon-duihao:before {
+  content: "\e603";
+}
+.icon-youbian:before {
+  color: #999;
+  content: "\e68c";
+}
+.icon-duihao:before {
+  content: "\e603";
+}
+.spanCol{
+  color: #999;
+}
+.shuoming-bottom-btn {
+  width: 100%;
+  line-height: 44px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  color: #fff;
+  background: #61D8D0;
+  font-size: 12pt;
+  z-index: 2;
+}
+.alert{
+  background: rgba(0, 0, 0, 0.7);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  .con{
+    position: absolute;
+    left: 0;
+    bottom: 44px;
+    width: 100%;
+  }
+}
+/* 推荐商品 */
+
+.tj-title {
+  width: 100%;
+  vertical-align: middle;
+  font-size: 0;
+}
+
+.tj-title img {
+  width: 100%;
+}
+.shuoming-content .shuoming-title {
+  font-size: 12pt;
+}
+.swiper-pagination-bullet-active{
+    opacity: 1;
+    background-color: #fff !important;
+}
 </style>
 <template>
     <div>
         <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header>
         <div class="page">
             <div class="silder-box">
-                <div class="silder-box swiper-container" ref="swiper">
-                    <div class="goods-silder swiper-wrapper">
-                        <div class="swiper-slide slide-image" v-for="(item, index) in goodsInfo.goods_image_arr" :key="index">
-                            <img :src="item" alt="" class="slide-image">
-                        </div>
-                    </div>
-                </div>
+                <swiper :options="swiperOption">
+                  <swiper-slide class="goods-silder" v-for="(slide,index) in goodsInfo.goods_image_arr" :key="index">
+                    <img :src="slide" alt="" class="slide-image">
+                  </swiper-slide>
+                  <div class="swiper-pagination" slot="pagination"></div>
+                </swiper>
             </div>
+            <div class="miaoshaTitle" v-if="goodsInfo.coupon_type=='1'">
+              <img src="~@/assets/images/miaosha/haohuan_title.png" alt="">
+            </div>
+            <div class="goods-info line_xi_after">
+              <div class='flex flex-align-center flex-pack-justify'>
+                <span class="goodsinfo-name">
+                  <span class="haohuo-mingpai" v-if="goodsInfo.s_type==2">好货专享</span>
+                  {{goodsInfo.goods_name}}
+                </span>
+              </div>
+              <div class="goods-info-bottom ">
+                <div class='flex flex-align-center flex-pack-justify'>
+                    <span class="price padd-top">价格:￥{{goodsInfo.purchase_price}}</span>
+                    <span class="salenum padd-top">销量:{{goodsInfo.goods_salenum}}件</span>
+                </div>
+                <div class='fanli-box flex flex-align-center' :class="{'flex-pack-end': partner_type==0,'flex-pack-justify': partner_type!=0}">
+                  <div class="rebate-box" v-if="partner_type=='1'||partner_type=='2'">
+                    返利：{{goodsInfo.purchase_rate}}
+                  </div>
+                </div>
+              </div>
+              <div class="now-activity flex flex-align-center flex-pack-justify" @click="openActivity" v-if="goodsInfo.activity_other==1">
+                <div class=' flex flex-align-center'>
+                  <img src="~@/assets/images/goodsInfo/activity_kanjia.png" v-if="goodsInfo.activity_type=='3'" alt="">
+                  <img src="~@/assets/images/goodsInfo/activity_miaosha.png" v-if="goodsInfo.activity_type=='9'" alt="">
+                  <img src="~@/assets/images/goodsInfo/activity_zhekou.png" v-if="goodsInfo.activity_type=='10'" alt="">
+                  <span>{{goodsInfo.activity_other_title}}</span>
+                </div>
+                <span class="iconfont icon-youbian"></span>
+              </div>
+            </div>
+            <div>
+              <div class="shuoming flex flex-align-center flex-pack-justify" @click="coupon_actionSheetbindchange">
+                <div class='iconfont icon-duihao'>
+                  <span class="spanCol">&nbsp;&nbsp;全场包邮</span>
+                </div>
+                <div class='iconfont icon-duihao'>
+                  <span class="spanCol">&nbsp;&nbsp;7天发货</span>
+                </div>
+                <div class='iconfont icon-duihao'>
+                  <span class="spanCol">&nbsp;&nbsp;法定三包</span>
+                </div>
+                <div class='iconfont icon-duihao'>
+                  <span class="spanCol">&nbsp;&nbsp;假一赔十</span>
+                </div>
+                <span class="iconfont icon-youbian shuoming-youbian-hui"></span>
+              </div>
+              <div class="alert" v-show="coupon_actionSheetHidden">
+                <div style="width:100%;  overflow: hidden;" class="shuoming con">
+                  <div class="coupon-action-top ">服务说明</div>
+                  <div class="coupon-action-scroll" style="width:100%; height:300px;">
+                    <div class="fuwu-shuoming flex " v-for="(item, index) in goodsInfo.instructions" :key="index">
+                      <div class="fuwu-left-icon iconfont icon-duihao"></div>&nbsp;&nbsp;&nbsp;
+                      <div class="shuoming-content">
+                        <div class="shuoming-title">{{item.title}}</div>
+                        <div class="shuoming-text">{{item.info}}</div>
+                      </div>
+                    </div>
+                    <div class="shuoming-bottom-btn" @click="coupon_actionSheetbindchange">我知道了</div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            <div v-if="tj_info!=''">
+              <div class="tj-title">
+                <img src="~@/assets/images/goodsInfo/tj_title.png" alt="">
+              </div>
+              <div class="silder-tj-box" :style='{"height":tj_height+"px"}'>
+                <swiper :options="swiperOption2" class="tj-silder">
+                  <swiper-slide class="tj-box flex flex-warp flex-align-center flex-pack-justify" v-for="(slide,index) in tj_info" :key="index">
+                    <div v-for="(item_list,idx) in slide" :key="idx" @click="opengoodsInfo(item_list.n_goods_id)" class="tj_list ">
+                      <img :src="item_list.goods_image" alt="">
+                      <div class="tj-goods-name">{{item_list.goods_name}}</div>
+                      <div class="tj-goods-price">￥{{item_list.group_price}}</div>
+                    </div>
+                  </swiper-slide>
+                  <div class="swiper-pagination2" slot="pagination" style="text-align: center;"></div>
+                </swiper>
+                <div class="tj-bottom-more">
+                  查看更多热卖推荐
+                  <span class="iconfont icon-yuanyou"></span>
+                </div>
+              </div>
+              
+            </div>
+            
             <div class="bottom-box flex ">
                 <span class="bottom-left kefu">
                     <span class='iconfont icon-xiaoxi bottom-icon'></span>
@@ -710,18 +857,33 @@ import 'swiper/dist/css/swiper.css';
 import loading from "@/components/loading.vue";
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin ,XSwitch } from "vux";
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import Swiper from 'swiper';
+// import Swiper from 'swiper';
 import { api } from "@/utils/api.js";
 import comm from "@/utils/comm.js";
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
 export default {
     components: {
-        XHeader
+        XHeader,
+        swiper,
+        swiperSlide
     },
     data(){
         return {
+            swiperOption: {
+              pagination: {
+                el: '.swiper-pagination',
+                // bulletActiveClass: 'my-bullet-active',
+              }
+            },
+            swiperOption2: {
+              pagination: {
+                el: '.swiper-pagination2',
+                // bulletActiveClass: 'my-bullet-active',
+              }
+            },
             actionSheetHidden: true,
-            coupon_actionSheetHidden: true,
+            coupon_actionSheetHidden: false,
             goodsId: "",
             goodsInfo: "",
             allIndex: "",
@@ -756,16 +918,17 @@ export default {
         }
     },
     created(){
-        this.goodsId = this.$route.query.goodsId;
-        this.goodstype = this.$route.query.goodstype || 1;
+        
     },
     mounted(){
         this.$vux.loading.show({
             text: "Loading"
         });
+        this.goodsId = this.$route.query.goodsId;
+        this.goodstype = this.$route.query.goodstype || 1;
+        console.log(66666)
         this.showXiangqing();
         this.getData();
-        new Swiper(this.$refs.swiper,{})
     },
     methods: {
         async getData(){
@@ -865,6 +1028,7 @@ export default {
             }
         },
         async showXiangqing(){
+            let that = this;
             let data = {
                 plat: '3',
                 n_goods_id: this.goodsId,
@@ -888,9 +1052,54 @@ export default {
                 title: res.data.goods_name, //导航栏 中间的标题
             }
             this.$route.meta.title = this.nvabarData.title;
+            that.showTuijian(app, res.data.group_price, that)
         },
         callback(){
 
+        },
+        openActivity(){
+
+        },
+        opengoodsInfo(goodsId){
+          this.$router.push({
+            path: '/index/goodsInfoPindan',
+            query: {
+              goodsId
+            }
+          })
+        },
+        coupon_actionSheetbindchange(){
+          this.coupon_actionSheetHidden = !this.coupon_actionSheetHidden;
+        },
+        async showTuijian(app, type_price, that){
+          let data = {
+            plat: 3,
+            num: 24,
+            type_price,
+            sex: 0
+          }
+          const [err, res] = await api.commendgoods(data);
+          if(err){
+              this.$vux.toast.text(err.msg);
+              return;
+          }
+          if(res.code == 2000){
+            var tujianLent = res.data.length;
+            var lent_item = Math.ceil(tujianLent / 6)
+            var tuijianInfo = [];
+            for (var b = 0; b < lent_item; b++) {
+              tuijianInfo.push(res.data.splice(0, 6));
+            }
+            if (tujianLent > 0) {
+              if (tuijianInfo[0].length > 3) {
+                that.tj_height = 420;
+              } else {
+                that.tj_height = 210;
+              }
+            }
+            that.tj_info = tuijianInfo;
+            that.tj_height = that.tj_height
+          }
         }
     },
     computed: {

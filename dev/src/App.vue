@@ -13,6 +13,16 @@ export default {
   data(){
     return {
     }
+  },
+  watch: {
+    $route(to,from){
+      if(to.path === '/center' || to.path === '/index'){
+        this.$store.dispatch('update_bottomShow',true)
+      }else{
+        this.$store.dispatch('update_bottomShow',false)
+      }
+      console.log(this.$route.fullPath)
+    }
   }
 };
 </script>
