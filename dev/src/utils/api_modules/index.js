@@ -26,6 +26,11 @@ export const getLimitData = (data) => {
   return GET(url, data)
 }
 
+//首页商品
+export const getGoods = (data) => {
+  const url = `${domain}/nine/ncategoods`
+  return GET(url, data)
+}
 //推荐商品
 export const commendgoods = (data) => {
   const url = `${domain}/nine/commendgoods`
