@@ -161,16 +161,17 @@ export default {
       } else {
         var fromurl = window.location.href;
         console.log(9999,fromurl)
+        console.log(urlEncode)
         console.log(encodeURIComponent(fromurl))
-        // return
-        // window.location.href =
-        //   "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa4142cc3047c6dff&redirect_uri=" +
-        //   encodeURIComponent(fromurl) +
-        //   "&response_type=code&scope=snsapi_userinfo&state=getUser#wechat_redirect";
+        return
         window.location.href =
-          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx47d52b6420c14397&redirect_uri=" +
+          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa4142cc3047c6dff&redirect_uri=" +
           encodeURIComponent(fromurl) +
           "&response_type=code&scope=snsapi_userinfo&state=getUser#wechat_redirect";
+        // window.location.href =
+        //   "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx47d52b6420c14397&redirect_uri=" +
+        //   encodeURIComponent(fromurl) +
+        //   "&response_type=code&scope=snsapi_userinfo&state=getUser#wechat_redirect";
           
       }
     },

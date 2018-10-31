@@ -237,6 +237,9 @@ export default {
   created() {
     console.log(this.user)
     console.log("user", this.user.user_type);
+    console.log("user", this.user);
+    console.log("openid", this.user.openid);
+    console.log(this)
     if (this.token) {
       this.newredmessage();
       this.redpackethtml();

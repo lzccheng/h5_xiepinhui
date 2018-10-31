@@ -21,7 +21,6 @@ export default {
       }else{
         this.$store.dispatch('update_bottomShow',false)
       }
-      console.log(this.$route.fullPath)
     }
   }
 };

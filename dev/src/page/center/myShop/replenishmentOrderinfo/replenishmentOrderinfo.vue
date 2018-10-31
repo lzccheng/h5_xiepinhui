@@ -481,7 +481,7 @@ export default {
               return;
           }
           console.log(res)
-          // return
+          return
           if(res.code == '2000'){
             this.$wechat.config({
               debug: true,

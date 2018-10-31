@@ -754,112 +754,126 @@ contact-button {
     <div>
         <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header>
         <div class="page">
-            <div class="silder-box">
-                <swiper :options="swiperOption">
-                  <swiper-slide class="goods-silder" v-for="(slide,index) in goodsInfo.goods_image_arr" :key="index">
-                    <img :src="slide" alt="" class="slide-image">
-                  </swiper-slide>
-                  <div class="swiper-pagination" slot="pagination"></div>
-                </swiper>
+            <div class="tabList">
+
             </div>
-            <div class="miaoshaTitle" v-if="goodsInfo.coupon_type=='1'">
-              <img src="~@/assets/images/miaosha/haohuan_title.png" alt="">
-            </div>
-            <div class="goods-info line_xi_after">
-              <div class='flex flex-align-center flex-pack-justify'>
-                <span class="goodsinfo-name">
-                  <span class="haohuo-mingpai" v-if="goodsInfo.s_type==2">好货专享</span>
-                  {{goodsInfo.goods_name}}
-                </span>
-              </div>
-              <div class="goods-info-bottom ">
-                <div class='flex flex-align-center flex-pack-justify'>
-                    <span class="price padd-top">价格:￥{{goodsInfo.purchase_price}}</span>
-                    <span class="salenum padd-top">销量:{{goodsInfo.goods_salenum}}件</span>
+            <div class="itemList">
+              <div class="item">
+                <div class="silder-box">
+                    <swiper :options="swiperOption">
+                      <swiper-slide class="goods-silder" v-for="(slide,index) in goodsInfo.goods_image_arr" :key="index">
+                        <img :src="slide" alt="" class="slide-image">
+                      </swiper-slide>
+                      <div class="swiper-pagination" slot="pagination"></div>
+                    </swiper>
                 </div>
-                <div class='fanli-box flex flex-align-center' :class="{'flex-pack-end': partner_type==0,'flex-pack-justify': partner_type!=0}">
-                  <div class="rebate-box" v-if="partner_type=='1'||partner_type=='2'">
-                    返利：{{goodsInfo.purchase_rate}}
+                <div class="miaoshaTitle" v-if="goodsInfo.coupon_type=='1'">
+                  <img src="~@/assets/images/miaosha/haohuan_title.png" alt="">
+                </div>
+                <div class="goods-info line_xi_after">
+                  <div class='flex flex-align-center flex-pack-justify'>
+                    <span class="goodsinfo-name">
+                      <span class="haohuo-mingpai" v-if="goodsInfo.s_type==2">好货专享</span>
+                      {{goodsInfo.goods_name}}
+                    </span>
                   </div>
-                </div>
-              </div>
-              <div class="now-activity flex flex-align-center flex-pack-justify" @click="openActivity" v-if="goodsInfo.activity_other==1">
-                <div class=' flex flex-align-center'>
-                  <img src="~@/assets/images/goodsInfo/activity_kanjia.png" v-if="goodsInfo.activity_type=='3'" alt="">
-                  <img src="~@/assets/images/goodsInfo/activity_miaosha.png" v-if="goodsInfo.activity_type=='9'" alt="">
-                  <img src="~@/assets/images/goodsInfo/activity_zhekou.png" v-if="goodsInfo.activity_type=='10'" alt="">
-                  <span>{{goodsInfo.activity_other_title}}</span>
-                </div>
-                <span class="iconfont icon-youbian"></span>
-              </div>
-            </div>
-            <div>
-              <div class="shuoming flex flex-align-center flex-pack-justify" @click="coupon_actionSheetbindchange">
-                <div class='iconfont icon-duihao'>
-                  <span class="spanCol">&nbsp;&nbsp;全场包邮</span>
-                </div>
-                <div class='iconfont icon-duihao'>
-                  <span class="spanCol">&nbsp;&nbsp;7天发货</span>
-                </div>
-                <div class='iconfont icon-duihao'>
-                  <span class="spanCol">&nbsp;&nbsp;法定三包</span>
-                </div>
-                <div class='iconfont icon-duihao'>
-                  <span class="spanCol">&nbsp;&nbsp;假一赔十</span>
-                </div>
-                <span class="iconfont icon-youbian shuoming-youbian-hui"></span>
-              </div>
-              <div class="alert" v-show="coupon_actionSheetHidden">
-                <div style="width:100%;  overflow: hidden;" class="shuoming con">
-                  <div class="coupon-action-top ">服务说明</div>
-                  <div class="coupon-action-scroll" style="width:100%; height:300px;">
-                    <div class="fuwu-shuoming flex " v-for="(item, index) in goodsInfo.instructions" :key="index">
-                      <div class="fuwu-left-icon iconfont icon-duihao"></div>&nbsp;&nbsp;&nbsp;
-                      <div class="shuoming-content">
-                        <div class="shuoming-title">{{item.title}}</div>
-                        <div class="shuoming-text">{{item.info}}</div>
+                  <div class="goods-info-bottom ">
+                    <div class='flex flex-align-center flex-pack-justify'>
+                        <span class="price padd-top">价格:￥{{goodsInfo.purchase_price}}</span>
+                        <span class="salenum padd-top">销量:{{goodsInfo.goods_salenum}}件</span>
+                    </div>
+                    <div class='fanli-box flex flex-align-center' :class="{'flex-pack-end': partner_type==0,'flex-pack-justify': partner_type!=0}">
+                      <div class="rebate-box" v-if="partner_type=='1'||partner_type=='2'">
+                        返利：{{goodsInfo.purchase_rate}}
                       </div>
                     </div>
-                    <div class="shuoming-bottom-btn" @click="coupon_actionSheetbindchange">我知道了</div>
+                  </div>
+                  <div class="now-activity flex flex-align-center flex-pack-justify" @click="openActivity" v-if="goodsInfo.activity_other==1">
+                    <div class=' flex flex-align-center'>
+                      <img src="~@/assets/images/goodsInfo/activity_kanjia.png" v-if="goodsInfo.activity_type=='3'" alt="">
+                      <img src="~@/assets/images/goodsInfo/activity_miaosha.png" v-if="goodsInfo.activity_type=='9'" alt="">
+                      <img src="~@/assets/images/goodsInfo/activity_zhekou.png" v-if="goodsInfo.activity_type=='10'" alt="">
+                      <span>{{goodsInfo.activity_other_title}}</span>
+                    </div>
+                    <span class="iconfont icon-youbian"></span>
                   </div>
                 </div>
-              </div>
-              
-            </div>
-            <div class='eva-title flex flex-pack-justify  flex-align-center '>
-              <span>商品评价({{goodsInfo.eval_num}})</span>
-              <div class="flex flex-align-center more-title" v-if="goodsInfo.eval_num!=0">
-                <div>好评率
-                  <span class='red-color'>{{goodsInfo.eval_percent}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="tj-bottom-more" style="border-top: 2px solid #f8f8f8;">
-                  查看全部评价
-                <span class="iconfont icon-yuanyou"></span>
-              </div>
-            <div v-if="tj_info!=''">
-              <div class="tj-title">
-                <img src="~@/assets/images/goodsInfo/tj_title.png" alt="">
-              </div>
-              <div class="silder-tj-box" :style='{"height":tj_height+"px"}'>
-                <swiper :options="swiperOption2" class="tj-silder">
-                  <swiper-slide class="tj-box flex flex-warp flex-align-center flex-pack-justify" v-for="(slide,index) in tj_info" :key="index">
-                    <div v-for="(item_list,idx) in slide" :key="idx" @click="opengoodsInfo(item_list.n_goods_id)" class="tj_list ">
-                      <img :src="item_list.goods_image" alt="">
-                      <div class="tj-goods-name">{{item_list.goods_name}}</div>
-                      <div class="tj-goods-price">￥{{item_list.group_price}}</div>
+                <div>
+                  <div class="shuoming flex flex-align-center flex-pack-justify" @click="coupon_actionSheetbindchange">
+                    <div class='iconfont icon-duihao'>
+                      <span class="spanCol">&nbsp;&nbsp;全场包邮</span>
                     </div>
-                  </swiper-slide>
-                  <div class="swiper-pagination2" slot="pagination" style="text-align: center;"></div>
-                </swiper>
-                <div class="tj-bottom-more">
-                  查看更多热卖推荐
-                  <span class="iconfont icon-yuanyou"></span>
+                    <div class='iconfont icon-duihao'>
+                      <span class="spanCol">&nbsp;&nbsp;7天发货</span>
+                    </div>
+                    <div class='iconfont icon-duihao'>
+                      <span class="spanCol">&nbsp;&nbsp;法定三包</span>
+                    </div>
+                    <div class='iconfont icon-duihao'>
+                      <span class="spanCol">&nbsp;&nbsp;假一赔十</span>
+                    </div>
+                    <span class="iconfont icon-youbian shuoming-youbian-hui"></span>
+                  </div>
+                  <div class="alert" v-show="coupon_actionSheetHidden">
+                    <div style="width:100%;  overflow: hidden;" class="shuoming con">
+                      <div class="coupon-action-top ">服务说明</div>
+                      <div class="coupon-action-scroll" style="width:100%; height:300px;">
+                        <div class="fuwu-shuoming flex " v-for="(item, index) in goodsInfo.instructions" :key="index">
+                          <div class="fuwu-left-icon iconfont icon-duihao"></div>&nbsp;&nbsp;&nbsp;
+                          <div class="shuoming-content">
+                            <div class="shuoming-title">{{item.title}}</div>
+                            <div class="shuoming-text">{{item.info}}</div>
+                          </div>
+                        </div>
+                        <div class="shuoming-bottom-btn" @click="coupon_actionSheetbindchange">我知道了</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class='eva-title flex flex-pack-justify  flex-align-center '>
+                  <span>商品评价({{goodsInfo.eval_num}})</span>
+                  <div class="flex flex-align-center more-title" v-if="goodsInfo.eval_num!=0">
+                    <div>好评率
+                      <span class='red-color'>{{goodsInfo.eval_percent}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="tj-bottom-more" style="border-top: 1px solid #f8f8f8;border-bottom: 8px solid #f8f8f8;padding: 10px;">
+                      查看全部评价
+                    <span class="iconfont icon-yuanyou"></span>
+                  </div>
+                <div v-if="tj_info!=''">
+                  <div class="tj-title">
+                    <img src="~@/assets/images/goodsInfo/tj_title.png" alt="">
+                  </div>
+                  <div class="silder-tj-box" :style='{"height":tj_height+"px"}'>
+                    <swiper :options="swiperOption2" class="tj-silder">
+                      <swiper-slide class="tj-box flex flex-warp flex-align-center flex-pack-justify" v-for="(slide,index) in tj_info" :key="index">
+                        <div v-for="(item_list,idx) in slide" :key="idx" @click="opengoodsInfo(item_list.n_goods_id)" class="tj_list ">
+                          <img :src="item_list.goods_image" alt="">
+                          <div class="tj-goods-name">{{item_list.goods_name}}</div>
+                          <div class="tj-goods-price">￥{{item_list.group_price}}</div>
+                        </div>
+                      </swiper-slide>
+                      <div class="swiper-pagination2" slot="pagination" style="text-align: center;"></div>
+                    </swiper>
+                    <div class="tj-bottom-more">
+                      查看更多热卖推荐
+                      <span class="iconfont icon-yuanyou"></span>
+                    </div>
+                  </div>
+                  
                 </div>
               </div>
-              
+              <div class="item">
+                详情
+              </div>
+              <div class="item">
+                评价
+              </div>
             </div>
+            
             
             <div class="bottom-box flex ">
                 <span class="bottom-left kefu">
