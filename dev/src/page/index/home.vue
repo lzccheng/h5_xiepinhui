@@ -544,7 +544,8 @@
                       <router-link class="recommend_hot_box" tag="div" :to="'/index/goodsInfoPindan?goodsId='+item_list.n_goods_id" v-for="(item_list,index) in allitem.goods" :key="index" bindtap='openGoods' :id="item_list.n_goods_id">
                           <img :src="item_list.goods_image" class="recommend_hot_image" />
                           <div class="goods-duan-name">{{item_list.goods_name}}</div>
-                          <div class="goods-duan-price">￥{{item_list.purchase_price}}</div></router-link>
+                          <div class="goods-duan-price">￥{{item_list.purchase_price}}</div>
+                      </router-link>
                       <div class="recommend_hot_box more-box" bindtap="openActive_tj" :id="allitem.s_id">更多</div></div>
               </div>
           </div>
@@ -556,32 +557,43 @@
               <div :class="currentTab==3?'tab-item active':'tab-item'" data-current="3" @click="swichNav">童鞋</div></div>
           <div>
               <div class="row-goodsInfo" v-if="currentTab==0">
-                  <div class="row-goodsli" v-for="(item,index) in goodsInfo" :id="item.n_goods_id" :key="index" bindtap='openGoods'>
-                      <img mode="widthFix" :src="item.goods_image" lazy-load="true" />
-                      <div class="row-goods-name">{{item.goods_name}}</div>
-                      <div class='flex row-bottom 	flex-align-center'>
-                          <span class="row-price">￥{{item.group_price}}</span>
-                          <span class="row-xiaoliang">销量:{{item.goods_salenum}}</span>
-                          <form bindsubmit='formSubmit' report-submit>
-                              <button plain class="row-btn" form-type="submit">立即抢
-                                  <span class="iconfont icon-youbian"></span></button>
-                          </form>
-                      </div>
+
+                  <div class="row-goodsli" v-for="(item,index) in goodsInfo" :id="item.n_goods_id" :key="index">
+                      <router-link tag="div" :to="'/index/goodsInfoPindan?goodsId='+item.n_goods_id">
+                          <img mode="widthFix" :src="item.goods_image" lazy-load="true" />
+                          <div class="row-goods-name">{{item.goods_name}}</div>
+                          <div class='flex row-bottom 	flex-align-center'>
+                              <span class="row-price">￥{{item.group_price}}</span>
+                              <span class="row-xiaoliang">销量:{{item.goods_salenum}}</span>
+                              <form bindsubmit='formSubmit' report-submit>
+                                  <button plain class="row-btn" form-type="submit">立即抢
+                                      <span class="iconfont icon-youbian"></span>
+                                  </button>
+                              </form>
+                          </div>
+                      </router-link>
                   </div>
+
               </div>
               <div class="goodsInfo flex flex-warp flex-pack-justify  " v-else>
-                  <div class="goods-li goods-lie-list" v-for="(item,index) in goodsInfo" :key="index" :id="item.n_goods_id" bindtap='openGoods'>
-                      <div class="lie-left-img">
-                          <img mode="widthFix" style="" :src="item.goods_image" lazy-load="true" /></div>
-                      <span class="goods-name">{{item.goods_name}}</span>
-                      <div class="all-list-biaoqian">
-                          <img mode='widthFix' :src='item.member_price_img' />
-                          <span class="goods-label" v-if="item.goods_label!=''">{{item.goods_label}}</span></div>
-                      <div class="flex flex-pack-justify bottom-goods-price">
-                          <span class="goods-price">￥{{item.group_price}}</span>
-                          <span class='row-huo'>
-                              <span class="bottom-goods-xiaoling">销量：{{item.goods_salenum}}</span></span>
-                      </div>
+                  <div class="goods-li goods-lie-list" v-for="(item,index) in goodsInfo" :key="index" :id="item.n_goods_id">
+
+                      <router-link tag="div" :to="'/index/goodsInfoPindan?goodsId='+item.n_goods_id">
+                          <div class="lie-left-img">
+                              <img mode="widthFix" style="" :src="item.goods_image" lazy-load="true" /></div>
+                          <span class="goods-name">{{item.goods_name}}</span>
+                          <div class="all-list-biaoqian">
+                              <img mode='widthFix' :src='item.member_price_img' />
+                              <span class="goods-label" v-if="item.goods_label!=''">{{item.goods_label}}</span></div>
+                          <div class="flex flex-pack-justify bottom-goods-price">
+                              <span class="goods-price">￥{{item.group_price}}</span>
+                              <span class='row-huo'>
+                                  <span class="bottom-goods-xiaoling">销量：{{item.goods_salenum}}</span></span>
+                          </div>
+                      </router-link>
+
+                      
+
                   </div>
               </div>
           </div>
