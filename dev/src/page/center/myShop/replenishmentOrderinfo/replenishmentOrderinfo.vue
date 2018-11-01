@@ -345,7 +345,7 @@ page{
         </div>
         <div class='order-list-info-btn flex flex-pack-end flex-align-center line_xi_before' v-if="infodata && infodata.pay_status=='1'">
             <span class="moren" @click="receiving(infodata.refit_id,'cancel')">取消订单</span>
-            <span @click="gobay(infodata.refit_id)">去支付</span>
+            <span @click="gopay(infodata.refit_id)">去支付</span>
         </div>
         <!-- <div class='order-list-info-btn flex flex-pack-end flex-align-center line_xi_before'>
           <span v-if="infodata.is_input==2" class="moren">交易关闭</span>
@@ -464,7 +464,7 @@ export default {
             this.showdata();
           }
         },
-        async gobay(){
+        async gopay(){
           // this.$wechat.config({})
           let that = this;
           let data = {
@@ -473,22 +473,26 @@ export default {
             token: this.token,
             refit_id: this.refit_id,
             pay_code: 2,
-            sub_member_id: this.sub_member_id?this.sub_member_id: '0'
+            sub_member_id: this.sub_member_id?this.sub_member_id: '0',
+            openid: this.user.openid
           }
           const [err, res] = await api.topay(data);
           if (err) {
               this.$vux.toast.text(err.msg);
               return;
           }
+          console.log(this.user)
           console.log(res)
+          // const [err1, res1] = await api.getWxConfig();
+          // console.log('getWxConfig',res1)
           return
           if(res.code == '2000'){
             this.$wechat.config({
               debug: true,
-              appId: res.data.pay_param.appid,
-              timestamp: res.data.pay_param.timestamp,
-              nonceStr: res.data.pay_param.nonce_str,
-              signature: res.data.pay_param.sign,
+              appId: res.data.pay_param.appId,
+              timestamp: res.data.pay_param.timeStamp,
+              nonceStr: res.data.pay_param.nonceStr,
+              signature: res.data.pay_param.paySign,
               jsApiList: ["chooseWXPay"]
             })
             this.$wechat.ready(()=>{
@@ -498,11 +502,11 @@ export default {
                   if(_res.errMsg === 'checkJsApi:ok'){
                     console.log('checkJsApi:ok')
                     that.$wechat.chooseWXPay({
-                      timestamp: res.data.pay_param.timestamp,
-                      nonceStr: res.data.pay_param.nonce_str,
-                      package: 'prepay_id=' + res.data.pay_param.prepay_id,
+                      timestamp: res.data.pay_param.timeStamp,
+                      nonceStr: res.data.pay_param.nonceStr,
+                      package: res.data.pay_param.package,
                       signType: 'MD5',
-                      paySign: res.data.pay_param.sign,
+                      paySign: res.data.pay_param.paySign,
                       success(res){
                         console.log('pay success')
                       },

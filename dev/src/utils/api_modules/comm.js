@@ -11,3 +11,4 @@ export const directbuy = (data) => {
     const _url = `${domain}/nine/directbuy`
     return POST(_url,data)
 }
+//getWxConfig

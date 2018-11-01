@@ -66,6 +66,9 @@ const subreplenishOrder = ()=>import('@/page/center/myShop/subreplenishOrder/sub
 const goodsInfoPindan = ()=>import('@/page/index/goodsInfoPindan/goodsInfoPindan')
 
 
+//订单详情
+const orderInfo_pd = ()=>import('@/page/index/orderInfo_pd/orderInfo_pd')
+
 
 import subStoreList from '@/page/center/myShop/subStoreList'
 import addSubStore from '@/page/center/myShop/addSubStore'
@@ -131,7 +134,16 @@ let router = new Router({
         meta: {
           title: '订单详情'
         }
-      },],
+      },
+      {
+        path: 'orderInfo_pd',
+        name: 'orderInfo_pd',
+        component: orderInfo_pd,
+        meta: {
+          title: '订单详情'
+        }
+      },
+    ],
       meta: {
         title: '首页'
       }

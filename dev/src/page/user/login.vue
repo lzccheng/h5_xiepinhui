@@ -100,6 +100,8 @@ export default {
         this.$vux.toast.text(err.msg, "top");
         return;
       }
+      console.log('登录',res)
+      // return 
       this.$vux.toast.show({
         type: "success",
         text: "登录成功"
@@ -112,6 +114,9 @@ export default {
       localStorage["account"] = res.data.account;
       localStorage["token"] = res.data.token;
       if (this.url === "/") {
+        if(this.$route.query.from){
+          return this.$router.replace(this.$route.query.from)
+        }
         this.$router.replace("/");
       } else {
         window.location.href = unescape(this.url);
@@ -161,7 +166,6 @@ export default {
       } else {
         var fromurl = window.location.href;
         console.log(9999,fromurl)
-        console.log(urlEncode)
         console.log(encodeURIComponent(fromurl))
         return
         window.location.href =

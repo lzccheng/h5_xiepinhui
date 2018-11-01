@@ -26,6 +26,11 @@ export const getLimitData = (data) => {
   return GET(url, data)
 }
 
+//确认订单
+export const couponnum = (data) => {
+  const url = `${domain}/usercoupon/couponnum`
+  return POST(url, data)
+}
 //首页商品
 export const getGoods = (data) => {
   const url = `${domain}/nine/ncategoods`
@@ -57,5 +62,17 @@ export const groupinglist = (data) => {
 //商品详情
 export const newgoodsdetail = (data) => {
   const url = `${domain}/nine/newgoodsdetail`
+  return POST(url, data)
+}
+
+//地址详情
+export const addressdetail = (data) => {
+  const url = `${domain}/order/addressdetail`
+  return POST(url, data)
+}
+
+//地址详情
+export const nine_transport = (data) => {
+  const url = `${domain}/shipping/nine_transport`
   return POST(url, data)
 }

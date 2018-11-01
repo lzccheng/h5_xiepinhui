@@ -11,6 +11,11 @@ import { encrypt } from 'utils/encrypt.js' // encrypt
 import VueClipboard from 'vue-clipboard2' // 剪切板
 import { LoadingPlugin, ToastPlugin, ConfirmPlugin, WechatPlugin, AlertPlugin } from 'vux'
 import VueAwesomeSwiper from 'vue-awesome-swiper';
+import vuePicturePreview from 'vue-picture-preview';
+
+//调试
+// import VConsole from 'vconsole';
+// new VConsole();
 
 
 Vue.use(VueAwesomeSwiper)
@@ -20,6 +25,7 @@ Vue.use(LoadingPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(AlertPlugin)
 Vue.use(VueClipboard)
+Vue.use(vuePicturePreview)
 Vue.use(require('vue-wechat-title'))
 Vue.use(ToastPlugin, {position: 'middle'})
 FastClick.attach(document.body)

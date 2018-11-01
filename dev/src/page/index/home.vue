@@ -888,6 +888,8 @@ export default {
       }
     },
     link() {}
+  },
+  beforeDestroy(){
   }
 };
 </script>
