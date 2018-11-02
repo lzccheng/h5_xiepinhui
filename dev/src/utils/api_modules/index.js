@@ -71,6 +71,17 @@ export const addressdetail = (data) => {
   return POST(url, data)
 }
 
+//地址删除
+export const addressdel = (data) => {
+  const url = `${domain}/order/addressdel`
+  return POST(url, data)
+}
+
+//地址修改
+export const addressupdate = (data) => {
+  const url = `${domain}/order/addressupdate`
+  return POST(url, data)
+}
 //地址详情
 export const nine_transport = (data) => {
   const url = `${domain}/shipping/nine_transport`

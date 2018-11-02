@@ -62,31 +62,51 @@ const replenishmentOrderinfo = ()=>import('@/page/center/myShop/replenishmentOrd
 //补货订单
 const subreplenishOrder = ()=>import('@/page/center/myShop/subreplenishOrder/subreplenishOrder')
 
-//订单详情
+//拼单信息
 const goodsInfoPindan = ()=>import('@/page/index/goodsInfoPindan/goodsInfoPindan')
 
 
 //订单详情
 const orderInfo_pd = ()=>import('@/page/index/orderInfo_pd/orderInfo_pd')
 
+//订单地址
+const orderAddress = ()=>import('@/page/index/orderAddress/orderAddress')
 
-import subStoreList from '@/page/center/myShop/subStoreList'
-import addSubStore from '@/page/center/myShop/addSubStore'
-import offlineStore from '@/page/center/myShop/offlineStore'
-import offlineStoreOrder from '@/page/center/myShop/offlineStoreOrder'
-import subfanManagement from '@/page/center/myShop/subfanManagement'//总账号的粉丝管理
-import subinventoryManage from '@/page/center/myShop/subinventoryManage/subinventoryManage'//库存管理
-import fanManagement from '@/page/center/myShop/fanManagement'//子账号的粉丝管理
-import shopSetting from '@/page/center/myShop/shopSetting'//子账号的店铺设置
+//编辑地址
+const editaddress = ()=>import('@/page/index/editaddress/editaddress')
+
+const subStoreList = ()=>import('@/page/center/myShop/subStoreList')
+const addSubStore = ()=>import('@/page/center/myShop/addSubStore')
+const offlineStore = ()=>import('@/page/center/myShop/offlineStore')
+const offlineStoreOrder = ()=>import('@/page/center/myShop/offlineStoreOrder')
+const subinventoryManage = ()=>import('@/page/center/myShop/subinventoryManage/subinventoryManage')
+const fanManagement = ()=>import('@/page/center/myShop/fanManagement')//子账号的粉丝管理
+const shopSetting = ()=>import('@/page/center/myShop/shopSetting')//子账号的店铺设置
+const subfanManagement = ()=>import('@/page/center/myShop/subfanManagement')//总账号的粉丝管理
+// import subStoreList from '@/page/center/myShop/subStoreList'
+// import addSubStore from '@/page/center/myShop/addSubStore'
+// import offlineStore from '@/page/center/myShop/offlineStore'
+// import offlineStoreOrder from '@/page/center/myShop/offlineStoreOrder'
+// import subfanManagement from '@/page/center/myShop/subfanManagement'
+// import subinventoryManage from '@/page/center/myShop/subinventoryManage/subinventoryManage'//库存管理
+// import fanManagement from '@/page/center/myShop/fanManagement'//子账号的粉丝管理
+// import shopSetting from '@/page/center/myShop/shopSetting'//子账号的店铺设置
 
 // 提现模块
-import drawIndex from '@/page/center/drawDeposit/drawIndex'//提现首页
-import moblieCodeTrade from '@/page/center/drawDeposit/moblieCodeTrade'//交易密码
-import setTradeCode from '@/page/center/drawDeposit/setTradeCode'//设置交易密码
-import drawCash from '@/page/center/drawDeposit/drawCash'//提现页面
-import addCard from '@/page/center/drawDeposit/addCard'//添加银行卡
-import bindNewCard from '@/page/center/drawDeposit/bindNewCard'//绑定新银行卡
-import drawSuccess from '@/page/center/drawDeposit/drawSuccess'//提现成功
+const drawIndex = ()=>import('@/page/center/drawDeposit/drawIndex')//提现首页
+const moblieCodeTrade = ()=>import('@/page/center/drawDeposit/moblieCodeTrade')//交易密码
+const setTradeCode = ()=>import('@/page/center/drawDeposit/setTradeCode')//设置交易密码
+const drawCash = ()=>import('@/page/center/drawDeposit/drawCash')//提现页面
+const addCard = ()=>import('@/page/center/drawDeposit/addCard')//添加银行卡
+const bindNewCard = ()=>import('@/page/center/drawDeposit/bindNewCard')//绑定新银行卡
+const drawSuccess = ()=>import('@/page/center/drawDeposit/drawSuccess')//提现成功
+// import drawIndex from '@/page/center/drawDeposit/drawIndex'//提现首页
+// import moblieCodeTrade from '@/page/center/drawDeposit/moblieCodeTrade'//交易密码
+// import setTradeCode from '@/page/center/drawDeposit/setTradeCode'//设置交易密码
+// import drawCash from '@/page/center/drawDeposit/drawCash'//提现页面
+// import addCard from '@/page/center/drawDeposit/addCard'//添加银行卡
+// import bindNewCard from '@/page/center/drawDeposit/bindNewCard'//绑定新银行卡
+// import drawSuccess from '@/page/center/drawDeposit/drawSuccess'//提现成功
 
 ///center/drawIndex
 
@@ -133,6 +153,23 @@ let router = new Router({
         component: goodsInfoPindan,
         meta: {
           title: '订单详情'
+        }
+      },
+      {
+        path: 'orderAddress',
+        name: 'orderAddress',
+        component: orderAddress,
+        meta: {
+          title: '地址管理'
+        }
+      },
+      
+      {
+        path: 'editaddress',
+        name: 'editaddress',
+        component: editaddress,
+        meta: {
+          title: '地址编辑'
         }
       },
       {

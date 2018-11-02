@@ -299,14 +299,13 @@
                         <span class="iconfont icon-youbian"></span>
                     </div>
                 </div>
-                <div class="weui-cells weui-cells_after-title marT0" style="position: relative">
+                <div class="weui-cells weui-cells_after-title marT0" v-else style="position: relative">
                     <group> 
                         <div class="weui-cell weui-cell_switch">
                             <div class="weui-cell__bd">使用会员免邮服务
                                 <span class="shengyu-num">(本月剩{{vipInfo.frequency || '0'}}次机会)</span>
                             </div>
                             <div class="weui-cell__ft">
-                                <!-- <x-switch title="title" @switch-checked-bg-color="'#61D8D0'" v-model="vipSwitch" @on-change="switch1Change"></x-switch> -->
                                 <van-switch v-model="vipSwitch" @change="switch1Change"/>
                             </div>
                         </div>
@@ -331,7 +330,6 @@ export default {
     components: {
         XHeader,
         loading,
-        XSwitch,
         Group,
     },
     data(){
@@ -366,6 +364,7 @@ export default {
     },
     mounted(){
         this.init();
+        console.log(this.api)
     },
     methods: {  
         init(){
@@ -557,7 +556,9 @@ export default {
             this.couponNum();
         },
         selectAddress(){
-
+            this.$router.push({
+                path: '/index/orderAddress'
+            })
         },
         selectCoupon(){
             let data = {
@@ -586,13 +587,6 @@ export default {
                 this.vipSwitch = value;
                 this.getTotal(this);
             }
-            setTimeout(()=>{
-                
-                that.vipSwitch = false
-                console.log(that.vipSwitch)
-            },1500)
-            this.vipSwitch = false
-            console.log(that.vipSwitch)
             this.free_post = free_post;
         },
         gopay(){

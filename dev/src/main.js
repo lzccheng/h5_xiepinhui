@@ -31,6 +31,7 @@ Vue.use(ToastPlugin, {position: 'middle'})
 FastClick.attach(document.body)
 
 Vue.prototype.$encrypt = encrypt
+Vue.prototype.$api = 1
 Vue.config.productionTip = false
 window.isClick = false
 
