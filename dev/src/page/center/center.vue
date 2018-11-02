@@ -144,7 +144,7 @@
     <div style="height:100%;overflow:hidden;position:fixed;top:0px;width:100%;z-index:999;" v-if="isShowModalRedPack">
       <div class="bg_hongbao_box">
         <div class="shade_bg" @click="isShowModalRedPack = false"></div>
-        <div class="imgs_collection_box">
+        <div class="imgs_collection_box2">
           <img :src="redpackBg" class="receive_red_img">
           <div class="txt_desc_hongbao">
             <div style="width:85%;margin:auto">{{popName||''}}</div>
@@ -158,7 +158,7 @@
     <div style="height:100%;overflow:hidden;position:fixed;top:0px;width:100%;z-index:999;" v-if="isShowModalRedPack2">
       <div class="bg_hongbao_box">
         <div class="shade_bg" @click="isShowModalRedPack2=false"></div>
-        <div class="imgs_collection_box">
+        <div class="imgs_collection_box2">
           <img :src="redpackBg" class="receive_red_img">
           <div class="txt_desc_hongbao">
             <div>成功领取了<span>{{redPacketInfo.count ? redPacketInfo.count : 0}}</span>个红包</div>
@@ -183,14 +183,15 @@
                         </div>
                     </div>
                     <div class="bg_coupon_box">
-                        <div class="left_num_box"><span class="sign_money">¥</span>{{fanli365Obj.red_amout}}</div>
+                        <div class="left_num_box"><span class="sign_money">¥</span>{{fanli365Obj.red_amount}}</div>
                         <div class="right_txt_tip">
                             <div class="appfanli">APP返利现金</div>
                             <div class="suishiqu">可随时取现</div>
                         </div>
                     </div>
                     <div class="lingqu_box">
-                        <div class="lijilingqu" @click="catchEnvelopes" data-type="1">立即领取</div>
+                        <div class="lijilingqu" @click="catchEnvelopes2" data-type="1" v-if="!successTipTXT">立即领取</div>
+                        <div class="tip_lingquTxt" v-if="successTipTXT">恭喜你已成功领取{{fanli365Obj.red_num}}个合伙人红包</div>
                         <div class="search_amount">查看余额</div>
                     </div>
                 </div>
@@ -231,7 +232,8 @@ export default {
       showLoding: false,
       params: {
         plat: 3
-      }
+      },
+      successTipTXT:false
     };
   },
   created() {
@@ -242,7 +244,8 @@ export default {
     console.log(this)
     if (this.token) {
       this.newredmessage();
-      this.redpackethtml();
+      //this.redpackethtml();
+      this.getredpacketinfo();
     }
   },
   methods: {
@@ -340,58 +343,99 @@ export default {
         });
       }
     },
-    //返利弹窗
-    async redpackethtml() {
-      let data = {
+    //新的红包接口
+    async getredpacketinfo(){
+        let data = {
         plat: 3,
         account: this.account,
         token: this.token
       };
-      const [err, res] = await api.redpackethtml(data);
-      // 是否弹窗
-      await this.redtype();
+      const [err, res] = await api.getredpacketinfo(data);
       if (err) {
         this.$vux.toast.text(err.msg);
         return;
-      }
-      console.log("code", res);
-      if (res.code == "2000") {
-        let dataObj = res.data;
-        dataObj.red_amout = parseInt(dataObj.red_amout);
-        this.fanli365Obj = dataObj;
-      }
-    },
-    //获取弹窗信息
-    async redtype() {
-      let data = {
-        plat: 3,
-        account: this.account,
-        token: this.token,
-        type: 1
-      };
-      const [err, res] = await api.redtype(data);
-      if (err) {
-        this.$vux.toast.text(err.msg);
-        return;
-      }
-      if (res.code == "2000") {
-        let status_redpack = res.data.status;
-        this.redpackBg = res.data.relate.imgUrl;
-        this.popName = res.data.relate.popName;
-        if (status_redpack == 1) {
-          //0表示无红包返现，1有红包返现 1弹普通红包，2弹365红包，3全部弹
-          this.isShowModalRedPack = true;
-          this.redpackBg = res.data.relate.imgUrl;
-          this.popName = res.data.relate.popName;
-        } else if (status_redpack == 2) {
-          this.closeModal365 = true;
-        } else if (status_redpack == 3) {
-          this.isShowModalRedPack = true;
-          this.closeModal365 = true;
+      }else{
+        
+        if(res.code==2000){
+            var commonRedpacket = res.data.commonRedpacket;//普通红包的对象 非365开通的红包
+            var thidSixFivePacket = res.data.thidSixFivePacket;//365红包的对象 365开通的红包
+            if (commonRedpacket.red_num>0){//普通红包个数大于0的时候
+              this.isShowModalRedPack=true;
+              this.redpackBg=commonRedpacket.imgUrl;
+              this.popName=commonRedpacket.popName;
+              // that.setData({
+              //   isShowModalRedPack: true,
+              //   redpackBg: commonRedpacket.imgUrl,
+              //   popName: commonRedpacket.popName
+              // });
+            }
+            if (thidSixFivePacket.red_num>0){//365红包个数大于0的时候
+              this.closeModal365=true;
+              this.fanli365Obj=thidSixFivePacket;
+              // that.setData({
+              //   closeModal365: true,
+              //   fanli365Obj:thidSixFivePacket
+
+              // });
+            }
+
+
         }
+       
       }
     },
-    //领取收益
+    //返利弹窗
+    // async redpackethtml() {
+    //   let data = {
+    //     plat: 3,
+    //     account: this.account,
+    //     token: this.token
+    //   };
+    //   const [err, res] = await api.redpackethtml(data);
+    //   // 是否弹窗
+    //   await this.redtype();
+    //   if (err) {
+    //     this.$vux.toast.text(err.msg);
+    //     return;
+    //   }
+    //   console.log("code", res);
+    //   if (res.code == "2000") {
+    //     let dataObj = res.data;
+    //     dataObj.red_amout = parseInt(dataObj.red_amout);
+    //     this.fanli365Obj = dataObj;
+    //   }
+    // },
+    //获取弹窗信息
+    // async redtype() {
+    //   let data = {
+    //     plat: 3,
+    //     account: this.account,
+    //     token: this.token,
+    //     type: 1
+    //   };
+    //   const [err, res] = await api.redtype(data);
+    //   if (err) {
+    //     this.$vux.toast.text(err.msg);
+    //     return;
+    //   }
+    //   if (res.code == "2000") {
+    //     let status_redpack = res.data.status;
+    //     this.redpackBg = res.data.relate.imgUrl;
+    //     this.popName = res.data.relate.popName;
+    //     if (status_redpack == 1) {
+    //       //0表示无红包返现，1有红包返现 1弹普通红包，2弹365红包，3全部弹
+    //       this.isShowModalRedPack = true;
+    //       this.redpackBg = res.data.relate.imgUrl;
+    //       this.popName = res.data.relate.popName;
+    //     } else if (status_redpack == 2) {
+    //       this.closeModal365 = true;
+    //     } else if (status_redpack == 3) {
+    //       this.isShowModalRedPack = true;
+    //       this.closeModal365 = true;
+    //     }
+    //   }
+    // },
+    //领取普通红包收益
     async catchEnvelopes(e) {
       let type_is = e.target.dataset.type;
       let data = {
@@ -413,11 +457,44 @@ export default {
           this.redPacketInfo = res.data;
           this.isShowModalRedPack2 = true;
           this.isShowModalRedPack = false;
-        } else if (type_is == 1) {
+        }
+        //  else if (type_is == 1) {
+        //   //1表示365返利红包
+        //   this.redPacketInfo = res.data;
+        //   this.isShowModalRedPack2 = true;
+        //   this.closeModal365 = false;
+        // }
+      }
+    },
+    //领取365红包收益
+    async catchEnvelopes2(e) {
+      let type_is = e.target.dataset.type;
+      let data = {
+        plat: 3,
+        account: this.account,
+        token: this.token,
+        type: type_is
+      };
+      const [err, res] = await api.redpacket(data);
+      if (err) {
+        this.$vux.toast.text(err.msg);
+        return;
+      }
+      console.log(res);
+      if (res.code == "2000") {
+        console.log(type_is);
+        // if (type_is == 0) {
+        //   //0的时候表示普通红包
+        //   this.redPacketInfo = res.data;
+        //   this.isShowModalRedPack2 = true;
+        //   this.isShowModalRedPack = false;
+        // } else 
+        if (type_is == 1) {
           //1表示365返利红包
           this.redPacketInfo = res.data;
-          this.isShowModalRedPack2 = true;
-          this.closeModal365 = false;
+          this.isShowModalRedPack2 = false;
+          this.closeModal365 = true;
+          this.successTipTXT=true;
         }
       }
     },
@@ -435,7 +512,8 @@ export default {
         case "365合伙人":
           //0 普通用户 1 店主非365店 2 365店主
           if (this.user.user_type == 2 || this.user.user_type == 3) {
-            this.$router.push("/centerFull/partner/inviteList");
+              
+              this.$router.push("/centerFull/partner/inviteList");
           } else {
             let issmallshop = this.redmessageInfo.is_smallshop;
             let store_state = this.redmessageInfo.store_state;
@@ -1102,14 +1180,30 @@ export default {
   margin-left: -32.5/100rem;
   left: 50%;
 }
-.imgs_collection_box {
-  width: 622/100rem;
+/* 792rpx;622rpx; 365粉丝红包的*/
+.imgs_collection_box{
+  width:622/100rem;
   position: absolute;
-  top: 200/100rem;
-  left: 50%;
-  margin-left: -311/100rem;
+  top:200/100rem;
+  left:50%;
+  margin-left:-311/100rem;
   z-index: 999;
-  height: 6.9rem;
+  height: 792/100rem;
+  .receive_red_img {
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+  }
+}
+/* 普通红包的 */
+.imgs_collection_box2{
+    width:502/100rem;
+  position: absolute;
+  top:200/100rem;
+  left:50%;
+  margin-left:-251/100rem;
+  z-index: 999;
+  height: 790/100rem;
   .receive_red_img {
     background-size: contain;
     width: 100%;

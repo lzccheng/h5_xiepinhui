@@ -21,20 +21,26 @@ export const newredmessage = (data) => {
 }
 
 //粉丝消费返利红包弹窗开始
-export const redtype = (data) => {
-  const url = `${domain}/nine/redtype`
-  return POST(url, data)
-}
+// export const redtype = (data) => {
+//   const url = `${domain}/nine/redtype`
+//   return POST(url, data)
+// }
 //领取返利红包
 export const redpacket = (data) => {
   const url = `${domain}/member/redpacket`
   return POST(url, data)
 }
 //弹出365红包页面
-export const redpackethtml = (data) => {
-  const url = `${domain}/member/redpackethtml`
+// export const redpackethtml = (data) => {
+//   const url = `${domain}/member/redpackethtml`
+//   return POST(url, data)
+// }
+//新的红包接口
+export const getredpacketinfo = (data) => {
+  const url = `${domain}/member/getredpacketinfo`
   return POST(url, data)
 }
+
 //已经领取的红包
 export const rebatelist = (data) => {
   const url = `${domain}/member/rebatelist`
@@ -119,5 +125,11 @@ export const inviteweidian = (data) => {
 // 我的店铺界面
 export const thelordstore = (data) => {
   const url = `${domain}/restore/thelordstore`
+  return POST(url, data)
+}
+
+// 获取粉丝统计数据、365粉丝红包触发接口
+export const fancontentstatistic = (data) => {
+  const url = `${domain}/restore/fancontent`
   return POST(url, data)
 }

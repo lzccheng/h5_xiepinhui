@@ -138,7 +138,7 @@ import { api } from "@/utils/api.js";
 import { XHeader } from "vux";
 import loading from "@/components/loading";
 
-import {wxConfig} from "@/utils/wx_jssdk.js";
+// import {wxConfig} from "@/utils/wx_jssdk.js";
 
 export default {
   name: "",
