@@ -1188,7 +1188,8 @@ export default {
   left:50%;
   margin-left:-311/100rem;
   z-index: 999;
-  height: 792/100rem;
+  // height: 792/100rem;
+  box-sizing: content-box;
   .receive_red_img {
     background-size: contain;
     width: 100%;
@@ -1271,6 +1272,7 @@ export default {
   background-size: 100%;
   margin-top: 4/100rem;
   padding-top: 25/100rem;
+  box-sizing: content-box;
 }
 .avatar_bg_row {
   overflow: scroll;
@@ -1340,6 +1342,12 @@ export default {
   color: #fff;
   margin: auto;
   margin-top: 32/100rem;
+}
+.successTipTXT{
+  color:#fff;
+  font-size:14/50rem;
+  margin-top:76/100rem;
+  text-align:center;
 }
 </style>
 

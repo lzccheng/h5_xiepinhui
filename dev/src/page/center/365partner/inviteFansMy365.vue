@@ -15,7 +15,7 @@
       <div class="tab_header_nav" id="fix">
         <div class="tabLi">
           <div style="margin:auto;" v-if="fansContent" class="fans_tab" :class=" isTabOne ? 'fans_tab active_tab' : 'fans_tab'" @click="choseTab">
-            我的粉丝({{fansContent.fansNumber || 0}})
+            我的粉丝({{fansContent.list[0].num || 0}})
           </div>
         </div>
         <div class="tabLi">
@@ -308,7 +308,7 @@ export default {
         account: this.account,
         token: this.token,
         page: this.page,
-        type:0
+        type:1
       };
       this.page++;
       const [err, res] = await api.storefan1(data);
