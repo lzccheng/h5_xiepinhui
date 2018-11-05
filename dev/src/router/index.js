@@ -72,6 +72,10 @@ const orderInfo_pd = ()=>import('@/page/index/orderInfo_pd/orderInfo_pd')
 //订单地址
 const orderAddress = ()=>import('@/page/index/orderAddress/orderAddress')
 
+//开通vip页面
+const myVip = ()=>import('@/page/index/myVip/myVip')
+
+
 //编辑地址
 const editaddress = ()=>import('@/page/index/editaddress/editaddress')
 
@@ -127,6 +131,7 @@ const phone_bind = ()=>import('@/page/user/phone_bind')
 
 
 
+
 const base = config.path
 
 console.log(`base : ${base}`)
@@ -163,7 +168,14 @@ let router = new Router({
           title: '地址管理'
         }
       },
-      
+      {
+        path: 'myVip',
+        name: 'myVip',
+        component: myVip,
+        meta: {
+          title: '我的vip'
+        }
+      },
       {
         path: 'editaddress',
         name: 'editaddress',

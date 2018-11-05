@@ -163,14 +163,17 @@
     text-align: center;
     font-size: 12/50rem;
     /*给中间的input设置左右边框即可*/
-    border-left: 1/50rem solid #ccc;
-    border-right: 1/50rem solid #ccc;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    background: none;
+
     }
 
     /*普通样式*/
 
     .stepper .normal {
     color: black;
+    background-color: #ccc;
     }
 
     /*禁用样式*/
@@ -220,7 +223,7 @@
 <template>
     <div>
         <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header>
-        <loading type="type3" v-if="loadingShow"></loading>
+        <!-- <loading type="type3" v-if="loadingShow"></loading> -->
         <div style="background-color: #eee">
             <div class="content">
                 <div class='order-address-box' @click="selectAddress">
@@ -336,12 +339,12 @@ export default {
         return {
             loadingShow: true,
             minusStatus: "",
-            addressInfo: "",
             num: 1,
             allmoney: "",
             provinceName: "",
             shippingInfo: "",
             goods_weight: "",
+            addressInfo: "",
             nowSelectshipping: "",
             shipingIndex: 0,
             exprice: "0.00",
@@ -364,7 +367,6 @@ export default {
     },
     mounted(){
         this.init();
-        console.log(this.api)
     },
     methods: {  
         init(){
@@ -378,7 +380,13 @@ export default {
             this.allmoney = goodsInfo.goodsprice;
             this.group_id = this.$route.query.group_id || '';
             this.couponNum();
-            this.showaddress();
+            if(this._addressInfo){
+                this.addressInfo = this._addressInfo;
+                this.shipping();
+            }else{
+                this.showaddress();
+            }
+            
             this.mobileSelect1 = new MobileSelect({
                 trigger: '#select',
                 title: '选择快递',
@@ -449,7 +457,12 @@ export default {
                 return;
             }
             if(res.code == 2000 && res.data != ''){
-                this.addressInfo = res.data[0];
+                 let arr = res.data.filter(item=>{
+                    if(item.is_default == 1){
+                        return item;
+                    }
+                });
+                this.addressInfo = arr.length > 0?arr[0]:res.data[0];
                 this.shipping();
             }
         },
@@ -557,7 +570,10 @@ export default {
         },
         selectAddress(){
             this.$router.push({
-                path: '/index/orderAddress'
+                path: '/index/orderAddress',
+                query: {
+                    group_id: this.group_id || ''
+                }
             })
         },
         selectCoupon(){
@@ -567,8 +583,9 @@ export default {
             }
         },
         openvip(){
+            return
             this.$router.push({
-                path: 'my_vip',
+                path: '/index/myVip',
             })
         },
         switch1Change(value){
@@ -599,7 +616,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["user", "account", "token", "goodsInfo"])
+        ...mapGetters(["user", "account", "token", "goodsInfo","_addressInfo"])
     },
 }
 </script>

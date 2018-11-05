@@ -90,8 +90,9 @@
                         <span class="fontSize" style="font-size: 13pt">{{item.area_info}}{{item.address}}</span>
                     </div>
                 </div>
-                <div class='flex caozuo-address-box flex-pack-end flex-align-center'>
+                <div class='flex caozuo-address-box flex-pack-end flex-align-center' @click.stop="">
                     <div class="right-caozuo">
+                        <span v-if="item.is_default == 1" style="color: #61D8D0;">[默认]</span>
                         <span  class="iconfont icon-bianji" @click.capture="bianji_address(item.address_id,item.is_default,index)">
                             <span class="fontSize">编辑</span>
                         </span>
@@ -128,6 +129,11 @@ export default {
     },
     mounted(){
         this.showAddressList();
+        console.log(this.$route.query.group_id)
+        this.group_id = this.$route.query.group_id;
+        if(this.group_id){
+            this.$store.dispatch('update_group_id',56)
+        }
     },
     methods: {
         async showAddressList(){
@@ -147,7 +153,13 @@ export default {
             }
         },
         select_address(index){
-
+            let address = this.addresslist[index];
+            address.__index = index;
+            this.$store.dispatch('update_addressInfo',address);
+            this.$router.push({
+                path: '/index/orderInfo_pd',
+                group_id: this.group_id
+            })
         },
         bianji_address(addressid,is_default,index){
             let info = this.addresslist[index];
@@ -159,7 +171,6 @@ export default {
             })
         },
         add(){
-            console.log('添加地址')
             this.$router.push({
                 path: '/index/editaddress',
                 query: {
@@ -202,7 +213,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["user", "account", "token"])
+        ...mapGetters(["user", "account", "token","addressInfo"])
     },
 }
 </script>

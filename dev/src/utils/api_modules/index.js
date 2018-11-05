@@ -71,6 +71,12 @@ export const addressdetail = (data) => {
   return POST(url, data)
 }
 
+//vip信息
+export const memberhome = (data) => {
+  const url = `${domain}/member/home`
+  return POST(url, data)
+}
+
 //地址删除
 export const addressdel = (data) => {
   const url = `${domain}/order/addressdel`
@@ -80,6 +86,12 @@ export const addressdel = (data) => {
 //地址修改
 export const addressupdate = (data) => {
   const url = `${domain}/order/addressupdate`
+  return POST(url, data)
+}
+
+//地址添加
+export const address = (data) => {
+  const url = `${domain}/order/address`
   return POST(url, data)
 }
 //地址详情

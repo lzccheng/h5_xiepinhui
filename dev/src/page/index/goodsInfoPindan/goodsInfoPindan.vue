@@ -750,12 +750,12 @@ contact-button {
     opacity: 1;
     background-color: #fff !important;
 }
-.tabList{
+.tabList1{
   position: relative;
   width: 100%;
   background-color: #fff;
   border-bottom: #eee solid 1px;
-  .list{
+  .list1{
     -webkit-justify-content: space-around;
     -moz-justify-content: space-around;
     -ms-justify-content: space-around;
@@ -765,7 +765,7 @@ contact-button {
   div{
     padding: 2/50rem 0;
   }
-  .line{
+  .line1{
     transition: all 0.5s;
     position: absolute;
     left: 0;
@@ -776,7 +776,7 @@ contact-button {
     background-color: #61D8D0;
   }
 }
-.itemList{
+.itemList1{
   // padding-top: 35/50rem;
   // overflow: auto;
 }
@@ -787,13 +787,13 @@ contact-button {
         <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header>
         <loading type="type3" v-if="loadingShow"></loading>
         <div class="page" v-if="spec_info != ''">
-            <div class="tabList">
-              <div class="list flex">
+            <div class="tabList1">
+              <div class="list1 flex">
                 <div @click="tabClick($event,index)" v-for="(item, index) in tab" :key="index">{{item}}</div>
               </div>
-              <div class="line" ref="line" :style="{'left': lineLeft + 'px'}"></div>
+              <div class="line1" ref="line" :style="{'left': lineLeft + 'px'}"></div>
             </div>
-            <div class="itemList">
+            <div class="itemList1">
               <div class="swiper-container swiperSel">
                 <div class="swiper-wrapper">
                   <div class="item swiper-slide">

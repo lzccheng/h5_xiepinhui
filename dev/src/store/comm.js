@@ -1,7 +1,9 @@
 let state = {
   indexUrl: '',
   bottomShow: true,
-  goodsInfo: {}
+  goodsInfo: {},
+  _addressInfo: null,
+  group_id: ""
 }
 
 let getters = {}
@@ -19,8 +21,14 @@ const actions = {
   update_bottomShow({commit},bool){
     commit('update_bottomShow',bool)
   },
+  update_group_id({commit},group_id){
+    commit('update_group_id',group_id)
+  },
   update_goodsInfo({commit},goodsInfo){
     commit('update_goodsInfo',goodsInfo)
+  },
+  update_addressInfo({commit},addressInfo){
+    commit('update_addressInfo',addressInfo)
   }
 }
 
@@ -31,8 +39,14 @@ const mutations = {
   update_bottomShow(state,bool){
     state.bottomShow = bool
   },
+  update_group_id(state,group_id){
+    state.group_id = group_id
+  },
   update_goodsInfo(state,goodsInfo){
     state.goodsInfo = goodsInfo
+  },
+  update_addressInfo(state,addressInfo){
+    state._addressInfo = addressInfo
   }
 }
 

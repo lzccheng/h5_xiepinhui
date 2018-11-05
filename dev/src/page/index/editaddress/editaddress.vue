@@ -56,12 +56,12 @@
         </div>
         <div class="weui-cell weui-cell_input line_xi_after ">
             <div class="weui-cell__hd">
-                <div class="weui-label">联系电话</div>
+               <div class="weui-label">联系电话</div>
             </div>
             <div class="weui-cell__bd">
-                <input type="text" class="weui-input" v-model="addressInfo.contact_phone" placeholder="请输入收货人"/>
+                <input type="number" class="weui-input" v-model="addressInfo.contact_phone" placeholder="请输入联系电话"/>
             </div>
-        </div>
+        </div> 
         <div class="weui-cell line_xi_after ">
             <div class="weui-cell__hd">
                 <div class="weui-label">所在地区</div>
@@ -75,7 +75,15 @@
             <div class="area-label">所在街道</div>
             <textarea placeholder="请输入所在街道" v-model='addressInfo.address'></textarea>
         </div>
-        <div class="bianji-btn" @click="subXiugai">修改</div>
+        <div class="weui-cell weui-cell_input line_xi_after ">
+            <div class="weui-cell__hd">
+               <div class="weui-label">设为默认地址</div>
+            </div>
+            <div class="weui-cell__bd" style="text-align: right;">
+                <van-switch v-model="is_default" />
+            </div>
+        </div> 
+        <div class="bianji-btn" @click="subXiugai">{{btnText}}</div>
     </div>
 </template>
 <script>
@@ -89,7 +97,9 @@ import MobileSelect from 'mobile-select';
 export default {
     components: {
         XHeader,
-        loading
+        loading,
+        Group,
+        XSwitch
     },
     mounted(){
         this.init();
@@ -105,6 +115,7 @@ export default {
                 contact_phone: '',
                 address: ''
             },
+            is_default: false,
             addresslist: "",
             region: '',
             addressInfoArry: "",
@@ -113,16 +124,23 @@ export default {
                 showCapsule: 1, //是否显示左上角图标
                 title: '修改地址', //导航栏 中间的标题
             },
+            btnText: '修改',
+            routerInfo: ''
         }
     },
     methods: {
         init(){
             let that = this;
-            this.addressInfo = this.$route.query.info;
-            if(this.addressInfo.real_name){
+            this.routerInfo = this.$route.query.info;
+            if(this.routerInfo){
+                this.addressInfo = this.$route.query.info;
+                this.is_default = this.addressInfo.is_default == 0?false:true;
+            }
+            if(this.routerInfo){
                 this.nvabarData.title = '修改地址';
             }else{
                 this.nvabarData.title = '添加地址';
+                this.btnText = '添加';
             }
             this.addresslist = cityObj;
             if(this.addressInfo.area_info){
@@ -154,6 +172,9 @@ export default {
             if(!this.addressInfo.contact_phone){
                 return this.$vux.toast.text("请填写联系电话");
             }
+            if(this.addressInfo.contact_phone.length > 15 || this.addressInfo.contact_phone.length < 6){
+                return this.$vux.toast.text("请填写正确的联系电话");
+            }
             if(!this.addressInfo.address){
                 return this.$vux.toast.text("请填写详细街道信息");
             }
@@ -169,18 +190,26 @@ export default {
                 real_name: that.addressInfo.real_name,
                 address: that.addressInfo.address,
                 contact_phone: that.addressInfo.contact_phone,
-                address_id: that.addressInfo.address_id,
-                is_default: that.addressInfo.is_default
+                is_default: that.is_default?'1':'0'
             }
-            const [err, res] = await api.addressupdate(data);
-            this.loadingShow = false;
-            if (err) {
+            let  err,res;
+            if(this.routerInfo){
+                data.address_id = that.addressInfo.address_id;
+                [err, res] = await api.addressupdate(data);
+            }else{
+                [err, res] = await api.address(data);
+            }
+            if(err) {
                 this.$vux.toast.text(err.msg);
                 return;
             }
             if(res.code == 2000){
-                this.$vux.toast.text('修改成功');
-                this.$router.back()
+                let txt = '修改成功';
+                if(!this.routerInfo){
+                    txt = '添加成功';
+                }
+                this.$vux.toast.text(txt);
+                this.$router.back();
             }
         },
         bindRegionChange(indexArr,data){
@@ -204,14 +233,14 @@ export default {
     },
     watch: {
         addressInfo(){
-            if(this.addressInfo){
+            if(this.addressInfo.area_info){
                 this.region = this.addressInfo.area_info.split("_");
             }
         }
     },
     computed: {
         regionVal(){
-            return this.region?this.region[0]+this.this.region[1]+this.this.region[2]:'请选择地区';
+            return this.region?this.region[0]+this.region[1]+this.region[2]:'请选择地区';
         },
         ...mapGetters(["user", "account", "token"])
     },
