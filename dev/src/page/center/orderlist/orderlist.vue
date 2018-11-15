@@ -362,28 +362,28 @@
           <div class="order-bottom-btn flex flex-pack-end flex-align-center" v-if='item.order_state=="0"'>
             <span class="order-btn order-btn-hui" @click='quxiaoOrder' data-deleteType="2" :data-index="index"
               :data-orderid="item.order_id">删除订单</span>
-            <span class="order-btn order-btn-hui" @click="buyagain" :data-goodsid='item.goods_info.goods_id'>再次购买</span>
+            <span class="order-btn order-btn-hui" @click="buyagain(item.goods_info.goods_id)" :data-goodsid='item.goods_info.goods_id'>再次购买</span>
           </div>
           <div class="order-bottom-btn " v-if='item.order_state=="1"'>
             <span class="order-btn order-btn-hui" @click='quxiaoOrder' data-deleteType="1" :data-index="index"
               :data-orderid="item.order_id">取消订单</span>
-            <span class="order-btn" @click="gobay" v-if="item.active_type==0" :data-orderId='item.order_id'>去付款</span>
+            <span class="order-btn" @click="gobay(item.order_id)" v-if="item.active_type==0" :data-orderId='item.order_id'>去付款</span>
           </div>
           <div class="order-bottom-btn flex flex-pack-end" v-if='item.order_state=="10"'>
             <button class="pindan-share" open-type="share" :data-groupid='item.group_id'>邀请好友拼单</button>
           </div>
           <div class="order-bottom-btn flex flex-pack-end flex-align-center" v-if='item.order_state=="30"'>
-            <span class="order-btn order-btn-hui" @click="tixingFahuo" :data-orderid='item.order_id' :data-index="index">提醒发货</span>
-            <span class="order-btn order-btn-hui" @click="buyagain" :data-goodsid='item.goods_info.goods_id'>再次购买</span>
+            <span class="order-btn order-btn-hui" @click="tixingFahuo(item.order_id)" :data-orderid='item.order_id' :data-index="index">提醒发货</span>
+            <span class="order-btn order-btn-hui" @click="buyagain(item.goods_info.goods_id)" :data-goodsid='item.goods_info.goods_id'>再次购买</span>
           </div>
           <div class="order-bottom-btn flex flex-pack-end flex-align-center" v-if='item.order_state=="40"'>
-            <span class="order-btn order-btn-hui" @click="goShip" :data-orderid='item.order_id' :data-code='item.shipping_code'>查看物流</span>
-            <span class="order-btn " @click="receiving" :data-orderId='item.order_id' :data-index="index">确认收货</span>
+            <span class="order-btn order-btn-hui" @click="goShip(item.order_id,item.shipping_code)" :data-orderid='item.order_id' :data-code='item.shipping_code'>查看物流</span>
+            <span class="order-btn " @click="receiving(item.order_id,index)" :data-orderId='item.order_id' :data-index="index">确认收货</span>
           </div>
           <div class="order-bottom-btn flex flex-pack-end flex-align-center" v-if='item.order_state=="50"'>
             <span class="order-btn order-btn-hui" @click='quxiaoOrder' data-deleteType="2" :data-index="index"
               :data-orderid="item.order_id">删除订单</span>
-            <span class="order-btn order-btn-hui" @click="buyagain" :data-goodsid='item.goods_info.goods_id'>再次购买</span>
+            <span class="order-btn order-btn-hui" @click="buyagain(item.goods_info.goods_id)" :data-goodsid='item.goods_info.goods_id'>再次购买</span>
             <span class="order-btn" @click="goeva" :data-orderId='item.order_id' :data-itemid='item.goods_info.goods_item_id'>立即评价</span>
           </div>
           <div class="order-bottom-btn " v-if='item.order_state=="60"'>
@@ -394,16 +394,16 @@
           <div class="order-bottom-btn " v-if='item.order_state=="61"'>
             <span class="order-btn order-btn-hui" @click='quxiaoOrder' data-deleteType="2" :data-index="index"
               :data-orderid="item.order_id">删除订单</span>
-            <span class="order-btn order-btn-hui" @click="buyagain" :data-goodsid='item.goods_info.goods_id'>再次购买</span>
+            <span class="order-btn order-btn-hui" @click="buyagain(item.goods_info.goods_id)" :data-goodsid='item.goods_info.goods_id'>再次购买</span>
           </div>
-          <div class="order-bottom-btn " v-if='item.order_state=="70"' @click="refund" :data-refundid='item.refund_id'>
+          <div class="order-bottom-btn " v-if='item.order_state=="70"' @click="refund(item.refund_id)" :data-refundid='item.refund_id'>
             <span class="order-btn">售后详情</span>
           </div>
-          <div class="order-bottom-btn " v-if='item.order_state=="80"||item.order_state=="90"' @click="buyagain"
+          <div class="order-bottom-btn " v-if='item.order_state=="80"||item.order_state=="90"' @click="buyagain(item.goods_info.goods_id)"
             :data-goodsid='item.goods_info.goods_id'>
             <span class="order-btn order-btn-hui" @click='quxiaoOrder' data-deleteType="2" :data-index="index"
               :data-orderid="item.order_id">删除订单</span>
-            <span class="order-btn order-btn-hui" @click="buyagain" :data-goodsid='item.goods_info.goods_id'>再次购买</span>
+            <span class="order-btn order-btn-hui" @click="buyagain(item.goods_info.goods_id)" :data-goodsid='item.goods_info.goods_id'>再次购买</span>
           </div>
         </div>
         <div class="loading" v-if="upLoading">加载中...</div>
@@ -417,6 +417,7 @@
 import { isScrollBottom } from "@/utils/comm.js";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { api } from "@/utils/api.js";
+import { wxPay } from "@/utils/wx_sdk.js";
 import loading from "@/components/loading.vue";
 import { Group, Cell, XButton, Badge, XHeader } from "vux";
 export default {
@@ -552,19 +553,113 @@ export default {
         }
       });
     },
-    gobay() {
-      this.$vux.toast.show({
-        text: "极速开发中"
+    async gobay(orderid) {
+      this.$vux.loading.show({
+        text: "支付中..."
       });
+      let that = this;
+      let data = {
+        plat: 3,
+        account: this.account,
+        token: this.token,
+        order_id: orderid,
+        pay_code: 2,
+        openid: this.user.openid
+      }
+      const [err, res] = await api.orderunpaidpay(data);
+      if (err) {
+        that.$vux.toast.text(err.msg);
+        return;
+      }
+      if(res.code == 2000){
+        var selfData = res;
+        let success = res =>{
+          that.$router.push({
+            path: '/centerFull/orderFull/orderlistinfo',
+            query: {
+              order_id: selfData.data.order_id,
+              order_sn: selfData.data.data.order_sn,
+            }
+          })
+        }
+        let fail = err =>{
+
+        }
+        wxPay(this,{...res.data.pay_param,success,fail})
+      }
     },
-    tixingFahuo() {},
-    buyagain() {
-      this.$vux.toast.show({
-        text: "极速开发中"
-      });
+    tixingFahuo(orderid) {
+      let that = this;
+      this.$vux.confirm.show({
+        title: '',
+        content: '催发货后商家将会收到提醒，只能提醒发货一次哦～',
+        async onConfirm(){
+          let data = {
+            plat: 3,
+            account: this.account,
+            token: this.token,
+            order_id: orderid
+          }
+          const [err, res] = await api.shipnotify(data);
+          if (err) {
+            that.$vux.toast.text(err.msg);
+            return;
+          }
+          if(res.code == 2000){
+            that.$vux.toast.text('提醒成功');
+          }
+        },
+        onCancel(){}
+      })
     },
-    goShip() {},
-    receiving() {},
+    buyagain(goodsId) {
+      this.$router.push({
+        path: '/index/goodsInfoPindan',
+        query: {
+          goodsId
+        }
+      })
+    },
+    goShip(order_id,shipping_code) {
+      this.$vux.text('开发中...')
+      return
+      this.$router.push({
+        path: 'order_ship',
+        query: {
+          order_id,
+          shipping_code
+        }
+      })
+    },
+    receiving(orderid,index) {
+      let that = this;
+      this.$vux.confirm.show({
+        title: '确认收货',
+        content: '确认收到货物？',
+        confirmColor: "#FB4C72",
+        async onConfirm(){
+          that.$vux.loading.show({
+            text: '请求中...'
+          })
+          let data = {
+            plat: 3,
+            order_id: orderid,
+            token: that.token,
+            account: that.account,
+          }
+          const [err, res] = await api.orderreceive(data);
+          if (err) {
+            that.$vux.toast.text(err.msg);
+            return;
+          }
+          if(res.code == 2000){
+            that.listInfo.splice(index, 1);
+            that.$vux.toast.text('收货成功');
+          }
+        },
+        onCancel(){}
+      })
+    },
     //评价
     goeva(e) {
       let orderid = e.currentTarget.dataset.orderid;
@@ -577,7 +672,9 @@ export default {
         }
       });
     },
-    refund() {},
+    refund(refundid) {
+
+    },
     ...mapActions(["update_storeInfo"])
   },
   computed: {

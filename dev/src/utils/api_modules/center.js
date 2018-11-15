@@ -14,6 +14,40 @@ export const newgetorderlist_num = (data) => {
   return POST(url, data)
 }
 
+//售后
+export const refunddetails = (data) => {
+  const url = `${domain}/refund/refunddetails`
+  return POST(url, data)
+}
+
+//售后修改
+export const refundmodify = (data) => {
+  const url = `${domain}/refund/refundmodify`
+  return POST(url, data)
+}
+//售后结果
+export const refundconsult = (data) => {
+  const url = `${domain}/refund/refundconsult`
+  return POST(url, data)
+}
+
+//售后撤销
+export const refundrevoke = (data) => {
+  const url = `${domain}/refund/refundrevoke`
+  return POST(url, data)
+}
+
+//售后编辑
+export const refundedit = (data) => {
+  const url = `${domain}/refund/refundedit`
+  return POST(url, data)
+}
+
+//售后列表
+export const refundlist = (data) => {
+  const url = `${domain}/refund/refundlist`
+  return POST(url, data)
+}
 //个人中心首页接口
 export const newredmessage = (data) => {
   const url = `${domain}/nine/newredmessage`
@@ -83,7 +117,34 @@ export const orderreceive = (data) => {
   const url = `${domain}/nine/orderreceive`
   return POST(url, data)
 }
+//支付 
+export const orderunpaidpay = (data) => {
+  const url = `${domain}/reorder/orderunpaidpay`
+  return POST(url, data)
+}
+//申请售后
+export const rtype = (data) => {
+  const url = `${domain}/refund/rtype`
+  return POST(url, data)
+}
 
+//申请退货、退款
+export const refunapply = (data) => {
+  const url = `${domain}/refund/refunapply`
+  return POST(url, data)
+}
+
+//申请提交
+export const refunapplyadd = (data) => {
+  const url = `${domain}/refund/refunapplyadd`
+  return POST(url, data)
+}
+
+//退款邮费支付
+export const refundselectpay = (data) => {
+  const url = `${domain}/refund/refundselectpay`
+  return POST(url, data)
+}
 /**365 */
 // 邀请码
 export const receiveweidian = (data) => {

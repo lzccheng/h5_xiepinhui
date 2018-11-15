@@ -220,6 +220,7 @@ import tabBar from "@/components/tabBar.vue";
 import nullData from "@/components/nullData.vue";
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin } from "vux";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
+import { wxPay, share } from "@/utils/wx_sdk.js"
 export default {
     components: {
         loading,
@@ -359,6 +360,10 @@ export default {
         },
         // 待付款
         async pendingPayment(index, orderid){
+            this.$vux.loading.show({
+                    text: '支付中...'
+                })
+            let that = this;
             let data = {
                 plat: 3,
                 account: this.account,
@@ -366,13 +371,26 @@ export default {
                 refit_id: orderid,
                 pay_code: 2,
                 sub_member_id: this.sub_member_id,
-                openid: ''
+                openid: this.user.openid
             }
-            console.log('待付款')
+            const [err, res] = await api.topay(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            if(res.code == '2000'){
+                var selfData = res;
+                let success = res =>{
+                    that.orderInfo(selfData.data.order_id);
+                }
+                console.log(res)
+                wxPay(this,{...res.data.pay_param,success,debug: true})
+            }
+            console.log(this.user.openid)
         },
         orderInfo(orderid){
             this.$router.push({
-                path: 'replenishmentOrderinfo',
+                path: '/centerFull/myshop/replenishmentOrderinfo',
                 query: {
                     refit_id: orderid,
                     sub_member_id: this.sub_member_id

@@ -112,7 +112,7 @@
 }
 
 .right-content {
-  width: calc(100% - 135/50rem);
+//   width: 100%;
   padding-left: 10/50rem;
 }
 

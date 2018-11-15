@@ -727,34 +727,38 @@ export default {
     　　return windowHeight;
     }
 
-    addEvent(window,'scroll',function(){
+    // addEvent(window,'scroll',function(){
         
-        if(getScrollTop() + getWindowHeight() == getScrollHeight()){
-          that.scrollBottomCB();
-    　　}
-    });
-    addEvent(window,'scroll',function(){
-        var sTop =document.documentElement.scrollTop || document.body.scrollTop;
-        var tabFixBar = that.$refs.tabFixBar;
-        var tabFixBar_Top = tabFixBar.offsetTop;
+    //     if(getScrollTop() + getWindowHeight() == getScrollHeight()){
+    //       that.scrollBottomCB();
+    // 　　}
+    // });
+    // addEvent(window,'scroll',function(){
+    //     var sTop =document.documentElement.scrollTop || document.body.scrollTop;
+    //     var tabFixBar = that.$refs.tabFixBar;
+    //     var tabFixBar_Top = tabFixBar.offsetTop;
 
-        if(!that.hasScroll){
-          that.hasScroll=true;
-          that.allHeight=tabFixBar_Top;
-        }
-        var allHeight=that.allHeight;
-        if (sTop >= allHeight) {
-          that.ifResultTop=true;
-        } else {
-          that.ifResultTop=false;
-        }
-    });
+    //     if(!that.hasScroll){
+    //       that.hasScroll=true;
+    //       that.allHeight=tabFixBar_Top;
+    //     }
+    //     var allHeight=that.allHeight;
+    //     if (sTop >= allHeight) {
+    //       that.ifResultTop=true;
+    //     } else {
+    //       that.ifResultTop=false;
+    //     }
+    // });
 
 
 
 
     });
     
+  },
+  beforeDestroy(){
+    console.log('distory=====================================================**************')
+    window.onscroll = null;
   },
   methods: {
     //滚动到底部回调

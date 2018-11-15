@@ -6,9 +6,12 @@ import store from '@/store'
 
 // module index
 //首页
-import indexWrap from '@/page/index/indexWrap'
-import indexFull from '@/page/index/indexFull'
-import home from '@/page/index/home'
+const indexWrap = ()=>import('@/page/index/indexWrap')
+const indexFull = ()=>import('@/page/index/indexFull')
+const home = ()=>import('@/page/index/home')
+// import indexWrap from '@/page/index/indexWrap'
+// import indexFull from '@/page/index/indexFull'
+// import home from '@/page/index/home'
 //商品
 const goodsFull = ()=>import('@/page/index/goods/goodsFull')
 const fbPingjia = ()=>import('@/page/index/goods/fbPingjia')
@@ -74,6 +77,8 @@ const orderAddress = ()=>import('@/page/index/orderAddress/orderAddress')
 
 //开通vip页面
 const myVip = ()=>import('@/page/index/myVip/myVip')
+//帮助中心
+const guize = ()=>import('@/page/index/guize/guize')
 
 
 //编辑地址
@@ -129,8 +134,24 @@ const register_password = ()=>import('@/page/user/register_password')
 //手机号绑定
 const phone_bind = ()=>import('@/page/user/phone_bind')
 
+//余额明细
+const remain = ()=>import('@/page/center/balance/remain/remain')
 
+//申请售后
+const aftertype = ()=>import('@/page/center/orderlist/aftertype')
 
+//申请售后
+const aftersalerInfo = ()=>import('@/page/center/orderlist/aftersalerInfo')
+
+//申请售后
+const afterlistInfo = ()=>import('@/page/center/afterlistInfo/afterlistInfo')
+
+//申请售后
+const aftersteps = ()=>import('@/page/center/afterlistInfo/aftersteps')
+//after_list
+const after_list = () => import('@/page/center/after_list/after_list')
+//钱去向
+const aftermoneyWhere = () => import('@/page/center/after_list/aftermoneyWhere')
 
 const base = config.path
 
@@ -230,9 +251,29 @@ let router = new Router({
       children: [{
         path: '',
         component: center
-      }],
+      },
+      
+    ],
       meta: {
         title: '个人中心'
+      }
+    },
+    {
+      path: '/balance',
+      name: 'remain',
+      component: remain,
+      children: [{
+        path: 'remain',
+        name: 'remain',
+        component: remain,
+        meta: {
+          title: '余额明细'
+        }
+      },
+      
+    ],
+      meta: {
+        title: '余额'
       }
     },
     {
@@ -245,7 +286,15 @@ let router = new Router({
         children: [{
             path: '',
             redirect: 'code'
-          }, {
+          }, 
+          {
+            path: 'guize',
+            name: 'guize',
+            component: guize,
+            meta: {
+              title: '帮助中心'
+            }
+          },{
             path: 'code',
             name: 'code',
             component: code,
@@ -302,7 +351,24 @@ let router = new Router({
             meta: {
               title: '邀请好友'
             }
+          },
+          {
+            path: 'aftertype',
+            name: 'aftertype',
+            component: aftertype,
+            meta: {
+              title: '申请售后'
+            }
+          },
+          {
+            path: 'aftersalerInfo',
+            name: 'aftersalerInfo',
+            component: aftersalerInfo,
+            meta: {
+              title: '我要换货/退款'
+            }
           }
+          
         ]
       }, {
         path: 'myshop',
@@ -447,7 +513,40 @@ let router = new Router({
           meta: {
             title: '订单列表'
           }
-        }, {
+        }, 
+        {
+          path: 'aftermoneyWhere',
+          name: 'aftermoneyWhere',
+          component: aftermoneyWhere,
+          meta: {
+            title: '钱去向'
+          }
+        },
+        {
+          path: 'afterlistInfo',
+          name: 'afterlistInfo',
+          component: afterlistInfo,
+          meta: {
+            title: '售后处理'
+          }
+        },
+        {
+          path: 'aftersteps',
+          name: 'aftersteps',
+          component: aftersteps,
+          meta: {
+            title: '售后处理'
+          }
+        }, 
+        {
+          path: 'after_list',
+          name: 'after_list',
+          component: after_list,
+          meta: {
+            title: '售后/退款'
+          }
+        },
+         {
           path: 'orderlistinfo',
           name: 'orderlistinfo',
           component: orderlistinfo,

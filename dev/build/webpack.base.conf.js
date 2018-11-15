@@ -41,7 +41,7 @@ let webpackConfig = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'),resolve('node_modules/dom7'), resolve('test'),resolve('node_modules/swiper'),resolve('node_modules/vue-picture-preview'),resolve('/node_modules/vue-fancyBox')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

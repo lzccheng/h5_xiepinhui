@@ -132,15 +132,14 @@ export default {
         this.access_code !== undefined
       ) {
         //设置回调页
-        console.log(1)
-        return
         if (this.url == undefined || this.url == "/") {
           this.url = "/";
         } else {
           this.url = this.url.substring(0, this.url.indexOf("&code"));
         }
         axios
-          .get("https://api.dev.xiepinhui.com.cn/old/wxnewlogin", {
+          //https://api.dev.xiepinhui.com.cn/old/wxnewlogin
+          .get("https://api.dev.xiepinhui.com.cn/user/hfiveopenid", {
             params: {
               code: this.access_code
             }
@@ -155,6 +154,7 @@ export default {
               avatar: res.data.data.headimgurl
             };
             //存储user
+            console.log('user user',res.data.data)
             that.updateUser(res.data.data);
             localStorage["user"] = JSON.stringify(res.data.data);
             that.loginthirdFun(data); //第三方登录
@@ -164,18 +164,19 @@ export default {
             this.$vux.toast.text("微信登录参数出错");
           });
       } else {
-        var fromurl = window.location.href;
-        console.log(9999,fromurl)
-        console.log(encodeURIComponent(fromurl))
-        return
-        window.location.href =
-          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa4142cc3047c6dff&redirect_uri=" +
-          encodeURIComponent(fromurl) +
-          "&response_type=code&scope=snsapi_userinfo&state=getUser#wechat_redirect";
+        // var fromurl = window.location.href;
+        var fromurl = window.location.origin + '?url=/user/login';
+        // console.log(9999,fromurl,window.location.origin)
+        // console.log(encodeURIComponent(fromurl))
+        // return
         // window.location.href =
-        //   "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx47d52b6420c14397&redirect_uri=" +
+        //   "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa4142cc3047c6dff&redirect_uri=" +
         //   encodeURIComponent(fromurl) +
         //   "&response_type=code&scope=snsapi_userinfo&state=getUser#wechat_redirect";
+        window.location.href =
+          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx47d52b6420c14397&redirect_uri=" +
+          encodeURIComponent(fromurl) +
+          "&response_type=code&scope=snsapi_userinfo&state=getUser#wechat_redirect";
           
       }
     },
@@ -201,6 +202,10 @@ export default {
         return;
       }
       //第三方登录成功 => 存储token
+      //存储user
+      console.log('user user',res.data)
+      this.updateUser(res.data);
+      localStorage["user"] = JSON.stringify(res.data);
       this.updateToken(res.data.token);
       this.updateAccount(res.data.account);
       localStorage["token"] = res.data.token;
@@ -214,6 +219,22 @@ export default {
         type: "success",
         text: "微信登录成功"
       });
+    },
+    async showShareCode(){
+      let data = {
+        plat: 3,
+        account: this.account,
+        token: this.token
+      }
+      const [err, res] = await api.login(data);
+      if (err) {
+        this.$vux.toast.text(err.msg, "top");
+        return;
+      }
+      if(res.code == 2000){
+        localStorage["SelfCode"] = res.data.code;
+        localStorage["partner_type"] = res.data.partner_type;
+      }
     }
   },
   computed: {

@@ -63,7 +63,7 @@ export default {
         }
     },
     mounted(){
-        // console.log('=====店铺导航栏实例化mounted======')
+        console.log('=====店铺导航栏实例化mounted======')
         this.createBar();
     },
     methods: {

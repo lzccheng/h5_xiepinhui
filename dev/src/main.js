@@ -35,6 +35,7 @@ Vue.prototype.$api = 1
 Vue.config.productionTip = false
 window.isClick = false
 
+
 Vue.use(Button);
 /* eslint-disable no-new */
 new Vue({
@@ -42,3 +43,5 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app-box')
+
+

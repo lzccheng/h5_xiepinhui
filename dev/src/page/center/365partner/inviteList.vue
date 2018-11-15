@@ -135,8 +135,10 @@
 import { isScrollBottom } from "@/utils/comm.js";
 import { mapGetters } from "vuex";
 import { api } from "@/utils/api.js";
+import { share } from "@/utils/wx_sdk.js";
 import { XHeader } from "vux";
 import loading from "@/components/loading";
+import { setTimeout } from 'timers';
 
 // import {wxConfig} from "@/utils/wx_jssdk.js";
 
@@ -205,11 +207,21 @@ export default {
         this.available_amount = res.data.red_amout; //可提取的返利
         this.total_amount = res.data.total_amout; //总共获取的返利
         let codeInvite = this.$route.query.codeInvite;
+        this.share();
         console.log("codeInvite", this.$route.query.codeInvite);
         if (codeInvite) {
           this.bindFans(codeInvite);
         }
       }
+    },
+    share(){
+      let shareConfig = {
+        title: '邀请365合伙人，立返现金',
+        desc: '现金返个不停~',
+        imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541757504289&di=c5ba1e95b766081ef1790c31e4d80ba1&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F203fb80e7bec54e7b8e8c7d4b3389b504ec26af0.jpg',
+        link: window.location.origin + '?url=' + window.location.pathname + '&codeInvite=' + this.inviteCode
+      }
+      share(this,{share: shareConfig})
     },
     async bindFans(codeInvite) {
       let data = {

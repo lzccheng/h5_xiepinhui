@@ -14,6 +14,12 @@ export default {
     return {
     }
   },
+  created(){
+    
+  },
+  mounted(){
+    document.querySelector('#pageLoading').style.display = 'none' 
+  },
   watch: {
     $route(to,from){
       if(to.path === '/center' || to.path === '/index'){

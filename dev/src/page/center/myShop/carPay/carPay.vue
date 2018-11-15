@@ -269,7 +269,8 @@
 }
 .swith{
   position: relative;
-  top: -4/50rem;
+  top: 14/50rem;
+  right: 12/50rem;
 }
 </style>
 <template>
@@ -281,9 +282,7 @@
                     <img class="balance-icon" src="@/assets/images/myshop/Balance.png" alt="">
                     <span class="balance-lable">账户余额：<span class="balance-price">{{blanceInfo.rebate_amout}}</span></span>
                 </div>
-                <group class="swith">
-                  <x-switch title="" v-model="value" @on-change="switchChange"></x-switch>
-                </group>
+                <van-switch v-model="value" class="swith" @change="switchChange"/>
             </div>
             <div 
             class='goods-box flex line_xi_after flex-space'
@@ -309,6 +308,7 @@
 </template>
 <script>
 import { api } from "@/utils/api.js";
+import { wxPay } from "@/utils/wx_sdk.js";
 import loading from "@/components/loading.vue";
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin ,XSwitch } from "vux";
 import { mapGetters, mapActions, mapMutations } from "vuex";
@@ -318,8 +318,6 @@ export default {
     components: {
         loading,
         XHeader,
-        XSwitch,
-        Group
     },
     data(){
         return {
@@ -388,6 +386,10 @@ export default {
           this.carPay();
         },
         async carPay(){
+          let that = this;
+          this.$vux.loading.show({
+            text: '支付中...'
+          })
           let data = {
             plat: 3,
             account: this.account,
@@ -395,6 +397,7 @@ export default {
             cart_id: this.goodsInfo.carIdString,
             use_banlance: this.isBlance?'1':'0',
             pay_code: 2,
+            small_openid: this.user.openid,
             sub_member_id: this.goodsInfo.sub_member_id?this.goodsInfo.sub_member_id: ''
           }
           const [err, res] = await api.addrefit(data);
@@ -403,60 +406,32 @@ export default {
             return;
           }
           if(res.code == '2000'){
-            console.log(res)
-            let that = this;
-            let dataConfig = res.data.pay_param;
-            let subMemberId = this.sub_member_id;
-            if(dataConfig.pay_status == 2){
-                this.$store.dispatch('update_carpayInfo',{});
-                
-                // if(subMemberId==0){
-                //   this.$router.replace({
-                //     path: ''
-                //   })
-                // }else{
-                //   this.$router.replace({
-                //     path: ''
-                //   })
-                // }
+            var selfData = res;
+             var subMemberId = that.goodsInfo.sub_member_id;
+            if(selfData.data.pay_status==2){
+              that.replace(subMemberId);
+              return;
             }
-            // let config = {
-            //   appId: dataConfig.appid,
-            //   timestamp: dataConfig.timestamp,
-            //   nonceStr: dataConfig.nonce_str,
-            //   signature: dataConfig.sign,
-            //   jsApiList: ['chooseWXPay']
-            // }
-            // this.$wechat.config(config);
-            // this.$wechat.error((err)=>{
-            //   console.log('wechat error',err)
-            // })
-            // this.$wechat.ready(()=>{
-            //   console.log('wechat success', config)
-            //   that.$wechat.checkJsApi({
-            //     jsApiList: ['chooseWXPay'],
-            //     success: (res)=>{
-            //       console.log('check API success')
-            //       if(res.errMsg === 'checkJsApi:ok'){
-            //         console.log('chooseWXPay is can use')
-            //         that.$wechat.chooseWXPay({
-            //           timestamp: dataConfig.timestamp,   // 支付签名时间戳
-            //           noceStr: dataConfig.nonce_str,    // 支付签名随机串，不长于 32 位
-            //           package: "",     // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-            //           signType: "MD5",   // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-            //           paySign: dataConfig.sign,       // 支付签名
-            //           success(res){
-            //               console.log('wechat pay success',res)
-            //           },
-            //           error(err){
-            //             console.log('pay error',err)
-            //           }
-            //         })
-            //       }
-            //     }
-            //   })
-            // })
-            // console.log(this.wechat)
+            let success = res =>{
+              that.replace(subMemberId);
+            }
+            let fail = err =>{
+              that.replace(subMemberId);
+            }
+            wxPay(that,{...res.data.pay_param,success,fail})
+          }
+        },
+        replace(subMemberId){
+          let that = this;
+          this.$store.dispatch('update_carpayInfo',{})
+          if(subMemberId == 0){
+            that.$router.replace({
+              path: '/centerFull/myshop/subreplenishOrder'
+            })
+          }else{
+            that.$router.replace({
+              path: '/centerFull/myshop/subreplenishOrder'
+            })
           }
         }
     },

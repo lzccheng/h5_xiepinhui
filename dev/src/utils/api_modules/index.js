@@ -65,6 +65,44 @@ export const newgoodsdetail = (data) => {
   return POST(url, data)
 }
 
+//商品取消收藏
+export const cancelcollectgoods = (data) => {
+  const url = `${domain}/nine/cancelcollectgoods`
+  return POST(url, data)
+}
+
+//获取邀请码
+export const getsharecode = (data) => {
+  const url = `${domain}/rebate/getsharecode`
+  return POST(url, data)
+}
+
+//绑定
+export const bindrebate = (data) => {
+  const url = `${domain}/rebate/bindrebate`
+  return POST(url, data)
+}
+//商品购买
+export const buy = (data) => {
+  const url = `${domain}/redirectbuy/buy`
+  return POST(url, data)
+}
+//商品收藏
+export const collectgoods = (data) => {
+  const url = `${domain}/nine/collectgoods`
+  return POST(url, data)
+}
+
+//取消支付
+export const returned = (data) => {
+  const url = `${domain}/usercoupon/returned`
+  return POST(url, data)
+}
+//商品评价
+export const newevaluatelist = (data) => {
+  const url = `${domain}/nine/newevaluatelist`
+  return POST(url, data)
+}
 //地址详情
 export const addressdetail = (data) => {
   const url = `${domain}/order/addressdetail`
@@ -97,5 +135,23 @@ export const address = (data) => {
 //地址详情
 export const nine_transport = (data) => {
   const url = `${domain}/shipping/nine_transport`
+  return POST(url, data)
+}
+
+//参与拼单
+export const fightgroups = (data) => {
+  const url = `${domain}/ninegroup/fightgroups`
+  return POST(url, data)
+}
+
+//发起拼单
+export const startorder = (data) => {
+  const url = `${domain}/ninegroup/startorder`
+  return POST(url, data)
+}
+
+//余额明细
+export const balancelog = (data) => {
+  const url = `${domain}/member/balancelog`
   return POST(url, data)
 }

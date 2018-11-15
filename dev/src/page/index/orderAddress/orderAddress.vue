@@ -153,6 +153,7 @@ export default {
             }
         },
         select_address(index){
+            if(this.$route.query.from === 'center')return;
             let address = this.addresslist[index];
             address.__index = index;
             this.$store.dispatch('update_addressInfo',address);
