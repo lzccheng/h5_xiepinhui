@@ -102,7 +102,11 @@ const subfanManagement = ()=>import('@/page/center/myShop/subfanManagement')//�
 // import shopSetting from '@/page/center/myShop/shopSetting'//子账号的店铺设置
 
 // 提现模块
-const drawIndex = ()=>import('@/page/center/drawDeposit/drawIndex')//提现首页
+const drawIndex = () => import('@/page/center/drawDeposit/drawIndex') //提现首页
+const rebateRecord = () => import('@/page/center/myWallet/rebateRecord') //返利
+const myWallet = () => import('@/page/center/myWallet/myWallet') //提现首页
+const myWalletWrap = () => import('@/page/center/myWallet/myWalletWrap') //myWalletWrap
+
 const moblieCodeTrade = ()=>import('@/page/center/drawDeposit/moblieCodeTrade')//交易密码
 const setTradeCode = ()=>import('@/page/center/drawDeposit/setTradeCode')//设置交易密码
 const drawCash = ()=>import('@/page/center/drawDeposit/drawCash')//提现页面
@@ -150,6 +154,9 @@ const afterlistInfo = ()=>import('@/page/center/afterlistInfo/afterlistInfo')
 const aftersteps = ()=>import('@/page/center/afterlistInfo/aftersteps')
 //after_list
 const after_list = () => import('@/page/center/after_list/after_list')
+
+//商品收藏
+const sc_goods = () => import('@/page/center/sc_goods/sc_goods')
 //钱去向
 const aftermoneyWhere = () => import('@/page/center/after_list/aftermoneyWhere')
 
@@ -546,6 +553,15 @@ let router = new Router({
             title: '售后/退款'
           }
         },
+        {
+          path: 'sc_goods',
+          name: 'sc_goods',
+          component: sc_goods,
+          meta: {
+            title: '我的收藏'
+          }
+        },
+        
          {
           path: 'orderlistinfo',
           name: 'orderlistinfo',
@@ -620,7 +636,37 @@ let router = new Router({
     //提现模块
     {
       path: '/drawIndex',
-      name: 'drawIndex',
+      name: 'myWallet',
+      component: myWalletWrap,
+      meta: {
+        title: '我的钱包'
+      },
+      children: [
+        {
+          path: '/',
+          redirect: 'myWallet'
+        },
+        {
+          path: 'myWallet',
+          name: 'myWallet',
+          component: myWallet,
+          meta: {
+            title: '我的钱包'
+          }
+        }, 
+        {
+          path: 'rebateRecord',
+          name: 'rebateRecord',
+          component: rebateRecord,
+          meta: {
+            title: '返利'
+          }
+        },
+      ]
+    },
+    {
+      path: '/myBlack',
+      name: 'myBlack',
       component: drawIndex,
       meta: {
         title: '我的余额'

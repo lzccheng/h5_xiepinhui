@@ -757,7 +757,6 @@ export default {
     
   },
   beforeDestroy(){
-    console.log('distory=====================================================**************')
     window.onscroll = null;
   },
   methods: {

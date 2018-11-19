@@ -244,7 +244,7 @@
 <template>
   <div class="orderindex">
     <!-- header -->
-    <x-header :left-options="{backText:''}" title="我的店铺" id="vux-header"></x-header>
+    <x-header :left-options="{backText:''}" title="订单列表" id="vux-header"></x-header>
     <div class='orderlist-tab flex line_xi_after flex-pack-justify'>
       <div class="order-li">
         <span :class="tabindex==1?'order-active':''" data-index='1' @click='tabnav'>全部</span>
@@ -673,7 +673,12 @@ export default {
       });
     },
     refund(refundid) {
-
+      this.$router.push({
+        path: '/centerFull/orderFull/afterlistInfo',
+        query: {
+          refund_id: refundid
+        }
+      })
     },
     ...mapActions(["update_storeInfo"])
   },

@@ -20,6 +20,11 @@ export const refunddetails = (data) => {
   return POST(url, data)
 }
 
+//返利
+export const rebate_record = (data) => {
+  const url = `${domain}/member/rebate_record`
+  return POST(url, data)
+}
 //售后修改
 export const refundmodify = (data) => {
   const url = `${domain}/refund/refundmodify`
@@ -143,6 +148,30 @@ export const refunapplyadd = (data) => {
 //退款邮费支付
 export const refundselectpay = (data) => {
   const url = `${domain}/refund/refundselectpay`
+  return POST(url, data)
+}
+
+//refundplace
+export const refundplace = (data) => {
+  const url = `${domain}/refund/refundplace`
+  return POST(url, data)
+}
+
+//我的收藏
+export const collectgoodslist = (data) => {
+  const url = `${domain}/nine/collectgoodslist`
+  return POST(url, data)
+}
+
+//取消收藏
+export const cancelcollectgoods = (data) => {
+  const url = `${domain}/nine/cancelcollectgoods`
+  return POST(url, data)
+}
+
+//我的钱包
+export const usermoneyprofile = (data) => {
+  const url = `${domain}/member/usermoneyprofile`
   return POST(url, data)
 }
 /**365 */

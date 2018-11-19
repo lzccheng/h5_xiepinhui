@@ -221,7 +221,7 @@
     }
 </style>
 <template>
-    <div>
+    <div class="idnexWrapBox">
         <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header>
         <!-- <loading type="type3" v-if="loadingShow"></loading> -->
         <div style="background-color: #eee">

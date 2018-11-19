@@ -114,7 +114,9 @@ contact-button {
 }
 
 .bottom-form {
-  width: 100%;
+  height: 100%;
+  width: 60%;
+  display: block;
 }
 
 .share-btn {
@@ -158,10 +160,11 @@ contact-button {
 .bottom-box {
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 7.50rem;
   height: 51/50rem;
   background: #fff;
   z-index: 3;
+  align-items: center;
 }
 
 .fanli-box {
@@ -213,6 +216,7 @@ contact-button {
 
 .bottom-left {
   width: 20%;
+  height: 100%;
   text-align: center;
   border-right: 1/50rem #f1f1f1 solid;
   color: #888;
@@ -231,6 +235,7 @@ contact-button {
 .bottom-btn {
   width:50%;
   padding: 0 !important;
+  height: 100%;
   color: #fff;
   border-radius: 0/50rem;
   line-height: 2.55 !important;
@@ -241,12 +246,14 @@ contact-button {
 }
 
 .newprice {
+  height: 50%;
   font-size: 10pt;
 }
 
 .btn-lable {
   font-size: 10pt;
   margin-top: -10/50rem !important;
+  height: 50%;
 }
 
 .one {
@@ -394,7 +401,7 @@ contact-button {
 
 .action-btn {
   position: fixed;
-  width: 100%;
+  width: 7.5rem;
   z-index: 3;
   bottom: 0;
   background-color: #fff;
@@ -405,15 +412,15 @@ contact-button {
   line-height: 44/50rem;
   text-align: center;
   color: #fff;
+  margin: 0.3rem auto;
 }
 .contt{
   width: 100%;
   position: absolute;
   left: 0;
-  bottom: 44/50rem;
+  bottom: 0rem;
   background: #fff;
-  padding-bottom: 20/50rem;
-
+  // padding-bottom: 20/50rem;
 }
 .eva-box {
   background: #fff;
@@ -683,28 +690,16 @@ contact-button {
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
-.icon-youbian:before {
-  content: "\e68c";
-}
-.icon-duihao:before {
-  content: "\e603";
-}
-.icon-youbian:before {
-  color: #999;
-  content: "\e68c";
-}
-.icon-duihao:before {
-  content: "\e603";
-}
 .spanCol{
   color: #999;
 }
 .shuoming-bottom-btn {
-  width: 100%;
+  width: 7.5rem;
   line-height: 44px;
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  margin-left: -3.75rem;
   text-align: center;
   color: #fff;
   background: #61D8D0;
@@ -714,16 +709,17 @@ contact-button {
 .alert{
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
-  width: 100%;
+  width: 7.50rem;
   position: fixed;
   top: 0;
-  left: 0;
+  left: 50%;
+  margin-left: -3.75rem;
   z-index: 20;
   .con{
    position: absolute;
    left: 0;
-   bottom: 44/50rem;
-
+   bottom: 0;
+   padding-bottom: 44/50rem;
   }
 }
 /* 推荐商品 */
@@ -752,9 +748,9 @@ contact-button {
 }
 .tabList1{
   position: relative;
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
   background-color: #fff;
-  border-bottom: #eee solid 1px;
   .list1{
     -webkit-justify-content: space-around;
     -moz-justify-content: space-around;
@@ -763,7 +759,7 @@ contact-button {
     justify-content: space-around;
   }
   div{
-    padding: 2/50rem 0;
+    padding: 4/50rem 0;
   }
   .line1{
     transition: all 0.5s;
@@ -773,25 +769,73 @@ contact-button {
     width: 50/50rem;
     height: 3/50rem;
     border-radius: 5px;
+    padding: 0;
     background-color: #61D8D0;
   }
 }
-
+.topTab{
+  background-color: #fff;
+  position: fixed;
+  z-index: 55;
+  width: 7.5rem;
+  border-bottom: #eee solid 1px;
+  .tabBack{
+    position: absolute;
+    top: 0.3rem;
+    left: 0.3rem;
+    width: 0.25rem;
+    height: 0.25rem;
+    transform: rotate(-45deg);
+    border-top: 1px solid #555;
+    border-left: 1px solid #555;
+    z-index: 999;
+  }
+}
 .itemList1{
-  // padding-top: 35/50rem;
+  padding-top: 40/50rem;
   // overflow: auto;
+}
+.page{
+  width:7.5rem;
+}
+
+.my-bullet-active{
+  opacity: 1;
+  background: red;
+}
+.my-bullet{
+  opacity: 1;
+  border-radius: .02rem;
+  width: .4rem;
+  height: .4rem;
+  margin: 0 .03rem;
+  display: inline-block;
+  background: rgba(0,0,0,0.20)}
+.backBtn{
+  color: #fff;
+  height: 0.8rem;
+  line-height: 0.8rem;
+  padding: 0rem 0.8rem;
+  background-color: #61D8D0;
+  border-radius: 0.2rem;
+  display: inline-block;
+  margin: 0.3rem 0.5rem;
 }
 </style>
 <template>
     <div>
-        <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header>
+        <!-- <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header> -->
         <loading type="type3" v-if="loadingShow"></loading>
+        
         <div class="page" v-if="spec_info != ''">
-            <div class="tabList1">
-              <div class="list1 flex">
-                <div @click="tabClick($event,index)" v-for="(item, index) in tab" :key="index">{{item}}</div>
+            <div class="topTab">
+              <div class="tabBack" @click="routerBack"></div>
+              <div class="tabList1">
+                <div class="list1 flex">
+                  <div @click="tabClick($event,index)" v-for="(item, index) in tab" :key="index">{{item}}</div>
+                </div>
+                <div class="line1" ref="line" :style="{'left': lineLeft + 'px'}"></div>
               </div>
-              <div class="line1" ref="line" :style="{'left': lineLeft + 'px'}"></div>
             </div>
             <div class="itemList1">
               <div class="swiper-container swiperSel">
@@ -926,7 +970,7 @@ contact-button {
                 </div>
             </div>
             <div class="alert " @click.self="hideAlert('actionSheetHidden')" v-if="actionSheetHidden && goodsInfo">
-              <div class="contt">
+              <div class="contt" :class="actionSheetHidden?'bounceIn':''">
                 <div class="action-border" >
                   <div class="action-header flex con" >
                     <img :src="goodsInfo.goods_image_arr[0]" class="moren-img" alt="">
@@ -971,10 +1015,9 @@ contact-button {
                   </div>
                 </div>
               </div>
-              
             </div>
-            <div class="alert" @click.self="hideAlert('coupon_actionSheetHidden')" v-show="coupon_actionSheetHidden">
-              <div style="width:100%;  overflow: hidden;" class="shuoming con">
+            <div class="alert" @click.self="hideAlert('coupon_actionSheetHidden')" v-show="coupon_actionSheetHidden" >
+              <div style="width:100%;  overflow: hidden;" class="shuoming con" :class="coupon_actionSheetHidden?'bounceIn':''">
                 <div class="coupon-action-top ">服务说明</div>
                 <div class="coupon-action-scroll" style="width:100%; height:300px;">
                   <div class="fuwu-shuoming flex " v-for="(item, index) in goodsInfo.instructions" :key="index">
@@ -989,10 +1032,12 @@ contact-button {
               </div>
             </div>
         </div>
+        <div v-if="spec_info == '' && backBtnBool" class="backBtn" @click="routerBack">返回</div>
     </div>
 </template>
 <script>
 import 'swiper/dist/css/swiper.css';
+import './swiper_dor.less';
 import loading from "@/components/loading.vue";
 import alleva from './alleva.vue';
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin ,XSwitch } from "vux";
@@ -1005,6 +1050,7 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper';
 import fancyBox from 'vue-fancyBox';
 import { isScrollBottom } from "@/utils/comm.js";
 import { setTimeout } from 'timers';
+import 'animate.css';
 
 export default {
     components: {
@@ -1018,9 +1064,12 @@ export default {
         return {
             slide: true,
             swiperOption: {
+              autoplay: true,
               pagination: {
                 el: '.swiper-pagination',
+                // bulletClass: 'my-bullet',
                 // bulletActiveClass: 'my-bullet-active',
+                clickable: true
               }
             },
             swiperOption2: {
@@ -1029,6 +1078,7 @@ export default {
                 // bulletActiveClass: 'my-bullet-active',
               }
             },
+            backBtnBool: false,
             tab: ['商品','详情','评价'],
             currentBarIndex: 0,
             lineLeft: 0,
@@ -1070,6 +1120,9 @@ export default {
         }
     },
     created(){
+      if(this.$route.query.shareCode){
+        this.$store.dispatch('update_shareCode',this.$route.query.shareCode);
+      }
     },
     destroyed () {
         window.onscroll = null;
@@ -1087,7 +1140,7 @@ export default {
     methods: {
         async bangding(){
           var version = "";
-          let shareCode = this.$route.query.shareCode;
+          let shareCode = this.$route.query.shareCode || this.$store.state.center.shareCode;
           if(shareCode){
             let data = {
               plat: 3,
@@ -1112,6 +1165,7 @@ export default {
             // 商品规格
             const [err, res] = await api.goodsspec(data);
             this.loadingShow = false;
+            this.backBtnBool = true;
             this.getBarLeft(0);
             if(err){
                 this.$vux.toast.text(err.msg);
@@ -1195,7 +1249,6 @@ export default {
             this.nowList = nowList;
         },
         async showPindan(that){
-            
             that.grouplist = '';
             let data = {
                 plat: 3,
@@ -1422,8 +1475,8 @@ export default {
             that.getBarLeft(that.newWiperBar.activeIndex);
             let height = that.newWiperBar.slides[that.newWiperBar.activeIndex].clientHeight;
             // console.log(that.newWiperBar.activeIndex)
-            // that.newWiperBar.el.style.height = height + 'px';
-            window.scrollTo(0,0);
+            that.newWiperBar.el.style.height = height + 'px';
+            // window.scrollTo(0,0);
           })
         },
         showEvaImg(item,geval_images){
@@ -1481,6 +1534,14 @@ export default {
             this.$vux.toast.text(_res.msg);
             this.goodsInfo.collect_goods = collect_goods;
           }
+        },
+        routerBack(){
+          let shareCode = this.$route.query.shareCode || this.$store.state.center.shareCode;
+          if(shareCode){
+            this.$router.push('/index');
+            return;
+          }
+          this.$router.back();
         }
     },
     computed: {

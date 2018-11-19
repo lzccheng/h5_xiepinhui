@@ -74,6 +74,9 @@
 ._bg{
     background: #F8F8F8;
 }
+.weui-cells{
+    margin-top: 0;
+}
 </style>
 <template>
     <div class="_bg">

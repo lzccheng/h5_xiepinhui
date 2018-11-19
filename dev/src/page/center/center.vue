@@ -39,7 +39,7 @@
     </div>
     <!-- 浮动栏 -->
     <div class="lab">
-      <div class="icon-item" @click="linkorderAfter" v-for="(item,index) in ['商品收藏','店铺收藏','退款/售后']" :key="index">
+      <div class="icon-item" @click="linkorderAfter(index)" v-for="(item,index) in ['商品收藏','店铺收藏','退款/售后']" :key="index">
         <div class="icon" :class="'icon'+index"></div>
         <div class="item-text">{{item}}</div>
       </div>
@@ -292,9 +292,18 @@ export default {
       const [err, res] = api.newgetorderlist_num();
     },
     //退款/售后
-    linkorderAfter(){
+    linkorderAfter(index){
+      let url = '';
+      switch (index) {
+        case 0:
+          url = '/centerFull/orderFull/sc_goods';
+          break;
+        case 2:
+          url = '/centerFull/orderFull/after_list';
+          break;
+      }
       this.$router.push({
-        path: '/centerFull/orderFull/after_list'
+        path: url
       })
     },
     // 订单模块
@@ -331,7 +340,7 @@ export default {
         case "积分":
           tabindex = 8;
           break;
-        case "余额明细":
+        case "我的收益":
           tabindex = 9;
           clickUrl="/balance/remain"
           break;
@@ -340,6 +349,8 @@ export default {
           clickUrl="/drawIndex"
           break;
       }
+      console.log(title)
+      // return
       if (tabindex < 6) {
         this.$router.push({
           path: "/centerFull/orderFull/orderlist",

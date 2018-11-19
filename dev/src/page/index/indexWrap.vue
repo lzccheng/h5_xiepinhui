@@ -17,7 +17,10 @@ export default {
   data() {
     return {};
   },
-  created() {}
+  created() {},
+  mounted () {
+    
+  },
 };
 </script>
 
@@ -27,7 +30,7 @@ export default {
   min-height: 100%;
   box-sizing: border-box;
   padding-bottom: 1.03rem;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
 }
+
+
 </style>

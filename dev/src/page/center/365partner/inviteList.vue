@@ -1,7 +1,6 @@
 <template>
   <div class="scroll-wrap">
     <x-header :left-options="{backText:''}" title="365合伙人邀请码" id="vux-header"><a slot="right"></a></x-header>
-
     <div class="content-index">
       <div class="bg_invite_box" style="position:relative;">
         <!-- box圈 -->
@@ -57,7 +56,7 @@
                         <div class="btnInvite" bindtap="now_invitefun" v-if="item.is_smallshop==0">立即推荐</div>
                       </div>
                       <div class="explain_part">
-                        <div class="explainTxt" v-if="item.is_smallshop==0">
+                        <div class="explainTxt" v-if="item.is_smallshop==0" >
                           推荐好友开通365合伙人，我最高可得180元
                         </div>
                         <div class="explainTxt" v-if="item.is_smallshop==1">
@@ -100,10 +99,18 @@
           </div>
         </div>
       </div>
-
+      <!-- 分享弹窗 -->
+      <div class="shareAlert" :class="showShare?'bounceIn':'bounceOut'" v-show="showShareBool" @click="showShare">
+        <div class="img">
+          <img src="@/assets/images/share_right.png" alt="">
+        </div>
+        <div class="text">
+            <span>点击右上角进行分享哦~</span>
+          </div>
+      </div>
       <!-- 我的奖励弹窗 -->
-      <div v-if="show_reward">
-        <div class="rewardPopUp">
+      <div v-show="show_reward">
+        <div class="rewardPopUp"  :class="show_reward?'bounceIn':'bounceOut'">
           <div class="rewardContentBox">
             <div class="close_img" @click="show_reward=false"></div>
             <div class="title_reward">我的奖励</div>
@@ -118,11 +125,11 @@
               </div>
             </div>
             <div style="padding:0/100rem;">
-              <div class="btn_invite_reward">立邀好友 再得{{amountInvite}}元</div>
+              <div class="btn_invite_reward" @click="showShare">立邀好友 再得{{amountInvite}}元</div>
             </div>
-            <div url="../../../User/pages/balance/remain/remain" class="btn_remount_reward">
+            <router-link to="/balance" tag="div" class="btn_remount_reward">
               <div>我的余额</div>
-            </div>
+            </router-link>
           </div>
         </div>
       </div>
@@ -139,6 +146,7 @@ import { share } from "@/utils/wx_sdk.js";
 import { XHeader } from "vux";
 import loading from "@/components/loading";
 import { setTimeout } from 'timers';
+import 'animate.css';
 
 // import {wxConfig} from "@/utils/wx_jssdk.js";
 
@@ -166,10 +174,24 @@ export default {
       yaoqing_list_page: 1,
       fanShow_bottom: false,
       Yaoshow_bottom: false,
-      loading_bottom: true
+      loading_bottom: true,
+      showShareBool: false
     };
   },
   created() {
+    // this.$router.push("/centerFull/partner/apply");
+    this.inviteOthersCode = this.$route.query.codeInvite || this.codeInvite || '';
+    if(this.inviteOthersCode){
+      this.$store.dispatch('update_codeInvite',this.inviteOthersCode)
+    }
+    if(!this.account){
+      this.$router.push({
+        path: '/user/login',
+        query: {
+          from: '/centerFull/partner/inviteList'
+        }
+      })
+    }
     this.getfanred();
     this.getFans_list();
   },
@@ -206,11 +228,14 @@ export default {
         this.amountInvite = res.data.twomoney;
         this.available_amount = res.data.red_amout; //可提取的返利
         this.total_amount = res.data.total_amout; //总共获取的返利
-        let codeInvite = this.$route.query.codeInvite;
+        let codeInvite = this.inviteOthersCode;
         this.share();
-        console.log("codeInvite", this.$route.query.codeInvite);
+        console.log("codeInvite", this.inviteOthersCode);
         if (codeInvite) {
+          console.log('have codeInvite')
           this.bindFans(codeInvite);
+        }else{
+          console.log('no codeInvite')
         }
       }
     },
@@ -218,22 +243,104 @@ export default {
       let shareConfig = {
         title: '邀请365合伙人，立返现金',
         desc: '现金返个不停~',
-        imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541757504289&di=c5ba1e95b766081ef1790c31e4d80ba1&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F203fb80e7bec54e7b8e8c7d4b3389b504ec26af0.jpg',
+        imgUrl: "http://testp.xiepinhui.com.cn/home2.png",
         link: window.location.origin + '?url=' + window.location.pathname + '&codeInvite=' + this.inviteCode
       }
+      console.log('shareConfig',shareConfig)
       share(this,{share: shareConfig})
     },
     async bindFans(codeInvite) {
+      console.log('bindFans codeInvite',codeInvite)
       let data = {
         plat: 3,
         account: this.account,
         token: this.token,
         code: codeInvite
       };
-      const [err, res] = await api.inviteweidian(data);
+      // const [err, res] = await api.inviteweidian(data);
+      const [err, res] = await api.receiveweidian(data);
+      if(err){
+        console.log('codeInvite err',err)
+        let codeStatus = err.code;
+        var issmallshop = err.data.is_smallshop;
+        var store_state = err.data.store_state;
+        console.log("store_state", store_state);
+        if(codeStatus!=2000){
+          console.log('codeStatus != 2000',store_state)
+          if(store_state == 3){//审核中
+            this.$router.push({
+              path: "/centerFull/partner/applyStatic",
+              query: {
+                status: 1
+              }
+            });
+            return;
+          }
+          if(store_state == 4){//审核失败
+            this.$router.push({
+              path: "/centerFull/partner/applyStatic",
+              query: {
+                status: 0
+              }
+            });
+            return;
+          }
+          if(store_state == 1){//审核通过
+            // this.$vux.toast.text(err.msg)
+            return;
+          }
+          this.$vux.toast.text(res.data.msg);
+        }
+      }
       if (res) {
-        let codeStatus = res.data.code;
+        console.log('jump input_code res')
+        let info = res.data;
+        console.log("info", info);
+        let userName = info.data.member_name;
+        this.$router.push({
+          path: "apply",
+          query: {
+            codeKey: this.inviteOthersCode,
+            userName: userName
+          }
+        });
+        return
+        console.log('codeInvite res',res)
+        let codeStatus = res.code;
+        var issmallshop = res.data.is_smallshop;
+        var store_state = res.data.store_state;
         console.log("bindFans:", res);
+        if(codeStatus!=2000){
+          console.log('codeStatus!=2000')
+          if(store_state == 3){//审核中
+            this.$router.push({
+              path: "/centerFull/partner/applyStatic",
+              query: {
+                status: 0
+              }
+            });
+            return;
+          }
+          if(store_state == 4){//审核失败
+            this.$router.push({
+              path: "/centerFull/partner/applyStatic",
+              query: {
+                status: 1
+              }
+            });
+            return;
+          }
+          if(store_state == 1){//审核通过
+            return;
+          }
+          this.$vux.toast.text(res.data.msg);
+        }else{
+          console.log('jump input_code res')
+          this.$router.replace({
+            path: '/centerFull/partner/input_code'
+          })
+        }
+        return
         switch (codeStatus) {
           //绑定码不存在的情况
           case 5006:
@@ -358,15 +465,56 @@ export default {
       this.isTabTwo = true;
       // this.getYaoqingList();
     },
+    showShare(){
+      let that = this;
+      that.showShareBool = !that.showShareBool;
+    },
     close_rewardFun() {}
   },
   computed: {
-    ...mapGetters(["user", "account", "token"])
+    ...mapGetters(["user", "account", "token","codeInvite"])
   }
 };
 </script>
 
 <style lang="less" scoped>
+@keyframes shareRow{
+  0% {
+    top: 0.05rem;
+    right: 0.05rem;
+  }
+  50% {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+  100%{
+    top: 0.05rem;
+    right: 0.05rem;
+  }
+}
+.shareAlert{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  .img{
+    position: absolute;
+    right: 0.2rem;
+    top: 0.2rem;
+    animation: shareRow 1.8s infinite;
+    img{
+      width: 1rem;
+    }
+  }
+  .text{
+    color: #fff;
+    text-align: right;
+    padding: 2rem 0.3rem;
+  }
+}
 .scroll-wrap {
   height: 100%;
 }

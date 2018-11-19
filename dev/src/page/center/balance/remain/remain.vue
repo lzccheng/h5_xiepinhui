@@ -32,7 +32,7 @@
 
 </style>
 <template>
-    <div>
+    <div class="idnexWrapBox">
         <x-header :left-options="{backText:''}" title="余额明细" id="vux-header"></x-header>
         <div>
             <div class="withdraw-record">
