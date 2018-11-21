@@ -14,12 +14,28 @@ export const newgetorderlist_num = (data) => {
   return POST(url, data)
 }
 
+//好货
+export const instock = (data) => {
+  const url = `${domain}/nine/instock`
+  return GET(url, data)
+}
 //售后
 export const refunddetails = (data) => {
   const url = `${domain}/refund/refunddetails`
   return POST(url, data)
 }
 
+//提现明细
+export const withdrawhistory = (data) => {
+  const url = `${domain}/restore/withdrawhistory`
+  return POST(url, data)
+}
+
+//优惠券
+export const usercouponlist = (data) => {
+  const url = `${domain}/usercoupon/usercouponlist`
+  return POST(url, data)
+}
 //返利
 export const rebate_record = (data) => {
   const url = `${domain}/member/rebate_record`

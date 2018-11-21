@@ -1,5 +1,49 @@
 <style scoped lang="less">
-
+.page {
+  padding-bottom: 51px;
+}
+.contentBox{
+  padding:16/100rem 20/100rem;
+  background: #fff;
+  padding-bottom: 0/100rem;
+}
+.picWho{
+  width:120/100rem;
+  max-height:140/100rem;
+  margin-right: 20/100rem;
+  border-radius: 50%;
+}
+.nameWho{
+  color: #333;
+  font-size:28/100rem;
+}
+.timeis{
+  color:#999;
+  font-size: 20/100rem;
+}
+.rightItem{
+  font-size: 28/100rem;
+  color: #333;
+}
+.itemInfoBox{
+  border-bottom: 1/100rem solid #f2f2f2;
+  padding: 15/100rem 0/100rem;
+}
+.numRight{
+  font-size: 20/100rem;
+  color: #999;
+}
+.bottom_box{
+  margin-top:20/100rem;
+  margin-bottom: 20/100rem;
+  text-align:center;
+font-size:24/100rem;
+color:#666;
+}
+.null{
+    text-align: center;
+    color: #aaa;
+}
 </style>
 <template>
     <div class="page idnexWrapBox">
@@ -27,7 +71,7 @@
                         +{{item.red_amount}}
                     </div>
                 </div>
-                <div  v-if='!listObj.length'>暂无数据</div>
+                <div  v-if='!listObj.length' class="null" >暂无数据</div>
             </div>
             <div class="bottom_box" v-if="show_bottom">
                 已经到达底部~
@@ -60,16 +104,15 @@ export default {
         this.recordType = this.$route.query.recordType;
     },
     mounted() {
-        switch (this.recordType) {
-            case 1:
-                this.nvabarData.title = '推广365返利';
-                break;
-            case 2:
-                this.nvabarData.title = '线下店铺推广返利';
-                break;
-            case 3:
-                this.nvabarData.title = '推广商品返利';
-                break;
+        let recordType = this.recordType;
+        if(recordType == 1){
+            this.nvabarData.title = '推广365返利';
+        }
+        if(recordType == 2){
+            this.nvabarData.title = '线下店铺推广返利';
+        }
+        if(recordType == 3){
+            this.nvabarData.title = '推广商品返利';
         }
         this.fanli_list();
     },
@@ -78,18 +121,14 @@ export default {
             let recordType = this.recordType;
 
             var red_type='';
-            switch (recordType){
-                case '1':
-                    red_type = 5;
-                    break;
-                case 2:
-                    red_type = 2;
-                    break;
-                case 3: 
-                    red_type = 3
-                    break;
-                default: 
-                    console.log(recordType)
+            if(recordType == 1){
+                red_type = 5;
+            }
+            if(recordType == 2){
+                red_type = 2;
+            }
+            if(recordType == 3){
+                red_type = 3;
             }
             var page = this.page;//页数
             page++;

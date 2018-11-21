@@ -551,6 +551,7 @@ export default {
         case 2:
           break;
         case 1:
+          url = '/centerFull/myService/coupon_list';
           break;
       }
       if(!url)return;

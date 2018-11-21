@@ -191,7 +191,7 @@ padding-left:10/50rem;
                     </div>
                     <div class="flex flex-pack-justify descAmountBox">
                         <div style="color:#61D8D0"><span style="font-size:20rpx;">¥</span>{{infoData.money_data[0].money_amout}}</div>
-                        <div class="btn-recharge" bindtap="goRecharge">充值</div>
+                        <div class="btn-recharge" @click="goRecharge">充值</div>
                     </div>
                     <div class="flex flex-pack-justify descAmountBox">
                         <div class="huibidv">
@@ -291,7 +291,7 @@ export default {
                         }
                     })
                     break;
-                case '线上推广返利':
+                case '线下推广返利':
                     this.$router.push({
                         path: 'rebateRecord',
                         query: {
@@ -308,6 +308,9 @@ export default {
                     })
                     break;
             }
+        },
+        goRecharge(){
+            
         }
     },
     computed: {

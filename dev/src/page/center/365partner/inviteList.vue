@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import { isScrollBottom } from "@/utils/comm.js";
+import { isScrollBottom, isWeiXin } from "@/utils/comm.js";
 import { mapGetters } from "vuex";
 import { api } from "@/utils/api.js";
 import { share } from "@/utils/wx_sdk.js";
@@ -175,11 +175,19 @@ export default {
       fanShow_bottom: false,
       Yaoshow_bottom: false,
       loading_bottom: true,
-      showShareBool: false
+      showShareBool: false,
+      available_amount: 0
     };
   },
   created() {
     // this.$router.push("/centerFull/partner/apply");
+    this.$router.push({
+          path: "apply",
+          query: {
+            codeKey: '135erw',
+            userName: '孟国宝'
+          }
+        });
     this.inviteOthersCode = this.$route.query.codeInvite || this.codeInvite || '';
     if(this.inviteOthersCode){
       this.$store.dispatch('update_codeInvite',this.inviteOthersCode)
@@ -230,12 +238,9 @@ export default {
         this.total_amount = res.data.total_amout; //总共获取的返利
         let codeInvite = this.inviteOthersCode;
         this.share();
-        console.log("codeInvite", this.inviteOthersCode);
+        console.log("codeInvite", codeInvite);
         if (codeInvite) {
-          console.log('have codeInvite')
           this.bindFans(codeInvite);
-        }else{
-          console.log('no codeInvite')
         }
       }
     },
@@ -292,6 +297,15 @@ export default {
           this.$vux.toast.text(res.data.msg);
         }
       }
+      let userName = res.data.data.member_name;
+      this.$router.push({
+        path: "apply",
+        query: {
+          codeKey: codeInvite,
+          userName: userName
+        }
+      });
+      return
       if (res) {
         console.log('jump input_code res')
         let info = res.data;
@@ -304,42 +318,6 @@ export default {
             userName: userName
           }
         });
-        return
-        console.log('codeInvite res',res)
-        let codeStatus = res.code;
-        var issmallshop = res.data.is_smallshop;
-        var store_state = res.data.store_state;
-        console.log("bindFans:", res);
-        if(codeStatus!=2000){
-          console.log('codeStatus!=2000')
-          if(store_state == 3){//审核中
-            this.$router.push({
-              path: "/centerFull/partner/applyStatic",
-              query: {
-                status: 0
-              }
-            });
-            return;
-          }
-          if(store_state == 4){//审核失败
-            this.$router.push({
-              path: "/centerFull/partner/applyStatic",
-              query: {
-                status: 1
-              }
-            });
-            return;
-          }
-          if(store_state == 1){//审核通过
-            return;
-          }
-          this.$vux.toast.text(res.data.msg);
-        }else{
-          console.log('jump input_code res')
-          this.$router.replace({
-            path: '/centerFull/partner/input_code'
-          })
-        }
         return
         switch (codeStatus) {
           //绑定码不存在的情况
@@ -466,6 +444,10 @@ export default {
       // this.getYaoqingList();
     },
     showShare(){
+      if(!isWeiXin()){
+        this.$vux.toast.text('可复制邀请码发送给好友哦~');
+        return;
+      }
       let that = this;
       that.showShareBool = !that.showShareBool;
     },

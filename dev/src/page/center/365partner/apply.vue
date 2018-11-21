@@ -137,9 +137,10 @@ export default {
   methods: {
     // 立即申请
     async pay() {
-      this._check(); // 校验信息
+      // 校验信息
+      if(!this._check())return;
       let data = {
-        plat: 4,
+        plat: 3,
         account: this.account,
         token: this.token,
         shop_name: this.store,
@@ -147,7 +148,7 @@ export default {
         mobile: this.phone,
         sn_up: this.img1_sn,
         sn_down: this.img2_sn,
-        openid: this.openid,
+        openid: this.user.openid,
         pay_code: 1, // 1微信 2支付宝 3银联
         type: 3,
         member_code: this.codeKey
@@ -183,7 +184,8 @@ export default {
         this.$vux.toast.text("请勾选协议");
         return;
       }
-      this.$router.push("applyStatic");
+      return true;
+      // this.$router.push("applyStatic");
     },
     // 选择图片
     upimg(e, name) {
@@ -212,12 +214,23 @@ export default {
         return;
       }
       if (res.code == "2000") {
-        this.client = new OSS.Wrapper({
+        let config = {
           secure: true,
+          // region: window.location.origin,
           accessKeyId: res.data.AccessKeyId,
           accessKeySecret: res.data.AccessKeySecret,
-          bucket: res.data.bucket
-        });
+          bucket: res.data.bucket,
+          region: 'oss-cn-shenzhen',
+          // stsToken: res.data.SecurityToken
+        }
+        console.log(res)
+        console.log(config)
+        this.client = new OSS.Wrapper(config);
+        console.log(this.client)
+        console.log(file)
+        console.log(res.data.files)
+        const result = await this.client.list();
+        console.log('result.objects',result.objects)
         this.client
           .multipartUpload(res.data.files, file)
           .then(function(result) {
@@ -230,6 +243,8 @@ export default {
           })
           .catch(function(err) {
             console.log("err", err);
+            console.log("err.name : " + err.name);
+            console.log("err.message : " + err.message);
           });
       }
     },

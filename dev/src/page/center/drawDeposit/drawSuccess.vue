@@ -32,7 +32,7 @@ margin: 82/100rem auto;
 </style>
 
 <template>
-  <div class="shopindex">
+  <div class="shopindex idnexWrapBox">
     <x-header :left-options="{backText:''}" title="余额提现" id="vux-header"></x-header>
     <!-- 主体内容 -->
     <div>

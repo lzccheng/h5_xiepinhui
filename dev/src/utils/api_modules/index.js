@@ -14,6 +14,11 @@ export const getHomeList = (data) => {
   return GET(url, data)
 }
 
+//全部商品
+export const homelist = (data) => {
+  const url = `${domain}/nine/homelist`
+  return POST(url, data)
+}
 //活动推荐板块（新）接口
 export const getActivityList = (data) => {
   const url = `${domain}/nine/newseckilltypes`

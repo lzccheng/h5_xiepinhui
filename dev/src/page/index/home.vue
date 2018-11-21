@@ -490,7 +490,7 @@
           </swiper>
           <div class="page__bd">
               <div class="weui-grids">
-                  <div class="weui-grid" hover-class="weui-grid_active" v-for="(itemActive,index) in newHomelist.center_module" :key="index" bindtap='nacigator' :data-status="itemActive.status" :data-type="itemActive.type" :data-value="itemActive.value" :data-index="index">
+                  <div class="weui-grid" hover-class="weui-grid_active" v-for="(itemActive,index) in newHomelist.center_module" :key="index" @click='nacigator(itemActive.type, itemActive.status)' :data-status="itemActive.status" :data-type="itemActive.type" :data-value="itemActive.value" :data-index="index">
                       <img class="weui-grid__icon" :src="itemActive.img" />
                       <div class="weui-grid__label">{{itemActive.title}}</div></div>
               </div>
@@ -890,7 +890,17 @@ export default {
         this.getGoods(cur);
       }
     },
-    link() {}
+    link() {},
+    nacigator(linketype, status){
+      let url = '';
+      switch (linketype) {
+        case 6: 
+          url = '/index/allgoods'
+          break;
+      }
+      if(!url)return;
+      this.$router.push(url);
+    }
   },
   beforeDestroy(){
   }

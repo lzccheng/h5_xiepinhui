@@ -80,6 +80,9 @@ const myVip = ()=>import('@/page/index/myVip/myVip')
 //帮助中心
 const guize = ()=>import('@/page/index/guize/guize')
 
+//全部商品
+const allgoods = () => import('@/page/index/allgoods/allgoods')
+
 
 //编辑地址
 const editaddress = ()=>import('@/page/index/editaddress/editaddress')
@@ -92,20 +95,15 @@ const subinventoryManage = ()=>import('@/page/center/myShop/subinventoryManage/s
 const fanManagement = ()=>import('@/page/center/myShop/fanManagement')//子账号的粉丝管理
 const shopSetting = ()=>import('@/page/center/myShop/shopSetting')//子账号的店铺设置
 const subfanManagement = ()=>import('@/page/center/myShop/subfanManagement')//总账号的粉丝管理
-// import subStoreList from '@/page/center/myShop/subStoreList'
-// import addSubStore from '@/page/center/myShop/addSubStore'
-// import offlineStore from '@/page/center/myShop/offlineStore'
-// import offlineStoreOrder from '@/page/center/myShop/offlineStoreOrder'
-// import subfanManagement from '@/page/center/myShop/subfanManagement'
-// import subinventoryManage from '@/page/center/myShop/subinventoryManage/subinventoryManage'//库存管理
-// import fanManagement from '@/page/center/myShop/fanManagement'//子账号的粉丝管理
-// import shopSetting from '@/page/center/myShop/shopSetting'//子账号的店铺设置
+
 
 // 提现模块
 const drawIndex = () => import('@/page/center/drawDeposit/drawIndex') //提现首页
+const clearness = () => import('@/page/center/drawDeposit/clearness') //提现明细
 const rebateRecord = () => import('@/page/center/myWallet/rebateRecord') //返利
 const myWallet = () => import('@/page/center/myWallet/myWallet') //提现首页
 const myWalletWrap = () => import('@/page/center/myWallet/myWalletWrap') //myWalletWrap
+
 
 const moblieCodeTrade = ()=>import('@/page/center/drawDeposit/moblieCodeTrade')//交易密码
 const setTradeCode = ()=>import('@/page/center/drawDeposit/setTradeCode')//设置交易密码
@@ -113,13 +111,6 @@ const drawCash = ()=>import('@/page/center/drawDeposit/drawCash')//提现页面
 const addCard = ()=>import('@/page/center/drawDeposit/addCard')//添加银行卡
 const bindNewCard = ()=>import('@/page/center/drawDeposit/bindNewCard')//绑定新银行卡
 const drawSuccess = ()=>import('@/page/center/drawDeposit/drawSuccess')//提现成功
-// import drawIndex from '@/page/center/drawDeposit/drawIndex'//提现首页
-// import moblieCodeTrade from '@/page/center/drawDeposit/moblieCodeTrade'//交易密码
-// import setTradeCode from '@/page/center/drawDeposit/setTradeCode'//设置交易密码
-// import drawCash from '@/page/center/drawDeposit/drawCash'//提现页面
-// import addCard from '@/page/center/drawDeposit/addCard'//添加银行卡
-// import bindNewCard from '@/page/center/drawDeposit/bindNewCard'//绑定新银行卡
-// import drawSuccess from '@/page/center/drawDeposit/drawSuccess'//提现成功
 
 ///center/drawIndex
 
@@ -159,6 +150,14 @@ const after_list = () => import('@/page/center/after_list/after_list')
 const sc_goods = () => import('@/page/center/sc_goods/sc_goods')
 //钱去向
 const aftermoneyWhere = () => import('@/page/center/after_list/aftermoneyWhere')
+
+const myServiceWrap = () => import('@/page/center/myService/myServiceWrap')
+
+//优惠券
+const coupon_list = () => import('@/page/center/myService/coupon_list/coupon_list')
+
+//好货
+const haohuo = () => import('@/page/center/myService/haohuo/haohuo')
 
 const base = config.path
 
@@ -218,6 +217,14 @@ let router = new Router({
         component: orderInfo_pd,
         meta: {
           title: '订单详情'
+        }
+      },
+      {
+        path: 'allgoods',
+        name: 'allgoods',
+        component: allgoods,
+        meta: {
+          title: '全部商品'
         }
       },
     ],
@@ -570,6 +577,27 @@ let router = new Router({
             title: '订单详情'
           }
         }]
+      }, {
+        path: 'myService',
+        component: myServiceWrap,
+        children: [
+          {
+            path: 'coupon_list',
+            name: 'coupon_list',
+            component: coupon_list,
+            meta: {
+              title: '优惠券'
+            }
+          }, 
+          {
+            path: 'haohuo',
+            name: 'haohuo',
+            component: haohuo,
+            meta: {
+              title: '好货'
+            }
+          },
+        ]
       }]
     },
     {
@@ -645,6 +673,14 @@ let router = new Router({
         {
           path: '/',
           redirect: 'myWallet'
+        }, 
+        {
+          path: 'clearness',
+          name: 'clearness',
+          component: clearness,
+          meta: {
+            title: '提现明细'
+          }
         },
         {
           path: 'myWallet',
