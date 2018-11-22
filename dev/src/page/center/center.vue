@@ -1,5 +1,5 @@
 <template>
-  <div class="center-box">
+  <div class="center-box" v-show="!$route.query.url">
     <!-- 个人信息 -->
     <div class="header">
       <div class="top">
@@ -39,7 +39,7 @@
     </div>
     <!-- 浮动栏 -->
     <div class="lab">
-      <div class="icon-item" v-for="(item,index) in ['商品收藏','店铺收藏','退款/售后']" :key="index">
+      <div class="icon-item" @click="linkorderAfter(index)" v-for="(item,index) in ['商品收藏','店铺收藏','退款/售后']" :key="index">
         <div class="icon" :class="'icon'+index"></div>
         <div class="item-text">{{item}}</div>
       </div>
@@ -69,7 +69,7 @@
       <span class="title">我的服务</span>
       <div class="gounp-wrap">
         <div class="gounp-row">
-          <div class="gounp-item" v-for="(item,index) in redmessageInfo.list" :key="index">
+          <div class="gounp-item" v-for="(item,index) in redmessageInfo.list" :key="index" @click="linkToService(item.type)">
             <div class="icon" :style="{backgroundImage:'url(' + item.url_img + ')'}" v-if="!!item.url_img"></div>
             <div class="gounp-text">{{item.title}}</div>
           </div>
@@ -237,11 +237,26 @@ export default {
     };
   },
   created() {
+    console.log(this.$route.query)
     console.log(this.user)
     console.log("user", this.user.user_type);
     console.log("user", this.user);
     console.log("openid", this.user.openid);
     console.log(this)
+    if(this.$route.query.url){
+      // delete(this.$route.query.url);
+      console.log(this.$route.query)
+      let query = {};
+      for(let i in this.$route.query){
+        if(i == 'url')continue;
+        query[i] = this.$route.query[i];
+      }
+      this.$router.push({
+        path: this.$route.query.url,
+        query
+      })
+      return
+    }
     if (this.token) {
       this.newredmessage();
       //this.redpackethtml();
@@ -276,6 +291,21 @@ export default {
       let data = {};
       const [err, res] = api.newgetorderlist_num();
     },
+    //退款/售后
+    linkorderAfter(index){
+      let url = '';
+      switch (index) {
+        case 0:
+          url = '/centerFull/orderFull/sc_goods';
+          break;
+        case 2:
+          url = '/centerFull/orderFull/after_list';
+          break;
+      }
+      this.$router.push({
+        path: url
+      })
+    },
     // 订单模块
     orderDetail(index) {
       let title = this.redmessageInfo.order_status[index].stateTitle || "";
@@ -286,7 +316,7 @@ export default {
         return;
       }
       switch (title) {
-        case "代付款":
+        case "待付款":
           tabindex = 2;
           break;
         case "待发货":
@@ -310,14 +340,17 @@ export default {
         case "积分":
           tabindex = 8;
           break;
-        case "余额明细":
+        case "我的收益":
           tabindex = 9;
+          clickUrl="/balance/remain"
           break;
         case "我的钱包":
           tabindex = 10;
           clickUrl="/drawIndex"
           break;
       }
+      console.log(title)
+      // return
       if (tabindex < 6) {
         this.$router.push({
           path: "/centerFull/orderFull/orderlist",
@@ -338,9 +371,9 @@ export default {
           return false;
           // this.$router.push('../../index/index');//跳路径
         }
-        this.$vux.toast.show({
-          text: `极速开发中`
-        });
+        // this.$vux.toast.show({
+        //   text: `极速开发中`
+        // });
       }
     },
     //新的红包接口
@@ -497,6 +530,37 @@ export default {
           this.successTipTXT=true;
         }
       }
+    },
+    //我的服务转跳
+    linkToService(type){
+      let url = '';
+      switch(type){
+        case 9:
+          url = '/index/orderAddress';
+          break;
+        case 8:
+          url = '/centerFull/partner/guize';
+          break;
+        case 7:
+          window.location.href = 'tel://4009639299';
+          break;
+        case 6:
+          break;
+        case 3:
+          break;
+        case 2:
+          break;
+        case 1:
+          url = '/centerFull/myService/coupon_list';
+          break;
+      }
+      if(!url)return;
+      this.$router.push({
+        path: url,
+        query: {
+          from: 'center'
+        }
+      })
     },
     //跳转365or我的店铺
     linkTo(link) {

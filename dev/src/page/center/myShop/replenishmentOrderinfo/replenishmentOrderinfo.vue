@@ -194,9 +194,6 @@ page{
 .kefu-box{
   background: #fff;
   margin:5/50rem 0/50rem;
-  div {
-    padding: 7/50rem;
-  }
 }
 .kefu-box button{
   width: 50%;
@@ -205,7 +202,7 @@ page{
   border: 0/50rem !important;
 }
 .kefu-box .one{
-  border-right: 1/50rem #f1f1f1 solid !important;
+  border-right: 1px #f1f1f1 solid !important;
   margin: 0;
 }
 .kefu-box span{
@@ -357,6 +354,7 @@ page{
 </template>
 <script>
 import { api } from "@/utils/api.js";
+import { wxPay } from "@/utils/wx_sdk.js";
 import loading from "@/components/loading.vue";
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin } from "vux";
 import { mapGetters, mapActions, mapMutations } from "vuex";
@@ -415,7 +413,9 @@ export default {
           } 
           if(res.code == '2000'){
             this.$vux.toast.text('取消成功');
-            this.$router.back();
+            this.$router.push({
+              path: '/centerFull/myshop/subreplenishOrder'
+            });
           }
         },
         calling(){
@@ -476,48 +476,20 @@ export default {
             sub_member_id: this.sub_member_id?this.sub_member_id: '0',
             openid: this.user.openid
           }
+          this.$vux.loading.show({
+            text: '支付中...'
+          })
           const [err, res] = await api.topay(data);
           if (err) {
               this.$vux.toast.text(err.msg);
               return;
           }
-          console.log(this.user)
-          console.log(res)
-          // const [err1, res1] = await api.getWxConfig();
-          // console.log('getWxConfig',res1)
-          return
           if(res.code == '2000'){
-            this.$wechat.config({
-              debug: true,
-              appId: res.data.pay_param.appId,
-              timestamp: res.data.pay_param.timeStamp,
-              nonceStr: res.data.pay_param.nonceStr,
-              signature: res.data.pay_param.paySign,
-              jsApiList: ["chooseWXPay"]
-            })
-            this.$wechat.ready(()=>{
-              that.$wechat.checkJsApi({
-                jsApiList: ['chooseWXPay'],
-                success(_res){
-                  if(_res.errMsg === 'checkJsApi:ok'){
-                    console.log('checkJsApi:ok')
-                    that.$wechat.chooseWXPay({
-                      timestamp: res.data.pay_param.timeStamp,
-                      nonceStr: res.data.pay_param.nonceStr,
-                      package: res.data.pay_param.package,
-                      signType: 'MD5',
-                      paySign: res.data.pay_param.paySign,
-                      success(res){
-                        console.log('pay success')
-                      },
-                      fail(err){
-                        console.log('pay err',err)
-                      }
-                    })
-                  }
-                }
-              })
-            })
+            var selfData = res;
+            let success = res =>{
+              that.showdata();
+            }
+            wxPay(this,{...res.data.pay_param,success})
           }
         }
     },

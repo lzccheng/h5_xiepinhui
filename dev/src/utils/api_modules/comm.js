@@ -12,3 +12,8 @@ export const directbuy = (data) => {
     return POST(_url,data)
 }
 //getWxConfig
+//分享配置参数
+export const shareconf = (data) => { 
+    const _url = `${domain}/user/shareconf`
+    return POST(_url,data)
+}

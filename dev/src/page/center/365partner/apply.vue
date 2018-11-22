@@ -94,7 +94,9 @@ import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import { isWeiXin } from "@/utils/comm.js";
 import { api } from "@/utils/api.js";
+import { wxPay } from "@/utils/wx_sdk.js";
 import { XHeader } from "vux";
+
 export default {
   name: "",
   props: {},
@@ -137,9 +139,10 @@ export default {
   methods: {
     // 立即申请
     async pay() {
-      this._check(); // 校验信息
+      // 校验信息
+      if(!this._check())return;
       let data = {
-        plat: 4,
+        plat: 3,
         account: this.account,
         token: this.token,
         shop_name: this.store,
@@ -147,8 +150,8 @@ export default {
         mobile: this.phone,
         sn_up: this.img1_sn,
         sn_down: this.img2_sn,
-        openid: this.openid,
-        pay_code: 1, // 1微信 2支付宝 3银联
+        openid: this.user.openid,
+        pay_code: 2, // 1微信 2支付宝 3银联
         type: 3,
         member_code: this.codeKey
       };
@@ -156,6 +159,9 @@ export default {
       if (err) {
         this.$vux.toast.text(err.msg);
         return;
+      }
+      if(res.code == 2000){
+        wxPay(this, {...res.data.pay_param})
       }
       console.log("pay", res);
       // todo pay
@@ -183,7 +189,8 @@ export default {
         this.$vux.toast.text("请勾选协议");
         return;
       }
-      this.$router.push("applyStatic");
+      return true;
+      // this.$router.push("applyStatic");
     },
     // 选择图片
     upimg(e, name) {
@@ -206,30 +213,41 @@ export default {
     },
     // 上传图片到阿里云
     async _ossImg(data, file, name) {
+      let that = this;
       const [err, res] = await api.getpaths(data);
       if (err) {
         this.$vux.toast.text(err.msg);
         return;
       }
       if (res.code == "2000") {
-        this.client = new OSS.Wrapper({
+        let config = {
           secure: true,
+          // region: window.location.origin,
           accessKeyId: res.data.AccessKeyId,
           accessKeySecret: res.data.AccessKeySecret,
-          bucket: res.data.bucket
-        });
+          bucket: res.data.bucket,
+          region: 'oss-cn-shenzhen',
+          // stsToken: res.data.SecurityToken
+        }
+        console.log(res)
+        console.log(config)
+        this.client = new OSS.Wrapper(config);
+        // const result = await this.client.list();
+        // console.log('result.objects',result.objects)
         this.client
           .multipartUpload(res.data.files, file)
           .then(function(result) {
             if (name === "img1") {
-              this.img1_sn = res.data.sn;
+              that.img1_sn = res.data.sn;
             } else {
-              this.img2_sn = res.data.sn;
+              that.img2_sn = res.data.sn;
             }
             console.log("result", result);
           })
           .catch(function(err) {
             console.log("err", err);
+            console.log("err.name : " + err.name);
+            console.log("err.message : " + err.message);
           });
       }
     },

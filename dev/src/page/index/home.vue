@@ -490,7 +490,7 @@
           </swiper>
           <div class="page__bd">
               <div class="weui-grids">
-                  <div class="weui-grid" hover-class="weui-grid_active" v-for="(itemActive,index) in newHomelist.center_module" :key="index" bindtap='nacigator' :data-status="itemActive.status" :data-type="itemActive.type" :data-value="itemActive.value" :data-index="index">
+                  <div class="weui-grid" hover-class="weui-grid_active" v-for="(itemActive,index) in newHomelist.center_module" :key="index" @click='nacigator(itemActive.type, itemActive.status)' :data-status="itemActive.status" :data-type="itemActive.type" :data-value="itemActive.value" :data-index="index">
                       <img class="weui-grid__icon" :src="itemActive.img" />
                       <div class="weui-grid__label">{{itemActive.title}}</div></div>
               </div>
@@ -727,34 +727,37 @@ export default {
     　　return windowHeight;
     }
 
-    addEvent(window,'scroll',function(){
+    // addEvent(window,'scroll',function(){
         
-        if(getScrollTop() + getWindowHeight() == getScrollHeight()){
-          that.scrollBottomCB();
-    　　}
-    });
-    addEvent(window,'scroll',function(){
-        var sTop =document.documentElement.scrollTop || document.body.scrollTop;
-        var tabFixBar = that.$refs.tabFixBar;
-        var tabFixBar_Top = tabFixBar.offsetTop;
+    //     if(getScrollTop() + getWindowHeight() == getScrollHeight()){
+    //       that.scrollBottomCB();
+    // 　　}
+    // });
+    // addEvent(window,'scroll',function(){
+    //     var sTop =document.documentElement.scrollTop || document.body.scrollTop;
+    //     var tabFixBar = that.$refs.tabFixBar;
+    //     var tabFixBar_Top = tabFixBar.offsetTop;
 
-        if(!that.hasScroll){
-          that.hasScroll=true;
-          that.allHeight=tabFixBar_Top;
-        }
-        var allHeight=that.allHeight;
-        if (sTop >= allHeight) {
-          that.ifResultTop=true;
-        } else {
-          that.ifResultTop=false;
-        }
-    });
+    //     if(!that.hasScroll){
+    //       that.hasScroll=true;
+    //       that.allHeight=tabFixBar_Top;
+    //     }
+    //     var allHeight=that.allHeight;
+    //     if (sTop >= allHeight) {
+    //       that.ifResultTop=true;
+    //     } else {
+    //       that.ifResultTop=false;
+    //     }
+    // });
 
 
 
 
     });
     
+  },
+  beforeDestroy(){
+    window.onscroll = null;
   },
   methods: {
     //滚动到底部回调
@@ -887,7 +890,17 @@ export default {
         this.getGoods(cur);
       }
     },
-    link() {}
+    link() {},
+    nacigator(linketype, status){
+      let url = '';
+      switch (linketype) {
+        case 6: 
+          url = '/index/allgoods'
+          break;
+      }
+      if(!url)return;
+      this.$router.push(url);
+    }
   },
   beforeDestroy(){
   }

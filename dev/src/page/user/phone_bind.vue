@@ -99,7 +99,7 @@ export default {
       let that = this;
       let reg = /^1[0-9]{10,}$/; //10位以上
       let _test = reg.test(this.phone);
-      let openid = getQueryString("unionid");
+      let openid = this.user.openid || getQueryString("unionid");
       if (!_test) {
         this.$vux.toast.text("请输入正确的手机号");
         return;
@@ -112,7 +112,7 @@ export default {
       let data = {
         code: this.code,
         tel: this.phone,
-        type: 1,
+        type: 3,
         openid,
         plat: 3
       };
@@ -134,7 +134,7 @@ export default {
       //   }
       // }, 500);
     }
-  }
+  },
 };
 </script>
 

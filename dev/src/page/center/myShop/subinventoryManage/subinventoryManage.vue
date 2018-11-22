@@ -131,10 +131,7 @@
                 </div>
             </div>
         </div>
-        <div class="null-bg" v-if="goodsData == ''">
-            <img src="@/assets/images/null/null_fan.png" alt="" class="null-img">
-            <div class="null-title">当前暂无数据</div>
-        </div>
+        <null-data v-if="goodsData == ''">当前暂无数据</null-data>
         <div v-if="endMore" class="noMore">没有更多数据了</div>
         
     </div>
@@ -142,6 +139,7 @@
 <script>
 import { api } from "@/utils/api.js";
 import loading from "@/components/loading.vue";
+import nullData from "@/components/nullData.vue";
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin } from "vux";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import BScroll from 'better-scroll';
@@ -152,7 +150,8 @@ export default {
     components: {
         loading,
         XHeader,
-        tabBar
+        tabBar,
+        nullData
     },
     data(){
         return {

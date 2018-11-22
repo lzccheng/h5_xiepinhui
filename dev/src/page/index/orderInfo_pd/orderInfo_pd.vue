@@ -221,7 +221,7 @@
     }
 </style>
 <template>
-    <div>
+    <div class="idnexWrapBox">
         <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header>
         <!-- <loading type="type3" v-if="loadingShow"></loading> -->
         <div style="background-color: #eee">
@@ -327,6 +327,7 @@ import loading from "@/components/loading.vue";
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin ,XSwitch ,Picker } from "vux";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { api } from "@/utils/api.js";
+import { wxPay } from "@/utils/wx_sdk.js";
 import MobileSelect from 'mobile-select';
 
 export default {
@@ -607,8 +608,181 @@ export default {
             this.free_post = free_post;
         },
         gopay(){
-
-        }
+            
+            if(this.goodsInfo.btnType == 'buy'){
+                this.dandu_buy()
+                return;
+            }
+            if(this.data.goodsInfo.btnType == "pindan"){
+                if(this.data.group_id != "undefined"){
+                    //参与拼单
+                    this.pindan_buy(this, this.data.group_id, "fightgroups")
+                }else{
+                    //发起拼单
+                    this.pindan_buy(this, "", "startorder")
+                }
+            }
+        },
+        async dandu_buy(){
+            let that = this;
+            if(this.addressInfo == ""){
+                return this.$vux.toast.text('请填写收货地址');
+            }
+            if(this.nowSelectshipping == ""){
+                return this.$vux.toast.text('请选择快递公司');
+            }
+            var jsonArr;
+            jsonArr = [{
+                "goods_item_id": that.goodsInfo.goodspec.goods_item_id,
+                "goods_id": that.goodsInfo.goods_id,
+                "goods_num": that.num
+            }];
+            var goods_json = JSON.stringify(jsonArr);
+            let data = {
+                plat: 3,
+                account: this.account,
+                token: this.token,
+                buy_type: 2,
+                openid: this.user.openid,
+                reciver_name: that.addressInfo.real_name,
+                reciver_address: that.addressInfo.area_info + that.addressInfo.address,
+                reciver_phone: that.addressInfo.contact_phone,
+                reciver_province_id: that.addressInfo.province_id,
+                reciver_city_id: that.addressInfo.city_id,
+                address_id: that.addressInfo.address_id,
+                goods_json: goods_json,
+                pay_code: 2,
+                express_id: that.nowSelectshipping.e_id,
+                use_coupon: that.isUsecoupon,
+                uc_id: that.nowCouponInfo.uc_id,
+                free_post: that.free_post,
+                goods_id: that.goodsInfo.goods_id,
+                goods_item_id: that.goodsInfo.goodspec.goods_item_id,
+                num: that.num,
+            }
+            this.$vux.loading.show({
+                text: '支付中...'
+            })
+            const [err, res] = await api.buy(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            if(res.code == 2000){
+                var selfData = res;
+                
+                if (selfData.data.total_amount == 0 || selfData.data.total_amount == "0.00") {
+                    this.$router.push({
+                        path: '/centerFull/orderFull/orderlistinfo',
+                        query: {
+                            order_id: selfData.data.order_id,
+                            order_sn: selfData.data.order_sn
+                        }
+                    })
+                    return;
+                }
+                let success = res => {
+                    that.$router.replace({
+                        path: '/centerFull/orderFull/orderlistinfo',
+                        query: {
+                            order_id: selfData.data.order_id,
+                            order_sn: selfData.data.order_sn
+                        }
+                    })
+                }
+                let fail = async err => {
+                    if(that.isUsecoupon == 1){
+                        let data = {
+                            plat: 3,
+                            order_id: selfData.data.order_id,
+                            token: that.token,
+                            account: that.account
+                        }
+                        const [err, res] = await api.returned(data);
+                        that.$vux.toast.text('取消支付');
+                    }
+                }
+                wxPay(this,{...res.data.pay_param,success, fail})
+            }
+            
+        },
+        async pindan_buy(that, group_id, action){
+            if(that.addressInfo == ""){
+               return this.$vux.toast.text('请填写收货地址');
+            }
+            let data = {
+                plat: 3,
+                account: that.account,
+                token: that.token,
+                buy_type: 2,
+                openid: that.user.openid,
+                reciver_name: that.addressInfo.real_name,
+                reciver_address: that.addressInfo.area_info + that.addressInfo.address,
+                reciver_phone: that.addressInfo.contact_phone,
+                reciver_province_id: that.addressInfo.province_id,
+                reciver_city_id: that.addressInfo.city_id,
+                address_id: that.addressInfo.address_id,
+                pay_code: 2,
+                group_id: group_id,
+                goods_num: that.num,
+                goods_item_id: that.goodsInfo.goodspec.goods_item_id,
+                goods_id: that.goodsInfo.goods_id,
+                express_id: that.nowSelectshipping.e_id,
+                use_coupon: that.isUsecoupon,
+                uc_id: that.nowCouponInfo.uc_id,
+                free_post: that.free_post
+            }
+            const [err, res] = await api[action](data);
+            if (err) {
+                that.$vux.toast.text(err.msg);
+                return;
+            }
+            if(res.code == 2000){
+                var selfData = res;
+                if (selfData.data.total_amount == 0 || selfData.data.total_amount == "0.00") {
+                    that.$router.push({
+                        path: '/centerFull/orderFull/orderlistinfo',
+                        query: {
+                            order_id: selfData.data.order_id,
+                            order_sn: selfData.data.order_sn
+                        }
+                    })
+                }else{
+                    let success = res => {
+                        if(action == 'fightgroups'){
+                            that.$router.replace({
+                                path: '/centerFull/orderFull/orderlistinfo',
+                                query: {
+                                    order_id: selfData.data.order_id,
+                                    order_sn: selfData.data.order_sn
+                                }
+                            })
+                        }else{
+                            that.$router.replace({
+                                path: '/centerFull/orderFull/pindanInfo',
+                                query: {
+                                    group_id: selfData.data.group_id
+                                }
+                            })
+                        }
+                        
+                    }
+                    let fail = async err => {
+                        if(that.isUsecoupon == 1){
+                            let data = {
+                                plat: 3,
+                                order_id: selfData.data.order_id,
+                                token: that.token,
+                                account: that.account
+                            }
+                            const [err, res] = await api.returned(data);
+                            that.$vux.toast.text('取消支付');
+                        }
+                    }
+                    wxPay(this,{...res.data.pay_param,success, fail})
+                }
+            }
+        },
     },
     watch: {
         shippingInfo(){

@@ -36,7 +36,9 @@ export default {
       code: ""
     };
   },
-  created() {},
+  created() {
+    this.code = this.$route.query.codeInvite || "";
+  },
   mounted() {},
   methods: {
     async step(jump) {

@@ -114,7 +114,9 @@ contact-button {
 }
 
 .bottom-form {
-  width: 100%;
+  height: 100%;
+  width: 60%;
+  display: block;
 }
 
 .share-btn {
@@ -158,10 +160,11 @@ contact-button {
 .bottom-box {
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 7.50rem;
   height: 51/50rem;
   background: #fff;
   z-index: 3;
+  align-items: center;
 }
 
 .fanli-box {
@@ -213,6 +216,7 @@ contact-button {
 
 .bottom-left {
   width: 20%;
+  height: 100%;
   text-align: center;
   border-right: 1/50rem #f1f1f1 solid;
   color: #888;
@@ -231,9 +235,10 @@ contact-button {
 .bottom-btn {
   width:50%;
   padding: 0 !important;
+  height: 100%;
   color: #fff;
   border-radius: 0/50rem;
-  line-height: 2.4 !important;
+  line-height: 2.55 !important;
 }
 
 .bottom-btn::after {
@@ -241,12 +246,14 @@ contact-button {
 }
 
 .newprice {
+  height: 50%;
   font-size: 10pt;
 }
 
 .btn-lable {
   font-size: 10pt;
   margin-top: -10/50rem !important;
+  height: 50%;
 }
 
 .one {
@@ -394,7 +401,7 @@ contact-button {
 
 .action-btn {
   position: fixed;
-  width: 100%;
+  width: 7.5rem;
   z-index: 3;
   bottom: 0;
   background-color: #fff;
@@ -405,15 +412,15 @@ contact-button {
   line-height: 44/50rem;
   text-align: center;
   color: #fff;
+  margin: 0.3rem auto;
 }
 .contt{
   width: 100%;
   position: absolute;
   left: 0;
-  bottom: 44/50rem;
+  bottom: 0rem;
   background: #fff;
-  padding-bottom: 20/50rem;
-
+  // padding-bottom: 20/50rem;
 }
 .eva-box {
   background: #fff;
@@ -683,28 +690,16 @@ contact-button {
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
-.icon-youbian:before {
-  content: "\e68c";
-}
-.icon-duihao:before {
-  content: "\e603";
-}
-.icon-youbian:before {
-  color: #999;
-  content: "\e68c";
-}
-.icon-duihao:before {
-  content: "\e603";
-}
 .spanCol{
   color: #999;
 }
 .shuoming-bottom-btn {
-  width: 100%;
+  width: 7.5rem;
   line-height: 44px;
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  margin-left: -3.75rem;
   text-align: center;
   color: #fff;
   background: #61D8D0;
@@ -714,16 +709,17 @@ contact-button {
 .alert{
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
-  width: 100%;
+  width: 7.50rem;
   position: fixed;
   top: 0;
-  left: 0;
+  left: 50%;
+  margin-left: -3.75rem;
   z-index: 20;
   .con{
    position: absolute;
    left: 0;
-   bottom: 44/50rem;
-
+   bottom: 0;
+   padding-bottom: 44/50rem;
   }
 }
 /* 推荐商品 */
@@ -752,9 +748,9 @@ contact-button {
 }
 .tabList1{
   position: relative;
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
   background-color: #fff;
-  border-bottom: #eee solid 1px;
   .list1{
     -webkit-justify-content: space-around;
     -moz-justify-content: space-around;
@@ -763,7 +759,7 @@ contact-button {
     justify-content: space-around;
   }
   div{
-    padding: 2/50rem 0;
+    padding: 4/50rem 0;
   }
   .line1{
     transition: all 0.5s;
@@ -773,25 +769,73 @@ contact-button {
     width: 50/50rem;
     height: 3/50rem;
     border-radius: 5px;
+    padding: 0;
     background-color: #61D8D0;
   }
 }
+.topTab{
+  background-color: #fff;
+  position: fixed;
+  z-index: 55;
+  width: 7.5rem;
+  border-bottom: #eee solid 1px;
+  .tabBack{
+    position: absolute;
+    top: 0.3rem;
+    left: 0.3rem;
+    width: 0.25rem;
+    height: 0.25rem;
+    transform: rotate(-45deg);
+    border-top: 1px solid #555;
+    border-left: 1px solid #555;
+    z-index: 999;
+  }
+}
 .itemList1{
-  // padding-top: 35/50rem;
+  padding-top: 40/50rem;
   // overflow: auto;
+}
+.page{
+  width:7.5rem;
+}
+
+.my-bullet-active{
+  opacity: 1;
+  background: red;
+}
+.my-bullet{
+  opacity: 1;
+  border-radius: .02rem;
+  width: .4rem;
+  height: .4rem;
+  margin: 0 .03rem;
+  display: inline-block;
+  background: rgba(0,0,0,0.20)}
+.backBtn{
+  color: #fff;
+  height: 0.8rem;
+  line-height: 0.8rem;
+  padding: 0rem 0.8rem;
+  background-color: #61D8D0;
+  border-radius: 0.2rem;
+  display: inline-block;
+  margin: 0.3rem 0.5rem;
 }
 </style>
 <template>
     <div>
-
-        <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header>
+        <!-- <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header> -->
         <loading type="type3" v-if="loadingShow"></loading>
+        
         <div class="page" v-if="spec_info != ''">
-            <div class="tabList1">
-              <div class="list1 flex">
-                <div @click="tabClick($event,index)" v-for="(item, index) in tab" :key="index">{{item}}</div>
+            <div class="topTab">
+              <div class="tabBack" @click="routerBack"></div>
+              <div class="tabList1">
+                <div class="list1 flex">
+                  <div @click="tabClick($event,index)" v-for="(item, index) in tab" :key="index">{{item}}</div>
+                </div>
+                <div class="line1" ref="line" :style="{'left': lineLeft + 'px'}"></div>
               </div>
-              <div class="line1" ref="line" :style="{'left': lineLeft + 'px'}"></div>
             </div>
             <div class="itemList1">
               <div class="swiper-container swiperSel">
@@ -887,7 +931,6 @@ contact-button {
                           <span class="iconfont icon-yuanyou"></span>
                         </div>
                       </div>
-                      
                     </div>
                   </div>
                   <div class="item swiper-slide">
@@ -898,59 +941,24 @@ contact-button {
                     </div>
                   </div>
                   <div class="item swiper-slide">
-                    <div class="eva-box">
-                      <div class='evalist line_xi_before' v-for="(evalist,index) in goodsInfo.eval_list" :key="index">
-                        <div class="evalist-header flex flex-align-center flex-pack-justify">
-                          <div class='flex flex-align-center flex-align-center'>
-                            <img :src="evalist.avatar" alt="" class="eva-img">
-                            <span>{{evalist.member_nick}}</span>
-                          </div>
-                        </div>
-                        <span :class='evalist.geval_star_level>0?"xingxing":"xingxing-hui"' class="iconfont icon-xingxing">
-                          <span :class='evalist.geval_star_level>1?"xingxing":"xingxing-hui"' class="iconfont icon-xingxing"></span>
-                          <span :class='evalist.geval_star_level>2?"xingxing":"xingxing-hui"' class="iconfont icon-xingxing"></span>
-                          <span :class='evalist.geval_star_level>3?"xingxing":"xingxing-hui"' class="iconfont icon-xingxing"></span>
-                          <span :class='evalist.geval_star_level>4?"xingxing":"xingxing-hui"' class="iconfont icon-xingxing"></span>
-                        </span>
-                        <div class="eva-list-bottom">
-                          <span  class='time'>{{evalist.geval_addtime}}</span>
-                          <span>{{evalist.geval_spec_name}}</span>
-                        </div>
-                        <div class="eva-list-center">{{evalist.geval_content}}</div>
-                        <div class='eva-list-img flex' v-if="evalist.geval_images!=''">
-                          <img :src="item" alt="" @click="showEvaImg(item,evalist.geval_images)" v-if="index < 4" :key="index" v-for="(item,index) in evalist.geval_images">
-                          <span class="eva-all-img" v-if="evalist.geval_images.length>3">共{{evalist.geval_images.length}}张</span>
-                        </div>
-                        <div v-if="evalist.geval_is_add==1">
-                          <div class="zhuijia-eva" v-if="evalist.geval_add_info.time!=0">
-                            购买{{evalist.geval_add_info.time}}天后追评
-                          </div>
-                          <div class="zhuijia-eva">购买当天追评</div>
-                          <div class="eva-list-center">{{evalist.geval_add_info.content}}</div>
-                          <div class='eva-list-img flex' v-if="evalist.geval_images!=''">
-                            <img :src="item" @click="showEvaImg(item,evalist.geval_add_info.images)" :key="index" v-for="(item,index) in evalist.geval_add_info.images" alt="">
-                            <span class="eva-all-img" v-if="evalist.geval_add_info.images.length>3">共{{evalist.geval_add_info.images.length}}张</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="eva-btn-bottome " v-if="goodsInfo.eval_num!=0">
-                        查看全部评价
-                        <span class="iconfont icon-yuanyou"></span>
-                      </div>
+                    <div>
+                      <alleva :goodsid="goodsId" @conFn="swiperContent"></alleva>
                     </div>
                   </div>
                 </div>
               </div>
               
             </div>
-            
-            
             <div class="bottom-box flex ">
                 <span class="bottom-left kefu">
                     <span class='iconfont icon-xiaoxi bottom-icon'></span>
                     <span class='bottom-lable'>客服</span>
                 </span>
-                <div class="bottom-left">
+                <div class="bottom-left" v-if="goodsInfo.collect_goods==1" @click="scGoods(2)">
+                    <span style='color:#FB4C72' class='iconfont icon-shoucangkong'></span>
+                    <span class='bottom-lable shoucang-lable'>收藏</span>
+                </div>
+                <div class="bottom-left" v-else @click="scGoods(1)">
                     <span class='iconfont icon-shoucangkong'></span>
                     <span class='bottom-lable shoucang-lable'>收藏</span>
                 </div>
@@ -962,7 +970,7 @@ contact-button {
                 </div>
             </div>
             <div class="alert " @click.self="hideAlert('actionSheetHidden')" v-if="actionSheetHidden && goodsInfo">
-              <div class="contt">
+              <div class="contt" :class="actionSheetHidden?'bounceIn':''">
                 <div class="action-border" >
                   <div class="action-header flex con" >
                     <img :src="goodsInfo.goods_image_arr[0]" class="moren-img" alt="">
@@ -1007,14 +1015,13 @@ contact-button {
                   </div>
                 </div>
               </div>
-              
             </div>
-            <div class="alert" @click.self="hideAlert('coupon_actionSheetHidden')" v-show="coupon_actionSheetHidden">
-              <div style="width:100%;  overflow: hidden;" class="shuoming con">
+            <div class="alert" @click.self="hideAlert('coupon_actionSheetHidden')" v-show="coupon_actionSheetHidden" >
+              <div style="width:100%;  overflow: hidden;" class="shuoming con" :class="coupon_actionSheetHidden?'bounceIn':''">
                 <div class="coupon-action-top ">服务说明</div>
                 <div class="coupon-action-scroll" style="width:100%; height:300px;">
                   <div class="fuwu-shuoming flex " v-for="(item, index) in goodsInfo.instructions" :key="index">
-                    <div class="fuwu-left-icon iconfont icon-duihao"></div>&nbsp;&nbsp;&nbsp;
+                    <div class="fuwu-left-icon iconfont icon-duihao"></div>
                     <div class="shuoming-content">
                       <div class="shuoming-title">{{item.title}}</div>
                       <div class="shuoming-text">{{item.info}}</div>
@@ -1025,32 +1032,44 @@ contact-button {
               </div>
             </div>
         </div>
+        <div v-if="spec_info == '' && backBtnBool" class="backBtn" @click="routerBack">返回</div>
     </div>
 </template>
 <script>
 import 'swiper/dist/css/swiper.css';
+import './swiper_dor.less';
 import loading from "@/components/loading.vue";
+import alleva from './alleva.vue';
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin ,XSwitch } from "vux";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import Swiper from 'swiper';
 import { api } from "@/utils/api.js";
+import { share } from "@/utils/wx_sdk.js";
 import comm from "@/utils/comm.js";
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
 import fancyBox from 'vue-fancyBox';
+import { isScrollBottom } from "@/utils/comm.js";
+import { setTimeout } from 'timers';
+import 'animate.css';
 
 export default {
     components: {
         loading,
         XHeader,
         swiper,
-        swiperSlide
+        swiperSlide,
+        alleva
     },
     data(){
         return {
+            slide: true,
             swiperOption: {
+              autoplay: true,
               pagination: {
                 el: '.swiper-pagination',
+                // bulletClass: 'my-bullet',
                 // bulletActiveClass: 'my-bullet-active',
+                clickable: true
               }
             },
             swiperOption2: {
@@ -1059,6 +1078,7 @@ export default {
                 // bulletActiveClass: 'my-bullet-active',
               }
             },
+            backBtnBool: false,
             tab: ['商品','详情','评价'],
             currentBarIndex: 0,
             lineLeft: 0,
@@ -1100,6 +1120,12 @@ export default {
         }
     },
     created(){
+      if(this.$route.query.shareCode){
+        this.$store.dispatch('update_shareCode',this.$route.query.shareCode);
+      }
+    },
+    destroyed () {
+        window.onscroll = null;
     },
     mounted(){
         this.$vux.loading.show({
@@ -1109,8 +1135,28 @@ export default {
         this.goodstype = this.$route.query.goodstype || 1;
         this.showXiangqing();
         this.getData();
+        this.bangding();
     },
     methods: {
+        async bangding(){
+          var version = "";
+          let shareCode = this.$route.query.shareCode || this.$store.state.center.shareCode;
+          if(shareCode){
+            let data = {
+              plat: 3,
+              account: this.account,
+              token: this.token,
+              code: shareCode,
+              version
+            }
+            const [err, res] = await api.bindrebate(data);
+            if(err){
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+          }
+          
+        },
         async getData(){
             let data = {
                 plat: 3,
@@ -1119,6 +1165,7 @@ export default {
             // 商品规格
             const [err, res] = await api.goodsspec(data);
             this.loadingShow = false;
+            this.backBtnBool = true;
             this.getBarLeft(0);
             if(err){
                 this.$vux.toast.text(err.msg);
@@ -1165,15 +1212,15 @@ export default {
                 this.goodsinfoImage = _res.data.goods_body
             }
             this.showPindan(this);
-            this.newWiperBar();
+            this.newWiperBarFn();
         },
-        newWiperBar(){
+        newWiperBarFn(){
           let  that = this;
           this.newWiperBar = new Swiper('.swiperSel',{
             autoplay: false,
             autoHeight: true,
             on: {
-              slideChangeTransitionStart: function(swiper){
+              slideChangeTransitionStart: function(){
                 that.swiperContent()
               }
             }
@@ -1202,7 +1249,6 @@ export default {
             this.nowList = nowList;
         },
         async showPindan(that){
-            
             that.grouplist = '';
             let data = {
                 plat: 3,
@@ -1235,6 +1281,7 @@ export default {
                 type: this.goodstype
             }
             const [err, res] = await api.newgoodsdetail(data);
+            this.$vux.loading.hide()
             if(err){
                 this.$vux.toast.text(err.msg);
                 return;
@@ -1243,13 +1290,31 @@ export default {
                 this.goodsInfo = res.data;
                 this.allIndex = res.data.goods_image_arr.length,
                 this.nowIndex = "1";
+                let data = {
+                  plat: 3,
+                  account: this.account,
+                  token: this.token
+                }
+                const [err_, res_] = await api.getsharecode(data);
+                if(res_.code == 2000){
+                  let shareConfig = {
+                    title: '鞋品荟邀请您',
+                    desc: that.goodsInfo.group_price + "元抢真皮鞋还包邮,全场新品任你挑!",
+                    imgUrl: that.goodsInfo.goods_image_arr[0],
+                    link: window.location.origin + '?url=/index/goodsInfoPindan&goodsId=' + this.goodsId+'&shareCode=' + res_.data.code
+                  }
+                  console.log(res_,66666666666,shareConfig)
+                  share(this,{share: shareConfig})
+                }
             }
             
             this.nvabarData = {
                 showCapsule: 1,
                 title: res.data.goods_name, //导航栏 中间的标题
             }
-            this.$route.meta.title = this.nvabarData.title;
+            if(this.$route.meta && this.$route.meta.title){
+              this.$route.meta.title = this.nvabarData.title;
+            }
             that.showTuijian(app, res.data.group_price, that)
         },
         callback(){
@@ -1381,7 +1446,6 @@ export default {
             btnType: this.btnType
           }
           this.$store.dispatch('update_goodsInfo',goodsInfo);
-          console.log(this.group_id)
           // return
           this.$router.push({
             path: '/index/orderInfo_pd',
@@ -1406,10 +1470,14 @@ export default {
         },
         swiperContent(){
           let that = this;
-          that.getBarLeft(that.newWiperBar.activeIndex);
-          let height = that.newWiperBar.slides[that.newWiperBar.activeIndex].clientHeight;
-          that.newWiperBar.el.style.height = height + 'px';
-          window.scrollTo(0,0);
+          this.$nextTick(()=>{
+            if(!that.newWiperBar)return;
+            that.getBarLeft(that.newWiperBar.activeIndex);
+            let height = that.newWiperBar.slides[that.newWiperBar.activeIndex].clientHeight;
+            // console.log(that.newWiperBar.activeIndex)
+            that.newWiperBar.el.style.height = height + 'px';
+            // window.scrollTo(0,0);
+          })
         },
         showEvaImg(item,geval_images){
 
@@ -1433,11 +1501,47 @@ export default {
             data.url = item;
             imgList.push(data);
           })
-          console.log(imgList)
           this.$nextTick(()=>{
             fancyBox(e.target,imgList);
           })
           
+        },
+        async scGoods(type){
+          this.$vux.loading.show();
+          let data = {
+            plat: 3,
+            account: this.account,
+            token: this.token,
+            goods_id: this.goodsId,
+            type: 1
+          }
+          let _err, _res, collect_goods;
+          switch(type){
+            case 1:
+              [_err, _res] = await api.collectgoods(data);
+              collect_goods = 1;
+              break;
+            case 2:
+              [_err, _res] = await api.cancelcollectgoods(data);
+              collect_goods = 0;
+              break;
+          }
+          if(_err){
+              this.$vux.toast.text(_err.msg);
+              return;
+          }
+          if(_res.code == 2000){
+            this.$vux.toast.text(_res.msg);
+            this.goodsInfo.collect_goods = collect_goods;
+          }
+        },
+        routerBack(){
+          let shareCode = this.$route.query.shareCode || this.$store.state.center.shareCode;
+          if(shareCode){
+            this.$router.push('/index');
+            return;
+          }
+          this.$router.back();
         }
     },
     computed: {

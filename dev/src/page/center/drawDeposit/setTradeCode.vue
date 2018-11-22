@@ -65,7 +65,7 @@
 </style>
 
 <template>
-  <div class="shopindex">
+  <div class="shopindex idnexWrapBox">
     <x-header :left-options="{backText:''}" title="设置交易密码" id="vux-header"></x-header>
     <!-- 主体内容  oninput=""-->
     <div v-if="showSetting">

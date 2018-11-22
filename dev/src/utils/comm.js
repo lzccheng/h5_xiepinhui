@@ -1,11 +1,4 @@
-// 全局公用方法
 
-export {
-  isWeiXin,
-  getQueryString,
-  isScrollBottom,
-  daojishi
-}
 
 /**
  * 
@@ -163,4 +156,13 @@ const _getScrollHeight = () => {
     bodyScrollHeight :
     documentScrollHeight;
   return scrollHeight;
+}
+
+// 全局公用方法
+
+export {
+  isWeiXin,
+  getQueryString,
+  isScrollBottom,
+  daojishi
 }

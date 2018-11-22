@@ -45,7 +45,7 @@
       </div>
 
       <div class='list-center-goods flex flex-align-center' v-if="infodata" v-for="(item,index) in infodata.goods_item_data"
-        :key="index" @click='goodsInfo' :id="item.goods_commonid">
+        :key="index" @click='goodsInfo(item.goods_commonid)' :id="item.goods_commonid">
         <img class="left-goodsImage" :src='item.goods_image' />
         <div class='cetenr-goodsinfo'>
           <div class="goodsname">{{item.goods_name}}</div>
@@ -55,10 +55,10 @@
           </div>
           <div class="goodsprice flex flex-pack-end">
             <div v-if="infodata.order_type!=3">
-              <span v-if="isAfter==1" class="goods-shouhou-btn" catchtap="after" :id="infodata.order_id">申请售后</span>
-              <span v-if="isAfter==2" class="goods-shouhou-btn" @click="afterInfo" :id="infodata.refund_id">售后处理中</span>
-              <span v-if="isAfter==3" class="goods-shouhou-btn-hui " @click="afterInfo" :id="infodata.refund_id">售后关闭</span>
-              <span v-if="isAfter==4" class=" goods-shouhou-btn-hui" @click="afterInfo" :id="infodata.refund_id">售后完成</span>
+              <span v-if="isAfter==1" class="goods-shouhou-btn" @click.stop="after(infodata.order_id)" :id="infodata.order_id">申请售后</span>
+              <span v-if="isAfter==2" class="goods-shouhou-btn" @click.stop="afterInfo(infodata.refund_id)" :id="infodata.refund_id">售后处理中</span>
+              <span v-if="isAfter==3" class="goods-shouhou-btn-hui " @click.stop="afterInfo(infodata.refund_id)" :id="infodata.refund_id">售后关闭</span>
+              <span v-if="isAfter==4" class=" goods-shouhou-btn-hui" @click.stop="afterInfo(infodata.refund_id)" :id="infodata.refund_id">售后完成</span>
             </div>
           </div>
         </div>
@@ -76,14 +76,15 @@
           <span class='kefu-icon iconfont icon-xiaoxi'></span>
           <span> 联系商家</span>
         </button>
-        <a class="kefu-dianhua" href="tel:400">
+        <a class="kefu-dianhua" href="tel:4009639299">
           <span class='kefu-icon iconfont icon-dianhua'></span>
           <span> 拨打电话</span>
         </a>
       </div>
 
       <div class="order-info" v-if="infodata">
-        <div class="weui-cells weui-cells_after-title" v-if="infodata.shipping_company">
+         <!-- v-if="infodata.shipping_company" -->
+        <div class="weui-cells weui-cells_after-title">
           <div class="weui-cell">
             <div class="weui-cell__bd">快递方式：
               <span style='color:#333'>{{infodata.shipping_company}}</span>
@@ -114,7 +115,7 @@
       </div>
       <div class='order-list-info-btn flex flex-pack-end flex-align-center line_xi_before' v-if="infodata.order_state=='1'">
         <span class="moren" @click='quxiaoOrder' :data-deleteType="1" :data-order:id="infodata.order_id">取消订单</span>
-        <span @click="gobay" :data-orderid='infodata.order_id' v-if="infodata.active_type==0">去支付</span>
+        <span @click="gobay(infodata.order_id)" :data-orderid='infodata.order_id' v-if="infodata.active_type==0">去支付</span>
       </div>
       <div class='order-list-info-btn flex flex-pack-end flex-align-center line_xi_before' v-if="infodata.order_state=='10'">
         <span class="moren" @click='pindanquxiao' :data-deleteType="2" :data-order:id="infodata.order_id">取消订单</span>
@@ -149,6 +150,7 @@
 import { isScrollBottom } from "@/utils/comm.js";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { api } from "@/utils/api.js";
+import { wxPay } from "@/utils/wx_sdk.js";
 import loading from "@/components/loading.vue";
 import { Group, Cell, XButton, Badge, XHeader } from "vux";
 export default {
@@ -185,12 +187,31 @@ export default {
   },
   methods: {
     //商品详情
-    goodsInfo() {
-      this.$vux.toast.text("商品详情");
+    goodsInfo(goodsId) {
+      this.$router.push({
+        path: '/index/goodsInfoPindan',
+        query: {
+          goodsId
+        }
+      })
+    },
+    after(order_id){
+      this.$router.push({
+        path: '/centerFull/partner/aftertype',
+        query: {
+          order_id
+        }
+      })
     },
     //售后
-    afterInfo() {
-      this.$vux.toast.text("售后");
+    afterInfo(refund_id) {
+      this.$router.push({
+        path: '/centerFull/orderFull/afterlistInfo',
+        query: {
+          refund_id
+        }
+      })
+      // this.$vux.toast.text("售后");
     },
     //复制
     copyTxt(e) {
@@ -248,12 +269,43 @@ export default {
       });
     },
     //再次购买
-    buyagain() {
-      this.$vux.toast.text("再次购买");
+    buyagain(e) {
+      var goodsId = e.currentTarget.dataset.goodsid;
+      this.$router.push({
+        path: '/index/goodsInfoPindan',
+        query: {
+          goodsId
+        }
+      })
     },
     //支付
-    gobay() {
-      this.$vux.toast.text("支付");
+    async gobay(orderid) {
+      this.$vux.loading.show({
+        text: '支付中...'
+      })
+      let data = {
+        plat: 3,
+        account: this.account,
+        token: this.token,
+        order_id: orderid,
+        pay_code: 2,
+        openid: this.user.openid
+      }
+      const [err, res] = await api.orderunpaidpay(data);
+      if (err) {
+        that.$vux.toast.text(err.msg);
+        return;
+      }
+      if(res.code == 2000){
+        var selfData = res;
+        let success = res =>{
+          that.showdata();
+        }
+        let fail = err =>{
+
+        }
+        wxPay(this,{...res.data.pay_param,success,fail})
+      }
     },
     //取消拼单
     pindanquxiao() {
@@ -278,17 +330,18 @@ export default {
         token: that.token,
         order_id
       };
-      const [err, res] = await api.shipnotify(data);
-      if (err) {
-        that.$vux.toast.text(err.msg);
-        return;
-      }
-      that.$vux.toast.text(res.msg);
-      this.$vux.alert.show({
+      this.$vux.confirm.show({
         title: "",
         content: "催发货后商家将会收到提醒，只能提醒发货一次哦～",
-        async onHide() {}
-      });
+        async onConfirm () {
+          const [err, res] = await api.shipnotify(data);
+          if (err) {
+            that.$vux.toast.text(err.msg);
+            return;
+          }
+          that.$vux.toast.text(res.msg);
+        }
+      })
     },
     //确认收货
     receiving(e) {

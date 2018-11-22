@@ -65,6 +65,7 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 import { api } from "@/utils/api.js";
 import loading from "@/components/loading.vue";
 import { Group, Cell, XButton, Badge, XHeader } from "vux";
+import { share, wxPay } from "@/utils/wx_sdk.js";
 export default {
   name: "shop",
   props: {},
@@ -157,7 +158,7 @@ export default {
     manageClick(e) {
       let type = e.currentTarget.dataset.type;
       let isopen = e.currentTarget.dataset.isopen;
-      this.$vux.toast.text(type);
+      // this.$vux.toast.text(type);
       var clickType=type;
       var _this=this;
       var clickUrl='';
