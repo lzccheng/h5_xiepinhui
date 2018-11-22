@@ -169,7 +169,7 @@
       </div>
     </div>
 
-    <div style="height:100%;overflow:hidden;position:fixed;top:0px;width:100%;z-index:999;" v-if="closeModal365">
+    <div style="height:100%;overflow:hidden;position:fixed;top:0px;width:100%;z-index:999;max-width:750px;" v-if="closeModal365">
         <div class="bg_hongbao_box">
             <div class="shade_bg" @click="closeModal365 = false"></div>
             <div class="imgs_collection_box">
