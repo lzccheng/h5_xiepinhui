@@ -94,7 +94,9 @@ import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import { isWeiXin } from "@/utils/comm.js";
 import { api } from "@/utils/api.js";
+import { wxPay } from "@/utils/wx_sdk.js";
 import { XHeader } from "vux";
+
 export default {
   name: "",
   props: {},
@@ -149,7 +151,7 @@ export default {
         sn_up: this.img1_sn,
         sn_down: this.img2_sn,
         openid: this.user.openid,
-        pay_code: 1, // 1微信 2支付宝 3银联
+        pay_code: 2, // 1微信 2支付宝 3银联
         type: 3,
         member_code: this.codeKey
       };
@@ -157,6 +159,9 @@ export default {
       if (err) {
         this.$vux.toast.text(err.msg);
         return;
+      }
+      if(res.code == 2000){
+        wxPay(this, {...res.data.pay_param})
       }
       console.log("pay", res);
       // todo pay
@@ -208,6 +213,7 @@ export default {
     },
     // 上传图片到阿里云
     async _ossImg(data, file, name) {
+      let that = this;
       const [err, res] = await api.getpaths(data);
       if (err) {
         this.$vux.toast.text(err.msg);
@@ -226,18 +232,15 @@ export default {
         console.log(res)
         console.log(config)
         this.client = new OSS.Wrapper(config);
-        console.log(this.client)
-        console.log(file)
-        console.log(res.data.files)
-        const result = await this.client.list();
-        console.log('result.objects',result.objects)
+        // const result = await this.client.list();
+        // console.log('result.objects',result.objects)
         this.client
           .multipartUpload(res.data.files, file)
           .then(function(result) {
             if (name === "img1") {
-              this.img1_sn = res.data.sn;
+              that.img1_sn = res.data.sn;
             } else {
-              this.img2_sn = res.data.sn;
+              that.img2_sn = res.data.sn;
             }
             console.log("result", result);
           })
