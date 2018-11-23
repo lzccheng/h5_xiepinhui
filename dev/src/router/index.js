@@ -112,6 +112,9 @@ const addCard = ()=>import('@/page/center/drawDeposit/addCard')//添加银行卡
 const bindNewCard = ()=>import('@/page/center/drawDeposit/bindNewCard')//绑定新银行卡
 const drawSuccess = ()=>import('@/page/center/drawDeposit/drawSuccess')//提现成功
 
+//在线充值
+const rechargeMoneyOnline = ()=>import('@/page/center/myWallet/rechargeMoneyOnline')//在线充值
+
 ///center/drawIndex
 
 // module user
@@ -696,6 +699,14 @@ let router = new Router({
           component: rebateRecord,
           meta: {
             title: '返利'
+          }
+        },
+        {
+          path: 'rechargeMoneyOnline',
+          name: 'rechargeMoneyOnline',
+          component: rechargeMoneyOnline,
+          meta: {
+            title: '充值'//在线充值
           }
         },
       ]
