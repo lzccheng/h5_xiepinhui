@@ -181,13 +181,13 @@ export default {
   },
   created() {
     // this.$router.push("/centerFull/partner/apply");
-    this.$router.push({
-          path: "apply",
-          query: {
-            codeKey: '135erw',
-            userName: '孟国宝'
-          }
-        });
+    // this.$router.push({
+    //       path: "apply",
+    //       query: {
+    //         codeKey: '135erw',
+    //         userName: '孟国宝'
+    //       }
+    //     });
     this.inviteOthersCode = this.$route.query.codeInvite || this.codeInvite || '';
     if(this.inviteOthersCode){
       this.$store.dispatch('update_codeInvite',this.inviteOthersCode)

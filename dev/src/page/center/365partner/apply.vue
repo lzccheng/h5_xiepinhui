@@ -151,7 +151,7 @@ export default {
         sn_up: this.img1_sn,
         sn_down: this.img2_sn,
         openid: this.user.openid,
-        pay_code: 2, // 1微信 2支付宝 3银联
+        pay_code: 1, // 1微信 2支付宝 3银联
         type: 3,
         member_code: this.codeKey
       };
@@ -161,7 +161,18 @@ export default {
         return;
       }
       if(res.code == 2000){
-        wxPay(this, {...res.data.pay_param})
+        let success = res => {
+          this.$router.replace({
+            path: '/centerFull/partner/applyStatic',
+            query: {
+              status: 1
+            }
+          })
+        }
+        let fail = err => {
+          this.$vux.toast.text('支付失败');
+        }
+        wxPay(this, {...res.data.pay_param,success,fail})
       }
       console.log("pay", res);
       // todo pay
