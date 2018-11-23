@@ -191,7 +191,7 @@ padding-left:10/50rem;
                     </div>
                     <div class="flex flex-pack-justify descAmountBox">
                         <div style="color:#61D8D0"><span style="font-size:20rpx;">¥</span>{{infoData.money_data[0].money_amout}}</div>
-                        <div class="btn-recharge" @click="goRecharge">充值</div>
+                        <div class="btn-recharge" @click="goRecharge" :style="{background:user_type==3?'#ccc':''}">充值</div>
                     </div>
                     <div class="flex flex-pack-justify descAmountBox">
                         <div class="huibidv">
@@ -247,7 +247,8 @@ export default {
             grade:'',
             nickName: '',
             avatar: '',
-            infoData: ''
+            infoData: '',
+            user_type:''
         }
     },
     created() {
@@ -257,6 +258,8 @@ export default {
     mounted() {
         this.nickName = this.user.nick;
         this.avatar = this.user.avatar;
+        var userType = this.user.user_type;
+        this.user_type=userType;
     },
     methods: {
         async infoShow(){
@@ -310,7 +313,24 @@ export default {
             }
         },
         goRecharge(){
-            
+            var userType = this.user.user_type;
+            this.user_type=userType;
+            alert(userType)
+                if (userType==3){
+                    // wx.showModal({
+                    //     title: '提示',
+                    //     content: '你没有权限',
+                    //     showCancel:false
+                    // });
+                    this.$vux.toast.text('你没有权限');
+                }else{
+                    this.$router.push({
+                        path: 'rechargeMoneyOnline',
+                        query: {
+                            //recordType: 3
+                        }
+                    });
+                }
         }
     },
     computed: {

@@ -297,7 +297,7 @@ export default {
         }else{
           if(res.code==2000){
             this.fansContent=res.data;
-            this.redBackList=redBackList;//res.data.redBackList;
+            this.redBackList=res.data.redBackList;//;redBackList
             
           }
         }

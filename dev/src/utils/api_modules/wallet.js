@@ -43,3 +43,8 @@ export const withdrawCash = (data) => {
   const url = `${domain}/restore/withdraw`
   return POST(url, data)
 }
+//充值选项列表
+export const rechargeMoneyTab = (data) => {
+  const url = `${domain}/recharge/recharge_money_cfg`
+  return POST(url, data)
+}

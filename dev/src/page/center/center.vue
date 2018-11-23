@@ -38,15 +38,15 @@
       </div>
     </div>
     <!-- 浮动栏 -->
-    <div class="lab">
+    <div class="lab top_lab">
       <div class="icon-item" @click="linkorderAfter(index)" v-for="(item,index) in ['商品收藏','店铺收藏','退款/售后']" :key="index">
         <div class="icon" :class="'icon'+index"></div>
         <div class="item-text">{{item}}</div>
       </div>
     </div>
     <!-- 隐藏广告 -->
-    <div class="ad" v-if="false&&redmessageInfo">
-      <img :src="redmessageInfo.member_centre_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
+    <div class="ad" v-if="redmessageInfo.member_vcoingoods_img.image!=''">
+      <img :src="redmessageInfo.member_vcoingoods_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
     </div>
     <!-- 订单操作栏 -->
     <div class="menu-wrap" v-if="redmessageInfo">
@@ -169,7 +169,7 @@
       </div>
     </div>
 
-    <div style="height:100%;overflow:hidden;position:fixed;top:0px;width:100%;z-index:999;" v-if="closeModal365">
+    <div style="height:100%;overflow:hidden;position:fixed;top:0px;width:100%;z-index:999;max-width:750px;" v-if="closeModal365">
         <div class="bg_hongbao_box">
             <div class="shade_bg" @click="closeModal365 = false"></div>
             <div class="imgs_collection_box">
@@ -342,7 +342,7 @@ export default {
           break;
         case "我的收益":
           tabindex = 9;
-          clickUrl="/balance/remain"
+          clickUrl="centerFull/partner/redenvelope";//"/balance/remain"
           break;
         case "我的钱包":
           tabindex = 10;
@@ -941,7 +941,9 @@ export default {
     height: 100%;
   }
 }
-
+.top_lab{
+  margin-bottom: 20/100rem;
+}
 .menu-wrap {
   background: #fff;
 
