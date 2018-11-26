@@ -328,6 +328,7 @@ import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin ,XSwitch ,Picker } 
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { api } from "@/utils/api.js";
 import { wxPay } from "@/utils/wx_sdk.js";
+// import { aliPay } from "@/utils/ali_sdk.js";
 import MobileSelect from 'mobile-select';
 
 export default {
@@ -651,7 +652,7 @@ export default {
                 reciver_city_id: that.addressInfo.city_id,
                 address_id: that.addressInfo.address_id,
                 goods_json: goods_json,
-                pay_code: 2,
+                pay_code: 1,
                 express_id: that.nowSelectshipping.e_id,
                 use_coupon: that.isUsecoupon,
                 uc_id: that.nowCouponInfo.uc_id,
@@ -702,6 +703,7 @@ export default {
                         that.$vux.toast.text('取消支付');
                     }
                 }
+                // aliPay({ orderStr: res.data.pay_param })
                 wxPay(this,{...res.data.pay_param,success, fail})
             }
             

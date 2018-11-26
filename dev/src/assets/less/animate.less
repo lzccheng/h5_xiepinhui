@@ -1,0 +1,63 @@
+.fadeIn{
+  animation: fadeIn 0.6s;
+}
+@-webkit-keyframes fadeIn{
+    form { opacity: 0; }
+    to {opacity: 1;}
+}
+@keyframes fadeIn{
+    form { opacity: 0; }
+    to {opacity: 1;}
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+//slideLeft(动画)
+.slideLeft-enter-active {
+    animation: slideLeft .3s;
+}
+.slideLeft-leave-active {
+    animation: slideLeft .3s reverse;
+}
+@-webkit-keyframes slideLeft {
+    from {
+        left: -100%;
+    }
+    to {
+        left: 0;
+    }
+}
+@keyframes slideLeft {
+    from {
+        left: -100%;
+    }
+    to {
+        left: 0;
+    }
+}
+//slideRight(动画)
+.slideRight-enter-active {
+    animation: slideRight .3s;
+}
+.slideRight-leave-active {
+    animation: slideRight .3s reverse;
+}
+@-webkit-keyframes slideRight {
+    from {
+        right: -100%;
+    }
+    to {
+        right: 0;
+    }
+}
+@keyframes slideRight {
+    from {
+        right: -100%;
+    }
+    to {
+        right: 0;
+    }
+}

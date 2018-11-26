@@ -4,6 +4,7 @@
       <router-view v-if="$route.meta.keepAlive" v-wechat-title="$route.meta.title"></router-view>
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive" v-wechat-title="$route.meta.title"></router-view>
+    <lg-preview></lg-preview>
   </div>
 </template>
 
@@ -35,6 +36,7 @@ export default {
 <style lang="less">
 @import "~vux/src/styles/reset.less";
 @import '~@/assets/base.less';
+@import '~@/assets/less/animate.less';
 .tab-slider {
   position: relative;
   width: 100%;
@@ -106,4 +108,5 @@ export default {
 .idnexWrapBox{
   padding-top: 0.92rem;
 }
+
 </style>

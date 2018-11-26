@@ -55,7 +55,7 @@
           :class="{'bge':it.bgColor}">
           <div v-if="it.num>0" class="red-dot">{{it.num}}</div>
           <div class="icon" :style="{backgroundImage:'url(' + it.imageContent + ')'}" v-if="!!it.showImage"></div>
-          <div class="text" v-else>{{it.amout|money_fil}}</div>
+          <div class="text" v-else>{{it.amout | money_fil}}</div>
           <div class="menu-text">{{it.stateTitle}}</div>
         </div>
       </div>
@@ -547,6 +547,7 @@ export default {
         case 6:
           break;
         case 3:
+          url = '/centerFull/myService/integral_sc'
           break;
         case 2:
           break;
@@ -555,6 +556,7 @@ export default {
           break;
       }
       if(!url)return;
+      console.log(url)
       this.$router.push({
         path: url,
         query: {
@@ -568,7 +570,8 @@ export default {
       switch (link) {
         case "我的店铺":
           if (this.user.user_type == 1) {
-            this.$vux.toast.text("请先开通店铺", "top");
+            this.$router.push('/centerFull/myshop/noShop')
+            // this.$vux.toast.text("请先开通店铺", "top");
             return;
           }
           this.$router.push("/centerFull/myshop/index");

@@ -113,10 +113,14 @@ export default {
       localStorage["user"] = JSON.stringify(res.data);
       localStorage["account"] = res.data.account;
       localStorage["token"] = res.data.token;
+      if(this.$route.query.from_){
+
+        return this.$router.replace({
+          path: this.$route.query.from_,
+          codeInvite: this.$route.query.codeInvite
+        })
+      }
       if (this.url === "/") {
-        if(this.$route.query.from){
-          return this.$router.replace(this.$route.query.from)
-        }
         this.$router.replace("/");
       } else {
         window.location.href = unescape(this.url);
@@ -210,6 +214,12 @@ export default {
       this.updateAccount(res.data.account);
       localStorage["token"] = res.data.token;
       localStorage["account"] = res.data.account;
+      if(this.$route.query.from_){
+        return this.$router.replace({
+          path: this.$route.query.from_,
+          codeInvite: this.$route.query.codeInvite
+        })
+      }
       if (that.url === "/") {
         that.$router.replace("/");
       } else {

@@ -105,7 +105,7 @@ outline:none;
             <img src="https://img.xiepinhui.com.cn/mobile/wallet/ico_wallet.png"  class="image"/>
             <div class="title">我的余额</div>
             <div class="money">￥{{balance}}</div>
-            <div class="btn" @click="withdraw" data-submemberid=''>提现</div>clearness
+            <div class="btn" @click="withdraw" data-submemberid=''>提现</div>
             <div class="btn-list">
               <div data-url="./clearness/clearness" @click="linkToPage('/drawIndex/clearness')">提现明细</div>
               <div data-url="isPwd == 0 ? '../password/moblieCode/moblieCode' : '../password/password'" @click="linkToPage('/setTradeCode')">设置密码</div>
