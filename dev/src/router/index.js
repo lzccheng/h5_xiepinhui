@@ -277,7 +277,7 @@ let router = new Router({
     },
     {
       path: '/balance',
-      name: 'remain',
+      name: 'balance',
       component: remain,
       children: [{
         path: 'remain',

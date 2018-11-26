@@ -215,7 +215,6 @@ export default {
   },
   methods: {
     async rechargeTab(){
-        
         let data = {
             plat: 3,
             token: this.token,

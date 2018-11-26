@@ -191,7 +191,7 @@ padding-left:10/50rem;
                 <div class="top_part_content">
                     <div class="flex flex-pack-justify descAmountBox line_bottom">
                         <div class="descLeftOne">充值金额(元)</div>
-                        <div class="descRightOne"  @click='rechargeDetail'>充值明细</div>
+                        <div class="descRightOne">充值明细</div>
                     </div>
                     <div class="flex flex-pack-justify descAmountBox">
                         <div style="color:#61D8D0"><span style="font-size:20rpx;">¥</span>{{infoData.money_data[0].money_amout}}</div>
@@ -280,18 +280,6 @@ export default {
             if(res.code == 2000){
                 this.infoData = res.data;
             }
-        },
-        rechargeDetail(){
-            // wx.navigateTo({
-            // url: '../balance/remain/remain?recordType='+1,
-            // });
-            alert(888)
-            this.$router.push({
-                path: '/balance/remain',
-                query: {
-                    recordType: 1
-                }
-            });
         },
         visibleNUM(){
             this.eyeOpenIf = !this.eyeOpenIf;

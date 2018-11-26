@@ -48,3 +48,22 @@ export const rechargeMoneyTab = (data) => {
   const url = `${domain}/recharge/recharge_money_cfg`
   return POST(url, data)
 }
+//充值方式列表
+export const rechargeWayList = (data) => {
+  const url = `${domain}/order/get_payment_list`
+  return POST(url, data)
+}
+/**
+ * 线上用户充值
+ */
+export const onlineRecharge = (data) => {
+  const url = `${domain}/recharge/online_dopay`
+  return POST(url, data)
+}
+/**
+ * 充值明细/荟币明细
+ */
+export const detailRecord = (data) => {
+  const url = `${domain}/member/money_record`
+  return POST(url, data)
+}

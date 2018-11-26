@@ -45,7 +45,7 @@
       </div>
     </div>
     <!-- 隐藏广告 -->
-    <div class="ad" v-if="redmessageInfo.member_vcoingoods_img.image!=''">
+    <div class="ad" v-if="redmessageInfo && redmessageInfo.member_vcoingoods_img.image!=''">
       <img :src="redmessageInfo.member_vcoingoods_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
     </div>
     <!-- 订单操作栏 -->
