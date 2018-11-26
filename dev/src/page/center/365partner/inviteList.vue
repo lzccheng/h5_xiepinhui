@@ -204,7 +204,7 @@ export default {
       this.$router.push({
         path: '/user/login',
         query: {
-          from: '/centerFull/partner/inviteList',
+          from_: '/centerFull/partner/inviteList',
           codeInvite: this.inviteOthersCode
         }
       })
