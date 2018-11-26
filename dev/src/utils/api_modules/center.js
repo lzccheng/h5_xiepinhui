@@ -179,6 +179,12 @@ export const collectgoodslist = (data) => {
   return POST(url, data)
 }
 
+//积分商城
+export const pointsgoodslist = (data) => {
+  const url = `${domain}/points/goodslist`
+  return POST(url, data)
+}
+
 //取消收藏
 export const cancelcollectgoods = (data) => {
   const url = `${domain}/nine/cancelcollectgoods`

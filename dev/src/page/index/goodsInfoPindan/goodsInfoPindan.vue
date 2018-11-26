@@ -412,7 +412,7 @@ contact-button {
   line-height: 44/50rem;
   text-align: center;
   color: #fff;
-  margin: 0.3rem auto;
+  margin: 0.1rem auto;
 }
 .contt{
   width: 100%;
@@ -844,7 +844,7 @@ contact-button {
                     <div class="silder-box">
                         <swiper :options="swiperOption">
                           <swiper-slide class="goods-silder" v-for="(slide,index) in goodsInfo.goods_image_arr" :key="index">
-                            <img :src="slide" alt="" class="slide-image">
+                            <img v-preview="slide" :src="slide" alt="" class="slide-image">
                           </swiper-slide>
                           <div class="swiper-pagination" slot="pagination"></div>
                         </swiper>
@@ -969,68 +969,74 @@ contact-button {
                     </div>
                 </div>
             </div>
-            <div class="alert " @click.self="hideAlert('actionSheetHidden')" v-if="actionSheetHidden && goodsInfo">
-              <div class="contt" :class="actionSheetHidden?'bounceIn':''">
-                <div class="action-border" >
-                  <div class="action-header flex con" >
-                    <img :src="goodsInfo.goods_image_arr[0]" class="moren-img" alt="">
-                    <div class='action-right' style="flex: column;">
-                      <span class="action-right-lable" v-if="btnType=='buy'">￥{{goodsInfo.purchase_price}}</span>
-                      <span class="action-right-lable" v-else>￥{{goodsInfo.group_price}}</span>
-                      <span class="action-right-lable">{{nowSelectspec.spec}}</span>
-                      <span class="action-right-lable" v-if="goodsInfo.is_present=='1'">库存:现生产(7天内发货)</span>
-                      <span class="action-right-lable" v-else-if="goodsInfo.is_present=='2'">库存:15-30天定制</span>
-                      <span class="action-right-lable" v-else>库存：{{nowSelectspec.goods_storage}}</span>
-                    </div>
-                    <div class="close-icon iconfont icon-guanbi" @click="actionSheetbindchange"></div>
-                  </div>
-                </div>
-                <div style="height: 250px;margin-top:100px;padding-bottom:44px; overflow: scroll;" v-if="spec_info">
-                  <div class="info_choose " v-for="(specBox, Idx) in spec_info.goods_specname" :key="Idx">
-                    <div v-if="Idx==0">
-                      <div class="catalog_name">{{specBox.sp_name}}</div>
-                      <div class="catalog_items flex flex-warp ">
-                          <div v-for="(specName, index) in specBox.values" :key="index">
-                              <div @click="clickNum(index,Idx,specBox.sp_name+':'+specName)" :class="{'select-active': specIndex[Idx] === index,'select': specIndex[Idx] !== index}">{{specName}}</div>
-                          </div>
+            <transition name="fade">
+              <div class="alert " @click.self="hideAlert('actionSheetHidden')" v-if="actionSheetHidden && goodsInfo" >
+                <div class="contt" :class="actionSheetHidden?'fadeIn':''">
+                  <div class="action-border" >
+                    <div class="action-header flex con" style="padding-bottom: 0">
+                      <img :src="goodsInfo.goods_image_arr[0]" class="moren-img" alt="">
+                      <div class='action-right' style="flex: column;">
+                        <span class="action-right-lable" v-if="btnType=='buy'">￥{{goodsInfo.purchase_price}}</span>
+                        <span class="action-right-lable" v-else>￥{{goodsInfo.group_price}}</span>
+                        <span class="action-right-lable">{{nowSelectspec.spec}}</span>
+                        <span class="action-right-lable" v-if="goodsInfo.is_present=='1'">库存:现生产(7天内发货)</span>
+                        <span class="action-right-lable" v-else-if="goodsInfo.is_present=='2'">库存:15-30天定制</span>
+                        <span class="action-right-lable" v-else>库存：{{nowSelectspec.goods_storage}}</span>
                       </div>
+                      <div class="close-icon iconfont icon-guanbi" @click="actionSheetbindchange"></div>
                     </div>
-                    <div v-if="Idx==1">
-                      <div class="catalog_name">{{specBox.sp_name}}</div>
-                      <div class="catalog_items flex flex-warp ">
-                          <div v-for="(specName,index) in specBox.values" :key="index">
-                            <div @click="clickNum(index,Idx,specBox.sp_name + ':' + specName)" v-if="nowList[index].goods_storage!=0" :class="{'select-active': specIndex[Idx] === index,'select': specIndex[Idx] !== index}">
-                                {{specName}}
+                  </div>
+                  <div style="height: 250px;margin-top:100px;padding-bottom:44px; overflow: scroll;" v-if="spec_info">
+                    <div class="info_choose " v-for="(specBox, Idx) in spec_info.goods_specname" :key="Idx">
+                      <div v-if="Idx==0">
+                        <div class="catalog_name">{{specBox.sp_name}}</div>
+                        <div class="catalog_items flex flex-warp ">
+                            <div v-for="(specName, index) in specBox.values" :key="index">
+                                <div @click="clickNum(index,Idx,specBox.sp_name+':'+specName)" :class="{'select-active': specIndex[Idx] === index,'select': specIndex[Idx] !== index}">{{specName}}</div>
                             </div>
-                            <div class="select-hui" v-else>{{specName}}</div>
-                          </div>
+                        </div>
+                      </div>
+                      <div v-if="Idx==1">
+                        <div class="catalog_name">{{specBox.sp_name}}</div>
+                        <div class="catalog_items flex flex-warp ">
+                            <div v-for="(specName,index) in specBox.values" :key="index">
+                              <div @click="clickNum(index,Idx,specBox.sp_name + ':' + specName)" v-if="nowList[index].goods_storage!=0" :class="{'select-active': specIndex[Idx] === index,'select': specIndex[Idx] !== index}">
+                                  {{specName}}
+                              </div>
+                              <div class="select-hui" v-else>{{specName}}</div>
+                            </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="action-btn">
-                  <div class="btn" @click="goBuy">
-                    <span v-if="btnType=='pindan'">确认拼单</span>
-                    <span v-else>确认购买</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="alert" @click.self="hideAlert('coupon_actionSheetHidden')" v-show="coupon_actionSheetHidden" >
-              <div style="width:100%;  overflow: hidden;" class="shuoming con" :class="coupon_actionSheetHidden?'bounceIn':''">
-                <div class="coupon-action-top ">服务说明</div>
-                <div class="coupon-action-scroll" style="width:100%; height:300px;">
-                  <div class="fuwu-shuoming flex " v-for="(item, index) in goodsInfo.instructions" :key="index">
-                    <div class="fuwu-left-icon iconfont icon-duihao"></div>
-                    <div class="shuoming-content">
-                      <div class="shuoming-title">{{item.title}}</div>
-                      <div class="shuoming-text">{{item.info}}</div>
+                  <div class="action-btn">
+                    <div class="btn" @click="goBuy">
+                      <span v-if="btnType=='pindan'">确认拼单</span>
+                      <span v-else>确认购买</span>
                     </div>
                   </div>
-                  <div class="shuoming-bottom-btn" @click="coupon_actionSheetbindchange">我知道了</div>
                 </div>
               </div>
-            </div>
+            </transition>
+            
+            <transition name="fade">
+              <div class="alert" @click.self="hideAlert('coupon_actionSheetHidden')" v-show="coupon_actionSheetHidden" >
+                <div style="width:100%;  overflow: hidden;" class="shuoming con">
+                  <div class="coupon-action-top ">服务说明</div>
+                  <div class="coupon-action-scroll" style="width:100%; height:300px;">
+                    <div class="fuwu-shuoming flex " v-for="(item, index) in goodsInfo.instructions" :key="index">
+                      <div class="fuwu-left-icon iconfont icon-duihao"></div>
+                      <div class="shuoming-content">
+                        <div class="shuoming-title">{{item.title}}</div>
+                        <div class="shuoming-text">{{item.info}}</div>
+                      </div>
+                    </div>
+                    <div class="shuoming-bottom-btn" @click="coupon_actionSheetbindchange">我知道了</div>
+                  </div>
+                </div>
+              </div>
+            </transition>
+            
         </div>
         <div v-if="spec_info == '' && backBtnBool" class="backBtn" @click="routerBack">返回</div>
     </div>
@@ -1050,7 +1056,7 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper';
 import fancyBox from 'vue-fancyBox';
 import { isScrollBottom } from "@/utils/comm.js";
 import { setTimeout } from 'timers';
-import 'animate.css';
+// import 'animate.css';
 
 export default {
     components: {

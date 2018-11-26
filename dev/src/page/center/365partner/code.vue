@@ -63,14 +63,16 @@ export default {
         }
         let info = res.data;
         console.log("info", info);
-        let userName = info.data.member_name;
+        let userName = info.member_name;
+        console.log(userName)
         this.$router.push({
-          path: "apply",
+          path: "/centerFull/partner/apply",
           query: {
             codeKey: this.code,
             userName: userName
           }
         });
+        console.log('jump  /centerFull/partner/apply')
       }
     }
   },

@@ -210,6 +210,9 @@ export default {
       this.updateAccount(res.data.account);
       localStorage["token"] = res.data.token;
       localStorage["account"] = res.data.account;
+      if(this.$route.query.from){
+        return this.$router.replace(this.$route.query.from)
+      }
       if (that.url === "/") {
         that.$router.replace("/");
       } else {

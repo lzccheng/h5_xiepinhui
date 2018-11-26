@@ -87,7 +87,8 @@ const allgoods = () => import('@/page/index/allgoods/allgoods')
 //编辑地址
 const editaddress = ()=>import('@/page/index/editaddress/editaddress')
 
-const subStoreList = ()=>import('@/page/center/myShop/subStoreList')
+const subStoreList = () => import('@/page/center/myShop/subStoreList')
+const noShop = () => import('@/page/center/myShop/noShop/noShop')
 const addSubStore = ()=>import('@/page/center/myShop/addSubStore')
 const offlineStore = ()=>import('@/page/center/myShop/offlineStore')
 const offlineStoreOrder = ()=>import('@/page/center/myShop/offlineStoreOrder')
@@ -161,6 +162,9 @@ const coupon_list = () => import('@/page/center/myService/coupon_list/coupon_lis
 
 //好货
 const haohuo = () => import('@/page/center/myService/haohuo/haohuo')
+
+//积分商城
+const integral_sc = () => import('@/page/center/myService/integral_sc/integral_sc')
 
 const base = config.path
 
@@ -292,7 +296,7 @@ let router = new Router({
       meta: {
         title: '余额'
       }
-    },
+    }, 
     {
       path: '/centerFull',
       name: 'centerFull',
@@ -407,6 +411,14 @@ let router = new Router({
           component:subStoreList,
           meta:{
             title:'粉丝管理'
+          }
+        }, 
+        {
+          path: 'noShop',
+          name: 'noShop',
+          component: noShop,
+          meta: {
+            title: '我的店铺'
           }
         },
         {
@@ -598,6 +610,14 @@ let router = new Router({
             component: haohuo,
             meta: {
               title: '好货'
+            }
+          }, 
+          {
+            path: 'integral_sc',
+            name: 'integral_sc',
+            component: integral_sc,
+            meta: {
+              title: '积分商城'
             }
           },
         ]

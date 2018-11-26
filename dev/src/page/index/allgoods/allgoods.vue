@@ -293,14 +293,17 @@
     <div class="page idnexWrapBox">
         <x-header :left-options="{backText:''}" :title='nvabarData.title' ref="vux_header" id='vux-header'></x-header>
         <div>
-            <div class="fenlei-picker" v-if='isFenlei' :class="isFenlei?'bounceIn': ''" @click.self="bindFenlei">
+            <transition name="slideLeft">
+              <div class="fenlei-picker" v-if='isFenlei' @click.self="bindFenlei">
                 <div class="fenlei-picker-center ">
                     <div class="picker-item line_xi_after flex flex-pack-justify" :class="statusTitle==item?'icon-active':''" @click='bindSexChange(index)' :data-index='index' v-for="(item, index) in statusList" :key="index">{{item}}
                         <span v-if="statusTitle==item" class=' iconfont icon-xduihao icon-active'></span>
                         <span v-if="status==index" class=' iconfont icon-xduihao icon-active'></span>
                     </div>
                 </div>
-            </div>
+              </div>
+            </transition>
+            
             <div class="fixedBox">
                 <div class="page__bd search-box-fiexd">
                     <div class="weui-search-bar">
@@ -388,7 +391,8 @@
                   <div class="null-title">暂无该类型商品~</div>
                 </div>
             </div>
-            <div class="shaixuan-div" v-show="isView" :class="isView?'bounceIn': ''" @click.self='openShaixuan'>
+            <transition name="slideRight">
+              <div class="shaixuan-div" v-show="isView" @click.self='openShaixuan'>
                 <div class="shaixuan-div-center" :style="{paddingTop:height+'px'}">
                   <div class="div-center-title">价格区间</div>
                   <div class="div-center-input-box flex flex-align-center">
@@ -405,7 +409,9 @@
                       <div class="div-bottom-btn other-bottom-btn" @click='Gosearch'>确定</div>
                   </div>
                 </div>
-            </div>
+              </div>
+            </transition>
+            
         </div>
     </div>
 </template>
@@ -415,7 +421,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { api } from '@/utils/api.js';
 import { isScrollBottom } from '@/utils/comm.js';
 import { Group, Cell, XButton, Badge, XHeader } from 'vux';
-import 'animate.css';
+// import 'animate.css';
 export default {
     components: {
         XHeader
@@ -545,7 +551,12 @@ export default {
           this.showList();
         },
         bindFenlei(){
+          if(window.isClick)return;
+          window.isClick = true;
           this.isFenlei = !this.isFenlei;
+          setTimeout(() => {
+            window.isClick = false;
+          }, 300);
         },
         bindPriceChange(){
           var that = this;
@@ -576,7 +587,12 @@ export default {
           this.showList(this);
         },
         openShaixuan(){
-          this.isView = !this.isView;  
+          if(window.isClick)return;
+          window.isClick = true;
+          this.isView = !this.isView;
+          setTimeout(() => {
+            window.isClick = false
+          }, 300);  
         },
         openGoods(goodsid){
           this.$router.push({

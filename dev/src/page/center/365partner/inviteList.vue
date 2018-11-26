@@ -100,39 +100,45 @@
         </div>
       </div>
       <!-- 分享弹窗 -->
-      <div class="shareAlert" :class="showShare?'bounceIn':'bounceOut'" v-show="showShareBool" @click="showShare">
-        <div class="img">
-          <img src="@/assets/images/share_right.png" alt="">
-        </div>
-        <div class="text">
-            <span>点击右上角进行分享哦~</span>
+      <transition name="fade">
+        <div class="shareAlert" v-show="showShareBool" @click="showShare">
+          <div class="img">
+            <img src="@/assets/images/share_right.png" alt="">
           </div>
-      </div>
+          <div class="text">
+              <span>点击右上角进行分享哦~</span>
+            </div>
+        </div>
+      </transition>
+      
       <!-- 我的奖励弹窗 -->
-      <div v-show="show_reward">
-        <div class="rewardPopUp"  :class="show_reward?'bounceIn':'bounceOut'">
-          <div class="rewardContentBox">
-            <div class="close_img" @click="show_reward=false"></div>
-            <div class="title_reward">我的奖励</div>
-            <div class="content_reward">
-              <div class="rewardLi" style="float:left;">
-                <div class="num_reward">{{total_amount || 0}}<span style="font-size:26/100rem;">元</span></div>
-                <div class="txt_reward">累计获得返利</div>
+      <transition name="fade">
+        <div v-show="show_reward">
+          <div class="rewardPopUp">
+            <div class="rewardContentBox">
+              <div class="close_img" @click="show_reward=false"></div>
+              <div class="title_reward">我的奖励</div>
+              <div class="content_reward">
+                <div class="rewardLi" style="float:left;">
+                  <div class="num_reward">{{total_amount || 0}}<span style="font-size:26/100rem;">元</span></div>
+                  <div class="txt_reward">累计获得返利</div>
+                </div>
+                <div class="rewardLi" style='float:right;'>
+                  <div class="num_reward">{{available_amount || 0}}<span style="font-size:26/100rem;">元</span></div>
+                  <div class="txt_reward">可提取返利</div>
+                </div>
               </div>
-              <div class="rewardLi" style='float:right;'>
-                <div class="num_reward">{{available_amount || 0}}<span style="font-size:26/100rem;">元</span></div>
-                <div class="txt_reward">可提取返利</div>
+              <div style="padding:0/100rem;">
+                <div class="btn_invite_reward" @click="showShare">立邀好友 再得{{amountInvite}}元</div>
               </div>
+              <router-link to="/balance" tag="div" class="btn_remount_reward">
+                <div>我的余额</div>
+              </router-link>
             </div>
-            <div style="padding:0/100rem;">
-              <div class="btn_invite_reward" @click="showShare">立邀好友 再得{{amountInvite}}元</div>
-            </div>
-            <router-link to="/balance" tag="div" class="btn_remount_reward">
-              <div>我的余额</div>
-            </router-link>
           </div>
         </div>
-      </div>
+      </transition>
+      
     </div>
     <!-- 我的奖励弹窗end -->
   </div>
@@ -192,11 +198,14 @@ export default {
     if(this.inviteOthersCode){
       this.$store.dispatch('update_codeInvite',this.inviteOthersCode)
     }
+    console.log(99999,this.account)
     if(!this.account){
+      console.log(1)
       this.$router.push({
         path: '/user/login',
         query: {
-          from: '/centerFull/partner/inviteList'
+          from: '/centerFull/partner/inviteList',
+          codeInvite: this.inviteOthersCode
         }
       })
     }
@@ -297,7 +306,7 @@ export default {
           this.$vux.toast.text(res.data.msg);
         }
       }
-      let userName = res.data.data.member_name;
+      let userName = res.data.member_name;
       this.$router.push({
         path: "apply",
         query: {
