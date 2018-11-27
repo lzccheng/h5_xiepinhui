@@ -100,7 +100,7 @@ const subfanManagement = ()=>import('@/page/center/myShop/subfanManagement')//�
 
 // 提现模块
 const drawIndex = () => import('@/page/center/drawDeposit/drawIndex') //提现首页
-const clearness = () => import('@/page/center/drawDeposit/clearness') //提现明细
+//const clearness = () => import('@/page/center/drawDeposit/clearness') //提现明细
 const rebateRecord = () => import('@/page/center/myWallet/rebateRecord') //返利
 const myWallet = () => import('@/page/center/myWallet/myWallet') //提现首页
 const myWalletWrap = () => import('@/page/center/myWallet/myWalletWrap') //myWalletWrap
@@ -135,6 +135,11 @@ const phone_bind = ()=>import('@/page/user/phone_bind')
 
 //余额明细
 const remain = ()=>import('@/page/center/balance/remain/remain')
+const balanceWrap = ()=>import('@/page/center/balance/balanceWrap')
+//充值明细
+const clearness = ()=>import('@/page/center/balance/clearness/clearness')
+//提现明细
+const drawMinXi = ()=>import('@/page/center/balance/drawMinXi/drawMinXi')
 
 //申请售后
 const aftertype = ()=>import('@/page/center/orderlist/aftertype')
@@ -282,13 +287,29 @@ let router = new Router({
     {
       path: '/balance',
       name: 'balance',
-      component: remain,
+      component: balanceWrap,
       children: [{
         path: 'remain',
         name: 'remain',
         component: remain,
         meta: {
           title: '余额明细'
+        }
+      },
+      {
+        path: 'clearness',
+        name: 'clearness',
+        component: clearness,
+        meta: {
+          title: '充值明细'
+        }
+      },
+      {
+        path: 'drawMinXi',
+        name: 'drawMinXi',
+        component: drawMinXi,
+        meta: {
+          title: '提现明细'
         }
       },
       
@@ -697,14 +718,14 @@ let router = new Router({
           path: '/',
           redirect: 'myWallet'
         }, 
-        {
-          path: 'clearness',
-          name: 'clearness',
-          component: clearness,
-          meta: {
-            title: '提现明细'
-          }
-        },
+        // {
+        //   path: 'clearness',
+        //   name: 'clearness',
+        //   component: clearness,
+        //   meta: {
+        //     title: '提现明细'
+        //   }
+        // },
         {
           path: 'myWallet',
           name: 'myWallet',

@@ -207,7 +207,7 @@ padding-left:10/50rem;
                 <div class="bottom_part_content">
                     <div class="flex flex-pack-justify descAmountBox line_bottom">
                         <div class="descLeftOne">收益总金额(元)</div>
-                        <div class="descRightOne">提现明细</div>
+                        <div class="descRightOne"  @click='withdrawDetail'>提现明细</div>
                     </div>
                     <div class="flex flex-pack-justify descAmountBox">
                         <div style="color:#EC7B7D"><text style="font-size:20rpx;">¥</text>{{infoData.money_data[1].money_amout}}</div>
@@ -282,12 +282,16 @@ export default {
             }
         },
         rechargeDetail(){
-            // wx.navigateTo({
-            // url: '../balance/remain/remain?recordType='+1,
-            // });
-            alert(888)
             this.$router.push({
-                path: '/balance/remain',
+                path: '/balance/clearness',
+                query: {
+                    recordType: 1
+                }
+            });
+        },
+        withdrawDetail(){
+            this.$router.push({
+                path: '/balance/drawMinXi',
                 query: {
                     recordType: 1
                 }
