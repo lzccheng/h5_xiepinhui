@@ -48,17 +48,10 @@ export const rechargeMoneyTab = (data) => {
   const url = `${domain}/recharge/recharge_money_cfg`
   return POST(url, data)
 }
-<<<<<<< HEAD
-
-//
-=======
-//充值方式列表
->>>>>>> c3369060c861e710dab7c9749f996d8c5ea5e0d5
 export const rechargeWayList = (data) => {
   const url = `${domain}/order/get_payment_list`
   return POST(url, data)
 }
-<<<<<<< HEAD
 
 //
 export const offline_dopay = (data) => {
@@ -69,7 +62,8 @@ export const offline_dopay = (data) => {
 //荟币列表
 export const vcoin_goods_list = (data) => {
   const url = `${domain}/nine/vcoin_goods_list`
-=======
+  return POST(url, data)
+}
 /**
  * 线上用户充值
  */
@@ -82,6 +76,5 @@ export const onlineRecharge = (data) => {
  */
 export const detailRecord = (data) => {
   const url = `${domain}/member/money_record`
->>>>>>> c3369060c861e710dab7c9749f996d8c5ea5e0d5
   return POST(url, data)
 }
