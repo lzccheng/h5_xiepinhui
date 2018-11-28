@@ -287,7 +287,7 @@ contact-button {
 
 .action-right {
   width: 100%;
-  padding-top: 10/50rem;
+  padding-top: 8/50rem;
   padding-left: 100/50rem;
   display: flex;
   flex-direction:column;
@@ -296,6 +296,7 @@ contact-button {
 .action-right-lable {
   display: block;
   font-size: 11pt;
+  line-height: 20/50rem;
 }
 
 .info_choose {
@@ -830,7 +831,7 @@ contact-button {
 }
 </style>
 <template>
-    <div>
+    <div  style="width: 7.5rem">
         <!-- <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header> -->
         <loading type="type3" v-if="loadingShow"></loading>
         

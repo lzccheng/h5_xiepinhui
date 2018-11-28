@@ -41,6 +41,9 @@ export default {
   position: relative;
   width: 100%;
 }
+#app {
+  width: 7.5rem;
+}
 .tab-slider__content {
   position: absolute;
   height: 100%;
@@ -92,6 +95,7 @@ export default {
   z-index: 3;
   width: 100%;
   height: 0.92rem;
+  line-height: 0.92rem;
   position: fixed;
   top: 0;
   left: 0;
