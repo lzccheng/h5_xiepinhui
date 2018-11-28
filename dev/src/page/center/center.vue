@@ -46,7 +46,7 @@
     </div>
     <!-- 隐藏广告 -->
     <div class="ad" v-if="redmessageInfo && redmessageInfo.member_vcoingoods_img.image!=''">
-      <img :src="redmessageInfo.member_vcoingoods_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
+      <img @click.self="$router.push('/HuiBiArea')" :src="redmessageInfo.member_vcoingoods_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
     </div>
     <!-- 订单操作栏 -->
     <div class="menu-wrap" v-if="redmessageInfo">
@@ -579,9 +579,9 @@ export default {
         case "365合伙人":
           //0 普通用户 1 店主非365店 2 365店主
           if (this.user.user_type == 2 || this.user.user_type == 3) {
-              
               this.$router.push("/centerFull/partner/inviteList");
           } else {
+            
             let issmallshop = this.redmessageInfo.is_smallshop;
             let store_state = this.redmessageInfo.store_state;
             //判断是否已开通
@@ -615,6 +615,7 @@ export default {
               }
             } else {
               //开通了
+              alert(2)
               this.$router.push("/centerFull/partner/inviteList");
               return;
             }

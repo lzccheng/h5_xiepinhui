@@ -165,9 +165,10 @@
   </div>
 
     <div class="null-bg" v-else>
-      <img src='@/assets/images/null/null_fan.png' class="null-img"/>
-      <div class="fanNull">暂无粉丝数据</div>
-      <div class="fanNull">赶紧去邀请粉丝吧</div>
+      <null-data>
+        <div>暂无粉丝数据</div>
+        <div>赶紧去邀请粉丝吧</div>
+      </null-data>
     </div>
     <!-- 主体内容end -->
   </div>
@@ -178,6 +179,7 @@ import { isScrollBottom } from "@/utils/comm.js";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { api } from "@/utils/api.js";
 import loading from "@/components/loading.vue";
+import nullData from "@/components/nullData.vue";
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin } from "vux";
 export default {
   name: "subStoreList",
@@ -188,7 +190,8 @@ export default {
     XButton,
     Badge,
     XHeader,
-    loading
+    loading,
+    nullData
   },
   data() {
     return {

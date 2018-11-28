@@ -41,6 +41,7 @@ axiosUtil.interceptors.response.use(
 
 function request(method) {
   return async function (url, data = {}) {
+    data.plat = data.plat || 3;
     let options = {
       method: method,
       url: url,

@@ -1,6 +1,6 @@
 <template>
   <div class="scroll-wrap">
-    <x-header :left-options="{backText:''}" title="365合伙人" id="vux-header"><a slot="right"></a></x-header>
+    <x-header :left-options="{backText:''}" @on-click-back="$router.push('/')" title="365合伙人" id="vux-header"><a slot="right"></a></x-header>
     <div class="middlePart">
         <div class="hehuoBox">
             <img src="http://img.xiepinhui.com.cn/small_app/mine/hehuo_fail.png" v-if="status==0">

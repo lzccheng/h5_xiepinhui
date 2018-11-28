@@ -214,6 +214,9 @@ export default {
         case "12":
           clickUrl = "subreplenishOrder";
           break;
+        case "13":
+          clickUrl = "rechargeMoneyOffline";
+          break;
       }
       _this.$router.push(clickUrl);
     },

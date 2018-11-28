@@ -95,7 +95,8 @@ const offlineStoreOrder = ()=>import('@/page/center/myShop/offlineStoreOrder')
 const subinventoryManage = ()=>import('@/page/center/myShop/subinventoryManage/subinventoryManage')
 const fanManagement = ()=>import('@/page/center/myShop/fanManagement')//子账号的粉丝管理
 const shopSetting = ()=>import('@/page/center/myShop/shopSetting')//子账号的店铺设置
-const subfanManagement = ()=>import('@/page/center/myShop/subfanManagement')//总账号的粉丝管理
+const subfanManagement = () => import('@/page/center/myShop/subfanManagement') //总账号的粉丝管理
+const rechargeMoneyOffline = () => import('@/page/center/myShop/rechargeMoneyOffline/rechargeMoneyOffline') //子账号会员充值
 
 
 // 提现模块
@@ -114,7 +115,9 @@ const bindNewCard = ()=>import('@/page/center/drawDeposit/bindNewCard')//绑定�
 const drawSuccess = ()=>import('@/page/center/drawDeposit/drawSuccess')//提现成功
 
 //在线充值
-const rechargeMoneyOnline = ()=>import('@/page/center/myWallet/rechargeMoneyOnline')//在线充值
+const rechargeMoneyOnline = () => import('@/page/center/myWallet/rechargeMoneyOnline') //在线充值
+const HuiBiArea = () => import('@/page/center/HuiBiArea/HuiBiArea') //荟币专区
+
 
 ///center/drawIndex
 
@@ -492,6 +495,14 @@ let router = new Router({
           meta:{
             title:'粉丝管理'//总账号的粉丝管理
           }
+        }, 
+        {
+          path: 'rechargeMoneyOffline',
+          name: 'rechargeMoneyOffline',
+          component: rechargeMoneyOffline,
+          meta: {
+            title: '会员充值' //子账号会员充值
+          }
         },
         {
           path:'subinventoryManage',
@@ -682,6 +693,15 @@ let router = new Router({
       ],
       meta: {
         title: '用户设置'
+      }
+    },
+    
+    {
+      path: '/HuiBiArea',
+      name: 'HuiBiArea',
+      component: HuiBiArea,
+      meta: {
+        title: '荟币专区'
       }
     },
     //提现模块

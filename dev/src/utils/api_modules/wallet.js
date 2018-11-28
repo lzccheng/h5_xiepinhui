@@ -48,3 +48,21 @@ export const rechargeMoneyTab = (data) => {
   const url = `${domain}/recharge/recharge_money_cfg`
   return POST(url, data)
 }
+
+//
+export const rechargeWayList = (data) => {
+  const url = `${domain}/order/get_payment_list`
+  return POST(url, data)
+}
+
+//
+export const offline_dopay = (data) => {
+  const url = `${domain}/recharge/offline_dopay`
+  return POST(url, data)
+}
+
+//荟币列表
+export const vcoin_goods_list = (data) => {
+  const url = `${domain}/nine/vcoin_goods_list`
+  return POST(url, data)
+}

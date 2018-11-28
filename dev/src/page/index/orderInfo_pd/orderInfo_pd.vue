@@ -219,6 +219,9 @@
     .marT0{
         margin-top: 0;
     }
+    .huidouprice{
+        color: #61D8D0;
+    }
 </style>
 <template>
     <div class="idnexWrapBox">
@@ -255,10 +258,17 @@
                     <div class="order-goods-right-text">
                         <div class='order-goods-name'>{{goodsInfo.goodsname}}</div>
                         <div class="order-goods-space">{{goodsInfo.goodspec.spec}}</div>
-                        <div class='order-goods-price'>{{goodsInfo.goodsprice}}</div>
+                        <div v-if="s_id == '-1'">
+                            <span class="huidouprice padd-top" v-if="s_id == '-1'">
+                              <span style="font-size:12px;">￥:</span>
+                              <span>{{goodsInfo.vcoin_pay_price}}+{{goodsInfo.vcoin_price}}</span>
+                              <img src="@/assets/images/huidou.png" class="iconH" mode="widthFix"/>
+                            </span>
+                        </div>
+                        <div v-else class='order-goods-price'>{{goodsInfo.goodsprice}}</div>
                     </div>
                 </div>
-                <div class="flex flex-pack-justify flex-align-center stepperBox line_xi_after">
+                <div class="flex flex-pack-justify flex-align-center stepperBox line_xi_after" v-if="!s_id">
                     <span class="num-title">购买数量</span>
                     <div class="stepper flex">
                         <!-- 减号 -->
@@ -365,9 +375,11 @@ export default {
                 showCapsule: 1, //是否显示左上角图标
                 title: '确认订单', //导航栏 中间的标题
             },
+            s_id: ''
         }
     },
     mounted(){
+        this.s_id = this.$route.query.s_id || '';
         this.init();
     },
     methods: {  

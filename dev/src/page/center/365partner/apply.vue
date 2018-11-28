@@ -46,7 +46,7 @@
           </div>
           <div class="right" :class="{'active':payFun===1}"></div>
         </div>
-        <div class="pay" @click="selectPayFun(2)">
+        <div class="pay" @click="selectPayFun(2)" v-if="!iswx">
           <div class="left">
             <div class="icon zfb"></div>
             <div class="text">支付宝支付</div>
@@ -86,6 +86,8 @@
         </div>
       </div>
     </div>
+    <!-- 支付宝支付 -->
+    <div v-show="false" ref="aliPay" v-html="aliForm"></div>
   </div>
 </template>
 
@@ -122,7 +124,8 @@ export default {
 
       client: "", //alioss
       fileSize: 500000,
-      iswx: isWeiXin()
+      iswx: isWeiXin(),
+      aliForm: ''
     };
   },
   created() {
@@ -141,6 +144,12 @@ export default {
     async pay() {
       // 校验信息
       if(!this._check())return;
+      if(!this.img1_sn){
+        return this.$vux.toast.text("请重新上传身份证人像面");
+      }
+      if(!this.img2_sn){
+        return this.$vux.toast.text("请重新上传身份证国旗面");
+      }
       let data = {
         plat: 3,
         account: this.account,
@@ -151,7 +160,7 @@ export default {
         sn_up: this.img1_sn,
         sn_down: this.img2_sn,
         openid: this.user.openid,
-        pay_code: 1, // 1微信 2支付宝 3银联
+        pay_code: this.payFun, // 1微信 2支付宝 3银联
         type: 3,
         member_code: this.codeKey
       };
@@ -161,18 +170,56 @@ export default {
         return;
       }
       if(res.code == 2000){
-        let success = res => {
-          this.$router.replace({
-            path: '/centerFull/partner/applyStatic',
-            query: {
-              status: 1
-            }
+        if(this.payFun == 1){
+          let success = res => {
+            this.$router.replace({
+              path: '/centerFull/partner/applyStatic',
+              query: {
+                status: 1
+              }
+            })
+          }
+          let fail = err => {
+            this.$vux.toast.text('支付失败');
+          }
+          wxPay(this, {...res.data.pay_param,success,fail})
+        }else{
+          let arr = res.data.pay_param.split('&');
+          let data = {};
+          arr.forEach(item => {
+            let Iarr = item.split('=');
+            data[Iarr[0]] = Iarr[1];
+          })
+          let params = {
+            notify_url: data.notify_url,
+            method: data.method,
+            partner: data.app_id,
+            _input_charset: data.charset,
+            sign_type: data.sign_type,
+            sign: data.sign,
+            notify_url: data.notify_url,
+            return_url: window.location.href,
+            body: data.biz_content
+          }
+          let html = `
+            <form action='https://mapi.alipay.com/gateway.do?_input_charset=utf-8' method='get'>
+              <input type="hidden" name="service" value="create_direct_pay_by_user" />
+              <input type="hidden" name="partner" value="${data.app_id}" />
+              <input type="hidden" name="_input_charset" value="${data.charset}" />
+              <input type="hidden" name="sign_type" value="${data.sign_type}" />
+              <input type="hidden" name="sign" value="${data.sign}" />
+              <input type="hidden" name="notify_url" value="${data.notify_url}" />
+              <input type="hidden" name="return_url" value="${window.location.href}" />
+              <input type="hidden" name="body" value="${data.biz_content}" />
+            </from>
+          `;
+          console.log(data)
+          this.aliForm = html;
+          this.$nextTick(()=>{
+            console.log(this.$refs.aliPay.children[0])
+            this.$refs.aliPay.children[0].submit();
           })
         }
-        let fail = err => {
-          this.$vux.toast.text('支付失败');
-        }
-        wxPay(this, {...res.data.pay_param,success,fail})
       }
       console.log("pay", res);
       // todo pay

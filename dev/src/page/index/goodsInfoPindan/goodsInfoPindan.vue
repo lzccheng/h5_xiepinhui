@@ -821,6 +821,13 @@ contact-button {
   display: inline-block;
   margin: 0.3rem 0.5rem;
 }
+.iconH{
+  width:24/100rem;
+  margin-left:10/100rem;
+}
+.huidouprice{
+  color: #61D8D0;
+}
 </style>
 <template>
     <div>
@@ -861,7 +868,12 @@ contact-button {
                       </div>
                       <div class="goods-info-bottom ">
                         <div class='flex flex-align-center flex-pack-justify'>
-                            <span class="price padd-top">价格:￥{{goodsInfo.purchase_price}}</span>
+                            <span class="huidouprice padd-top" v-if="s_id == '-1'">
+                              <span style="font-size:12px;">￥:</span>
+                              <span>{{goodsInfo.vcoin_pay_price}}+{{goodsInfo.vcoin_price}}</span>
+                              <img src="@/assets/images/huidou.png" class="iconH" mode="widthFix"/>
+                            </span>
+                            <span class="price padd-top" v-else>价格:￥{{goodsInfo.purchase_price}}</span>
                             <span class="salenum padd-top">销量:{{goodsInfo.goods_salenum}}件</span>
                         </div>
                         <div class='fanli-box flex flex-align-center' :class="{'flex-pack-end': partner_type==0,'flex-pack-justify': partner_type!=0}">
@@ -963,7 +975,11 @@ contact-button {
                     <span class='bottom-lable shoucang-lable'>收藏</span>
                 </div>
                 <div class="bottom-form">
-                    <div class="bottom-btn one" style="width: 100%;text-align: center" @click="actionSheetTap('buy','')">
+                    <div v-if="s_id == '-1'" class="bottom-btn one" style="width: 100%;text-align: center" @click="actionSheetTap('buy','')">
+                        <div class="newprice"></div>
+                        <div class='btn-lable'><span style="position: relative;top: -8px;">立即兑换</span></div>
+                    </div>
+                    <div v-else class="bottom-btn one" style="width: 100%;text-align: center" @click="actionSheetTap('buy','')">
                         <div class="newprice">￥{{goodsInfo.purchase_price}}</div>
                         <div class='btn-lable'>购买</div>
                     </div>
@@ -976,8 +992,15 @@ contact-button {
                     <div class="action-header flex con" style="padding-bottom: 0">
                       <img :src="goodsInfo.goods_image_arr[0]" class="moren-img" alt="">
                       <div class='action-right' style="flex: column;">
-                        <span class="action-right-lable" v-if="btnType=='buy'">￥{{goodsInfo.purchase_price}}</span>
-                        <span class="action-right-lable" v-else>￥{{goodsInfo.group_price}}</span>
+                        <span v-if="s_id == '-1'" class="action-right-lable huidouprice">
+                            <span style="font-size:12px;">￥:</span>
+                            <span style="font-size: 16px;">{{goodsInfo.vcoin_pay_price}}+{{goodsInfo.vcoin_price}}</span>
+                            <img src="@/assets/images/huidou.png" class="iconH" mode="widthFix"/>
+                        </span>
+                        <span v-else>
+                          <span class="action-right-lable" v-if="btnType=='buy'">￥{{goodsInfo.purchase_price}}</span>
+                          <span class="action-right-lable" v-else>￥{{goodsInfo.group_price}}</span>
+                        </span>
                         <span class="action-right-lable">{{nowSelectspec.spec}}</span>
                         <span class="action-right-lable" v-if="goodsInfo.is_present=='1'">库存:现生产(7天内发货)</span>
                         <span class="action-right-lable" v-else-if="goodsInfo.is_present=='2'">库存:15-30天定制</span>
@@ -1123,12 +1146,14 @@ export default {
                 showCapsule: 1, //是否显示左上角图标
                 title: '鞋品荟', //导航栏 中间的标题
             },
+            s_id: ''
         }
     },
     created(){
       if(this.$route.query.shareCode){
         this.$store.dispatch('update_shareCode',this.$route.query.shareCode);
       }
+      this.s_id = this.$route.query.s_id || '';
     },
     destroyed () {
         window.onscroll = null;
@@ -1456,7 +1481,8 @@ export default {
           this.$router.push({
             path: '/index/orderInfo_pd',
             query: {
-              group_id: this.group_id
+              group_id: this.group_id,
+              s_id: this.s_id
             }
           })
         },

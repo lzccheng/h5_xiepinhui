@@ -15,7 +15,7 @@ import vuePicturePreview from 'vue-picture-preview';
 
 //调试
 import VConsole from 'vconsole';
-new VConsole();
+let vCon = new VConsole();
 
 
 Vue.use(VueAwesomeSwiper)
