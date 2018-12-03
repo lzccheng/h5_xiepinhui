@@ -53,7 +53,7 @@
                           </div>
                           <div class="benefit">收益：{{item.amount}}元</div>
                         </div>
-                        <div class="btnInvite" bindtap="now_invitefun" v-if="item.is_smallshop==0">立即推荐</div>
+                        <div class="btnInvite" @click="now_invitefun" v-if="item.is_smallshop==0">立即推荐</div>
                       </div>
                       <div class="explain_part">
                         <div class="explainTxt" v-if="item.is_smallshop==0" >
@@ -103,11 +103,11 @@
       <transition name="fade">
         <div class="shareAlert" v-show="showShareBool" @click="showShare">
           <div class="img">
-            <img src="@/assets/images/share_right.png" alt="">
+            <img class="img_b" src="@/assets/images/share_right.png" alt="">
           </div>
-          <div class="text">
-              <span>点击右上角进行分享哦~</span>
-            </div>
+          <!-- <div class="text">
+            <span>点击右上角进行分享哦~</span>
+          </div> -->
         </div>
       </transition>
       
@@ -152,7 +152,7 @@ import { share } from "@/utils/wx_sdk.js";
 import { XHeader } from "vux";
 import loading from "@/components/loading";
 import { setTimeout } from 'timers';
-import 'animate.css';
+// import 'animate.css';
 
 // import {wxConfig} from "@/utils/wx_jssdk.js";
 
@@ -195,12 +195,15 @@ export default {
     //       }
     //     });
     this.inviteOthersCode = this.$route.query.codeInvite || this.codeInvite || '';
+    if(window.localStorage.getItem('inviteOthersCode')){
+      this.inviteOthersCode = window.localStorage.getItem('inviteOthersCode');
+      window.localStorage.removeItem('inviteOthersCode');
+    }
     if(this.inviteOthersCode){
+      window.localStorage.setItem('inviteOthersCode', this.inviteOthersCode)
       this.$store.dispatch('update_codeInvite',this.inviteOthersCode)
     }
-    console.log(99999,this.account)
     if(!this.account){
-      console.log(1)
       this.$router.push({
         path: '/user/login',
         query: {
@@ -208,6 +211,10 @@ export default {
           codeInvite: this.inviteOthersCode
         }
       })
+      return;
+    }
+    if (this.inviteOthersCode) {
+      this.bindFans(this.inviteOthersCode);
     }
     this.getfanred();
     this.getFans_list();
@@ -245,12 +252,7 @@ export default {
         this.amountInvite = res.data.twomoney;
         this.available_amount = res.data.red_amout; //可提取的返利
         this.total_amount = res.data.total_amout; //总共获取的返利
-        let codeInvite = this.inviteOthersCode;
         this.share();
-        console.log("codeInvite", codeInvite);
-        if (codeInvite) {
-          this.bindFans(codeInvite);
-        }
       }
     },
     share(){
@@ -260,11 +262,9 @@ export default {
         imgUrl: "http://testp.xiepinhui.com.cn/home2.png",
         link: window.location.origin + '?url=' + window.location.pathname + '&codeInvite=' + this.inviteCode
       }
-      console.log('shareConfig',shareConfig)
       share(this,{share: shareConfig})
     },
     async bindFans(codeInvite) {
-      console.log('bindFans codeInvite',codeInvite)
       let data = {
         plat: 3,
         account: this.account,
@@ -274,13 +274,10 @@ export default {
       // const [err, res] = await api.inviteweidian(data);
       const [err, res] = await api.receiveweidian(data);
       if(err){
-        console.log('codeInvite err',err)
         let codeStatus = err.code;
         var issmallshop = err.data.is_smallshop;
         var store_state = err.data.store_state;
-        console.log("store_state", store_state);
         if(codeStatus!=2000){
-          console.log('codeStatus != 2000',store_state)
           if(store_state == 3){//审核中
             this.$router.push({
               path: "/centerFull/partner/applyStatic",
@@ -316,9 +313,7 @@ export default {
       });
       return
       if (res) {
-        console.log('jump input_code res')
         let info = res.data;
-        console.log("info", info);
         let userName = info.data.member_name;
         this.$router.push({
           path: "apply",
@@ -460,7 +455,10 @@ export default {
       let that = this;
       that.showShareBool = !that.showShareBool;
     },
-    close_rewardFun() {}
+    close_rewardFun() {},
+    now_invitefun(){
+      this.$router.push('inviteParner365');
+    }
   },
   computed: {
     ...mapGetters(["user", "account", "token","codeInvite"])
@@ -493,11 +491,11 @@ export default {
   z-index: 999;
   .img{
     position: absolute;
-    right: 0.2rem;
-    top: 0.2rem;
-    animation: shareRow 1.8s infinite;
+    right: 0rem;
+    top: 0rem;
+    // animation: shareRow 1.8s infinite;
     img{
-      width: 1rem;
+      width: 5rem;
     }
   }
   .text{

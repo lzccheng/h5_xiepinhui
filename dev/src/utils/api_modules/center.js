@@ -14,6 +14,11 @@ export const newgetorderlist_num = (data) => {
   return POST(url, data)
 }
 
+//邀请码
+export const inviteinfo = (data) => {
+  const url = `${domain}/user/inviteinfo`
+  return POST(url, data)
+}
 //好货
 export const instock = (data) => {
   const url = `${domain}/nine/instock`
@@ -31,6 +36,11 @@ export const withdrawhistory = (data) => {
   return POST(url, data)
 }
 
+//提现明细
+export const confirm_roder = (data) => {
+  const url = `${domain}/order/confirm_roder`
+  return POST(url, data)
+}
 //优惠券
 export const usercouponlist = (data) => {
   const url = `${domain}/usercoupon/usercouponlist`

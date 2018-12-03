@@ -23,6 +23,7 @@ let _requestConfig = async (that,jsApiList,cb,data)=>{
             signature: res.data.signature,
             jsApiList
         }
+        // console.log(config)
         //data.config权限注入参数
         wx.config(config);
         wx.ready(()=>{
@@ -78,7 +79,6 @@ const wxPay = async (that,data)=>{
         console.log('wxpay fail',err)
     }
     let callback = wx =>{
-
         let payconfig = {
             appId: data.appId || '',
             timestamp: data.timeStamp,

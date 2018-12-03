@@ -47,6 +47,7 @@ export default {
     this.isWX = isWeiXin();
     this.url = window.location.search.split("?url=")[1] || "/"; //登录回退页
     this.access_code = getQueryString("code");
+    console.log(this.$route.query)
     if (this.user && !this.token) {
       let data = {
         plat: 3,
@@ -114,7 +115,7 @@ export default {
       localStorage["account"] = res.data.account;
       localStorage["token"] = res.data.token;
       if(this.$route.query.from_){
-
+        console.log(this.$route.query.from_)
         return this.$router.replace({
           path: this.$route.query.from_,
           codeInvite: this.$route.query.codeInvite
@@ -168,8 +169,8 @@ export default {
             this.$vux.toast.text("微信登录参数出错");
           });
       } else {
-        // var fromurl = window.location.href;
-        var fromurl = window.location.origin + '?url=/user/login';
+        var fromurl = window.location.href.split('#')[0];
+        // var fromurl = window.location.origin + '?url=/user/login';
         // console.log(9999,fromurl,window.location.origin)
         // console.log(encodeURIComponent(fromurl))
         // return
@@ -214,7 +215,13 @@ export default {
       this.updateAccount(res.data.account);
       localStorage["token"] = res.data.token;
       localStorage["account"] = res.data.account;
+      that.$vux.toast.show({
+        type: "success",
+        text: "微信登录成功"
+      });
       if(this.$route.query.from_){
+        console.log('from_',this.$route.query.from_)
+        console.log('login this.$route.query.codeInvite',this.$route.query.codeInvite)
         return this.$router.replace({
           path: this.$route.query.from_,
           codeInvite: this.$route.query.codeInvite
@@ -225,10 +232,7 @@ export default {
       } else {
         window.location.href = unescape(that.url);
       }
-      that.$vux.toast.show({
-        type: "success",
-        text: "微信登录成功"
-      });
+      
     },
     async showShareCode(){
       let data = {

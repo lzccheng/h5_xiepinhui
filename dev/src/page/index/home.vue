@@ -480,7 +480,7 @@
 </style>
 
 <template>
-    <div class="index-box" style="background:#fff;">
+    <div class="index-box" style="background:#fff;" v-if="newHomelist">
           <!-- 首页内容开始 -->
           <!-- swiper -->
           <swiper :options="swiperOption">
@@ -645,7 +645,7 @@ export default {
         // }
       },
       //滑动相关end
-      newHomelist: {},
+      newHomelist: '',
       nseckilltypes: {
         temporary: {
           is_show: ""
@@ -780,6 +780,9 @@ export default {
           activity: 1
         }
       };
+      this.$vux.loading.show({
+        text: '加载中...'
+      })
       const [err, res] = await api.getHomeList(data);
       if (err) {
         this.$vux.toast.text(err.msg);
@@ -895,10 +898,16 @@ export default {
       let url = '';
       switch (linketype) {
         case 6: 
-          url = '/index/allgoods'
+          url = '/index/allgoods';
+          break;
+        case 8:
+          url = '/center';
           break;
       }
-      if(!url)return;
+      if(!url){
+        this.$vux.toast.text('暂未开放','top');
+        return;
+      };
       this.$router.push(url);
     }
   },

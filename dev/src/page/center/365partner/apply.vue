@@ -46,7 +46,7 @@
           </div>
           <div class="right" :class="{'active':payFun===1}"></div>
         </div>
-        <div class="pay" @click="selectPayFun(2)" v-if="!iswx">
+        <div class="pay" @click="selectPayFun(2)">
           <div class="left">
             <div class="icon zfb"></div>
             <div class="text">支付宝支付</div>
@@ -162,7 +162,8 @@ export default {
         openid: this.user.openid,
         pay_code: this.payFun, // 1微信 2支付宝 3银联
         type: 3,
-        member_code: this.codeKey
+        member_code: this.codeKey,
+        return_url: window.location.origin + '/centerFull/partner/applyStatic?status=1'
       };
       const [err, res] = await api.addsmallshop(data);
       if (err) {
@@ -184,39 +185,55 @@ export default {
           }
           wxPay(this, {...res.data.pay_param,success,fail})
         }else{
-          let arr = res.data.pay_param.split('&');
-          let data = {};
-          arr.forEach(item => {
-            let Iarr = item.split('=');
-            data[Iarr[0]] = Iarr[1];
-          })
-          let params = {
-            notify_url: data.notify_url,
-            method: data.method,
-            partner: data.app_id,
-            _input_charset: data.charset,
-            sign_type: data.sign_type,
-            sign: data.sign,
-            notify_url: data.notify_url,
-            return_url: window.location.href,
-            body: data.biz_content
-          }
-          let html = `
-            <form action='https://mapi.alipay.com/gateway.do?_input_charset=utf-8' method='get'>
-              <input type="hidden" name="service" value="create_direct_pay_by_user" />
-              <input type="hidden" name="partner" value="${data.app_id}" />
-              <input type="hidden" name="_input_charset" value="${data.charset}" />
-              <input type="hidden" name="sign_type" value="${data.sign_type}" />
-              <input type="hidden" name="sign" value="${data.sign}" />
-              <input type="hidden" name="notify_url" value="${data.notify_url}" />
-              <input type="hidden" name="return_url" value="${window.location.href}" />
-              <input type="hidden" name="body" value="${data.biz_content}" />
-            </from>
-          `;
-          console.log(data)
-          this.aliForm = html;
+          console.log(res)
+          // let arr = res.data.pay_param.split('&');
+          // let data = {};
+          // arr.forEach(item => {
+          //   let Iarr = item.split('=');
+          //   data[Iarr[0]] = Iarr[1];
+          // })
+          // let params = {
+          //   notify_url: data.notify_url,
+          //   method: data.method,
+          //   partner: data.app_id,
+          //   _input_charset: data.charset,
+          //   sign_type: data.sign_type,
+          //   sign: data.sign,
+          //   notify_url: data.notify_url,
+          //   return_url: window.location.href,
+          //   body: data.biz_content
+          // }
+          // data.biz_content = decodeURI(data.biz_content);
+          // data.biz_content.replace(/%2C/ig, ':');
+          // data.biz_content.replace(/%3A/ig, ',');
+          // console.log(data)
+          // data.biz_content = JSON.parse(data.biz_content);
+          // let html = `
+          //   <form id="alipaysubmit" name="alipaysubmit" action="https://openapi.alipay.com/gateway.do" method="get">
+          //     <input type="hidden" name="service" value="alipay.wap.create.direct.pay.by.user" />
+          //     <input type="hidden" name="partner" value="${data.biz_content.partner}" />
+          //     <input type="hidden" name="_input_charset" value="${data.charset}" />
+          //     <input type="hidden" name="sign_type" value="${data.sign_type}" />
+          //     <input type="hidden" name="sign" value="${data.sign}" />
+          //     <input type="hidden" name="notify_url" value="${data.notify_url}" />
+          //     <input type="hidden" name="return_url" value="${window.location.href}" />
+          //     <input type="hidden" name="out_trade_no" value="${data.biz_content.out_trade_no}" />
+          //     <input type="hidden" name="subject" value="${data.biz_content.subject}" />
+          //     <input type="hidden" name="total_fee" value="${data.biz_content.total_amount}" />
+          //     <input type="hidden" name="seller_id" value="${data.biz_content.seller_id}" />
+          //     <input type="hidden" name="payment_type" value="1" />
+          //     <input type="hidden" name="method" value="${data.method}" />
+          //     <input type="hidden" name="body" value="${data.biz_content.body}" />
+          // </form>
+          // `;
+          // let str = `https://openapi.alipay.com/gateway.do?partner="2088101568358171"&seller_id="xxx@alipay.com"&out_trade_no="0819145412-6177"&subject="测试"&body="测试测试"&total_fee="0.01"&notify_url="http://notify.msp.hk/notify.htm"&service="mobile.securitypay.pay"&payment_type="1"&_input_charset="utf-8"&it_b_pay="30m"&sign="lBBK%2F0w5LOajrMrji7DUgEqNjIhQbidR13GovA5r3TgIbNqv231yC1NksLdw%2Ba3JnfHXoXuet6XNNHtn7VE%2BeCoRO1O%2BR1KugLrQEZMtG5jmJIe2pbjm%2F3kb%2FuGkpG%2BwYQYI51%2BhA3YBbvZHVQBYveBqK%2Bh8mUyb7GM1HxWs9k4%3D"&sign_type="RSA"`
+          // let a = `https://openapi.alipay.com/gateway.do?service="alipay.wap.create.direct.pay.by.user"&partner="2088721304880492"&_input_charset="UTF-8"&sign_type=RSA2&sign="dG2v7Mqvh%2FG%2Fun7BSTQADinsZxia%2BS6JBa9OPvI0rVm8Rp%2BEeeuSu0%2BSAYJp2WViPWipr%2BK7Uj7JvMA4QnLtXujcONw5Bcg%2BBIOkYpBNWK1w%2BZ%2Fs8QBGiDNbiPoZGmyJgZm38YB%2F3TMtvtjZ0NpaNfx%2FMpWk7gJe26%2BWJH7Hl%2FE%2F%2FwsOPnkFIDdPaZx26F3f%2FY77Yntmp3XGQawb8o0Prgxw8MHvh0f4%2FIciQMMi%2FKwXr0Ycz4CQokbDBc2g86Rk8DgU%2Fgod6b1LS57UozLqFN9Fcg5Wfoe0hvHmKl5j9Cd4vm%2B%2BAhGv4%2F5jm3RDnn73HHrxX9H%2FC0bx%2Ff7LFsflsA%3D%3D"&notify_url=https%3A%2F%2Fapi.dev.xiepinhui.com.cn%2Fmembercallback%2Fcall_alipay`
+          // console.log(data)
+          
+          this.aliForm = res.data.pay_param;
+          // console.log(html)
+          // return
           this.$nextTick(()=>{
-            console.log(this.$refs.aliPay.children[0])
             this.$refs.aliPay.children[0].submit();
           })
         }

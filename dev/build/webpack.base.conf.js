@@ -68,6 +68,12 @@ let webpackConfig = {
         }
       }
     ]
+  },
+  externals: {
+    'vue': 'Vue',
+    'vuex': 'Vuex',
+    'axios': 'axios',
+    'vue-router': 'VueRouter'
   }
 }
 

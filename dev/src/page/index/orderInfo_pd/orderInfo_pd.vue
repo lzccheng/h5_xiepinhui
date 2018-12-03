@@ -5,9 +5,16 @@
     padding: 5/50rem 0/50rem;
     background: #fff;
     margin-bottom: 5/50rem;
-    border-bottom: 2/50rem #FF8095 dashed;
+    // border-bottom: 2/50rem #FF8095 dashed;
     }
-
+    .order-address-box::after{
+        content: "";
+        display: block;
+        width: 100%;
+        height:3px;
+        background: url('http://img.xiepinhui.com.cn/small_app/Live/live_order/address_line.png') no-repeat;
+        background-size: 100%;
+    }
     .address-add {
     padding: 10/50rem 15/50rem;
     }
@@ -62,6 +69,9 @@
 
     .order-goods-left-img {
     width: 25%;
+    img{
+        width: 100%;
+    }
     }
 
     .order-goods-right-text {
@@ -219,8 +229,71 @@
     .marT0{
         margin-top: 0;
     }
+    .iconH{
+        width:24/100rem;
+        margin-left:10/100rem;
+    }
     .huidouprice{
         color: #61D8D0;
+    }
+    .deductionBox{
+        margin-top:15/100rem;
+        background: #fff;
+        padding:15/50rem;
+    }
+    .lDeductionBox{
+        padding-top:22/100rem;
+        padding-bottom: 22/100rem;
+    }
+    .iconBg{
+        width:80/100rem;
+        text-align: center;
+        background: #F2C25E;
+        border-radius: 20/100rem;
+        height: 80/100rem;
+        line-height: 80/100rem;
+    }
+    .purseIcon{
+        color: #fff;
+        display: inline-block;
+        font-size: 28px;
+    }
+    .itemDescTitle{
+        font-size: 28/100rem;
+        color: #333;
+        margin-left:24/100rem;
+        line-height: 80/100rem;
+    }
+    .aboutChoice{
+        font-size:28px;
+        color: #61D8D0; 
+    }
+    .grayIsIcon{
+        font-size: 28px;
+        color: #C6C6C6;
+    }
+    .iconPicHIcon{
+        width:80/100rem;
+        height:80/100rem;
+    }
+    .huibiDeduction{
+        font-size: 28/100rem;
+        color: #61D8D0;
+        margin-left:24/100rem;
+        line-height: 80/100rem;
+    }
+    .sign_dv{
+        position: absolute;
+        background: #61D8D0;
+        font-size: 12px;
+        color: #fff;
+        top:26/100rem;
+        border-top-right-radius: 30/100rem;
+        border-bottom-right-radius: 30/100rem;
+        width:150/100rem;
+        text-align: center;
+        line-height: 30/100rem;
+        height: 30/100rem;
     }
 </style>
 <template>
@@ -253,8 +326,11 @@
                         </div>
                     </div>
                 </div>
-                <div class='goods-box flex flex-align-center line_xi_after'>
-                    <img :src="goodsInfo.goodsimg" class="order-goods-left-img" alt="">
+                <div class='goods-box flex flex-align-center line_xi_after' v-if="goodsInfo">
+                    <div class="order-goods-left-img">
+                        <img :src="goodsInfo.goodsimg" class="" alt="">
+                        <div class="sign_dv" v-if="s_id">荟币专区商品</div>
+                    </div>
                     <div class="order-goods-right-text">
                         <div class='order-goods-name'>{{goodsInfo.goodsname}}</div>
                         <div class="order-goods-space">{{goodsInfo.goodspec.spec}}</div>
@@ -291,19 +367,46 @@
                 </div>
                 <div class="weui-cell weui-cell_select line_xi_after" style="padding: 0">
                     <div class="weui-cell__hd weui-cell__hd_in-select-after">
-                        <div class="weui-label">快递选择</div>
+                        <div class="weui-label" >快递选择</div>
                     </div>
                     <div class="weui-cell__bd ">
-                        <div class="weui-select weui-select_in-select-after" id="select">{{nowSelectshipping.e_name}}</div>
+                        <div class="weui-select weui-select_in-select-after" id="_select_mob">{{nowSelectshipping.e_name}}</div>
+                        <!-- <div class="_select_mob" id="_select_mob">{{nowSelectshipping.e_name}}</div> -->
                     </div>
                 </div>
                 <div class="weui-cells weui-cells_after-title marT0">
                     <div class="weui-cell yunfei">
-                        <div class="weui-cell__bd">邮费</div>
+                        <div class="weui-cell__bd">{{s_id?'快递费':'邮费'}}</div>
                         <div class="weui-cell__ft">￥{{exprice}}</div>
                     </div>
                 </div>
-                <div class="openVip" v-if="!vipInfo.whether_member" @click="openvip">
+                <div class="deductionBox" v-if="s_id">
+                    <div class="itemDeduction">
+                        <div class="flex flex-pack-justify lDeductionBox">
+                            <div class="flex">
+                                <div class="iconBg">
+                                    <div class="xipinhuiIcon xipinhui-moneypurse purseIcon"></div>
+                                </div>
+                                <div class="itemDescTitle">
+                                    余额：{{restMoney}}
+                                </div>
+                            </div>
+                            <van-switch v-model="ifUseBalance" @change="useBalanceFun" active-color="#61D8D0"/>
+                            <!-- <div @click.stop="useBalanceFun">
+                                <div :class="ifUseBalance?'aboutChoice':'grayIsIcon'" class="xipinhuiIcon xipinhui-choice"></div>
+                            </div>  -->
+                        </div>
+                        <div class="flex  flex-pack-justify lDeductionBox">
+                            <div class="flex">
+                                <img mode="widthFix" src="@/assets/images/HIcon.png" class="iconPicHIcon"/>
+                                <div class="huibiDeduction">
+                                荟币：共{{huidounum}}个
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="openVip" v-if="!vipInfo.whether_member && !s_id" @click="openvip">
                     <div>
                         <span class="iconfont icon-mian"><span>开通会员卡可免邮哦</span></span>
                     </div>
@@ -312,7 +415,7 @@
                         <span class="iconfont icon-youbian"></span>
                     </div>
                 </div>
-                <div class="weui-cells weui-cells_after-title marT0" v-else style="position: relative">
+                <div class="weui-cells weui-cells_after-title marT0" v-if="vipInfo.whether_member" style="position: relative">
                     <group> 
                         <div class="weui-cell weui-cell_switch">
                             <div class="weui-cell__bd">使用会员免邮服务
@@ -326,7 +429,7 @@
                 </div>
             </div>
             <div class='bottom-pay-box flex flex-pack-justify flex-align-center' style="border-top: 1px solid #eee;">
-                <span class="heji">合计:￥<span class="zongjiaqian">{{total_count}}</span></span>
+                <span class="heji" :class="s_id ? 'huidouprice' : ''">{{s_id?'需付款':'合计'}}:￥<span class="zongjiaqian">{{total_count}}</span></span>
                 <span class="payBtn" @click.self="gopay">微信支付</span>
             </div>
         </div>
@@ -375,12 +478,16 @@ export default {
                 showCapsule: 1, //是否显示左上角图标
                 title: '确认订单', //导航栏 中间的标题
             },
-            s_id: ''
+            s_id: '',
+            ifUseBalance: false,
+            huidounum: 0,
+            restMoney: 0
         }
     },
     mounted(){
-        this.s_id = this.$route.query.s_id || '';
+        this.s_id = this.$route.query.s_id || this.goodsInfo._s_id || '';
         this.init();
+        this.getHuidou();
     },
     methods: {  
         init(){
@@ -402,7 +509,7 @@ export default {
             }
             
             this.mobileSelect1 = new MobileSelect({
-                trigger: '#select',
+                trigger: '#_select_mob',
                 title: '选择快递',
                 wheels: [
                     {
@@ -453,10 +560,10 @@ export default {
         bindCountryChange(i){
             this.countryIndex = i;
             this.nowSelectshipping = this.shippingInfo[i];
-            this.getTotal(this);
             var proWeight = Math.ceil(this.num * this.goods_weight) - 1;
             var exprice = parseFloat(parseFloat(proWeight * this.nowSelectshipping.m_weight_price) + parseFloat(this.nowSelectshipping.f_weight_price)).toFixed(2);
             this.exprice = exprice;
+            this.s_id? this.calculateZongjia() : this.getTotal(this);
         },
         async showaddress(){
             let data = {
@@ -504,7 +611,7 @@ export default {
                     if (res.data.transport_company[i].is_default == '1') {
                         this.nowSelectshipping = res.data.transport_company[i];
                         this.exprice = res.data.transport_company[i].f_weight_price;
-                        this.getTotal();
+                        !this.s_id && this.getTotal();
                     }
                 }
             }
@@ -664,7 +771,7 @@ export default {
                 reciver_city_id: that.addressInfo.city_id,
                 address_id: that.addressInfo.address_id,
                 goods_json: goods_json,
-                pay_code: 1,
+                pay_code: 2,
                 express_id: that.nowSelectshipping.e_id,
                 use_coupon: that.isUsecoupon,
                 uc_id: that.nowCouponInfo.uc_id,
@@ -672,6 +779,18 @@ export default {
                 goods_id: that.goodsInfo.goods_id,
                 goods_item_id: that.goodsInfo.goodspec.goods_item_id,
                 num: that.num,
+            }
+            let _data = {};
+            if(this.s_id){
+                _data.use_coupon = 0;
+                _data.uc_id = 0;
+                _data.free_post = 0;
+                _data.shipping_type = 2;
+                _data.pick_shop_id = 0;
+                _data.pay_recharge = this.ifUseBalance? 1 : 0;
+                _data.pay_vcoin = 1;
+                _data.order_type = 4;
+                data = Object.assign(data, _data);
             }
             this.$vux.loading.show({
                 text: '支付中...'
@@ -683,7 +802,6 @@ export default {
             }
             if(res.code == 2000){
                 var selfData = res;
-                
                 if (selfData.data.total_amount == 0 || selfData.data.total_amount == "0.00") {
                     this.$router.push({
                         path: '/centerFull/orderFull/orderlistinfo',
@@ -797,10 +915,153 @@ export default {
                 }
             }
         },
+        useBalanceFun(){
+            this.calculateZongjia();
+        },
+        accAdd(num1, num2){
+            var r1, r2, m;
+            try {
+                r1 = num1.toString().split('.')[1].length;
+            } catch (e) {
+                r1 = 0;
+            }
+            try {
+                r2 = num2.toString().split(".")[1].length;
+            } catch (e) {
+                r2 = 0;
+            }
+            m = Math.pow(10, Math.max(r1, r2));
+            // return (num1*m+num2*m)/m;
+            return Math.round(num1 * m + num2 * m) / m;
+        },
+        accSub(num1, num2){
+            var r1, r2, m,n;
+            try {
+                r1 = num1.toString().split('.')[1].length;
+            } catch (e) {
+                r1 = 0;
+            }
+            try {
+                r2 = num2.toString().split(".")[1].length;
+            } catch (e) {
+                r2 = 0;
+            }
+            m = Math.pow(10, Math.max(r1, r2));
+            n = (r1 >= r2) ? r1 : r2;
+            return (Math.round(num1 * m - num2 * m) / m).toFixed(n);
+        },
+        async getHuidou(){
+            var that=this;
+            var goods_id = that.goodsInfo.goods_id;
+            var tempArr = JSON.stringify([goods_id]);
+            let data = {
+                account: this.account,
+                token: this.token,
+                scene_id: 2,
+                goods_id: tempArr
+            }
+            const [err, res] = await api.confirm_roder(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            if(res.code == 2000){
+                var f_weight_price = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0].f_weight_price : 0;
+                var m_weight_price = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0].m_weight_price : 0;
+                var goods_weight = res.data.goods_weight;
+                var goods_num=goods_weight.length;
+                var goodsTotalWeight=0;
+                var free_shipping = res.data.free_shipping;//是否包邮。1包邮，0不包邮
+                var x;
+                for (x in goods_weight){
+                    goodsTotalWeight =goodsTotalWeight+Number(goods_weight[x]['goods_weight']);
+                }
+                var expressPrice=0;
+                if(free_shipping==1){//包邮的话
+                    var temp_goods_num = this.accSub(goods_num, 1);
+                    var temp_goods_total_weight = this.accMul(goodsTotalWeight , temp_goods_num);
+                    var temp_m_weight_price = this.accMul(temp_goods_total_weight, Number(m_weight_price));
+                    var temp_f_weight_price = this.accAdd(temp_m_weight_price, Number(f_weight_price));
+                    expressPrice = this.accSub(temp_f_weight_price, 0);//把8变成0
+                    //expressPrice = (goodsTotalWeight * (goods_num - 1)) * Number(m_weight_price) + Number(f_weight_price)-8;
+                    if(expressPrice<0){
+                        expressPrice=0;
+                    }else{
+                        expressPrice=expressPrice;
+                    }
+                }else{
+                    expressPrice = (goodsTotalWeight * (goods_num - 1)) * Number(m_weight_price) + Number(f_weight_price);
+                }
+                var vcoin_pay_price=that.goodsInfo.vcoin_pay_price;
+                var vcoin_price = that.goodsInfo.vcoin_price;
+                var paymemt_method = res.data.paymemt_method;
+                var restMoney='';
+                var huidounum='';
+                for(var u=0;u<paymemt_method.length;u++){
+                    if (paymemt_method[u].pay_code==3){//表示账户余额
+                        restMoney = paymemt_method[u].amount;
+                    }
+                    if(paymemt_method[u].pay_code == 4){//表示荟豆数
+                        huidounum = paymemt_method[u].amount;
+                    }
+                } 
+                var ifUserestMoney = that.ifUseBalance;
+                this.nowSelectshipping = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0] : 0;
+                this.exprice = expressPrice;
+                this.shippingInfo = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company : 0;
+                this.goodsTotalWeight = goodsTotalWeight;
+                this.goods_num = goods_num;
+                this.free_shipping = free_shipping;
+                this.paymemt_method = paymemt_method;
+                this.restMoney = restMoney;
+                this.huidounum = huidounum;
+                this.vcoin_pay_price = vcoin_pay_price;
+                this.vcoin_price = vcoin_price;
+                this.ifUseBalance = ifUserestMoney;
+                this.calculateZongjia();
+            }
+        },
+        accMul(num1,num2){
+            var m = 0, s1 = num1.toString();
+            var s2 = num2.toString();
+            try { m += s1.split(".")[1].length } catch (e) { };
+            try { m += s2.split(".")[1].length } catch (e) { };
+            return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+        },
+        calculateZongjia(){
+            let OriginalPrice = this.vcoin_pay_price;
+            let needHuidouNum = this.vcoin_price;
+            let huidouNum = this.huidounum;
+            let postFree = this.exprice;
+            let restMoney = this.restMoney;
+            let ifUserestMoney = this.ifUseBalance;
+            var total_count='';
+            var huidoujia='';
+            if (needHuidouNum <= huidouNum){//如果拥有荟豆很多
+                huidoujia=0;
+            }else{
+                huidoujia=needHuidouNum-huidouNum;//1个荟豆等于1块
+            }
+            total_count = this.accAdd(OriginalPrice, huidoujia);  //OriginalPrice+huidoujia+postFree;
+            total_count = this.accAdd(total_count,postFree);
+            if (ifUserestMoney){//如果用余额
+                if (total_count > restMoney) {
+                    total_count = this.accSub(total_count, restMoney); //total_count - restMoney;
+                } else {
+                    total_count = 0;
+                }
+            }else{//不用余额
+                total_count = this.accAdd(OriginalPrice, huidoujia);  //OriginalPrice+huidoujia+postFree;
+                total_count = this.accAdd(total_count, postFree);
+            }
+            this.total_count = total_count;
+        }   
     },
     watch: {
         shippingInfo(){
-            this.mobileSelect1.updateWheel(0, this.shippingInfo);
+            if(this.shippingInfo){
+                this.mobileSelect1.updateWheel(0, this.shippingInfo);
+            }
         }
     },
     computed: {

@@ -5,7 +5,7 @@ import store from './store'
 import router from "./router";
 import FastClick from 'fastclick'
 import Vant from 'vant';
-import { Button } from 'vant';
+// import { Button } from 'vant';
 import 'vant/lib/vant-css/index.css';
 import { encrypt } from 'utils/encrypt.js' // encrypt
 import VueClipboard from 'vue-clipboard2' // 剪切板
@@ -36,7 +36,7 @@ Vue.config.productionTip = false
 window.isClick = false
 
 
-Vue.use(Button);
+// Vue.use(Button);
 /* eslint-disable no-new */
 new Vue({
   router,

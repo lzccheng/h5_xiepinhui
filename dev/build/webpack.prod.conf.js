@@ -105,7 +105,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
   ]
 })
 
@@ -114,5 +114,17 @@ if (config.build.bundleAnalyzerReport) {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
-
+if (config.build.productionGzip){
+  const CompressionPlugin = require('compression-webpack-plugin');
+  // return
+  webpackConfig.plugins.push(
+    new CompressionPlugin({
+      filename: '[path].gz[query]',
+      algorithm: 'gzip',
+      minRatio: 0.8,
+      test: /\.(js|css)$/i,
+      threshold: 10240,
+    })
+  )
+}
 module.exports = webpackConfig

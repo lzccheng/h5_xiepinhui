@@ -24,18 +24,19 @@
   margin-top:20/100rem;
 }
 .goods-li{
-  width: 50% !important;
+//   width: 50% !important;
   background: #fbfbfb;
 }
 .kuai-list-box{
   position: relative;
+  border-radius: 5px;
 }
-.goods-li:nth-child(odd) .kuai-list-box{
-  padding-right:5px;
-}
-.goods-li:nth-child(even) .kuai-list-box{
-  padding-left:5px;
-}
+// .goods-li:nth-child(odd) .kuai-list-box{
+//   padding-right:5px;
+// }
+// .goods-li:nth-child(even) .kuai-list-box{
+//   padding-left:5px;
+// }
 .goodsInfo .goods-li{
   margin-bottom:5px;
   background: #fbfbfb;
@@ -154,10 +155,13 @@ color:#666;
             <div class="goodsInfo flex flex-warp flex-pack-justify" v-if="listObj.length>0">
                 <!-- <div wx:if="{{listObj.length>0}}"> -->
                     <div class="goods-li" :data-id="item.n_goods_id" @click='goGoodsDetail(item.n_goods_id)' v-for="(item, index) in listObj" :key="index">
-                        <div class="kuai-list-box">
+                        <div class="kuai-list-box" :style="{backgroundImage: 'url(' + item.goods_image + ')', backgroundSize: 'cover', backgroundPosition: 'center', width: width_ + 'px', height: width_ + 'px'}">
                             <div class="stateGoodsIs" v-if="item.storage_total==0">已售罄</div>
                             <div class="stateGoodsIs" v-if="item.goods_state==0">已下架</div>
-                            <img mode="widthFix" :src="item.goods_image" lazy-load="true"/>
+                            <div class="imgBg" >
+
+                            </div>
+                            <!-- <img mode="widthFix" :src="item.goods_image" lazy-load="true"/> -->
                         </div>
                         <div class="goods-name">{{item.goods_name}}</div>
                     
@@ -200,11 +204,12 @@ export default {
             show_bottom: false,
             show_none: false,
             showHuiBiBool: false,
-            alertHeight: 0
+            alertHeight: 0,
+            width_: 0
         }
     },
     created() {
-        
+        this.width_ = (window.innerWidth - 26) / 2;
         this.goodsList();
     },
     mounted() {

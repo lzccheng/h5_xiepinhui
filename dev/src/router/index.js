@@ -27,6 +27,9 @@ const partnerWrap = ()=>import('@/page/center/365partner/partnerWrap')
 const code = ()=>import('@/page/center/365partner/code')
 //365开通
 const apply = ()=>import('@/page/center/365partner/apply')
+//邀请365伙人
+const inviteParner365 = () => import('@/page/center/365partner/inviteParner365')
+
 //365排行
 const inviteList = ()=>import('@/page/center/365partner/inviteList')
 //邀请规则
@@ -300,6 +303,10 @@ let router = new Router({
         }
       },
       {
+        path: '',
+        redirect: 'remain'
+      },
+      {
         path: 'clearness',
         name: 'clearness',
         component: clearness,
@@ -360,12 +367,20 @@ let router = new Router({
             meta: {
               title: '365合伙人'
             }
+            
           }, {
             path: 'inviteFansMy365',
             name: 'inviteFansMy365',
             component: inviteFansMy365,
             meta: {
               title: '我的粉丝'
+            }
+          }, {
+            path: 'inviteParner365',
+            name: 'inviteParner365',
+            component: inviteParner365,
+            meta: {
+              title: '邀请365合伙人'
             }
           }, {
             path: 'redenvelope',

@@ -39,10 +39,10 @@
         </div>
       </div>
 
-      <div class="ordershop-title flex line_xi_after flex-align-center">
+      <!-- <div class="ordershop-title flex line_xi_after flex-align-center">
         <img src="http://img.xiepinhui.com.cn/small_app/programOldImgFile/smalllogo.png" />
         <span>鞋品荟平台自营</span>
-      </div>
+      </div> -->
 
       <div class='list-center-goods flex flex-align-center' v-if="infodata" v-for="(item,index) in infodata.goods_item_data"
         :key="index" @click='goodsInfo(item.goods_commonid)' :id="item.goods_commonid">
@@ -52,6 +52,19 @@
           <div class="goods-spec flex flex-pack-justify">
             <span class="goodsnum">{{item.goods_spec}}</span>
             <span class="goodsnum">x {{item.num}}</span>
+          </div>
+          <div class="goodsprice flex flex-pack-justify">
+            <div class="priceNumDv" v-if="infodata.order_type!=4">¥:{{item.unit_price}}</div>
+            <div class="priceNumDv2" v-if="infodata.order_type==4">
+                <span class="signMoney">￥:</span>{{item.vcoin_pay_price}}+{{item.vcoin_price}}
+                <img src="@/assets/images/huidou.png" class="iconH" mode="widthFix"/>
+            </div>
+            <!-- <div v-if="infodata.order_type!=3">
+              <text v-if="isAfter==1" class="goods-shouhou-btn" catchtap="after" id="infodata.order_id">申请售后</text>
+              <text wx:elif="{{isAfter==2}}" class="goods-shouhou-btn" bindtap="afterInfo" id="{{infodata.refund_id}}">售后处理中</text>
+              <text wx:elif="{{isAfter==3}}" class="goods-shouhou-btn-hui " bindtap="afterInfo" id="{{infodata.refund_id}}">售后关闭</text>
+              <text wx:elif="{{isAfter==4}}" class=" goods-shouhou-btn-hui" bindtap="afterInfo" id="{{infodata.refund_id}}">售后完成</text>
+            </div> -->
           </div>
           <div class="goodsprice flex flex-pack-end">
             <div v-if="infodata.order_type!=3">
@@ -486,6 +499,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.priceNumDv2{
+  color: #61D8D0;
+  font-size: 12pt;
+}
+.iconH{
+  width:24/100rem;
+}
 .orderindex {
   min-height: 100vh;
   box-sizing: border-box;
@@ -598,7 +618,7 @@ export default {
 }
 
 .list-center-goods {
-  background: rgba(248, 248, 248, 1);
+  background: #fff;
   position: relative;
   padding: 5/50rem 0/50rem;
 }
@@ -634,7 +654,7 @@ export default {
   color: #61d8d0;
   font-size: (10 * 2+4)/100rem;
   padding: 2/50rem 5/50rem;
-  border-radius: 3/50rem;
+  border-radius: 23/50rem;
 }
 
 .goods-shouhou-btn-hui {

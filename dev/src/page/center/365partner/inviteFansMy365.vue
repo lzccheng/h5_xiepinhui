@@ -27,7 +27,8 @@
       <div class="fans_content_box">
         <!-- 我的粉丝 -->
         <div class="fansContentContainer" v-if="isTabOne">
-          <img v-if="listObj.length<=0" src="@/assets/images/null/null_fan.png" class="null_bg" />
+          <div style="text-align: center;" v-if="listObj === ''">加载中...</div>
+          <img v-if="listObj.length<=0 && listObj" src="@/assets/images/null/null_fan.png" class="null_bg" />
           <div class="fansContentLi" v-if="listObj" v-for="(item,index) in listObj" :key="index" @click="goFansDetail" :data-fanid="item.member_id">
             <img :src="item.member_avatar" class="avatarPic" />
             <div class="right_part">
@@ -60,7 +61,8 @@
         <!-- 我的粉丝end -->
         <!-- 我邀请的365合伙人 -->
         <div class="fansContentContainer" v-if="isTabTwo">
-          <img v-if="listObj.length<=0" src="@/assets/images/null/null_fan.png" class="null_bg" />
+          <div style="text-align: center;" v-if="listObj === ''">加载中...</div>
+          <img v-if="listObj.length<=0 && listObj" src="@/assets/images/null/null_fan.png" class="null_bg" />
           <div class="fansContentLi" v-if="listObj" v-for="(item,index) in listObj" :key="index" @click="goFansDetail" :data-fanid="item.member_id">
             <img :src="item.member_avatar" class="avatarPic"/>
             <div class="right_part">
@@ -226,7 +228,7 @@ export default {
       isTabOne: true,
       isTabTwo: false,
       menuTop: '',
-      listObj: [],
+      listObj: '',
       page: 1,
       type_num:0,
       objData:{},
@@ -273,13 +275,13 @@ export default {
       
       if (isTabOne) {//如果是我的粉丝
 
-        this.page=0;
-        this.listObj=[];
+        this.page=1;
+        this.listObj='';
         this.show_bottom=false;
         this.fans_list();
       } else {//如果是邀请排行榜
-        this.page=0;
-        this.listObj=[];
+        this.page=1;
+        this.listObj='';
         this.show_bottom=false;
         this.rank_list();
       }
@@ -317,6 +319,7 @@ export default {
         return;
       }else{
         if(res.code==2000){
+          this.listObj = [];
           this.listObj = this.listObj.concat(res.data.list);
           this.total_count=res.data.total_count;
         }
@@ -338,6 +341,7 @@ export default {
         return;
       }else{
         if(res.code==2000){
+          this.listObj = [];
           this.listObj = this.listObj.concat(res.data.list);
           this.total_count=res.data.total_count;
         }
@@ -515,7 +519,7 @@ export default {
   overflow: hidden;
 }
 .null_bg {
-  width: 50%;
+  width: 30%;
   display: block;
   margin: auto;
 }

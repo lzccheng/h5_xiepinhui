@@ -238,14 +238,9 @@ export default {
   },
   created() {
     console.log(this.$route.query)
-    console.log(this.user)
-    console.log("user", this.user.user_type);
     console.log("user", this.user);
     console.log("openid", this.user.openid);
-    console.log(this)
     if(this.$route.query.url){
-      // delete(this.$route.query.url);
-      console.log(this.$route.query)
       let query = {};
       for(let i in this.$route.query){
         if(i == 'url')continue;
@@ -300,6 +295,10 @@ export default {
           break;
         case 2:
           url = '/centerFull/orderFull/after_list';
+          break;
+        default:
+          this.$vux.toast.text('暂未开放','top');
+          return;
           break;
       }
       this.$router.push({
@@ -359,7 +358,6 @@ export default {
           }
         });
       } else {
-        
         console.log(clickUrl)
         if(clickUrl!=''){
           this.$router.push({//跳路由
@@ -371,9 +369,6 @@ export default {
           return false;
           // this.$router.push('../../index/index');//跳路径
         }
-        // this.$vux.toast.show({
-        //   text: `极速开发中`
-        // });
       }
     },
     //新的红包接口
@@ -396,23 +391,11 @@ export default {
               this.isShowModalRedPack=true;
               this.redpackBg=commonRedpacket.imgUrl;
               this.popName=commonRedpacket.popName;
-              // that.setData({
-              //   isShowModalRedPack: true,
-              //   redpackBg: commonRedpacket.imgUrl,
-              //   popName: commonRedpacket.popName
-              // });
             }
             if (thidSixFivePacket.red_num>0){//365红包个数大于0的时候
               this.closeModal365=true;
               this.fanli365Obj=thidSixFivePacket;
-              // that.setData({
-              //   closeModal365: true,
-              //   fanli365Obj:thidSixFivePacket
-
-              // });
             }
-
-
         }
        
       }
@@ -543,11 +526,12 @@ export default {
           break;
         case 7:
           window.location.href = 'tel://4009639299';
+          return;
           break;
         case 6:
           break;
         case 3:
-          url = '/centerFull/myService/integral_sc'
+          // url = '/centerFull/myService/integral_sc'
           break;
         case 2:
           break;
@@ -555,7 +539,10 @@ export default {
           url = '/centerFull/myService/coupon_list';
           break;
       }
-      if(!url)return;
+      if(!url){
+        this.$vux.toast.text('暂未开放','top');
+        return;
+      };
       console.log(url)
       this.$router.push({
         path: url,
@@ -615,7 +602,6 @@ export default {
               }
             } else {
               //开通了
-              alert(2)
               this.$router.push("/centerFull/partner/inviteList");
               return;
             }

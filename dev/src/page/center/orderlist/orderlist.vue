@@ -83,6 +83,7 @@
 }
 
 .list-center-goods {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -149,12 +150,12 @@
 }
 
 .order-btn {
-  padding: 3/100rem 15/100rem;
-  border-radius: 5/100rem;
+  padding: 3/100rem 26/100rem;
+  border-radius: 25/100rem;
   margin-top: 5/100rem;
   margin-bottom: 5/100rem;
   padding-bottom: 3/100rem;
-  font-size: 0.28rem;
+  font-size: 0.25rem;
   margin-left: 5/100rem;
   color: #61d8d0;
   border: 1/100rem #61d8d0 solid;
@@ -239,6 +240,28 @@
   color: #888;
   line-height: 44px;
 }
+.sign_dv{
+  position: absolute;
+  left:20/100rem;
+  background: #61D8D0;
+  font-size: 12px;
+  color: #fff;
+  top:20/100rem;
+  border-top-right-radius: 30/100rem;
+  border-bottom-right-radius: 30/100rem;
+  width:140/100rem;
+  text-align: center;
+  line-height: 28/100rem;
+  height: 28/100rem;
+}
+.huidouIcon{
+  width:24/100rem;
+}
+.goodsprice2{
+  font-size:16px;
+  color: #61D8D0;
+  padding-top: 18/100rem;
+}
 </style>
 
 <template>
@@ -273,8 +296,9 @@
         <div class='order-list-box' v-for="(item,index) in listInfo" :key="index" v-if="listInfo">
           <div class='list-top-box flex flex-align-center flex-pack-justify'>
             <div class='top-left flex flex-align-center'>
-              <img src="http://img.xiepinhui.com.cn/small_app/programOldImgFile/smalllogo.png" />
-              鞋品荟平台自营
+              <!-- <img src="http://img.xiepinhui.com.cn/small_app/programOldImgFile/smalllogo.png" /> -->
+              <!-- 鞋品荟平台自营 -->
+              订单：{{item.order_sn}}
             </div>
             <span class=" status" v-if='item.order_state=="0"'>交易关闭</span>
             <span class=" status" v-if='item.order_state=="1"'>未支付</span>
@@ -291,10 +315,16 @@
 
           <div class='list-center-goods flex ' @click='openInfo' :data-orderId='item.order_id' :data-status="item.order_state"
             :data-groupid="item.group_id" :data-ordersn="item.order_sn">
+            <div class="sign_dv" v-if="item.order_type==4">荟币专区商品</div>
             <img class="goods-img" :src='item.goods_info.goods_image' />
             <div class='cetenr-goodsinfo'>
               <div class="goodsname">{{item.goods_info.goods_name}}</div>
               <div class="goods-spec">{{item.goods_info.goods_spec}}</div>
+              <div class="goodsprice" style="color: #888" v-if="!(item.order_type==4)">￥{{item.goods_info.unit_price}}</div>
+              <div class="goodsprice2" v-else>
+                ￥{{item.goods_info.unit_price}}+{{item.goods_info.vcoin_price}}
+                <img class="huidouIcon" src="@/assets/images/huidou.png" mode="widthFix"/>
+              </div>
             </div>
             <div class='right-goodsnum'>
               <div class="goodsprice">￥{{item.goods_info.unit_price}}</div>
@@ -367,7 +397,7 @@
           <div class="order-bottom-btn " v-if='item.order_state=="1"'>
             <span class="order-btn order-btn-hui" @click='quxiaoOrder' data-deleteType="1" :data-index="index"
               :data-orderid="item.order_id">取消订单</span>
-            <span class="order-btn" @click="gobay(item.order_id)" v-if="item.active_type==0" :data-orderId='item.order_id'>去付款</span>
+            <span class="order-btn" @click="gobay(item.order_id)" v-if="item.active_type==0" :data-orderId='item.order_id'>立即付款</span>
           </div>
           <div class="order-bottom-btn flex flex-pack-end" v-if='item.order_state=="10"'>
             <button class="pindan-share" open-type="share" :data-groupid='item.group_id'>邀请好友拼单</button>

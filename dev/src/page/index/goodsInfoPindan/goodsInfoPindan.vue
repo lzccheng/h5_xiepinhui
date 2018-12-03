@@ -31,7 +31,7 @@ contact-button {
   top: -4/50rem;
 }
 .shoucang-lable {
-  margin-top: -13/50rem !important;
+  margin-top: -17/50rem !important;
 }
 
 .ad_popError {
@@ -967,11 +967,11 @@ contact-button {
                     <span class='iconfont icon-xiaoxi bottom-icon'></span>
                     <span class='bottom-lable'>客服</span>
                 </span>
-                <div class="bottom-left" v-if="goodsInfo.collect_goods==1" @click="scGoods(2)">
+                <div class="bottom-left kefu" v-if="goodsInfo.collect_goods==1" @click="scGoods(2)">
                     <span style='color:#FB4C72' class='iconfont icon-shoucangkong'></span>
-                    <span class='bottom-lable shoucang-lable'>收藏</span>
+                    <span style='color:#FB4C72' class='bottom-lable shoucang-lable'>收藏</span>
                 </div>
-                <div class="bottom-left" v-else @click="scGoods(1)">
+                <div class="bottom-left kefu" v-else @click="scGoods(1)">
                     <span class='iconfont icon-shoucangkong'></span>
                     <span class='bottom-lable shoucang-lable'>收藏</span>
                 </div>
@@ -1475,7 +1475,9 @@ export default {
             goodsname: this.goodsInfo.goods_name,
             goodsprice: goodsprice,
             goods_id: this.goodsInfo.n_goods_id,
-            btnType: this.btnType
+            btnType: this.btnType,
+            _s_id: this.s_id,
+            ...this.goodsInfo
           }
           this.$store.dispatch('update_goodsInfo',goodsInfo);
           // return
