@@ -93,7 +93,7 @@
   <div v-if="showSuccess">
       <img src="https://img.xiepinhui.com.cn/mobile/wallet/ico_pwd_success.png" class="imgPay" mode="widthFix"/>
       <div class="title">支付密码设置成功</div>
-      <div class="btn" @click="linkToPage">返回提现首页</div>
+      <div class="btn" @click="linkToPage">返回</div>
   </div>
     <!-- 主体内容end -->
     
@@ -143,6 +143,9 @@ export default {
       }
     },
     async setPwd(){
+      if(this.password.length < 6){
+        return this.$vux.toast.text('请设置6位数字');
+      }
       var param={
         plat: 3,
         token:this.token,
@@ -162,7 +165,7 @@ export default {
 
     },
     linkToPage(){
-      this.$router.push('../../index/index');
+      this.$router.push('/myBlack');
     },
     
 

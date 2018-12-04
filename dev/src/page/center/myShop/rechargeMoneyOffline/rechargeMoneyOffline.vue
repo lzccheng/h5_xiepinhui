@@ -296,6 +296,8 @@ export default {
                 choose_id,
                 pay_code: 2,  //1支付宝，2微信
             }
+            console.log(this.user)
+            return
             const [err, res] = await api.offline_dopay(data);
             if (err) {
                 this.$vux.toast.text(err.msg);

@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     goSuccess(){
-      this.$router.push('/center');
+      this.$router.push('/myBlack');
     }
   },
   filters: {},

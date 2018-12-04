@@ -157,7 +157,7 @@
         <div class="withdraw-title">提现金额（免收服务费）</div>
         <div class="withdraw-input">
           <span>￥</span>
-          <input type="number" v-model="money" @click="getMoney" />
+          <input type="number" v-model.number="money" @click="getMoney" />
         </div>
         <div class="withdraw-remind" v-if="isError < 0">
           可提现金额{{initialization.rebate_amout}}元，
@@ -373,14 +373,16 @@ export default {
 
     },
     async sureWithdraw(){
-      if(this.methodType.type != 3 && this.account_number.length < 1 && this.account_name.length < 1) {
+      if(this.money < 200){
+        return this.$vux.toast.text('最低提现金额不能少于200元');
+      }
+      if(this.methodType.type != 3 && this.account_number.length < 1 || this.account_name.length < 1) {
         this.$vux.toast.text('请输入账号或提现姓名');
         return false;
       } else if( this.methodType.type == 3 && this.ver_code.length < 1 ) {
         this.$vux.toast.text('请输入手机验证码');
         return false;
       }
-
       var sub_member_id='';
       sub_member_id=this.$route.query.sub_member_id;
 

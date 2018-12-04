@@ -7,7 +7,7 @@
       }
       .cell-input span {
           display: block;
-          width: 100/100rem;
+          width: 120/100rem;
       }
       .cell-input input.code {
           width: 325/100rem;
@@ -36,7 +36,7 @@
         display: flex;
         position: relative;
       }
-      .cell .cell-input text {
+      .cell .cell-input span {
         margin: 0 25/100rem;
       }
       .cell .cell-input input {

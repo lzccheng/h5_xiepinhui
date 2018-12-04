@@ -107,7 +107,7 @@ outline:none;
             <div class="money">￥{{balance}}</div>
             <div class="btn" @click="withdraw" data-submemberid=''>提现</div>
             <div class="btn-list">
-              <div data-url="./clearness/clearness" @click="linkToPage('/drawIndex/clearness')">提现明细</div>
+              <div data-url="./clearness/clearness" @click="linkToPage('/balance/clearness')">提现明细</div>
               <div data-url="isPwd == 0 ? '../password/moblieCode/moblieCode' : '../password/password'" @click="linkToPage('/setTradeCode')">设置密码</div>
               <div data-url="./bankCard/bankCard" @click="linkToPage('/addCard')">银行卡管理</div>
             </div>
@@ -150,7 +150,7 @@ export default {
   },
   data() {
     return {
-      balance: "",
+      balance: "0",
       isShadow: false,
       isPwd: '',
     };
@@ -159,9 +159,6 @@ export default {
     this.getBalance();
   },
   mounted(){
-     this.$nextTick(function() {
-       console.log('路由参数：',this.$route.query.sub_member_id);
-    });
   },
   methods: {
     async getBalance() {
@@ -180,15 +177,14 @@ export default {
       
       const [err, res] = await api.getBalance(data);
        if (err) {
-        console.log("err", err);
+        // console.log("err", err);
+        this.$vux.toast.text(err.msg);
         return;
       }else if(res.code==2000){
-        console.log(res.data)
         this.balance=res.data.rebate_amout;
         var isPwd=res.data.is_paypwd;
         this.isPwd=isPwd;
         if (!isPwd) {
-          console.log('isPwd是false')
           this.shadowToggle();
           return;
         }

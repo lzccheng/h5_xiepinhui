@@ -269,6 +269,14 @@ export default {
         
     },
     async goToRecharge() {//offlineStoreRecharge
+    if(window.isClick)return;
+    window.isClick = true;
+    setTimeout(() => {
+        window.isClick = false;
+    }, 1500);
+    this.$vux.loading.show({
+        text: '支付中...'
+    })
     var that=this;
     let data = {
         plat: 3,
@@ -284,14 +292,13 @@ export default {
         return;
     }
     if(res.code == 2000){
-        console.log('2000:',res)
         let success = res =>{
-            
+            that.$vux.toast.text('充值成功','top');
+            that.$router.replace('/drawIndex/myWallet');
         }
         let fail = err =>{
-            
+            that.$vux.toast.text('充值失败','top');
         }
-        console.log(res.data.paystr)
         wxPay(that,{...res.data.paystr,success,fail})
     }
     

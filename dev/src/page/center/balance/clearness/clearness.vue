@@ -2,7 +2,7 @@
     .record-list-item {
     width: 95%;
     padding: 20/100rem 2.5%;
-    height: 90/100rem;
+    height: 120/100rem;
     border-bottom: 1px #f2f2f2 solid;
     }
     .bottom_box{

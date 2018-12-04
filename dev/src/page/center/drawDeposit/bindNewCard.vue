@@ -256,7 +256,6 @@ export default {
       },
       async addCard(){
             if(this.name.length>0 && this.idCard.length>0 && this.cardNum.length>0 && this.selected.bank_name){
-                console.log('addCard')
                 
                 const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
                 const regBank = /^([1-9]{1})(\d{15}|\d{18})$/
@@ -283,7 +282,6 @@ export default {
                 }else{
                     
                     if(res.code==2000){
-                        console.log(res)
                         this.$vux.toast.text('银行卡添加成功！');
                         this.$router.push('/addCard');
                     }
@@ -296,8 +294,6 @@ export default {
       selectBank(e){
         const index = e.target.dataset.index;
         this.selected=this.bankList[index];
-        console.log(this.selected);
-        console.log(this.selected.bank_name)
         this.selectToggle();
       }
   },
