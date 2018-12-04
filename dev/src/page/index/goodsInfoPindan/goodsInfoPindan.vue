@@ -1077,7 +1077,6 @@ import { api } from "@/utils/api.js";
 import { share } from "@/utils/wx_sdk.js";
 import comm from "@/utils/comm.js";
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
-import fancyBox from 'vue-fancyBox';
 import { isScrollBottom } from "@/utils/comm.js";
 import { setTimeout } from 'timers';
 // import 'animate.css';
@@ -1526,20 +1525,6 @@ export default {
         },
         allEva(){
           this.newWiperBar.slideTo(2);
-        },
-        oppenImg(e,imgs){
-          let imgList = [];
-          imgs.forEach((item)=>{
-            let data = {};
-            data.width = 200;
-            data.height = 200;
-            data.url = item;
-            imgList.push(data);
-          })
-          this.$nextTick(()=>{
-            fancyBox(e.target,imgList);
-          })
-          
         },
         async scGoods(type){
           this.$vux.loading.show();
