@@ -128,11 +128,11 @@ float: left;
         </div>
         <transition name="fade">
             <div class="shareAlert" v-show="showShareBool" @click="showShare">
-            <div class="img">
-                <img src="@/assets/images/share_right.png" alt="">
-            </div>
-            <div class="text">
-                <!-- <span>点击右上角进行分享哦~</span> -->
+                <div class="img">
+                    <img src="@/assets/images/share_right.png" alt="">
+                </div>
+                <div class="text">
+                    <!-- <span>点击右上角进行分享哦~</span> -->
                 </div>
             </div>
         </transition>
