@@ -146,7 +146,7 @@ contact-button {
 
 .shuoming .iconfont {
   font-size: 10pt;
-  color: red;
+  color: #61D8D0;
 }
 
 .shuoming span {
@@ -766,7 +766,7 @@ contact-button {
     transition: all 0.5s;
     position: absolute;
     left: 0;
-    bottom: -2/50rem;
+    bottom: 0/50rem;
     width: 50/50rem;
     height: 3/50rem;
     border-radius: 5px;
@@ -780,13 +780,14 @@ contact-button {
   z-index: 55;
   width: 7.5rem;
   border-bottom: #eee solid 1px;
+  overflow: hidden;
   .tabBack{
     position: absolute;
     top: 0.3rem;
     left: 0.3rem;
     width: 0.25rem;
     height: 0.25rem;
-    transform: rotate(-45deg);
+    transform: rotate(-45deg) translateY(-50%);
     border-top: 1px solid #555;
     border-left: 1px solid #555;
     z-index: 999;
@@ -968,8 +969,8 @@ contact-button {
                     <span class='bottom-lable'>客服</span>
                 </span>
                 <div class="bottom-left kefu" v-if="goodsInfo.collect_goods==1" @click="scGoods(2)">
-                    <span style='color:#FB4C72' class='iconfont icon-shoucangkong'></span>
-                    <span style='color:#FB4C72' class='bottom-lable shoucang-lable'>收藏</span>
+                    <span style='color:#61D8D0' class='iconfont icon-shoucangkong'></span>
+                    <span style='color:#61D8D0' class='bottom-lable shoucang-lable'>收藏</span>
                 </div>
                 <div class="bottom-left kefu" v-else @click="scGoods(1)">
                     <span class='iconfont icon-shoucangkong'></span>
@@ -988,7 +989,7 @@ contact-button {
             </div>
             <transition name="fade">
               <div class="alert " @click.self="hideAlert('actionSheetHidden')" v-if="actionSheetHidden && goodsInfo" >
-                <div class="contt" :class="actionSheetHidden?'fadeIn':''">
+                <div class="contt">
                   <div class="action-border" >
                     <div class="action-header flex con" style="padding-bottom: 0">
                       <img :src="goodsInfo.goods_image_arr[0]" class="moren-img" alt="">
@@ -1332,7 +1333,7 @@ export default {
                     title: '鞋品荟邀请您',
                     desc: that.goodsInfo.group_price + "元抢真皮鞋还包邮,全场新品任你挑!",
                     imgUrl: that.goodsInfo.goods_image_arr[0],
-                    link: window.location.origin + '?url=/index/goodsInfoPindan&goodsId=' + this.goodsId+'&shareCode=' + res_.data.code
+                    link: window.location.origin + '/index/goodsInfoPindan?goodsId=' + this.goodsId+'&shareCode=' + res_.data.code
                   }
                   console.log(res_,66666666666,shareConfig)
                   share(this,{share: shareConfig})

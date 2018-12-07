@@ -56,6 +56,7 @@ export default {
           token: this.token,
           code: this.code
         };
+        this.$vux.loading.show();
         const [err, res] = await api.receiveweidian(data);
         if (err) {
           this.$vux.toast.text(err.msg);

@@ -9,7 +9,7 @@
 <template>
     <div>
         <x-header :left-options="{backText:''}" title="帮助中心" id="vux-header"></x-header>
-        <iframe :style="{height: height + 'px'}" class="iframe" src="https://m.xiepinhui.com.cn/webnine/help?type=app" frameborder="0"></iframe>
+        <iframe :style="{height: height + 'px'}" class="iframe" src="http://mt.xiepinhui.com.cn/webnine/help?type=app" frameborder="0"></iframe>
     </div>
 </template>
 <script>

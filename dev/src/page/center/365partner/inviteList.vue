@@ -1,12 +1,15 @@
 <template>
   <div class="scroll-wrap">
-    <x-header :left-options="{backText:''}" title="365合伙人邀请码" id="vux-header"><a slot="right"></a></x-header>
-    <div class="content-index">
+    <!-- <x-header :left-options="{backText:''}" title="365合伙人邀请码" id="vux-header"><a slot="right"></a></x-header> -->
+    <div class="content-index" v-if="!inviteOthersCode">
       <div class="bg_invite_box" style="position:relative;">
         <!-- box圈 -->
         <div class="about_inviteInfo_box">
           <div class="invite_rule_box" @click="show_reward=true">我的奖励</div>
           <div class="myReward_tip_box" @click='goRecordFun'>邀请规则</div>
+        </div>
+        <div class="about_inviteInfo_box2">
+          <div class="invite_rule_box2" @click="$router.replace('/center')">个人中心</div>
         </div>
         <!-- box圈end -->
         <div class="bg_content_box">
@@ -101,7 +104,7 @@
       </div>
       <!-- 分享弹窗 -->
       <transition name="fade">
-        <div class="shareAlert" v-show="showShareBool" @click="showShare">
+        <div class="shareAlert" v-show="showShareBool" @click="showShare(2)">
           <div class="img">
             <img class="img_b" src="@/assets/images/share_right.png" alt="">
           </div>
@@ -129,7 +132,7 @@
                 </div>
               </div>
               <div style="padding:0/100rem;">
-                <div class="btn_invite_reward" @click="showShare">立邀好友 再得{{amountInvite}}元</div>
+                <div class="btn_invite_reward" @click="showShare(1)">立邀好友 再得{{amountInvite}}元</div>
               </div>
               <router-link to="/balance" tag="div" class="btn_remount_reward">
                 <div>我的余额</div>
@@ -203,6 +206,7 @@ export default {
       window.localStorage.setItem('inviteOthersCode', this.inviteOthersCode)
       this.$store.dispatch('update_codeInvite',this.inviteOthersCode)
     }
+    
     if(!this.account){
       this.$router.push({
         path: '/user/login',
@@ -257,10 +261,10 @@ export default {
     },
     share(){
       let shareConfig = {
-        title: '邀请365合伙人，立返现金',
-        desc: '现金返个不停~',
-        imgUrl: "http://testp.xiepinhui.com.cn/home2.png",
-        link: window.location.origin + '?url=' + window.location.pathname + '&codeInvite=' + this.inviteCode
+        title: '邀请365合伙人,立返现金',
+        desc: '鞋品荟邀请您赶紧开通365合伙人,马上领取180元,多邀多得,快快行动吧！',
+        imgUrl: "https://m.xiepinhui.com.cn/share/share365.png",
+        link: window.location.origin + window.location.pathname + '?codeInvite=' + this.inviteCode
       }
       share(this,{share: shareConfig})
     },
@@ -298,6 +302,8 @@ export default {
           }
           if(store_state == 1){//审核通过
             // this.$vux.toast.text(err.msg)
+            this.inviteOthersCode = '';
+            window.localStorage.removeItem('inviteOthersCode');
             return;
           }
           this.$vux.toast.text(res.data.msg);
@@ -305,12 +311,19 @@ export default {
       }
       let userName = res.data.member_name;
       this.$router.push({
-        path: "apply",
+        path: "code",
         query: {
-          codeKey: codeInvite,
+          codeInvite: codeInvite,
           userName: userName
         }
       });
+      // this.$router.push({
+      //   path: "apply",
+      //   query: {
+      //     codeKey: codeInvite,
+      //     userName: userName
+      //   }
+      // });
       return
       if (res) {
         let info = res.data;
@@ -447,13 +460,16 @@ export default {
       this.isTabTwo = true;
       // this.getYaoqingList();
     },
-    showShare(){
+    showShare(i){
       if(!isWeiXin()){
         this.$vux.toast.text('可复制邀请码发送给好友哦~');
         return;
       }
-      let that = this;
-      that.showShareBool = !that.showShareBool;
+      if(i == 1){
+        this.showShareBool = true;
+      }else{
+        this.showShareBool = false;
+      }
     },
     close_rewardFun() {},
     now_invitefun(){
@@ -506,6 +522,10 @@ export default {
 }
 .scroll-wrap {
   height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .bg_invite_box {
@@ -759,7 +779,12 @@ export default {
   right: 0/100rem;
   font-size: 28/100rem;
 }
-
+.about_inviteInfo_box2{
+  position: absolute;
+  top: 56/100rem;
+  left: 0/100rem;
+  font-size: 28/100rem;
+}
 .invite_rule_box {
   width: 155/100rem;
   height: 57/100rem;
@@ -771,7 +796,17 @@ export default {
   border-top-left-radius: 28/100rem;
   margin-bottom: 30/100rem;
 }
-
+.invite_rule_box2{
+  width: 155/100rem;
+  height: 57/100rem;
+  line-height: 57/100rem;
+  text-align: center;
+  color: #fff;
+  background: #fe6047;
+  border-bottom-right-radius: 28/100rem;
+  border-top-right-radius: 28/100rem;
+  margin-bottom: 30/100rem;
+}
 .myReward_tip_box {
   width: 155/100rem;
   height: 57/100rem;

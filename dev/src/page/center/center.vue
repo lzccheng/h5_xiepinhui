@@ -76,17 +76,19 @@
         </div>
       </div>
     </div>
+    <div class="_line"></div>
     <!-- 我的店铺 or 365 -->
     <group class="gounp_top" v-if="redmessageInfo">
-      <cell :title="item.name" class="_cell" is-link v-for="(item,index) in redmessageInfo.membert_shopInfo" :key="index"
+      <cell :title="item.name" class="_cell" style="margin-top: 0" is-link v-for="(item,index) in redmessageInfo.membert_shopInfo" :key="index"
         @click.native="linkTo(item.name)" :data-name="item.name">
         <div slot="icon" class="imgwrap">
           <img style="display:block;margin-right:5px;backgound-size:cover;" :src="item.image">
         </div>
       </cell>
     </group>
+    <div class="_line"></div>
     <!-- 我的收益 -->
-    <div class="item-gounp gounp earnings" v-if="redmessageInfo" @click="linkEarnings">
+    <!-- <div class="item-gounp gounp earnings" v-if="redmessageInfo" @click="linkEarnings">
       <span class="title">我的收益</span>
       <div class="gounp-wrap">
         <p class="earn-title"><span>总收益:&nbsp;</span><span class="earn-count">{{redmessageInfo.member_info.received||0}}</span></p>
@@ -96,28 +98,28 @@
         </div>
         <div class="btn">我的收益</div>
       </div>
-    </div>
+    </div> -->
     <!-- 我的粉丝 -->
     <div class="item-gounp gounp fans" v-if="redmessageInfo">
       <div class="title">
-        <div>我的粉丝</div>
-        <div class="user-box">
+        <div style="margin: 0 auto">我的粉丝</div>
+        <!-- <div class="user-box">
           <img src="http://img.xiepinhui.com.cn/small_app/mine/vip_center.png" alt="">
           <span class="fans-name">不想取经的猪八戒</span>
-        </div>
+        </div> -->
       </div>
       <div class="gounp-wrap">
         <div class="fans-box">
           <div class="fans-item">
             <span>{{redmessageInfo.member_invite_num||0}}人</span>
             <div class="tips">
-              <img width='40' src="~@/assets/images/center/fans_count.png" alt="">
+              <img width='40' src="~@/assets/images/center/fans_count1.png" alt="">
               <div>粉丝人数</div>
             </div>
           </div>
           <div class="fans-item">
             <img width='50' 
-              :src="redmessageInfo.is_smallshop ?
+              :src="redmessageInfo.is_smallshop == 1 ?
               'http://img.xiepinhui.com.cn/small_app/mine/show365sign.png' : 'http://img.xiepinhui.com.cn/small_app/mine/hide365sign.png'" 
               alt=""
             >
@@ -125,7 +127,7 @@
           <div class="fans-item">
             <span>{{redmessageInfo.rebate_amout_fans||0}}</span>
             <div class="tips">
-              <img width='40' src="~@/assets/images/center/fans_shouyi.png" alt="">
+              <img width='40' src="~@/assets/images/center/fans_shouyi1.png" alt="">
               <div>粉丝收益</div>
             </div>
           </div>
@@ -657,6 +659,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+._line{
+  height: 0.12rem;
+  background-color: #f8f8f8;
+}
+.marTop{
+  margin-top: 0;
+}
 .bge {
   background-color: #f9f9f9;
 }
@@ -676,14 +685,14 @@ export default {
   box-sizing: border-box;
   font-size: 0.26rem;
   width: 100%;
-  height: 0.6rem;
+  height: 0.4rem;
   box-sizing: border-box;
-  padding: 0.2rem 0 0 0.2rem;
-  font-weight: bold;
+  padding: 0 0 0 0.2rem;
+  // font-weight: bold;
 }
 
 .center-box {
-  background: #f5f5f5;
+  // background: #f5f5f5;
   min-height: 100%;
   box-sizing: border-box;
 }
@@ -714,8 +723,8 @@ export default {
 
     .icon {
       display: block;
-      width: 0.36rem;
-      height: 0.36rem;
+      width: 0.26rem;
+      height: 0.26rem;
       margin: 0;
       color: #333;
       background: url(http://img.xiepinhui.com.cn/small_app/mine/jifen_shop.png)
@@ -859,8 +868,8 @@ export default {
 
           .icon {
             margin: 0;
-            width: 0.25rem;
-            height: 0.25rem;
+            width: 0.4rem;
+            height: 0.4rem;
           }
         }
       }
@@ -951,8 +960,9 @@ export default {
       height: 1.35rem;
       text-align: center;
       box-sizing: border-box;
-      padding: 0.2rem 0;
-
+      padding: 0.28rem 0 0.1rem;
+      border-bottom: 2px solid #F9F9F9;
+      
       .red-dot {
         position: absolute;
         top: 0.25rem;
@@ -973,8 +983,8 @@ export default {
       .text {
         font-size: 0.22rem;
         color: #333;
-        width: 0.6rem;
-        height: 0.6rem;
+        width: 0.45rem;
+        height: 0.45rem;
         text-align: center;
         line-height: 0.6rem;
         margin: 0 auto;
@@ -982,8 +992,8 @@ export default {
       }
 
       .icon {
-        width: 0.6rem;
-        height: 0.6rem;
+        width: 0.45rem;
+        height: 0.45rem;
         margin: 0 auto;
         color: #333;
         background: url(http://img.xiepinhui.com.cn/small_app/mine/jifen_shop.png)
@@ -1018,7 +1028,7 @@ export default {
         height: 1.35rem;
         text-align: center;
         box-sizing: border-box;
-        padding: 0.2rem 0;
+        padding: 0.1rem 0 0.2rem;
 
         .icon {
           width: 0.6rem;
@@ -1042,8 +1052,8 @@ export default {
 .server {
   .gounp-wrap .gounp-row .gounp-item {
     .icon {
-      width: 0.62rem;
-      height: 0.62rem;
+      width: 0.52rem;
+      height: 0.52rem;
     }
   }
 }
@@ -1052,9 +1062,9 @@ export default {
   height: 0.41rem;
   width: 1.38rem;
   margin: 0 auto;
-  color: #ff456b;
+  color: #62d8d0;
   text-align: center;
-  border: 1px solid #ff456b;
+  border: 1px solid #62d8d0;
   border-radius: 0.3rem;
   box-sizing: border-box;
   font-size: 0.22rem;
@@ -1066,7 +1076,7 @@ export default {
 }
 
 .gounp_top {
-  margin-top: 0.21rem;
+  // margin-top: 0.21rem;
 
   .imgwrap {
     width: 0.42rem;
@@ -1157,7 +1167,7 @@ export default {
     .fans-item {
       text-align: center;
       font-size: 0.3rem;
-      color: #ff456b;
+      color: #62d8d0;
 
       .tips {
         display: flex;
@@ -1167,8 +1177,8 @@ export default {
         color: #666;
 
         img {
-          width: 0.24rem;
-          height: 0.24rem;
+          width: 0.3rem;
+          height: 0.3rem;
           margin-right: 0.08rem;
         }
       }

@@ -194,7 +194,7 @@
           <div class="cell-input-btn" @click="getCode">{{num >= 60 ? '获取验证码' : num+'s'}}</div>
         </div>
       </div>
-      <div :class="Number(money) >= 100 ? 'btn' : 'btn btn-disabled'" @click="sureWithdraw">
+      <div :class="Number(money)? 'btn' : 'btn btn-disabled'" @click="sureWithdraw">
         确认提现
       </div>
       <div class="withdraw-rule">
@@ -373,9 +373,6 @@ export default {
 
     },
     async sureWithdraw(){
-      if(this.money < 200){
-        return this.$vux.toast.text('最低提现金额不能少于200元');
-      }
       if(this.methodType.type != 3 && this.account_number.length < 1 || this.account_name.length < 1) {
         this.$vux.toast.text('请输入账号或提现姓名');
         return false;

@@ -241,7 +241,7 @@
 .fixedBox{
     position: fixed;
     // top: 55/50rem;
-    width: 100%;
+    width: 7.5rem;
 }
 .paddingTop{
     padding-top: 1/50rem;
@@ -501,7 +501,7 @@ export default {
           this.upLoading = true;
           let that = this;
           let data = {
-            plat: 2,
+            plat: 3,
             page: that.page,
             type_price: that.price,
             class_id: that.status,
@@ -634,6 +634,7 @@ export default {
           this.endPrice = e.target.value;
         },
         Gosearch(){
+          console.log(559)
           this.page = 2;
           this.upLoadingComplete = false;
           if(this.n_statusTitle)this.statusTitle = this.n_statusTitle;

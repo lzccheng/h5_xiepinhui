@@ -39,9 +39,10 @@
 }
 
 .order-li span {
-  line-height: 0.8rem;
-  height: 0.8rem;
-  padding-bottom: 8/100rem;
+  line-height: 1rem;
+  display: inline-block;
+  height: 96%;
+  // padding-bottom: 8/100rem;
 }
 
 .order-active {
@@ -50,12 +51,18 @@
 }
 
 .content {
-  margin-top: 40/100rem;
+  // margin-top: 40/100rem;
+  padding: 0.2rem 0.2rem;
+  background-color: #f8f8f8;
 }
 
 .order-list-box {
   background: #fff;
   margin-bottom: 5/100rem;
+  border-radius: 0.2rem;
+  margin-bottom: 0.2rem;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
 }
 
 .list-top-box {
@@ -70,6 +77,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  color: #666;
 }
 
 .list-top-box .top-left img {
@@ -87,14 +95,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f5f5f5;
   box-sizing: border-box;
   padding: 0.2rem;
 }
 
 .goods-img {
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 0.1rem;
+  margin-right: 0.1rem;
 }
 
 .left-goodsImage {
@@ -116,6 +125,7 @@
   word-break: break-all;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  color: #666;
 }
 
 .cetenr-goodsinfo .goods-spec {
@@ -135,12 +145,15 @@
 }
 
 .right-goodsnum .goodsnum {
+  position: absolute;
+  top: 0.28rem;
+  right: 0.2rem;
   font-size: 9pt;
   color: #888;
 }
 
 .order-bottom {
-  padding: 3/100rem 0/100rem;
+  padding: 8/100rem 0/100rem 3/100rem;
   line-height: 35/100rem;
 }
 
@@ -150,13 +163,12 @@
 }
 
 .order-btn {
-  padding: 3/100rem 26/100rem;
+  padding: 5/100rem 28/100rem;
   border-radius: 25/100rem;
   margin-top: 5/100rem;
   margin-bottom: 5/100rem;
-  padding-bottom: 3/100rem;
   font-size: 0.25rem;
-  margin-left: 5/100rem;
+  margin-left: 18/100rem;
   color: #61d8d0;
   border: 1/100rem #61d8d0 solid;
 }
@@ -246,7 +258,7 @@
   background: #61D8D0;
   font-size: 12px;
   color: #fff;
-  top:20/100rem;
+  top:30/100rem;
   border-top-right-radius: 30/100rem;
   border-bottom-right-radius: 30/100rem;
   width:140/100rem;
@@ -261,6 +273,9 @@
   font-size:16px;
   color: #61D8D0;
   padding-top: 18/100rem;
+}
+.noPadd{
+  padding: 0;
 }
 </style>
 
@@ -292,7 +307,7 @@
         <div class="null-title">当前暂无订单</div>
       </div>
       <!-- detail -->
-      <div class="content">
+      <div class="content" :class="isshow == 2?'noPadd': ''">
         <div class='order-list-box' v-for="(item,index) in listInfo" :key="index" v-if="listInfo">
           <div class='list-top-box flex flex-align-center flex-pack-justify'>
             <div class='top-left flex flex-align-center'>
@@ -320,18 +335,18 @@
             <div class='cetenr-goodsinfo'>
               <div class="goodsname">{{item.goods_info.goods_name}}</div>
               <div class="goods-spec">{{item.goods_info.goods_spec}}</div>
-              <div class="goodsprice" style="color: #888" v-if="!(item.order_type==4)">￥{{item.goods_info.unit_price}}</div>
-              <div class="goodsprice2" v-else>
+              <!-- <div class="goodsprice" style="color: #888" v-if="!(item.order_type==4)">￥{{item.goods_info.unit_price}}</div> -->
+              <div class="goodsprice2">
                 ￥{{item.goods_info.unit_price}}+{{item.goods_info.vcoin_price}}
                 <img class="huidouIcon" src="@/assets/images/huidou.png" mode="widthFix"/>
               </div>
             </div>
             <div class='right-goodsnum'>
-              <div class="goodsprice">￥{{item.goods_info.unit_price}}</div>
-              <div class="goodsnum">{{item.goods_info.num}}</div>
+              <!-- <div class="goodsprice">￥{{item.goods_info.unit_price}}</div> -->
+              <div class="goodsnum">x{{item.goods_info.num}}</div>
             </div>
           </div>
-          <div class="order-bottom flex  flex-align-center flex-pack-end  line_xi_after">
+          <div class="order-bottom flex  flex-align-center flex-pack-end  line_xi_before">
             <div class="img-list" v-if="item.order_type==2">
             </div>
             <div class="img-list list-title-huodong" v-if="item.order_type==2">

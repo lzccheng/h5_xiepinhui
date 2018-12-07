@@ -1,8 +1,8 @@
 const env = process.env || {};
 const domain = env.API_ROOT;
-
+import VConsole from 'vconsole';
 let path = '/'
-let debug = true
+let debug = false;
 
 // 设置参数默认值
 let config = Object.assign({
@@ -17,6 +17,9 @@ if(!config.debug){
   for(var i=0;i<methods.length;i++){
     console[methods[i]] = function(){};
   }
+}else{
+  //调试
+  // let vCon = new VConsole();
 }
 
 export default config

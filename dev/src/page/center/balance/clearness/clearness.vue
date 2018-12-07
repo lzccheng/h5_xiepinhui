@@ -121,14 +121,14 @@ export default {
         }
     },
     created(){
-       
+    //    this.currentTab = this.$route.query.currentTab || 1;
     },
     destroyed () {
        
     },
     mounted(){
         this.$nextTick(()=>{
-            var typeNum='';//options.recordType;
+            var typeNum=this.$route.query.recordType || 1;;//options.recordType;
             typeNum=Number(typeNum);
             if (typeNum){
                 this.currentTab=typeNum;

@@ -24,15 +24,17 @@
       </div>
       <!-- 证件 -->
       <div class="scbox">
-        <span class="title">上传证件</span>
-        <div class="imgbox">
+        <div class="scboxTitle">
+          <span class="title">上传证件</span>
+        </div>
+        <div class="imgbox" :style="{backgroundImage: img1? 'url(' + img1 + ')' : '~@/assets/images/center/partner/sf1.png',backgroundSize: 'cover', backgroundPosition: 'center',backgroundRepeat: 'no-repeat'}">
           <img src="~@/assets/images/center/partner/sf1.png" v-if="!img1" :alt="img1">
-          <img :src="img1" v-else :alt="img1">
+          <!-- <img :src="img1" v-else :alt="img1"> -->
           <input type="file" accept="image/*" @change="upimg($event,'img1')" id="">
         </div>
-        <div class="imgbox mt">
+        <div class="imgbox mt" :style="{backgroundImage: img2? 'url(' + img2 + ')' : '~@/assets/images/center/partner/sf1.png',backgroundSize: 'cover', backgroundPosition: 'center',backgroundRepeat: 'no-repeat'}">
           <img src="~@/assets/images/center/partner/sf2.png" v-if="!img2" :alt="img2">
-          <img :src="img2" v-else :alt="img2">
+          <!-- <img :src="img2" v-else :alt="img2"> -->
           <input type="file" accept="image/*" @change="upimg($event,'img2')" id="">
         </div>
       </div>
@@ -46,7 +48,7 @@
           </div>
           <div class="right" :class="{'active':payFun===1}"></div>
         </div>
-        <div class="pay" @click="selectPayFun(2)">
+        <div class="pay" @click="selectPayFun(2)" v-if="!iswx">
           <div class="left">
             <div class="icon zfb"></div>
             <div class="text">支付宝支付</div>
@@ -399,6 +401,12 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+// .scboxTitle{
+//   background-color: #f8f8f8;
+//   .title{
+//     margin: 0.1rem;
+//   }
+// }
 .scroll-wrap {
   height: 100%;
   box-sizing: border-box;
@@ -442,7 +450,7 @@ export default {
     display: flex;
     align-items: center;
     width: 100%;
-    height: 0.8rem;
+    height: 0.7rem;
     margin-bottom: 0.21rem;
     .title {
       font-size: 0.28rem;
@@ -453,7 +461,7 @@ export default {
       display: block;
       flex: 1;
       height: 100%;
-      border: 1px solid #ccc;
+      border: 1px solid #eee;
       border-radius: 0.1rem;
       padding-left: 0.3rem;
     }

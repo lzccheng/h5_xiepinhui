@@ -40,14 +40,17 @@ export default {
       access_code: "",
       isWX: false,
       phone: "",
-      password: ""
+      password: "",
+      state: ""
     };
   },
   created() {
     this.isWX = isWeiXin();
     this.url = window.location.search.split("?url=")[1] || "/"; //登录回退页
     this.access_code = getQueryString("code");
+    this.state = getQueryString("state") || "";
     console.log(this.$route.query)
+    console.log('state',this.state)
     if (this.user && !this.token) {
       let data = {
         plat: 3,
@@ -103,10 +106,7 @@ export default {
       }
       console.log('登录',res)
       // return 
-      this.$vux.toast.show({
-        type: "success",
-        text: "登录成功"
-      });
+      
       // 存储token
       this.updateUser(res.data);
       this.updateToken(res.data.token);
@@ -114,6 +114,18 @@ export default {
       localStorage["user"] = JSON.stringify(res.data);
       localStorage["account"] = res.data.account;
       localStorage["token"] = res.data.token;
+      if(this.phone.length > 11){
+        var fromurl = window.location.href.split('#')[0];
+        window.location.href =
+          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx47d52b6420c14397&redirect_uri=" +
+          encodeURIComponent(fromurl) +
+          "&response_type=code&scope=snsapi_userinfo&state=child#wechat_redirect";
+        return
+      }
+      this.$vux.toast.show({
+        type: "success",
+        text: "登录成功"
+      });
       if(this.$route.query.from_){
         console.log(this.$route.query.from_)
         return this.$router.replace({
@@ -150,6 +162,24 @@ export default {
             }
           })
           .then(async function(res) {
+            //子账号获取oppenid
+            if(that.state === 'child'){
+              try {
+                let user = JSON.parse(window.localStorage.getItem('user'));
+                user.openid = res.data.data.openid;
+                that.updateUser(user);
+                localStorage["user"] = JSON.stringify(user);
+                that.$vux.toast.show({
+                  type: "success",
+                  text: "登录成功"
+                });
+                that.$router.replace('/center')
+              } catch (error) {
+                
+              }
+              
+              return;
+            }
             let data = {
               plat: 3,
               type: 1,
@@ -166,7 +196,7 @@ export default {
           })
           .catch(function(error) {
             console.log(error);
-            this.$vux.toast.text("微信登录参数出错");
+            that.$vux.toast.text("微信登录参数出错");
           });
       } else {
         var fromurl = window.location.href.split('#')[0];
@@ -219,6 +249,9 @@ export default {
         type: "success",
         text: "微信登录成功"
       });
+      this.lineToPage();
+    },
+    lineToPage(){
       if(this.$route.query.from_){
         console.log('from_',this.$route.query.from_)
         console.log('login this.$route.query.codeInvite',this.$route.query.codeInvite)
@@ -227,12 +260,11 @@ export default {
           codeInvite: this.$route.query.codeInvite
         })
       }
-      if (that.url === "/") {
-        that.$router.replace("/");
+      if (this.url === "/") {
+        this.$router.replace("/");
       } else {
-        window.location.href = unescape(that.url);
+        window.location.href = unescape(this.url);
       }
-      
     },
     async showShareCode(){
       let data = {

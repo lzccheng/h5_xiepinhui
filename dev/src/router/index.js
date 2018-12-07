@@ -109,6 +109,9 @@ const rebateRecord = () => import('@/page/center/myWallet/rebateRecord') //返�
 const myWallet = () => import('@/page/center/myWallet/myWallet') //提现首页
 const myWalletWrap = () => import('@/page/center/myWallet/myWalletWrap') //myWalletWrap
 
+const redirectHelp = () => import('@/page/redirect/redirectHelp')
+
+
 
 const moblieCodeTrade = ()=>import('@/page/center/drawDeposit/moblieCodeTrade')//交易密码
 const setTradeCode = ()=>import('@/page/center/drawDeposit/setTradeCode')//设置交易密码
@@ -794,6 +797,14 @@ let router = new Router({
       meta: {
         title: '我的余额'
       }
+    }, 
+    {
+      path: '/webnine/help',
+      name: 'redirectHelp',
+      component: redirectHelp,
+      meta: {
+        title: '帮助'
+      }
     },
     {
       path: '/moblieCodeTrade',
@@ -866,7 +877,13 @@ router.beforeEach((to, from, next) => {
   console.log(`----------- to   Router --------------`)
   console.log(to)
   console.log(`----------- End  Router --------------`)
-  
+  //IOS微信分享兼容
+  // if (to.path === '/centerFull/partner/inviteList') {
+  //   if (to.path !== window.location.pathname) {
+  //     location.assign(to.path)
+  //     return;
+  //   }
+  // }
   // IOS微信浏览器兼容
   if (!store.state.comm.indexUrl) {
     store.commit('updateUrl', window.location.href) //保存初次进来的地址

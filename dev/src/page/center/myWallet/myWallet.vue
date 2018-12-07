@@ -157,6 +157,7 @@ padding-left:10/50rem;
 .btn-withdraw{
   background: #EC7B7D;
 }
+* { touch-action: none; } 
 </style>
 <template>
     <div class="page idnexWrapBox">
@@ -197,7 +198,7 @@ padding-left:10/50rem;
                         <div style="color:#61D8D0"><span style="font-size:20rpx;">¥</span>{{infoData.money_data[0].money_amout}}</div>
                         <div class="btn-recharge" @click="goRecharge" :style="{background:user_type==3?'#ccc':''}">充值</div>
                     </div>
-                    <div class="flex flex-pack-justify descAmountBox">
+                    <div class="flex flex-pack-justify descAmountBox" @click="lineTo({path: '/balance/clearness',query: {recordType: 2}})">
                         <div class="huibidv">
                             <img :src="infoData.money_data[0].list[0].image" mode="widthFix"/>{{infoData.money_data[0].list[0].name}}
                         </div>
@@ -219,6 +220,7 @@ padding-left:10/50rem;
                         </div>
                         <div class="huibiNum">{{item.amount}}<span class="iconfont icon-right-jiantou"></span></div>
                     </div>
+                    
                     <!-- <div class="flex flex-pack-justify descAmountBox line_bottom">
                         <div class="huibidv">
                             <image src="http://img.xiepinhui.com.cn/small_app/walletPic/offlineFanli.png" mode="widthFix"></image>线下店推广返利
@@ -234,6 +236,7 @@ padding-left:10/50rem;
                 </div>  
             </div>
         </div>
+        
     </div>
 </template>
 
@@ -281,6 +284,9 @@ export default {
                 this.infoData = res.data;
             }
         },
+        lineTo(obj){
+            this.$router.push(obj)
+        },
         rechargeDetail(){
             this.$router.push({
                 path: '/balance/clearness',
@@ -306,7 +312,7 @@ export default {
         },
         goFanLiPage(whichFanLi){
             switch (whichFanLi) {
-                case '365推广返利':
+                case '365推广收益':
                     this.$router.push({
                         path: 'rebateRecord',
                         query: {
@@ -314,7 +320,7 @@ export default {
                         }
                     })
                     break;
-                case '线下推广返利':
+                case '线下推广收益':
                     this.$router.push({
                         path: 'rebateRecord',
                         query: {
@@ -322,7 +328,7 @@ export default {
                         }
                     })
                     break;
-                case '粉丝购买商品返利': 
+                case '粉丝购买商品收益': 
                     this.$router.push({
                         path: 'rebateRecord',
                         query: {

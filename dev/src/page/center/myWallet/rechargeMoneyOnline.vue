@@ -258,9 +258,7 @@ export default {
         }
     },
     selectType(e) {
-        console.log(e)
         const index = e.target.dataset.index;
-        console.log(index)
         const data = this.methodList[index];
         this.methodType=data;
         this.showBankList()
@@ -273,7 +271,7 @@ export default {
     window.isClick = true;
     setTimeout(() => {
         window.isClick = false;
-    }, 1500);
+    }, 2000);
     this.$vux.loading.show({
         text: '支付中...'
     })

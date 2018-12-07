@@ -7,7 +7,8 @@ let _requestConfig = async (that,jsApiList,cb,data)=>{
         token: that.token,
         type: 17,
         num: 1,
-        share_url: window.location.href.split('#')[0]
+        // share_url: window.location.href.split('#')[0]
+        share_url: encodeURIComponent(window.location.href.split("#")[0])
     }
     const [err, res] = await api.shareconf(shareconf);
     if (err) {

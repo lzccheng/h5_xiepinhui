@@ -25,11 +25,11 @@
 }
 .goods-li{
 //   width: 50% !important;
-  background: #fbfbfb;
+  background: #f8f8f8;
 }
 .kuai-list-box{
   position: relative;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 // .goods-li:nth-child(odd) .kuai-list-box{
 //   padding-right:5px;
@@ -39,10 +39,10 @@
 // }
 .goodsInfo .goods-li{
   margin-bottom:5px;
-  background: #fbfbfb;
+  background: #f8f8f8;
 }
 .kuai-list-box img{
-  border-radius: 5px;
+  border-radius: 10px;
   max-height: 109/50rem
 }
 .bottom_box{

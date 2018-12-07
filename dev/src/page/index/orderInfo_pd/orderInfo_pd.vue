@@ -2,7 +2,7 @@
     @import '~@/assets/mobileSelect.less';
 
     .order-address-box {
-    padding: 5/50rem 0/50rem;
+    padding: 5/50rem 0/50rem 0;
     background: #fff;
     margin-bottom: 5/50rem;
     // border-bottom: 2/50rem #FF8095 dashed;
@@ -216,7 +216,9 @@
     border-radius: 0;
     border: 0 !important;
     }
-
+    .fontSize{
+        font-size: 10pt
+    }
     .payBtn::after {
     display: none;
     }
@@ -239,27 +241,29 @@
     .deductionBox{
         margin-top:15/100rem;
         background: #fff;
-        padding:15/50rem;
+        padding: 0 15/50rem;
     }
     .lDeductionBox{
         padding-top:22/100rem;
         padding-bottom: 22/100rem;
     }
     .iconBg{
-        width:80/100rem;
+        width:60/100rem;
         text-align: center;
         background: #F2C25E;
         border-radius: 20/100rem;
-        height: 80/100rem;
-        line-height: 80/100rem;
+        height: 60/100rem;
+        line-height: 60/100rem;
+        position: relative;
+        bottom: -0.07rem;
     }
     .purseIcon{
         color: #fff;
         display: inline-block;
-        font-size: 28px;
+        font-size: 25px;
     }
     .itemDescTitle{
-        font-size: 28/100rem;
+        font-size: 10pt;
         color: #333;
         margin-left:24/100rem;
         line-height: 80/100rem;
@@ -273,11 +277,11 @@
         color: #C6C6C6;
     }
     .iconPicHIcon{
-        width:80/100rem;
-        height:80/100rem;
+        width:60/100rem;
+        height:60/100rem;
     }
     .huibiDeduction{
-        font-size: 28/100rem;
+        font-size: 10pt;
         color: #61D8D0;
         margin-left:24/100rem;
         line-height: 80/100rem;
@@ -297,10 +301,10 @@
     }
 </style>
 <template>
-    <div class="idnexWrapBox">
+    <div class="idnexWrapBox" :style="{height: '100%'}">
         <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header>
         <!-- <loading type="type3" v-if="loadingShow"></loading> -->
-        <div style="background-color: #eee">
+        <div style="background-color: #f8f8f8;height: 100%;">
             <div class="content">
                 <div class='order-address-box' @click="selectAddress">
                     <div class="address-add flex flex-pack-justify flex-align-center" v-if="addressInfo==''">
@@ -319,7 +323,7 @@
                             <div class='order-address-header'>
                                 <div class="flex flex-align-center address-text">
                                     <span class='iconfont icon-dizhi span' style="font-size: 14pt"></span>
-                                    <span style="font-size:14pt">{{addressInfo.area_info}}{{addressInfo.address}}</span>
+                                    <span style="font-size:11pt">{{addressInfo.area_info}}{{addressInfo.address}}</span>
                                 </div>
                             </div>
                             <span class="iconfont icon-right-jiantou"></span>
@@ -332,12 +336,12 @@
                         <div class="sign_dv" v-if="s_id">荟币专区商品</div>
                     </div>
                     <div class="order-goods-right-text">
-                        <div class='order-goods-name'>{{goodsInfo.goodsname}}</div>
-                        <div class="order-goods-space">{{goodsInfo.goodspec.spec}}</div>
+                        <div class='order-goods-name fontSize'>{{goodsInfo.goodsname}}</div>
+                        <div class="order-goods-space fontSize">{{goodsInfo.goodspec.spec}}</div>
                         <div v-if="s_id == '-1'">
                             <span class="huidouprice padd-top" v-if="s_id == '-1'">
-                              <span style="font-size:12px;">￥:</span>
-                              <span>{{goodsInfo.vcoin_pay_price}}+{{goodsInfo.vcoin_price}}</span>
+                              <span class="fontSize">￥:</span>
+                              <span class="fontSize">{{goodsInfo.vcoin_pay_price}}+{{goodsInfo.vcoin_price}}</span>
                               <img src="@/assets/images/huidou.png" class="iconH" mode="widthFix"/>
                             </span>
                         </div>
@@ -367,16 +371,16 @@
                 </div>
                 <div class="weui-cell weui-cell_select line_xi_after" style="padding: 0">
                     <div class="weui-cell__hd weui-cell__hd_in-select-after">
-                        <div class="weui-label" >快递选择</div>
+                        <div class="weui-label fontSize">快递选择</div>
                     </div>
                     <div class="weui-cell__bd ">
-                        <div class="weui-select weui-select_in-select-after" id="_select_mob">{{nowSelectshipping.e_name}}</div>
+                        <div class="weui-select weui-select_in-select-after fontSize" id="_select_mob">{{nowSelectshipping.e_name}}</div>
                         <!-- <div class="_select_mob" id="_select_mob">{{nowSelectshipping.e_name}}</div> -->
                     </div>
                 </div>
                 <div class="weui-cells weui-cells_after-title marT0">
                     <div class="weui-cell yunfei">
-                        <div class="weui-cell__bd">{{s_id?'快递费':'邮费'}}</div>
+                        <div class="weui-cell__bd fontSize">{{s_id?'快递费':'邮费'}}</div>
                         <div class="weui-cell__ft">￥{{exprice}}</div>
                     </div>
                 </div>
@@ -387,7 +391,7 @@
                                 <div class="iconBg">
                                     <div class="xipinhuiIcon xipinhui-moneypurse purseIcon"></div>
                                 </div>
-                                <div class="itemDescTitle">
+                                <div class="itemDescTitle fontSize">
                                     余额：{{restMoney}}
                                 </div>
                             </div>
@@ -396,17 +400,17 @@
                                 <div :class="ifUseBalance?'aboutChoice':'grayIsIcon'" class="xipinhuiIcon xipinhui-choice"></div>
                             </div>  -->
                         </div>
-                        <div class="flex  flex-pack-justify lDeductionBox">
+                        <div class="flex  flex-pack-justify lDeductionBox" style="padding-top: 0;">
                             <div class="flex">
-                                <img mode="widthFix" src="@/assets/images/HIcon.png" class="iconPicHIcon"/>
-                                <div class="huibiDeduction">
-                                荟币：共{{huidounum}}个
+                                <img mode="widthFix" style="position: relative;bottom: -0.10rem;" src="@/assets/images/HIcon.png" class="iconPicHIcon"/>
+                                <div class="huibiDeduction fontSize">
+                                    <span>荟币：共{{huidounum}}个</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="openVip" v-if="!vipInfo.whether_member && !s_id" @click="openvip">
+                <!-- <div class="openVip" v-if="!vipInfo.whether_member && !s_id" @click="openvip">
                     <div>
                         <span class="iconfont icon-mian"><span>开通会员卡可免邮哦</span></span>
                     </div>
@@ -426,10 +430,10 @@
                             </div>
                         </div>
                     </group>
-                </div>
+                </div> -->
             </div>
             <div class='bottom-pay-box flex flex-pack-justify flex-align-center' style="border-top: 1px solid #eee;">
-                <span class="heji" :class="s_id ? 'huidouprice' : ''">{{s_id?'需付款':'合计'}}:￥<span class="zongjiaqian">{{total_count}}</span></span>
+                <span class="heji fontSize" :class="s_id ? 'huidouprice' : ''">{{s_id?'需付款':'合计'}}:￥<span class="zongjiaqian">{{total_count}}</span></span>
                 <span class="payBtn" @click.self="gopay">微信支付</span>
             </div>
         </div>
@@ -487,7 +491,7 @@ export default {
     mounted(){
         this.s_id = this.$route.query.s_id || this.goodsInfo._s_id || '';
         this.init();
-        this.getHuidou();
+        this.s_id && this.getHuidou();
     },
     methods: {  
         init(){
@@ -628,15 +632,15 @@ export default {
             }
             if (that.vipInfo.whether_member) {
                 if (count != 0) {
-                count = count * (that.vipInfo.member_discount / 10);
+                    count = count * (that.vipInfo.member_discount / 10);
                 }
                 if (that.vipSwitch) {
-                if (that.vipInfo.frequency > 0) {
-                    exprice = exprice - 8;
-                    if (exprice < 0) {
-                        exprice = 0;
+                    if (that.vipInfo.frequency > 0) {
+                        exprice = exprice - 8;
+                        if (exprice < 0) {
+                            exprice = 0;
+                        }
                     }
-                }
                 }
             }
             that.total_count = parseFloat(parseFloat(count) + parseFloat(exprice)).toFixed(2);
@@ -757,6 +761,11 @@ export default {
                 "goods_id": that.goodsInfo.goods_id,
                 "goods_num": that.num
             }];
+            if(window.isClick)return;
+            window.isClick = true;
+            setTimeout(() => {
+                window.isClick = false;
+            }, 2000);
             var goods_json = JSON.stringify(jsonArr);
             let data = {
                 plat: 3,
@@ -820,6 +829,7 @@ export default {
                             order_sn: selfData.data.order_sn
                         }
                     })
+                    that.$vux.toast.text('支付成功','top');
                 }
                 let fail = async err => {
                     if(that.isUsecoupon == 1){
@@ -830,8 +840,8 @@ export default {
                             account: that.account
                         }
                         const [err, res] = await api.returned(data);
-                        that.$vux.toast.text('取消支付');
                     }
+                    that.$vux.toast.text('支付失败','top');
                 }
                 // aliPay({ orderStr: res.data.pay_param })
                 wxPay(this,{...res.data.pay_param,success, fail})
@@ -897,7 +907,7 @@ export default {
                                 }
                             })
                         }
-                        
+                        that.$vux.toast.text('支付成功','top');
                     }
                     let fail = async err => {
                         if(that.isUsecoupon == 1){
@@ -908,8 +918,8 @@ export default {
                                 account: that.account
                             }
                             const [err, res] = await api.returned(data);
-                            that.$vux.toast.text('取消支付');
                         }
+                        that.$vux.toast.text('支付失败','top');
                     }
                     wxPay(this,{...res.data.pay_param,success, fail})
                 }

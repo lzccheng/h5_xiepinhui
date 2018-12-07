@@ -203,6 +203,7 @@
 <script type="text/ecmascript-6">
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { api } from '@/utils/api.js';
+import { wxPay } from '@/utils/wx_sdk.js';
 import { Group, Cell, XButton, Badge, XHeader } from 'vux';
 export default {
     components: {
@@ -297,7 +298,7 @@ export default {
                 pay_code: 2,  //1支付宝，2微信
             }
             console.log(this.user)
-            return
+            // return
             const [err, res] = await api.offline_dopay(data);
             if (err) {
                 this.$vux.toast.text(err.msg);
@@ -305,6 +306,13 @@ export default {
             }
             if(res.code == 2000){
                 console.log(res)
+                let success = res =>{
+                    that.$vux.toast.text('充值成功','top');
+                }
+                let fail = err =>{
+                    that.$vux.toast.text('充值失败','top');
+                }
+                wxPay(this,{...res.data.paystr,success,fail})
             }
         }
     },

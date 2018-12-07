@@ -37,6 +37,9 @@ export default {
 @import "~vux/src/styles/reset.less";
 @import '~@/assets/base.less';
 @import '~@/assets/less/animate.less';
+.weui-cells{
+  margin-top: 0 !important;
+}
 .tab-slider {
   position: relative;
   width: 100%;

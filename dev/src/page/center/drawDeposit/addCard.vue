@@ -8,7 +8,7 @@
 }
 .card-list {
     width: 90%;
-    height: 200/100rem;
+    height: 220/100rem;
     background: linear-gradient(90deg,rgba(255,121,150,1),rgba(251,76,114,1));
     border-radius: 10/100rem;
     margin: 20/100rem auto;
@@ -184,7 +184,7 @@
             <img :src="item.icon"/>
           </div>
           <span>{{item.bank_name}}</span>
-          <div class="unbind-btn" :data-id="item.card_id" @click="showConfirm">解除绑定</div>
+          <div class="unbind-btn" :data-id="item.card_id" :data-index="index" @click.stop="showConfirm">解除绑定</div>
         </div>
         <div class="card-num">{{item.card_number}}</div>
       </div>
@@ -297,6 +297,7 @@ export default {
       this.isConfirm=isTrue;
       if(isTrue){
         this.delId=e.target.dataset.id;
+        this.delCardIndex=e.target.dataset.index;
       }else{
         this.delId=null;
       }
@@ -370,8 +371,7 @@ export default {
            this.$vux.toast.text('解除绑定成功');
            this.delId=null;
            this.isConfirm=false;
-           this.page=1;
-           this.getBankList();
+           this.delCardIndex && this.bankList.splice(this.delCardIndex,1);
         }
       }
     },
@@ -388,7 +388,6 @@ export default {
         this.$vux.toast.text(err.msg);
         return;
       }
-
       this.bankList = this.bankList.concat(res.data.list);
       this.is_paypwd=res.data.is_paypwd;
       this.totalPage=res.data.page_size;

@@ -8,8 +8,8 @@
   padding-bottom: 0/100rem;
 }
 .picWho{
-  width:120/100rem;
-  max-height:140/100rem;
+  width:80/100rem;
+  max-height:80/100rem;
   margin-right: 20/100rem;
   border-radius: 50%;
 }
