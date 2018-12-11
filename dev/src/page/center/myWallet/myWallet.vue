@@ -214,7 +214,7 @@ padding-left:10/50rem;
                         <div style="color:#EC7B7D"><text style="font-size:20rpx;">¥</text>{{infoData.money_data[1].money_amout}}</div>
                         <div class="btn-withdraw" @click.stop="goWithdraw">提现</div>
                     </div>
-                    <div class="flex flex-pack-justify descAmountBox line_bottom" :data-name="item.name" @click="goFanLiPage(item.name)" :key="index" v-for="(item,index) in infoData.money_data[1].list">
+                    <div class="flex flex-pack-justify descAmountBox line_bottom" :data-name="item.name" @click="goFanLiPage(item.red_type)" :key="index" v-for="(item,index) in infoData.money_data[1].list">
                         <div class="huibidv">
                             <img :src="item.image" mode="widthFix"/>{{item.name}}
                         </div>
@@ -310,38 +310,17 @@ export default {
             console.log('drawIndex')
             this.$router.push('/myBlack')
         },
-        goFanLiPage(whichFanLi){
-            switch (whichFanLi) {
-                case '365推广收益':
-                    this.$router.push({
-                        path: 'rebateRecord',
-                        query: {
-                            recordType: 1
-                        }
-                    })
-                    break;
-                case '线下推广收益':
-                    this.$router.push({
-                        path: 'rebateRecord',
-                        query: {
-                            recordType: 2
-                        }
-                    })
-                    break;
-                case '粉丝购买商品收益': 
-                    this.$router.push({
-                        path: 'rebateRecord',
-                        query: {
-                            recordType: 3
-                        }
-                    })
-                    break;
-            }
+        goFanLiPage(recordType){
+            this.$router.push({
+                path: 'rebateRecord',
+                query: {
+                    recordType
+                }
+            })
         },
         goRecharge(){
             var userType = this.user.user_type;
             this.user_type=userType;
-            
                 if (userType==3){
                     // wx.showModal({
                     //     title: '提示',

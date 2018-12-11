@@ -6,7 +6,7 @@
         <div class="txt_fansLi"><span class="txt_fansLiTab">粉丝人数：</span>{{fansContent.fansNumber || 0}}人</div>
         <div class="txt_fansLi"><span class="txt_fansLiTab">粉丝收益：</span>{{fansContent.fanAmount || 0}}元</div>
       </div>
-      <div class="bg_invite_box">
+      <div class="bg_invite_box" @click="goInviteList">
         <div class="invite_title_box">邀请好友开通365合伙人</div>
         <div class="invite_tip_box">最高获得180元奖励<span class="icon_row">></span></div>
       </div>
@@ -44,13 +44,13 @@
                   </div>
                   <div class="benefit">收益：{{item.amount}}元</div>
                 </div>
-                <div class="btnInvite" catchtap="now_invitefun" v-if="item.is_smallshop==0">立即推荐</div>
+                <div class="btnInvite colorTheam colorTheamBorder" catchtap="now_invitefun"  v-if="item.is_smallshop==0">立即推荐</div>
               </div>
               <div class="explain_part">
-                <div class="explainTxt" v-if="item.is_smallshop==0">
+                <div class="f colorTheam" v-if="item.is_smallshop==0">
                   推荐好友开通365合伙人，我最高可得180元
                 </div>
-                <div class="explainTxt" v-if="item.is_smallshop==1">
+                <div class="explainTxt colorTheam" v-if="item.is_smallshop==1">
                   {{item.add_time}}开通365合伙人
                 </div>
               </div>
@@ -79,7 +79,7 @@
                 </div>
               </div>
               <div class="explain_part">
-                <div class="explainTxt">
+                <div class="explainTxt colorTheam">
                   {{item.add_time}}开通365合伙人
                 </div>
               </div>
@@ -267,6 +267,11 @@ export default {
     closeReceiveModal() {
       this.closeComsumeModal=false;
     },
+    goInviteList(){
+      this.$router.push({
+        path: 'inviteParner365'
+      })
+    },
     choseTab(e){
       var isTabOne = !(this.isTabOne);
       var isTabTwo = !(this.isTabTwo);
@@ -367,6 +372,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.colorTheam{
+  color: #61d8d0 !important;
+}
+.colorTheamBorder{
+  border: 1px solid #61d8d0!important;
+}
 .top_content_part {
   padding: 36/100rem 20/100rem;
   color: #9c5c14;

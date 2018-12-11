@@ -1,7 +1,7 @@
 <template>
   <div class="scroll-wrap">
     <!-- <x-header :left-options="{backText:''}" title="365合伙人邀请码" id="vux-header"><a slot="right"></a></x-header> -->
-    <div class="content-index" v-if="!inviteOthersCode">
+    <div class="content-index">
       <div class="bg_invite_box" style="position:relative;">
         <!-- box圈 -->
         <div class="about_inviteInfo_box">
@@ -151,7 +151,7 @@
 import { isScrollBottom, isWeiXin } from "@/utils/comm.js";
 import { mapGetters } from "vuex";
 import { api } from "@/utils/api.js";
-import { share } from "@/utils/wx_sdk.js";
+import { share , getShareConfig} from "@/utils/wx_sdk.js";
 import { XHeader } from "vux";
 import loading from "@/components/loading";
 import { setTimeout } from 'timers';
@@ -220,6 +220,7 @@ export default {
     if (this.inviteOthersCode) {
       this.bindFans(this.inviteOthersCode);
     }
+    
     this.getfanred();
     this.getFans_list();
   },
@@ -249,8 +250,10 @@ export default {
         account: this.account,
         token: this.token
       };
+      console.log(66)
       const [err, res] = await api.fanred(data);
       if (res) {
+        
         this.inviteCode = res.data.member_code;
         this.desc_invite = res.data.desc;
         this.amountInvite = res.data.twomoney;
@@ -259,13 +262,23 @@ export default {
         this.share();
       }
     },
-    share(){
-      let shareConfig = {
-        title: '邀请365合伙人,立返现金',
-        desc: '鞋品荟邀请您赶紧开通365合伙人,马上领取180元,多邀多得,快快行动吧！',
-        imgUrl: "https://m.xiepinhui.com.cn/share/share365.png",
-        link: window.location.origin + window.location.pathname + '?codeInvite=' + this.inviteCode
+    async share(){
+      let data = {
+        plat: 3,
+        account: this.account,
+        token: this.token,
+        code: this.inviteCode
+      };
+      const [err, res] = await api.receiveweidian(data);
+      console.log('share',err)
+      let is_smallshop = ''
+      if(err.code == 4003){
+          if(err.data.is_smallshop == 1){
+            is_smallshop = 1;
+          }
       }
+      let shareConfig = getShareConfig(this, is_smallshop)
+      console.log('share',shareConfig)
       share(this,{share: shareConfig})
     },
     async bindFans(codeInvite) {
@@ -277,10 +290,15 @@ export default {
       };
       // const [err, res] = await api.inviteweidian(data);
       const [err, res] = await api.receiveweidian(data);
+      this.inviteOthersCode = '';
+      window.localStorage.removeItem('inviteOthersCode');
       if(err){
+        console.log(3333,err)
         let codeStatus = err.code;
         var issmallshop = err.data.is_smallshop;
         var store_state = err.data.store_state;
+        this.$vux.toast.text(err.msg);
+        console.log('inviteOthersCode',this.inviteOthersCode)
         if(codeStatus!=2000){
           if(store_state == 3){//审核中
             this.$router.push({
@@ -306,7 +324,8 @@ export default {
             window.localStorage.removeItem('inviteOthersCode');
             return;
           }
-          this.$vux.toast.text(res.data.msg);
+          console.log(err)
+          this.$vux.toast.text(err.msg);
         }
       }
       let userName = res.data.member_name;
@@ -403,11 +422,13 @@ export default {
         console.log("err", err);
         return;
       }
+     
       if (res.data && res.data.list.length < 1) {
         this.fanShow_bottom = true;
         this.loading_bottom = false;
         return;
       }
+      
       this.fans_list = this.fans_list.concat(res.data.list);
     },
     async getYaoqingList() {

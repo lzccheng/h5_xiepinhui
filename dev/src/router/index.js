@@ -29,7 +29,8 @@ const code = ()=>import('@/page/center/365partner/code')
 const apply = ()=>import('@/page/center/365partner/apply')
 //邀请365伙人
 const inviteParner365 = () => import('@/page/center/365partner/inviteParner365')
-
+//h5LinkParner
+const h5LinkParner = () => import('@/page/center/365partner/h5LinkParner')
 //365排行
 const inviteList = ()=>import('@/page/center/365partner/inviteList')
 //邀请规则
@@ -70,6 +71,8 @@ const subreplenishOrder = ()=>import('@/page/center/myShop/subreplenishOrder/sub
 
 //拼单信息
 const goodsInfoPindan = ()=>import('@/page/index/goodsInfoPindan/goodsInfoPindan')
+//商品列表
+const active = () => import('@/page/index/active/active')
 
 
 //订单详情
@@ -110,6 +113,7 @@ const myWallet = () => import('@/page/center/myWallet/myWallet') //提现首页
 const myWalletWrap = () => import('@/page/center/myWallet/myWalletWrap') //myWalletWrap
 
 const redirectHelp = () => import('@/page/redirect/redirectHelp')
+
 
 
 
@@ -209,6 +213,14 @@ let router = new Router({
         }
       },
       {
+        path: 'active',
+        name: 'active',
+        component: active,
+        meta: {
+          title: '商品列表'
+        }
+      },
+      {
         path: 'orderAddress',
         name: 'orderAddress',
         component: orderAddress,
@@ -273,7 +285,9 @@ let router = new Router({
           meta: {
             title: '发布评论'
           }
-        },]
+        },
+          
+      ]
       }],
       meta: {
         title: '鞋品荟'
@@ -386,6 +400,14 @@ let router = new Router({
               title: '邀请365合伙人'
             }
           }, {
+            path: 'h5LinkParner',
+            name: 'h5LinkParner',
+            component: h5LinkParner,
+            meta: {
+              title: '365合伙人加盟'
+            }
+          },
+          {
             path: 'redenvelope',
             name: 'redenvelope',
             component: redenvelope,

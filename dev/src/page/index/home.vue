@@ -296,7 +296,7 @@
 }
 .goods-duan-price {
   font-size: 10pt;
-  color: #fb4c72;
+  color: #61D8D0;
 }
 .more-box {
   position: absolute;
@@ -334,7 +334,7 @@
 }
 
 .tab-item.active {
-  color: #ff4965;
+  color: #61D8D0;
   position: relative;
 }
 
@@ -344,7 +344,7 @@
   height: 6/100rem;
   position: absolute;
   width: 80%;
-  background: #ff4965;
+  background: #61D8D0;
   bottom: 0;
   border-radius: 22/100rem;
   left: 0;
@@ -376,7 +376,7 @@
   position: relative;
 }
 .row-price {
-  color: #ff4965;
+  color: #61D8D0;
   font-size: 12px;
 }
 .row-xiaoliang {
@@ -385,7 +385,7 @@
 }
 .row-btn {
   right: 15/50rem;
-  background: #ff4965;
+  background: #61D8D0;
   border-radius: 20/50rem;
   color: #fff;
   padding: 0 15/50rem;
@@ -445,7 +445,7 @@
 .goods-price {
   padding-left: 3px;
   font-size: 12px;
-  color: #ff4965;
+  color: #61D8D0;
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -454,7 +454,7 @@
   -webkit-line-clamp: 1;
 }
 .row-huo {
-  color: #ff4965;
+  color: #61D8D0;
   margin-right: 3px;
 }
 .bottom-goods-xiaoling {
@@ -476,6 +476,9 @@
   left: 0;
   z-index: 99;
   margin-top: 0px;
+}
+.tabHeight{
+  min-height: 1200px;
 }
 </style>
 
@@ -538,7 +541,7 @@
           <div v-for="(allitem,index) in nseckilltypes.homegoods" :key="index">
               <div class="model-header-img">
                   <img mode='widthFix' :src="allitem.s_small_map" />
-                  <img mode='widthFix' :src='allitem.img' bindtap="openActive_tj" :id="allitem.s_id" /></div>
+                  <img mode='widthFix' :src='allitem.img' @click="openActive_tj(allitem.s_id)" :id="allitem.s_id" /></div>
               <div class='scroll-box '>
                   <div class="recommend_scroll_x_box xiaosanjiao" scroll-x="true">
                       <router-link class="recommend_hot_box" tag="div" :to="'/index/goodsInfoPindan?goodsId='+item_list.n_goods_id" v-for="(item_list,index) in allitem.goods" :key="index" bindtap='openGoods' :id="item_list.n_goods_id">
@@ -546,18 +549,17 @@
                           <div class="goods-duan-name">{{item_list.goods_name}}</div>
                           <div class="goods-duan-price">￥{{item_list.purchase_price}}</div>
                       </router-link>
-                      <div class="recommend_hot_box more-box" bindtap="openActive_tj" :id="allitem.s_id">更多</div></div>
+                      <div class="recommend_hot_box more-box" @click="openActive_tj(allitem.s_id)" :id="allitem.s_id">更多</div></div>
               </div>
           </div>
           <!-- <div> -->
           <div :class="ifResultTop?'tab-h tab-h-fiex':'tab-h'" ref="tabFixBar">
-              <div :class="currentTab==0?'tab-item active':'tab-item'" data-current="0" @click="swichNav">精选单品</div>
-              <div :class="currentTab==1?'tab-item active':'tab-item'" data-current="1" @click="swichNav">男鞋</div>
-              <div :class="currentTab==2?'tab-item active':'tab-item'" data-current="2" @click="swichNav">女鞋</div>
-              <div :class="currentTab==3?'tab-item active':'tab-item'" data-current="3" @click="swichNav">童鞋</div></div>
-          <div>
-              <div class="row-goodsInfo" v-if="currentTab==0">
-
+              <div v-for="(item, index) in tabArr" :key="index" :class="currentTab==index?'tab-item active':'tab-item'" :data-current="index" @click="swichNav">
+                {{item.name}}
+              </div>
+            </div>
+          <div  :class="ifResultTop? 'tabHeight': ''">
+             <div class="row-goodsInfo" v-if="currentTab==0">
                   <div class="row-goodsli" v-for="(item,index) in goodsInfo" :id="item.n_goods_id" :key="index">
                       <router-link tag="div" :to="'/index/goodsInfoPindan?goodsId='+item.n_goods_id">
                           <img mode="widthFix" :src="item.goods_image" lazy-load="true" />
@@ -573,7 +575,6 @@
                           </div>
                       </router-link>
                   </div>
-
               </div>
               <div class="goodsInfo flex flex-warp flex-pack-justify  " v-else>
                   <div class="goods-li goods-lie-list" v-for="(item,index) in goodsInfo" :key="index" :id="item.n_goods_id">
@@ -596,6 +597,7 @@
 
                   </div>
               </div>
+              <div v-if="compelete" style="text-align: center;color: #aaa;padding: 0.1rem 0;">{{compelete && goodsInfo.length?'到底了~~': '暂无数据'}}</div>
           </div>
           <!-- </div> -->
           <!-- 首页内容结束 -->
@@ -607,10 +609,11 @@
 // import bottom from "@/components/bottom";
 // 轮播插件
 import "swiper/dist/css/swiper.css";
+import "./home.less";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import { api } from "@/utils/api.js";
 import CountDown from "vue2-countdown";
-import { isScrollBottom } from "@/utils/comm.js";
+import { isScrollBottom , _getDocumentTop} from "@/utils/comm.js";
 
 export default {
   name: "index",
@@ -618,8 +621,7 @@ export default {
   components: {
     swiper,
     swiperSlide,
-    CountDown,
-    isScrollBottom
+    CountDown
   },
   data() {
     return {
@@ -662,7 +664,17 @@ export default {
       PageNum: 1,
       goodsInfo: [],
       ifResultTop: false,
-      hasScroll:false
+      hasScroll:false,
+      tabArr: [
+        {name: '精选单品'},
+        {name: '男鞋'},
+        {name: '女鞋'},
+        {name: '童鞋'},
+      ],
+      tabOffset: '',
+      jsonData: '',
+      compelete: false,
+      total_count: ''
     };
   },
   created() {
@@ -680,8 +692,8 @@ export default {
   mounted() {
     //之后
     this.$nextTick(function() {
-      
-
+      isScrollBottom(this.onBottom, this.scrollFn);
+      // window.onscroll = this.scrollFn;
     var that = this;
     function addEvent(obj,type,fn){
         if(obj.attachEvent){
@@ -726,33 +738,6 @@ export default {
     　　}
     　　return windowHeight;
     }
-
-    // addEvent(window,'scroll',function(){
-        
-    //     if(getScrollTop() + getWindowHeight() == getScrollHeight()){
-    //       that.scrollBottomCB();
-    // 　　}
-    // });
-    // addEvent(window,'scroll',function(){
-    //     var sTop =document.documentElement.scrollTop || document.body.scrollTop;
-    //     var tabFixBar = that.$refs.tabFixBar;
-    //     var tabFixBar_Top = tabFixBar.offsetTop;
-
-    //     if(!that.hasScroll){
-    //       that.hasScroll=true;
-    //       that.allHeight=tabFixBar_Top;
-    //     }
-    //     var allHeight=that.allHeight;
-    //     if (sTop >= allHeight) {
-    //       that.ifResultTop=true;
-    //     } else {
-    //       that.ifResultTop=false;
-    //     }
-    // });
-
-
-
-
     });
     
   },
@@ -766,7 +751,19 @@ export default {
       var cur=this.currentTab;
       this.getGoods(cur);
     },
-
+    onBottom(){
+      console.log("滚动到底部");
+      this.getGoods(this.currentTab);
+    },
+    scrollFn(e){
+      if(window.isScroll)return;
+      window.isScroll = true;
+      setTimeout(() => {
+        window.isScroll = false;
+      }, 10);
+      let offsetTop = this.tabOffset;
+      this.ifResultTop = offsetTop && _getDocumentTop() >= offsetTop? true : false;
+    },
     countDownS_cb: function(x) {
       console.log(x);
     },
@@ -791,6 +788,12 @@ export default {
         if (res.code == 2000) {
           //console.log('aaa',res.data)
           this.newHomelist = res.data;
+          this.$nextTick(()=>{
+            let that = this;
+            setTimeout(() => {
+              that.tabOffset = that.$refs.tabFixBar.offsetTop;
+            }, 500);
+          })
         }
       }
     },
@@ -860,7 +863,24 @@ export default {
         }
       }
     },
+    openActive_tj(type){
+      this.$router.push({
+        path: '/index/active',
+        query: {
+          type,
+          istime: 'show',
+          infoType: '1'
+        }
+      })
+    },
     async getGoods(currentTab) {
+      console.log(this.goodsInfo.length ,Number(this.total_count))
+      if(this.total_count && this.goodsInfo.length >= Number(this.total_count)){
+        this.compelete = true;
+        return;
+      }else{
+        this.compelete = false;
+      }
       let data = {
         params: {
           plat: 3,
@@ -869,7 +889,9 @@ export default {
         }
       };
       this.PageNum++;
-
+      this.$vux.loading.show({
+        text: '加载中...'
+      })
       const [err, res] = await api.getGoods(data);
       if (err) {
         this.$vux.toast.text(err.msg);
@@ -879,17 +901,20 @@ export default {
           return;
         } else {
           this.goodsInfo = this.goodsInfo.concat(res.data.list);
+          this.total_count = res.data.total_count;
           //this.yaoqing_list = this.yaoqing_list.concat(res.data.list);
         }
       }
     },
     swichNav(e) {
       const cur = e.target.dataset.current;
-      console.log("cur", cur);
+      window.scrollTo(0,this.tabOffset);
+       console.log(_getDocumentTop(),this.tabOffset)
       if (this.currentTab != cur) {
         this.currentTab = cur;
         this.PageNum = 1;
         this.goodsInfo = [];
+        this.total_count = '';
         this.getGoods(cur);
       }
     },
@@ -911,7 +936,15 @@ export default {
       this.$router.push(url);
     }
   },
-  beforeDestroy(){
+  computed: {
+    returnHeight(){
+      let height = 0;
+      this.$nextTick(()=>{
+        console.log(window.innerHeight - this.$refs.tabFixBar.clientHeight)
+        return window.innerHeight - this.$refs.tabFixBar.clientHeight;
+      })
+      return height;
+    }
   }
 };
 </script>

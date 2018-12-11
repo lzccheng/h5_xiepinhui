@@ -1330,8 +1330,8 @@ export default {
                 const [err_, res_] = await api.getsharecode(data);
                 if(res_.code == 2000){
                   let shareConfig = {
-                    title: '鞋品荟邀请您',
-                    desc: that.goodsInfo.group_price + "元抢真皮鞋还包邮,全场新品任你挑!",
+                    title: '鞋品荟-真皮女鞋，尖货分享',
+                    desc: '大牌设计，工厂价格，平台优质选款，买鞋就上鞋品荟',
                     imgUrl: that.goodsInfo.goods_image_arr[0],
                     link: window.location.origin + '/index/goodsInfoPindan?goodsId=' + this.goodsId+'&shareCode=' + res_.data.code
                   }

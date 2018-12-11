@@ -24,6 +24,11 @@ export const getActivityList = (data) => {
   const url = `${domain}/nine/newseckilltypes`
   return GET(url, data)
 }
+//商品列表
+export const activity = (data) => {
+  const url = `${domain}/nine/activity`
+  return POST(url, data)
+}
 
 //
 export const getLimitData = (data) => {

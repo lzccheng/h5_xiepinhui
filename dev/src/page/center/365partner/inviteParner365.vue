@@ -106,7 +106,7 @@ float: left;
         <div>
             <div class="invite_code_box">
                 <div class="code_box">我的邀请码：<span>{{inviteCode}}</span></div>
-                <div class="copy_box" @click="copyFunction" v-clipboard:copy="inviteCode" v-clipboard:success="copybtn" selectable='true'>复制</div>
+                <div class="copy_box" v-clipboard:copy="inviteCode" v-clipboard:success="copyFunction" selectable='true'>复制</div>
             </div>
             <div class="bg_invite_box">
                 <div class="invite_tipBoxBG">
@@ -142,7 +142,7 @@ float: left;
 <script type="text/ecmascript-6">
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { api } from '@/utils/api.js';
-import { share } from '@/utils/wx_sdk.js';
+import { share, getShareConfig } from '@/utils/wx_sdk.js';
 import { isWeiXin } from "@/utils/comm.js";
 import { Group, Cell, XButton, Badge, XHeader } from 'vux';
 export default {
@@ -160,7 +160,8 @@ export default {
             inviteCode: '',//自己本身的邀请码
             inviteOthersCode: '',
             desc: '',
-            showShareBool: false
+            showShareBool: false,
+            is_smallshop: ''
         }
     },
     created() {
@@ -189,13 +190,19 @@ export default {
                 this.goshare();
             }
         },
-        goshare(){
-            let shareConfig = {
-                title: '邀请365合伙人，立返现金',
-                desc: '现金返个不停~',
-                imgUrl: "http://testp.xiepinhui.com.cn/home2.png",
-                link: window.location.origin + '?url=/centerFull/partner/inviteList&codeInvite=' + this.inviteCode
+        async goshare(){
+            let data = {
+                plat: 3,
+                account: this.account,
+                token: this.token,
+                code: this.inviteCode
+            };
+            // const [err, res] = await api.inviteweidian(data);
+            const [err, res] = await api.receiveweidian(data);
+            if(err.code == 4003){
+                this.is_smallshop = err.data.is_smallshop;
             }
+            let shareConfig = getShareConfig(this, this.is_smallshop);
             console.log(shareConfig)
             share(this,{share: shareConfig});
         },

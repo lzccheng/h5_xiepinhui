@@ -84,10 +84,11 @@ const getQueryString = (name) => {
  * @param {function} cb 
  * 判断页面触底
  */
-const isScrollBottom = (cb) => {
+const isScrollBottom = (cb, cb2) => {
   window.onscroll =
     throttle(
       () => {
+        cb2 && cb2();
         if (_getScrollHeight() == _getWindowHeight() + _getDocumentTop()) {
           cb && cb();
         }
@@ -163,6 +164,7 @@ const _getScrollHeight = () => {
 export {
   isWeiXin,
   getQueryString,
+  _getDocumentTop,
   isScrollBottom,
   daojishi
 }

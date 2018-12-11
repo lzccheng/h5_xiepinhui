@@ -113,6 +113,7 @@ export default {
   color: #fff !important;
 }
 .idnexWrapBox{
+  position: relative;
   padding-top: 0.92rem;
 }
 

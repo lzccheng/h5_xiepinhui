@@ -108,7 +108,7 @@
           <span class="fans-name">不想取经的猪八戒</span>
         </div> -->
       </div>
-      <div class="gounp-wrap">
+      <div class="gounp-wrap"  @click="searchMoreFans">
         <div class="fans-box">
           <div class="fans-item">
             <span>{{redmessageInfo.member_invite_num||0}}人</span>
@@ -132,7 +132,7 @@
             </div>
           </div>
         </div>
-        <div class="btn" @click="searchMoreFans">查看粉丝</div>
+        <div class="btn">查看粉丝</div>
       </div>
     </div>
     <!-- loading -->
