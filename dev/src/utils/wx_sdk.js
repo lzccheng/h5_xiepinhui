@@ -104,23 +104,23 @@ const getShareConfig = ( that, isShop) =>{
         shareConfig = {
           title: '和我一起开店，分享就能赚钱',
           desc: '【' + that.user.nick + '】邀请您赶紧开通365创业小店，一天一元钱，创业0成本，分享就能赚钱，快来开启吧！',
-          imgUrl: "http://m.xiepinhui.com.cn/share/share365.png",
-          link: window.location.origin + '?url=/centerFull/partner/inviteList&codeInvite=' + that.inviteCode
+          imgUrl: "https://m.xiepinhui.com.cn/share/share365.png",
+          link: window.location.origin + '/centerFull/partner/inviteList?codeInvite=' + that.inviteCode
         }
     }else{
         if(userType == 1){
             shareConfig = {
               title: '鞋品荟-真皮女鞋，尖货分享',
               desc: '大牌设计，工厂价格，平台优质选款，买鞋就上鞋品荟',
-              imgUrl: "http://m.xiepinhui.com.cn/share/share365.png",
+              imgUrl: "https://m.xiepinhui.com.cn/share/share365.png",
               link: window.location.origin + '/centerFull/partner/h5LinkParner'
             }
         }else{
             shareConfig = {
               title: '邀请365创业小店，分享赚钱',
               desc: '【鞋品荟】邀请您开通365创业小店，一天一元钱，打造个人创业店铺，无需囤货，全民创业时代，快快加入吧！',
-              imgUrl: "http://m.xiepinhui.com.cn/share/share365.png",
-              link: window.location.origin + '?url=/centerFull/partner/inviteList&codeInvite=' + that.inviteCode
+              imgUrl: "https://m.xiepinhui.com.cn/share/share365.png",
+              link: window.location.origin + '/centerFull/partner/inviteList?codeInvite=' + that.inviteCode
             }
         }
     }

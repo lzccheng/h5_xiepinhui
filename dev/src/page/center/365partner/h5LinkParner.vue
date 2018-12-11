@@ -50,7 +50,7 @@
 }
 </style>
 <template>
-    <div class="page">
+    <div class="page" v-if="!account">
         <x-header :left-options="{backText:''}" :title='nvabarData.title' id='vux-header'></x-header>
         <div>
             <div class="smallShopDv1">
@@ -128,19 +128,35 @@ export default {
                 showCapsule: 1,
                 title: '365合伙人加盟',
             },
+            redmessageInfo: ''
         }
     },
     created() {
         console.log('account',this.account)
     },
     mounted() {
-
+        if(this.account){
+            this.getredmessageInfo();
+        }
     },
     methods: {
         gotoIndex(){
             this.$router.push({
                 path: '/index'
             })
+        },
+        async getredmessageInfo(){
+            let data = {
+                account: this.account,
+                token: this.token
+            };
+            const [err, res] = await api.newredmessage(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            this.redmessageInfo = res.data;
+            this.gotoShop();
         },
         async gotoShop(){
             if(!this.account){
@@ -150,59 +166,72 @@ export default {
                         url: '/centerFull/partner/h5LinkParner'
                     }
                 })
-            }
-            let data = {
-                account: this.account,
-                token: this.token
-            };
-            this.$vux.loading.show();
-            const [err, res] = await api.newredmessage(data);
-            if (err) {
-                this.$vux.toast.text(err.msg);
                 return;
             }
-            let redmessageInfo = res.data;
+            let redmessageInfo = this.redmessageInfo;
+            console.log(redmessageInfo)
+            let codeInvite = ''
+            if(window.localStorage.getItem('inviteOthersCode')){
+                codeInvite = window.localStorage.getItem('inviteOthersCode')
+                console.log(codeInvite)
+            }
             if (this.user.user_type == 2 || this.user.user_type == 3) {
               this.$router.push("/centerFull/partner/inviteList");
             } else {
                 let issmallshop = redmessageInfo.is_smallshop;
                 let store_state = redmessageInfo.store_state;
+                
                 //判断是否已开通
                 if (issmallshop == 0) {
-                //没开通
-                this.$router.push("/centerFull/partner/code");
-                if (store_state == 3) {
-                    //正在审核中
-                    this.$router.push({
-                    path: "/centerFull/partner/applyStatic",
-                    query: {
-                        status: 1
-                    }
-                    });
-                    return;
-                } else if (store_state == 4) {
-                    //审核失败
-                    this.$router.push({
-                    path: "/centerFull/partner/applyStatic",
-                    query: {
-                        status: 0
-                    }
-                    });
-                    return;
-                } else if (store_state == 0) {
+                    //没开通
                     this.$router.push("/centerFull/partner/code");
-                    return;
-                } else {
-                    this.$router.push("/centerFull/partner/code");
-                    return;
-                }
+                    if (store_state == 3) {
+                        //正在审核中
+                        this.$router.push({
+                        path: "/centerFull/partner/applyStatic",
+                        query: {
+                            status: 1
+                        }
+                        });
+                        return;
+                    } else if (store_state == 4) {
+                        //审核失败
+                        this.$router.push({
+                        path: "/centerFull/partner/applyStatic",
+                        query: {
+                            status: 0
+                        }
+                        });
+                        return;
+                    } else if (store_state == 0) {
+                        this.$router.push({
+                            path: '/centerFull/partner/code',
+                            query: {
+                                codeInvite
+                            }
+                        });
+                        return;
+                    } else {
+                        this.$router.push({
+                            path: '/centerFull/partner/code',
+                            query: {
+                                codeInvite
+                            }
+                        });
+                        return;
+                    }
                 } else {
                     //开通了
                     this.$router.push("/centerFull/partner/inviteList");
                     return;
                 }
             }
-            this.$router.push('/centerFull/partner/code')
+            this.$router.push({
+                path: '/centerFull/partner/code',
+                query: {
+                    codeInvite
+                }
+            });
         }
     },
     computed: {

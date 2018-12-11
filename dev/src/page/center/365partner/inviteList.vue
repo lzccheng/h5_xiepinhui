@@ -1,7 +1,7 @@
 <template>
   <div class="scroll-wrap">
     <!-- <x-header :left-options="{backText:''}" title="365合伙人邀请码" id="vux-header"><a slot="right"></a></x-header> -->
-    <div class="content-index">
+    <div class="content-index" v-show="account && inviteShow">
       <div class="bg_invite_box" style="position:relative;">
         <!-- box圈 -->
         <div class="about_inviteInfo_box">
@@ -185,7 +185,8 @@ export default {
       Yaoshow_bottom: false,
       loading_bottom: true,
       showShareBool: false,
-      available_amount: 0
+      available_amount: 0,
+      inviteShow: false
     };
   },
   created() {
@@ -208,17 +209,20 @@ export default {
     }
     
     if(!this.account){
-      this.$router.push({
-        path: '/user/login',
-        query: {
-          from_: '/centerFull/partner/inviteList',
-          codeInvite: this.inviteOthersCode
-        }
-      })
+      // this.$router.push({
+      //   path: '/user/login',
+      //   query: {
+      //     from_: '/centerFull/partner/inviteList',
+      //     codeInvite: this.inviteOthersCode
+      //   }
+      // })
+      this.$router.push('/centerFull/partner/h5LinkParner');
       return;
     }
     if (this.inviteOthersCode) {
       this.bindFans(this.inviteOthersCode);
+    }else{
+      this.inviteShow = true;
     }
     
     this.getfanred();
@@ -297,7 +301,6 @@ export default {
         let codeStatus = err.code;
         var issmallshop = err.data.is_smallshop;
         var store_state = err.data.store_state;
-        this.$vux.toast.text(err.msg);
         console.log('inviteOthersCode',this.inviteOthersCode)
         if(codeStatus!=2000){
           if(store_state == 3){//审核中
@@ -320,8 +323,7 @@ export default {
           }
           if(store_state == 1){//审核通过
             // this.$vux.toast.text(err.msg)
-            this.inviteOthersCode = '';
-            window.localStorage.removeItem('inviteOthersCode');
+            this.inviteShow = true;
             return;
           }
           console.log(err)
