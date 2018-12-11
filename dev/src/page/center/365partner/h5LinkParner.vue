@@ -56,7 +56,7 @@
             <div class="smallShopDv1">
                 <img mode="widthFix" src="http://img.xiepinhui.com.cn/small_app/mine/aboutIntro365/aboutIntro1.jpg"/>
             </div>
-            <div class="goIndex">去首页</div>
+            <div class="goIndex" @click="gotoIndex">去首页</div>
             <div class="contentSmallShopDv1">
                 <div class="titleTxt">申请协议</div>
                 <div class="part1SmallShop">
@@ -109,7 +109,7 @@
                     <span>7、现金红包可直接用于商城购买商品或提现</span>
                 </div>
             </div>
-            <div class="openShopBtn">我要开店</div>
+            <div class="openShopBtn" @click="gotoShop">我要开店</div>
         </div>
     </div>
 </template>
@@ -124,17 +124,86 @@ export default {
     },
     data() {
         return {
-
+            nvabarData: {
+                showCapsule: 1,
+                title: '365合伙人加盟',
+            },
         }
     },
     created() {
-
+        console.log('account',this.account)
     },
     mounted() {
 
     },
     methods: {
-
+        gotoIndex(){
+            this.$router.push({
+                path: '/index'
+            })
+        },
+        async gotoShop(){
+            if(!this.account){
+                this.$router.push({
+                    path: '/user/login',
+                    query: {
+                        url: '/centerFull/partner/h5LinkParner'
+                    }
+                })
+            }
+            let data = {
+                account: this.account,
+                token: this.token
+            };
+            this.$vux.loading.show();
+            const [err, res] = await api.newredmessage(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            let redmessageInfo = res.data;
+            if (this.user.user_type == 2 || this.user.user_type == 3) {
+              this.$router.push("/centerFull/partner/inviteList");
+            } else {
+                let issmallshop = redmessageInfo.is_smallshop;
+                let store_state = redmessageInfo.store_state;
+                //判断是否已开通
+                if (issmallshop == 0) {
+                //没开通
+                this.$router.push("/centerFull/partner/code");
+                if (store_state == 3) {
+                    //正在审核中
+                    this.$router.push({
+                    path: "/centerFull/partner/applyStatic",
+                    query: {
+                        status: 1
+                    }
+                    });
+                    return;
+                } else if (store_state == 4) {
+                    //审核失败
+                    this.$router.push({
+                    path: "/centerFull/partner/applyStatic",
+                    query: {
+                        status: 0
+                    }
+                    });
+                    return;
+                } else if (store_state == 0) {
+                    this.$router.push("/centerFull/partner/code");
+                    return;
+                } else {
+                    this.$router.push("/centerFull/partner/code");
+                    return;
+                }
+                } else {
+                    //开通了
+                    this.$router.push("/centerFull/partner/inviteList");
+                    return;
+                }
+            }
+            this.$router.push('/centerFull/partner/code')
+        }
     },
     computed: {
         ...mapGetters(['user', 'account', 'token'])

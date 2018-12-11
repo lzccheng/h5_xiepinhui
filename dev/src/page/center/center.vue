@@ -570,7 +570,6 @@ export default {
           if (this.user.user_type == 2 || this.user.user_type == 3) {
               this.$router.push("/centerFull/partner/inviteList");
           } else {
-            
             let issmallshop = this.redmessageInfo.is_smallshop;
             let store_state = this.redmessageInfo.store_state;
             //判断是否已开通
