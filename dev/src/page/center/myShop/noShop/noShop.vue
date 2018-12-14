@@ -13,9 +13,9 @@
 </style>
 <template>
     <div class="page" :style="{height: height + 'px'}">
-        <x-header :left-options="{backText:''}" title='我的店铺' ref="header" id='vux-header'></x-header>
+        <x-header :left-options="{backText:''}" :title='title' ref="header" id='vux-header'></x-header>
         <div class="box_" :style="{height: height + 'px'}">
-            <iframe src="https://m.xiepinhui.com.cn/join/index.html" frameborder="0"></iframe>
+            <iframe :src="url" frameborder="0"></iframe>
         </div>
     </div>
 </template>
@@ -30,16 +30,18 @@ export default {
     },
     data() {
         return {
-            height: 0
+            title: '我的店铺',
+            height: 0,
+            url: 'https://m.xiepinhui.com.cn/join/index.html'
         }
     },
     created() {
-
+        this.title = this.$route.query.title || '我的店铺';
+        this.url = this.$route.query.url || 'https://m.xiepinhui.com.cn/join/index.html';
     },
     mounted() {
         this.$nextTick(()=>{
             this.height = window.innerHeight - this.$refs.header.$el.offsetHeight;
-            console.log(this.height)
         })
     },
     methods: {

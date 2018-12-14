@@ -29,7 +29,7 @@
         <div class="fansContentContainer" v-if="isTabOne">
           <div style="text-align: center;" v-if="listObj === ''">加载中...</div>
           <img v-if="listObj.length<=0 && listObj" src="@/assets/images/null/null_fan.png" class="null_bg" />
-          <div class="fansContentLi" v-if="listObj" v-for="(item,index) in listObj" :key="index" @click="goFansDetail" :data-fanid="item.member_id">
+          <div class="fansContentLi" v-if="listObj" v-for="(item,index) in listObj" :key="index" @click="goFansDetail(item.member_id)" :data-fanid="item.member_id">
             <img :src="item.member_avatar" class="avatarPic" />
             <div class="right_part">
               <div class="userInfo">
@@ -44,7 +44,7 @@
                   </div>
                   <div class="benefit">收益：{{item.amount}}元</div>
                 </div>
-                <div class="btnInvite colorTheam colorTheamBorder" catchtap="now_invitefun"  v-if="item.is_smallshop==0">立即推荐</div>
+                <div class="btnInvite colorTheam colorTheamBorder" catchtap="now_invitefun"  v-if="item.is_smallshop==0">立即查看</div>
               </div>
               <div class="explain_part">
                 <div class="f colorTheam" v-if="item.is_smallshop==0">
@@ -63,7 +63,7 @@
         <div class="fansContentContainer" v-if="isTabTwo">
           <div style="text-align: center;" v-if="listObj === ''">加载中...</div>
           <img v-if="listObj.length<=0 && listObj" src="@/assets/images/null/null_fan.png" class="null_bg" />
-          <div class="fansContentLi" v-if="listObj" v-for="(item,index) in listObj" :key="index" @click="goFansDetail" :data-fanid="item.member_id">
+          <div class="fansContentLi" v-if="listObj" v-for="(item,index) in listObj" :key="index" @click="goFansDetail(item.member_id)" :data-fanid="item.member_id">
             <img :src="item.member_avatar" class="avatarPic"/>
             <div class="right_part">
               <div class="userInfo">
@@ -93,8 +93,8 @@
       没有更多数据了
     </div>
 
-    <!-- 收益礼包注释 -->
-    <div class="incomePicBgBox" @click='incomeModal'></div>
+    <!-- 收益礼包注释    -->
+    <div class="incomePicBgBox" v-if="isShop == 1" @click='incomeModal'></div>
       <!-- 弹窗-->
       <div class="rankModalBox" v-if="showIncomeModal">
           <div class="bg_shadeBox" @click='closeIncomeModal'></div>
@@ -103,7 +103,7 @@
               <div class="bgTopContentBg">
                   <div class="xipinhuiIcon xipinhui-close closeIcon" @click='closeIncomeModal'></div>
                   <div class="headlineTxt">领取奖励</div>
-                  <div class="have_benefit_box">累积收益<text class="num_show">{{fansContent.fanAmount || 0}}</text>元</div>
+                  <div class="have_benefit_box">累积收益<span class="num_show">{{fansContent.fanAmount || 0}}</span>元</div>
               </div>
               <div class="giftRankBox">
                   <div  class="scrollHeight">
@@ -131,11 +131,11 @@
                           </div>
                           <div class="aboutProgrss">
                               <div class="progressBgBox">
-                                  <div class="hasProgressBg"></div>
+                                  <div class="hasProgressBg" :style="{width: item.percentage + '%'}"></div>
                               </div>
                               <div class="progressIndex">{{item.percentage+'%'}}</div>
                           </div>
-                          <div class="rightPartRank" v-if="item.type==2" @click='lingquFun'>领取</div>
+                          <div class="rightPartRank" v-if="item.type==2" @click='lingquFun(item.lev)'>领取</div>
                           <div class="rightPartRank yilingquBg" v-if="item.type==3">已领取</div>
                           <div class="rightPartRank grayBtnWay" v-if="item.type==1">未激活</div>
                       </div>
@@ -179,40 +179,40 @@
 </template>
 
 <script>
-var redBackList=[
-   //收益红包弹窗数据
-    {
-      "redMoney": "10000",//触发金
-      "award": "800",//奖金
-      "percentage": "100",//百分比
-      "type": 3 //类型:1未激活 2待领取 3已领取
-    },
-    {
-      "redMoney": "15000",
-      "award": "1500",
-      "percentage": "62.5",
-      "type": 3
-    },
-    {
-      "redMoney": "20000",
-      "award": "2000",
-      "percentage": "82.5",
-      "type": 3
-    },
-    {
-      "redMoney": "25000",
-      "award": "2500",
-      "percentage": "0",
-      "type": 2
-    },
-    {
-      "redMoney": "30000",
-      "award": "3000",
-      "percentage": "0",
-      "type": 1
-    },
+// var redBackList=[
+//    //收益红包弹窗数据
+//     {
+//       "redMoney": "10000",//触发金
+//       "award": "800",//奖金
+//       "percentage": "100",//百分比
+//       "type": 3 //类型:1未激活 2待领取 3已领取
+//     },
+//     {
+//       "redMoney": "15000",
+//       "award": "1500",
+//       "percentage": "62.5",
+//       "type": 3
+//     },
+//     {
+//       "redMoney": "20000",
+//       "award": "2000",
+//       "percentage": "82.5",
+//       "type": 3
+//     },
+//     {
+//       "redMoney": "25000",
+//       "award": "2500",
+//       "percentage": "0",
+//       "type": 2
+//     },
+//     {
+//       "redMoney": "30000",
+//       "award": "3000",
+//       "percentage": "0",
+//       "type": 1
+//     },
     
-];
+// ];
 import { mapGetters, mapActions } from "vuex";
 import { api } from "@/utils/api.js";
 import { XHeader } from "vux";
@@ -245,10 +245,12 @@ export default {
       },
       show_bottom:false,
       redBackList: [],//收益红包弹窗数据
-      closeComsumeModal:false
+      closeComsumeModal:false,
+      isShop: ''
     };
   },
   mounted(){
+    this.getShop();
     this.$nextTick(function() {
       this.fans_list();
       this.fanStatistic();
@@ -261,8 +263,23 @@ export default {
     closeIncomeModal(){
       this.showIncomeModal=false;
     },
-    lingquFun(){
-      this.closeComsumeModal=true;
+    async lingquFun(lev){
+      let data = {
+        account: this.account,
+        token: this.token,
+        lev
+      }
+      const [err, res_data] = await api.taketriggerredpacket(data);
+      if (err) {
+        this.$vux.toast.text(err.msg);
+        return;
+      }
+      if(res_data.data.take_status==1){
+        this.trigger_redpacket_money = res_data.data.trigger_redpacket_money;
+        this.closeComsumeModal = true;
+      }else{
+        this.$vux.toast.text('领取失败');
+      }
     },
     closeReceiveModal() {
       this.closeComsumeModal=false;
@@ -305,7 +322,6 @@ export default {
           if(res.code==2000){
             this.fansContent=res.data;
             this.redBackList=res.data.redBackList;//;redBackList
-            
           }
         }
     },
@@ -330,8 +346,21 @@ export default {
         }
       }
     },
+    async getShop(){
+      let data = {
+        account: this.account,
+        token: this.token,
+      }
+      const [err, res] = await api.newredmessage(data);
+      if (err) {
+        this.$vux.toast.text(err.msg);
+        return;
+      }
+      if(res.code == 2000){
+        this.isShop = res.data.is_smallshop;
+      }
+    },
     async rank_list() {//合伙人接口
-
       let data={
         plat: 3,
         account: this.account,
@@ -354,7 +383,13 @@ export default {
 
     },
 
-    goFansDetail(e){
+    goFansDetail(fanid){
+      this.$router.push({
+        path: 'myNewFansDetail',
+        query: {
+          fanid
+        }
+      })
       // console.log(e.currentTarget.dataset.fanid);
       // var fanid = e.currentTarget.dataset.fanid;
       // wx.navigateTo({

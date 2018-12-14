@@ -28,12 +28,12 @@ let _requestConfig = async (that,jsApiList,cb,data)=>{
         //data.config权限注入参数
         wx.config(config);
         wx.ready(()=>{
-            wx.checkJsApi({
-                jsApiList,
-                success(res){
-                    console.log(res)
-                }
-            })
+            // wx.checkJsApi({
+            //     jsApiList,
+            //     success(res){
+            //         console.log(res)
+            //     }
+            // })
             cb&&cb(wx);
         })
         wx.error((err)=>{
@@ -96,11 +96,13 @@ const wxPay = async (that,data)=>{
 }
 const getShareConfig = ( that, isShop) =>{
     let userType = that.user.user_type
-    if (!userType || !isShop){
-        return '参数错误'
+    let shop = isShop ||'';
+    if (!userType){
+        console.log('getShareConfig',that.user, isShop)
+        return 'getShareConfig  userType为空'
     }
     let shareConfig = {};
-    if (isShop == 1){
+    if (shop == 1) {
         shareConfig = {
           title: '和我一起开店，分享就能赚钱',
           desc: '【' + that.user.nick + '】邀请您赶紧开通365创业小店，一天一元钱，创业0成本，分享就能赚钱，快来开启吧！',
@@ -126,8 +128,20 @@ const getShareConfig = ( that, isShop) =>{
     }
     return shareConfig;
 }
+const scanQRCode = (that, data) => {
+    let jsApiList = ['checkJsApi', 'startRecord', 'stopRecord', 'translateVoice', 'scanQRCode', 'openCard'];
+    let success = data.success || function(res){ console.log(res)};
+    let callback = wx =>{
+        wx.scanQRCode({
+            needResult: 0,
+            success
+        })
+    }
+    _requestConfig(that, jsApiList, callback, data);
+}
 export {
     share,
     wxPay,
-    getShareConfig
+    getShareConfig,
+    scanQRCode
 }

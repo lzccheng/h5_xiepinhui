@@ -60,7 +60,7 @@
       <div class="tips-box" @click="selectTips">
         <div class="icon" :class="{'active':tips}"></div>
         <div class="text">
-          同意<span>《鞋品荟365合伙人申请协议》</span>
+          同意<span @click.stop="link">《鞋品荟365合伙人申请协议》</span>
         </div>
       </div>
     </div>
@@ -356,6 +356,10 @@ export default {
     // tips
     selectTips() {
       this.tips = !this.tips;
+    },
+    link(){
+      let query = {title: '365合伙人协议', url: 'https://m.xiepinhui.com.cn/html/pro.html'};
+      this.$router.push({path: '/centerFull/myshop/noShop', query});
     },
     // 规则
     ruleShow() {

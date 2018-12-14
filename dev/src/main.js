@@ -7,7 +7,7 @@ import FastClick from 'fastclick'
 import Vant from 'vant';
 // import { Button } from 'vant';
 import 'vant/lib/vant-css/index.css';
-import { encrypt } from 'utils/encrypt.js' // encrypt
+import { encrypt , stopClick} from 'utils/encrypt.js' // encrypt
 import VueClipboard from 'vue-clipboard2' // 剪切板
 import { LoadingPlugin, ToastPlugin, ConfirmPlugin, WechatPlugin, AlertPlugin } from 'vux'
 import VueAwesomeSwiper from 'vue-awesome-swiper';
@@ -30,6 +30,7 @@ FastClick.attach(document.body)
 
 Vue.prototype.$encrypt = encrypt
 Vue.prototype.$api = 1
+Vue.prototype.$stopClick = stopClick
 Vue.config.productionTip = false
 window.isClick = false
 

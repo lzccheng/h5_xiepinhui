@@ -5,6 +5,14 @@ let publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDHs6oti/Pl8zgw+pP9fCZWeXp
 
 let encryptor = new JSEncrypt()
 
+export let stopClick = time =>{
+    if (window.isClick) return true;
+    window.isClick = true;
+    setTimeout(() => {
+      window.isClick = false;
+    }, time || 200);
+    return false;
+}
 encryptor.setPublicKey(publicKey) // 设置公钥
 
 export const encrypt = function toEncrypt(str) {

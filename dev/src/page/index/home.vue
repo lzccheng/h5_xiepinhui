@@ -32,7 +32,7 @@
 }
 .weui-grid {
   padding: 5px;
-  width: 20%;
+  width: 25%;
   background: transparent !important;
   text-align: center;
   float: left;
@@ -328,7 +328,7 @@
   // z-index: 9;
 }
 .tab-item {
-  width: 25%;
+  width: 33.33%;
   display: inline-block;
   text-align: center;
 }
@@ -439,7 +439,7 @@
   width: 40% !important;
   max-height: 30/50rem;
 }
-.goodsInfo .goods-li image {
+.goodsInfo .goods-li img {
   background: #f1f1f1;
 }
 .goods-price {
@@ -478,7 +478,7 @@
   margin-top: 0px;
 }
 .tabHeight{
-  min-height: 1200px;
+  min-height: 700px;
 }
 </style>
 
@@ -487,8 +487,9 @@
           <!-- 首页内容开始 -->
           <!-- swiper -->
           <swiper :options="swiperOption">
-              <swiper-slide v-for="(item,index) in newHomelist.banner_data" :key="index" bindtap='link' :data-index="index" :data-type="item.type" :data-id="item.data">
-                  <img :src="item.image" class="slide-image" /></swiper-slide>
+              <swiper-slide v-for="(item,index) in newHomelist.banner_data" :key="index"  :data-index="index" :data-type="item.type" :data-id="item.data">
+                <img :src="item.image" class="slide-image" @click='link(item.type, item.data)'/>
+              </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
           <div class="page__bd">
@@ -498,7 +499,7 @@
                       <div class="weui-grid__label">{{itemActive.title}}</div></div>
               </div>
           </div>
-          <div class="active-to-box ">
+          <!-- <div class="active-to-box ">
               <div class="news-silder flex flex-align-center">
                   <div class="swiper-shadow"></div>
                   <img class="gonggao-img" src='http://img.xiepinhui.com.cn/small_app/programOldImgFile/gonggao.png' />
@@ -510,11 +511,11 @@
                           <div class="silder-news-rigth">
                               <img :src='item.goods_image' /></div>
                       </swiper-slide>
-                      <!-- <div class="swiper-pagination2" slot="pagination"></div> --></swiper>
+                    </swiper>
               </div>
               <div class="active-img-box" @click='link' :data-type="nseckilltypes.temporary.type" :data-id="nseckilltypes.temporary.data" v-if="nseckilltypes.temporary.is_show && nseckilltypes.temporary!=''">
                   <img :src="nseckilltypes.temporary.img" /></div>
-          </div>
+          </div> -->
           <!-- <div class="like flex flex-pack-justify" >
               <div class="left" catchtap='openSpike' :data-type='nseckilltypes.seckill.type' :id="nseckilltypes.seckill.value">
                   <img class="bg-left-img" :src="nseckilltypes.seckill.img" bindload="imgsrc" style='height:leftHeigthpx' />
@@ -559,10 +560,10 @@
               </div>
             </div>
           <div  :class="ifResultTop? 'tabHeight': ''">
-             <div class="row-goodsInfo" v-if="currentTab==0">
+             <div class="row-goodsInfo" v-if="currentTab==1">
                   <div class="row-goodsli" v-for="(item,index) in goodsInfo" :id="item.n_goods_id" :key="index">
                       <router-link tag="div" :to="'/index/goodsInfoPindan?goodsId='+item.n_goods_id">
-                          <img mode="widthFix" :src="item.goods_image" lazy-load="true" />
+                          <img mode="widthFix" :src="item.goods_image.split('?')[0]" lazy-load="true" />
                           <div class="row-goods-name">{{item.goods_name}}</div>
                           <div class='flex row-bottom 	flex-align-center'>
                               <span class="row-price">￥{{item.group_price}}</span>
@@ -578,10 +579,9 @@
               </div>
               <div class="goodsInfo flex flex-warp flex-pack-justify  " v-else>
                   <div class="goods-li goods-lie-list" v-for="(item,index) in goodsInfo" :key="index" :id="item.n_goods_id">
-
                       <router-link tag="div" :to="'/index/goodsInfoPindan?goodsId='+item.n_goods_id">
                           <div class="lie-left-img">
-                              <img mode="widthFix" style="" :src="item.goods_image" lazy-load="true" /></div>
+                              <img mode="widthFix" class="imgSeletor" :src="item.goods_image.split('?')[0]" lazy-load="true" /></div>
                           <span class="goods-name">{{item.goods_name}}</span>
                           <div class="all-list-biaoqian">
                               <img mode='widthFix' :src='item.member_price_img' />
@@ -592,12 +592,11 @@
                                   <span class="bottom-goods-xiaoling">销量：{{item.goods_salenum}}</span></span>
                           </div>
                       </router-link>
-
-                      
-
                   </div>
               </div>
-              <div v-if="compelete" style="text-align: center;color: #aaa;padding: 0.1rem 0;">{{compelete && goodsInfo.length?'到底了~~': '暂无数据'}}</div>
+              <div v-if="compelete" style="text-align: center;color: #aaa;padding: 0.1rem 0;">
+                {{compelete && goodsInfo.length != 0?'到底了~~': '暂无数据'}}
+              </div>
           </div>
           <!-- </div> -->
           <!-- 首页内容结束 -->
@@ -612,6 +611,8 @@ import "swiper/dist/css/swiper.css";
 import "./home.less";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import { api } from "@/utils/api.js";
+import { share } from "@/utils/wx_sdk.js";
+import nullData from "@/components/nullData";
 import CountDown from "vue2-countdown";
 import { isScrollBottom , _getDocumentTop} from "@/utils/comm.js";
 
@@ -621,7 +622,8 @@ export default {
   components: {
     swiper,
     swiperSlide,
-    CountDown
+    CountDown,
+    nullData
   },
   data() {
     return {
@@ -666,15 +668,18 @@ export default {
       ifResultTop: false,
       hasScroll:false,
       tabArr: [
+        {name: '女鞋'},
         {name: '精选单品'},
         {name: '男鞋'},
-        {name: '女鞋'},
-        {name: '童鞋'},
+        // {name: '童鞋'},
       ],
       tabOffset: '',
       jsonData: '',
       compelete: false,
-      total_count: ''
+      total_count: '',
+      listHeight: '200',
+      tabHeight: 700,
+      isShare: false
     };
   },
   created() {
@@ -682,6 +687,7 @@ export default {
     this.getHome();
     this.getActivityList();
     this.getGoods(0); //默认精品
+    
     // var tabFixBar=document.getElementById('tabFixBar');
     // console.log('132223',tabFixBar)
     // var tabFixBar_Top=tabFixBar.offsetTop;
@@ -694,6 +700,7 @@ export default {
     this.$nextTick(function() {
       isScrollBottom(this.onBottom, this.scrollFn);
       // window.onscroll = this.scrollFn;
+      
     var that = this;
     function addEvent(obj,type,fn){
         if(obj.attachEvent){
@@ -747,20 +754,14 @@ export default {
   methods: {
     //滚动到底部回调
     scrollBottomCB() {
-      console.log("滚动到底部");
       var cur=this.currentTab;
       this.getGoods(cur);
     },
     onBottom(){
-      console.log("滚动到底部");
       this.getGoods(this.currentTab);
     },
     scrollFn(e){
-      if(window.isScroll)return;
-      window.isScroll = true;
-      setTimeout(() => {
-        window.isScroll = false;
-      }, 10);
+      if(this.$stopClick(10))return;
       let offsetTop = this.tabOffset;
       this.ifResultTop = offsetTop && _getDocumentTop() >= offsetTop? true : false;
     },
@@ -851,12 +852,17 @@ export default {
           ).toFixed(0);
           this.nseckilltypes.seckill = res.data.seckill;
           this.nseckilltypes.activity = res.data.activity;
-          // this.nseckilltypes=this.nseckilltypes;
-          // this.setData({
-          //   nseckilltypes: this.data.nseckilltypes,
-          // });
           this.nseckilltypes = this.nseckilltypes;
-
+          if(!this.isShare){
+            let shareConfig = {
+              title: '鞋品荟-真皮女鞋，尖货分享',
+              desc: '大牌设计，工厂价格，平台优质选款，买鞋就上鞋品荟',
+              imgUrl: this.nseckilltypes.homegoods[0].img,
+              link: window.location.href
+            }
+            share(this, {share: shareConfig});
+          }
+          this.isShare = true;
           var timer = setTimeout(() => {
             this.getLimitData();
           }, 3000);
@@ -874,18 +880,24 @@ export default {
       })
     },
     async getGoods(currentTab) {
-      console.log(this.goodsInfo.length ,Number(this.total_count))
+      // console.log(this.goodsInfo.length ,Number(this.total_count))
       if(this.total_count && this.goodsInfo.length >= Number(this.total_count)){
         this.compelete = true;
         return;
       }else{
         this.compelete = false;
       }
+      let type = {
+        '0': 2,
+        '1': 0,
+        '2': 1,
+        '3': 3
+      };
       let data = {
         params: {
           plat: 3,
           page: this.PageNum,
-          type: currentTab
+          type: type[currentTab]
         }
       };
       this.PageNum++;
@@ -902,6 +914,15 @@ export default {
         } else {
           this.goodsInfo = this.goodsInfo.concat(res.data.list);
           this.total_count = res.data.total_count;
+          if(this.goodsInfo.length >= Number(this.total_count)){
+            this.compelete = true;
+          }
+          // this.$nextTick(()=>{
+            // let dom = document.querySelector('.imgSeletor');
+            // let width = window.getComputedStyle? window.getComputedStyle(dom).width: dom.currentStyle('width');
+            // console.log('innerWidth',width.slice(0,-2))
+            // this.listHeight = width.slice(0,-2);
+          // })
           //this.yaoqing_list = this.yaoqing_list.concat(res.data.list);
         }
       }
@@ -909,7 +930,7 @@ export default {
     swichNav(e) {
       const cur = e.target.dataset.current;
       window.scrollTo(0,this.tabOffset);
-       console.log(_getDocumentTop(),this.tabOffset)
+      console.log(_getDocumentTop(),this.tabOffset)
       if (this.currentTab != cur) {
         this.currentTab = cur;
         this.PageNum = 1;
@@ -918,7 +939,23 @@ export default {
         this.getGoods(cur);
       }
     },
-    link() {},
+    link(type , id) {
+      console.log(88888,type, id)
+      let url = null;
+      let query = {};
+      switch (type) {
+        case 1:
+          url = '/index/goodsInfoPindan';
+          query.goodsId = id;
+        break;
+      }
+      if(url){
+        this.$router.push({
+          path: url,
+          query
+        })
+      }
+    },
     nacigator(linketype, status){
       let url = '';
       switch (linketype) {
@@ -927,6 +964,15 @@ export default {
           break;
         case 8:
           url = '/center';
+          break;
+        case 13:
+          url = '/HuiBiArea';
+          break;
+        case 14:
+          url = '/centerFull/partner/h5LinkParner';
+          break;
+        case 11:
+          url = '/centerFull/myService/integral_sc';
           break;
       }
       if(!url){

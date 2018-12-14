@@ -91,8 +91,8 @@ export default {
   border-width: 1px 0 0 1px;
   -webkit-transform: rotate(315deg);
   transform: rotate(315deg);
-  top: 8px;
-  left: 7px;
+  top: 8/100rem;
+  left: 7/100rem;
 }
 #vux-header {
   z-index: 3;

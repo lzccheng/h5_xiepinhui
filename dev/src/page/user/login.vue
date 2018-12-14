@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div class="wrap" v-if="access_codeShow">
     <div class="logion-top-bg"></div>
     <div class="loginMain">
       <div class="other_login" v-if="isWX" @click="wxLogin">
@@ -41,7 +41,8 @@ export default {
       isWX: false,
       phone: "",
       password: "",
-      state: ""
+      state: "",
+      access_codeShow: true
     };
   },
   created() {
@@ -63,6 +64,7 @@ export default {
       this.loginthirdFun(data); //绑定手机号后获取token
     }
     if (this.access_code) {
+      this.access_codeShow = false;
       this.wxLogin();
     }
   },
@@ -175,9 +177,8 @@ export default {
                 });
                 that.$router.replace('/center')
               } catch (error) {
-                
+                this.access_codeShow = true;
               }
-              
               return;
             }
             let data = {
@@ -196,6 +197,7 @@ export default {
           })
           .catch(function(error) {
             console.log(error);
+            this.access_codeShow = true;
             that.$vux.toast.text("微信登录参数出错");
           });
       } else {

@@ -88,11 +88,10 @@ const isScrollBottom = (cb, cb2) => {
   window.onscroll =
     throttle(
       () => {
-        cb2 && cb2();
         if (_getScrollHeight() == _getWindowHeight() + _getDocumentTop()) {
           cb && cb();
         }
-      }, 200
+      }, 200, cb2
     )
 }
 /**
@@ -101,10 +100,11 @@ const isScrollBottom = (cb, cb2) => {
  * @param {string} delay 
  * 函数节流
  */
-const throttle = (method, delay) => {
+const throttle = (method, delay, cb2) => {
   return function () {
     var context = this,
       args = arguments;
+    cb2 && cb2();
     clearTimeout(this.timer);
     context.timer = setTimeout(function () {
       method.apply(context, args);

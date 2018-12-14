@@ -27,6 +27,8 @@ const partnerWrap = ()=>import('@/page/center/365partner/partnerWrap')
 const code = ()=>import('@/page/center/365partner/code')
 //365开通
 const apply = ()=>import('@/page/center/365partner/apply')
+//365开通
+const myNewFansDetail = () => import('@/page/center/365partner/myNewFansDetail')
 //邀请365伙人
 const inviteParner365 = () => import('@/page/center/365partner/inviteParner365')
 //h5LinkParner
@@ -51,6 +53,17 @@ const orderlist = ()=>import('@/page/center/orderlist/orderlist')
 // 订单详情
 const orderlistinfo = ()=>import('@/page/center/orderlist/orderlistinfo')
 
+
+// 我的积分
+
+const integralWrap = () => import('@/page/center/integral/integralWrap')
+
+const integral_my = () => import('@/page/center/integral/integral_my')
+//积分明细
+const integral_mx = () => import('@/page/center/integral/integral_mx')
+
+//积分排名
+const integral_pm = () => import('@/page/center/integral/integral_pm')
 // module 我的店铺
 const myShopFull = ()=>import('@/page/center/myShop/myShopFull')
 const shopIndex = ()=>import('@/page/center/myShop/shopIndex')
@@ -113,6 +126,8 @@ const myWallet = () => import('@/page/center/myWallet/myWallet') //提现首页
 const myWalletWrap = () => import('@/page/center/myWallet/myWalletWrap') //myWalletWrap
 
 const redirectHelp = () => import('@/page/redirect/redirectHelp')
+const redirectPro = () => import('@/page/redirect/redirectPro')
+
 
 
 
@@ -184,6 +199,15 @@ const haohuo = () => import('@/page/center/myService/haohuo/haohuo')
 //积分商城
 const integral_sc = () => import('@/page/center/myService/integral_sc/integral_sc')
 
+//兑换订单
+const integral_order = () => import('@/page/center/myService/integral_sc/integral_order')
+
+//积分商品支付
+const integral_pay = () => import('@/page/center/myService/integral_sc/integral_pay')
+
+//积分订单详情
+const integral_goods_info = () => import('@/page/center/myService/integral_sc/integral_goods_info')
+
 const base = config.path
 
 console.log(`base : ${base}`)
@@ -203,7 +227,11 @@ let router = new Router({
       component: indexWrap,
       children: [{
         path: '/',
-        component: home
+        component: home,
+        nam: 'home',
+        meta: {
+          title: '鞋品荟'
+        }
       },{
         path: 'goodsInfoPindan',
         name: 'goodsInfoPindan',
@@ -299,9 +327,11 @@ let router = new Router({
       component: centerWrap,
       children: [{
         path: '',
-        component: center
+        component: center,
+        meta: {
+          title: '个人中心'
+        }
       },
-      
     ],
       meta: {
         title: '个人中心'
@@ -376,6 +406,13 @@ let router = new Router({
             component: apply,
             meta: {
               title: '开店申请'
+            }
+          },  {
+            path: 'myNewFansDetail',
+            name: 'myNewFansDetail',
+            component: myNewFansDetail,
+            meta: {
+              title: '粉丝订单详情'
             }
           }, {
             path: 'applyStatic',
@@ -691,9 +728,65 @@ let router = new Router({
             meta: {
               title: '积分商城'
             }
+          }, 
+          {
+            path: 'integral_order',
+            name: 'integral_order',
+            component: integral_order,
+            meta: {
+              title: '兑换订单'
+            }
+          }, 
+          {
+            path: 'integral_pay',
+            name: 'integral_pay',
+            component: integral_pay,
+            meta: {
+              title: '确认订单'
+            }
+          },
+          {
+            path: 'integral_goods_info',
+            name: 'integral_goods_info',
+            component: integral_goods_info,
+            meta: {
+              title: '商品详情'
+            }
           },
         ]
-      }]
+      },{
+        path: 'integral',
+        component: integralWrap,
+        children: [
+          {
+            path: '/',
+            redirect: 'integral_my'
+          },
+          {
+            path: 'integral_my',
+            name: 'integral_my',
+            component: integral_my,
+            meta: {
+              title: '我的积分'
+            }
+          },  {
+            path: 'integral_mx',
+            name: 'integral_mx',
+            component: integral_mx,
+            meta: {
+              title: '积分明细'
+            }
+          },  {
+            path: 'integral_pm',
+            name: 'integral_pm',
+            component: integral_pm,
+            meta: {
+              title: '积分排名'
+            }
+          },
+        ]
+      }
+    ]
     },
     {
       path: '/user',
@@ -801,7 +894,7 @@ let router = new Router({
           meta: {
             title: '返利'
           }
-        },
+        }, 
         {
           path: 'rechargeMoneyOnline',
           name: 'rechargeMoneyOnline',
@@ -826,6 +919,14 @@ let router = new Router({
       component: redirectHelp,
       meta: {
         title: '帮助'
+      }
+    }, 
+    {
+      path: '/webnine/buyprotocol',
+      name: 'redirectPro',
+      component: redirectPro,
+      meta: {
+        title: '365协议'
       }
     },
     {

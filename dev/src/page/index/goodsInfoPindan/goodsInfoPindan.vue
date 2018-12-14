@@ -990,7 +990,7 @@ contact-button {
             <transition name="fade">
               <div class="alert " @click.self="hideAlert('actionSheetHidden')" v-if="actionSheetHidden && goodsInfo" >
                 <div class="contt">
-                  <div class="action-border" >
+                  <div class="action-border">
                     <div class="action-header flex con" style="padding-bottom: 0">
                       <img :src="goodsInfo.goods_image_arr[0]" class="moren-img" alt="">
                       <div class='action-right' style="flex: column;">
@@ -1011,7 +1011,7 @@ contact-button {
                       <div class="close-icon iconfont icon-guanbi" @click="actionSheetbindchange"></div>
                     </div>
                   </div>
-                  <div style="height: 250px;margin-top:100px;padding-bottom:44px; overflow: scroll;" v-if="spec_info">
+                  <div style="height: 5rem;margin-top:2rem;padding-bottom:0.5rem; overflow: scroll;" v-if="spec_info">
                     <div class="info_choose " v-for="(specBox, Idx) in spec_info.goods_specname" :key="Idx">
                       <div v-if="Idx==0">
                         <div class="catalog_name">{{specBox.sp_name}}</div>
@@ -1147,7 +1147,7 @@ export default {
                 showCapsule: 1, //是否显示左上角图标
                 title: '鞋品荟', //导航栏 中间的标题
             },
-            s_id: ''
+            s_id: '',
         }
     },
     created(){

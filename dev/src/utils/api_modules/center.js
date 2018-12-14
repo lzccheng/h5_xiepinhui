@@ -24,12 +24,50 @@ export const instock = (data) => {
   const url = `${domain}/nine/instock`
   return GET(url, data)
 }
+
+//我的积分
+export const pointsHome = (data) => {
+  const url = `${domain}/points/home`
+  return POST(url, data)
+}
+
+//我的积分
+export const pointsLog = (data) => {
+  const url = `${domain}/points/log`
+  return POST(url, data)
+}
+
+//我的积分排名
+export const pointsRanking = (data) => {
+  const url = `${domain}/points/ranking`
+  return POST(url, data)
+}
+//
+export const fanorder1 = (data) => {
+  const url = `${domain}/restore/fanorder1`
+  return POST(url, data)
+}
+//确认订单
+export const exchangegoods = (data) => {
+  const url = `${domain}/points/exchangegoods`
+  return POST(url, data)
+}
+//兑换商品详情
+export const pointsGoodsdetail = (data) => {
+  const url = `${domain}/points/goodsdetail`
+  return POST(url, data)
+}
 //售后
 export const refunddetails = (data) => {
   const url = `${domain}/refund/refunddetails`
   return POST(url, data)
 }
 
+//奖励领取
+export const taketriggerredpacket = (data) => {
+  const url = `${domain}/restore/taketriggerredpacket`
+  return POST(url, data)
+}
 //提现明细
 export const withdrawhistory = (data) => {
   const url = `${domain}/restore/withdrawhistory`
@@ -128,6 +166,12 @@ export const neworderdetail = (data) => {
   const url = `${domain}/nine/neworderdetail`
   return POST(url, data)
 }
+//兑换订单
+export const pointsOrderlist = (data) => {
+  const url = `${domain}/points/orderlist`
+  return POST(url, data)
+}
+
 //删除订单
 export const cancelorder = (data) => {
   const url = `${domain}/nine/cancelorder`

@@ -155,10 +155,11 @@ export default {
         select_address(index){
             if(this.$route.query.from === 'center')return;
             let address = this.addresslist[index];
+            let path = this.$route.query.path || '/index/orderInfo_pd';
             address.__index = index;
             this.$store.dispatch('update_addressInfo',address);
             this.$router.push({
-                path: '/index/orderInfo_pd',
+                path,
                 group_id: this.group_id
             })
         },

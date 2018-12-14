@@ -3,7 +3,7 @@
     <!-- 个人信息 -->
     <div class="header">
       <div class="top">
-        <div class="icon i1"></div>
+        <div class="icon i1" @click="scanQRCode"></div>
         <div class="icon i2"></div>
       </div>
       <div class="user-box">
@@ -14,7 +14,8 @@
         <div class="user-info-box">
           <div class="info-left">
             <div class="user">
-              <span class="user-name">{{user?user.nick||'请设置用户名':'请登录'}}</span>
+              <span class="user-name" v-if="user">{{user?user.nick||'请设置用户名':'请登录'}}</span>
+              <span class="user-name" v-if="!user" @click="$router.push('/user/login')">请登录</span>
               <span class="user-edit icon"></span>
             </div>
             <div class="start-vip" v-if="redmessageInfo">
@@ -208,6 +209,7 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { api } from "@/utils/api.js";
+import { scanQRCode } from "@/utils/wx_sdk.js";
 import loading from "@/components/loading.vue";
 import { Group, Cell, XButton, Badge } from "vux";
 export default {
@@ -239,7 +241,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$route.query)
     console.log("user", this.user);
     console.log("openid", this.user.openid);
     if(this.$route.query.url){
@@ -334,12 +335,15 @@ export default {
           break;
         case "余额":
           tabindex = 6;
+          clickUrl="/drawIndex";
           break;
         case "荟币":
           tabindex = 7;
+          clickUrl="/drawIndex";
           break;
         case "积分":
           tabindex = 8;
+          clickUrl="/centerFull/integral/";
           break;
         case "我的收益":
           tabindex = 9;
@@ -533,9 +537,10 @@ export default {
         case 6:
           break;
         case 3:
-          // url = '/centerFull/myService/integral_sc'
+          url = '/centerFull/myService/integral_sc' //"积分商城"
           break;
         case 2:
+          url = '/centerFull/integral/integral_my'  //我的积分
           break;
         case 1:
           url = '/centerFull/myService/coupon_list';
@@ -552,6 +557,12 @@ export default {
           from: 'center'
         }
       })
+    },
+    scanQRCode(){ 
+      let success = res =>{
+        console.log(res)
+      }
+      scanQRCode(this, {success})
     },
     //跳转365or我的店铺
     linkTo(link) {

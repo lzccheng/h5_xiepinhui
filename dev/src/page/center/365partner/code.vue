@@ -1,7 +1,9 @@
 <template>
   <div class="scroll-wrap">
     <x-header :left-options="{backText:''}" title="365合伙人邀请码" id="vux-header"><a slot="right"></a></x-header>
-    <div class="top"></div>
+    <div class="top">
+      <span>亲爱的{{user?user.nick :""}}，您还不是合伙人哦</span>
+    </div>
     <div class="input-wrap">
       <input type="text" v-model="code" placeholder="请输入邀请码">
       <button @click="step(false)">下一步</button>
@@ -93,6 +95,13 @@ export default {
   background: url("~@/assets/images/center/partner/bg.png") no-repeat;
   background-size: contain;
   overflow: hidden;
+  text-align: center;
+  span{
+    display: inline-block;
+    color: #fff;
+    font-size: 14px;
+    margin-top: 0.45rem;
+  }
 }
 .input-wrap {
   box-sizing: border-box;
