@@ -95,7 +95,13 @@ const orderInfo_pd = ()=>import('@/page/index/orderInfo_pd/orderInfo_pd')
 const orderAddress = ()=>import('@/page/index/orderAddress/orderAddress')
 
 //开通vip页面
-const myVip = ()=>import('@/page/index/myVip/myVip')
+const myVip = () => import('@/page/index/myVip/myVip')
+//vip页面支付
+const myVip_pay = () => import('@/page/index/myVip/myVip_pay')
+
+//vip页面
+const myVip_tq = () => import('@/page/index/myVip/myVip_tq')
+
 //帮助中心
 const guize = ()=>import('@/page/index/guize/guize')
 
@@ -261,7 +267,23 @@ let router = new Router({
         name: 'myVip',
         component: myVip,
         meta: {
-          title: '我的vip'
+          title: '鞋品荟'
+        }
+      }, 
+      {
+        path: 'myVip_pay',
+        name: 'myVip_pay',
+        component: myVip_pay,
+        meta: {
+          title: '结算支付'
+        }
+      }, 
+      {
+        path: 'myVip_tq',
+        name: 'myVip_tq',
+        component: myVip_tq,
+        meta: {
+          title: '确认订单'
         }
       },
       {
@@ -519,7 +541,7 @@ let router = new Router({
           name: 'noShop',
           component: noShop,
           meta: {
-            title: '我的店铺'
+            title: ''
           }
         },
         {

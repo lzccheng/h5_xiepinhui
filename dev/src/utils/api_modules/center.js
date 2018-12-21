@@ -144,6 +144,11 @@ export const getredpacketinfo = (data) => {
   return POST(url, data)
 }
 
+//领取荟豆
+export const taket_vcoin_packet = (data) => {
+  const url = `${domain}/restore/taket_vcoin_packet`
+  return POST(url, data)
+}
 //已经领取的红包
 export const rebatelist = (data) => {
   const url = `${domain}/member/rebatelist`

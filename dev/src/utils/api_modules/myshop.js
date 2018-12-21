@@ -39,6 +39,12 @@ export const cartlist = (data) => {
   const url = `${domain}/reinventory/cartlist`
   return POST(url, data)
 }
+
+//vip
+export const paymentdisplay = (data) => {
+  const url = `${domain}/member/paymentdisplay`
+  return POST(url, data)
+}
 //线下店铺订单列表接口
 export const offlineStoreOrderList = (data) => {
   const url = `${domain}/restore/suborder`

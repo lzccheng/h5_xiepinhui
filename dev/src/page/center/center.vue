@@ -18,10 +18,17 @@
               <span class="user-name" v-if="!user" @click="$router.push('/user/login')">请登录</span>
               <span class="user-edit icon"></span>
             </div>
+            <div class="identi">
+              <img v-if="redmessageInfo.is_smallshop == 1" src="http://img.xiepinhui.com.cn/small_app/mine/aboutUserInfo/365_userType.png" alt="">
+              <img v-if="user.user_type==1 && redmessageInfo.is_smallshop==0"  src="http://img.xiepinhui.com.cn/small_app/mine/aboutUserInfo/ordinary_userType.png" alt="">
+              <img v-if="user.user_type==2" src="http://img.xiepinhui.com.cn/small_app/mine/aboutUserInfo/shoper_userType.png" alt="">
+              <img v-if="user.user_type==3" src="http://img.xiepinhui.com.cn/small_app/mine/aboutUserInfo/offlineShop_userType.png" alt="">
+            </div>
             <div class="start-vip" v-if="redmessageInfo">
               <img src="~@/assets/images/center/vip1.png" v-if="redmessageInfo.member_info.member_grade==1" alt="">
               <img src="~@/assets/images/center/vip2.png" v-if="redmessageInfo.member_info.member_grade==2" alt="">
-              <img src="~@/assets/images/center/vip0.png" v-else alt="">
+              <img src="~@/assets/images/center/vip0.png" @click="$router.push('/index/myvip')" v-if="redmessageInfo.member_info.member_grade==0" alt="">
+              
             </div>
           </div>
           <div class="info-right">
@@ -45,10 +52,11 @@
         <div class="item-text">{{item}}</div>
       </div>
     </div>
-    <!-- 隐藏广告 -->
-    <div class="ad" v-if="redmessageInfo && redmessageInfo.member_vcoingoods_img.image!=''">
-      <img @click.self="$router.push('/HuiBiArea')" :src="redmessageInfo.member_vcoingoods_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
+    <!-- poster1 -->
+    <div class="vip_center" @click='open365Tip' v-if="redmessageInfo">
+      <img mode='widthFix' :src='redmessageInfo.about_shop365.image'/>
     </div>
+    
     <!-- 订单操作栏 -->
     <div class="menu-wrap" v-if="redmessageInfo">
       <div class="menu-row">
@@ -61,9 +69,9 @@
         </div>
       </div>
     </div>
-    <!-- 会员广告 -->
-    <div class="ad" v-if="redmessageInfo">
-      <img :src="redmessageInfo.member_centre_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
+    <!-- 隐藏广告 -->
+    <div class="ad" v-if="redmessageInfo && redmessageInfo.member_vcoingoods_img.image!=''">
+      <img @click.self="$router.push('/HuiBiArea')" :src="redmessageInfo.member_vcoingoods_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
     </div>
     <!-- 我的服务 -->
     <div class="item-gounp gounp server" v-if="redmessageInfo.list">
@@ -87,6 +95,10 @@
         </div>
       </cell>
     </group>
+    <!-- 会员广告 -->
+    <div class="ad" v-if="redmessageInfo">
+      <img @click="$router.push('/index/myvip')" :src="redmessageInfo.member_centre_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
+    </div>
     <div class="_line"></div>
     <!-- 我的收益 -->
     <!-- <div class="item-gounp gounp earnings" v-if="redmessageInfo" @click="linkEarnings">
@@ -171,7 +183,18 @@
         </div>
       </div>
     </div>
-
+    <!-- 开通365送365荟豆 -->
+    <div class="give365ModalBox" v-if="showGive365Modal">
+      <div class="huidouneirong">
+          <div class="give365ModalContent">
+              <div class="tipGetHowMany" v-if="noReceive365">恭喜你获得365个荟豆！</div>
+              <div class="btnReceiveHuiDou" v-if="noReceive365" @click.stop='hasGetHuiDou'>领取荟豆</div>
+              <div class="tipGetHowMany" v-if="!noReceive365">成功领取365个荟豆！</div>
+              <div class="btnReceiveHuiDou" v-if="!noReceive365" @click.stop="goSearchHowManyHuiDou">去查看</div>
+          </div>
+          <img src="@/assets/images/close_red.png" class="close_huidou" @click.stop="closeShowGive365"/>
+      </div>
+    </div>
     <div style="height:100%;overflow:hidden;position:fixed;top:0px;width:100%;z-index:999;max-width:750px;" v-if="closeModal365">
         <div class="bg_hongbao_box">
             <div class="shade_bg" @click="closeModal365 = false"></div>
@@ -195,7 +218,7 @@
                     <div class="lingqu_box">
                         <div class="lijilingqu" @click="catchEnvelopes2" data-type="1" v-if="!successTipTXT">立即领取</div>
                         <div class="tip_lingquTxt" v-if="successTipTXT">恭喜你已成功领取{{fanli365Obj.red_num}}个合伙人红包</div>
-                        <div class="search_amount">查看余额</div>
+                        <div class="search_amount" @click="$router.push('/drawIndex/myWallet')">查看余额</div>
                     </div>
                 </div>
                 <img :src="closeimg" class="close_img2" @click="closeModal365 = false">
@@ -231,13 +254,16 @@ export default {
       closeimg: require("@/assets/images/home/close.png"), //close图标
       isShowModalRedPack2: false, //领取弹窗
       closeModal365: false, //365弹窗
+      vcoinPacket: '',
       fanli365Obj: {}, //365数据
       redmessageInfo: "", //个人中心数据
       showLoding: false,
       params: {
         plat: 3
       },
-      successTipTXT:false
+      successTipTXT:false,
+      noReceive365: true,
+      showGive365Modal: false
     };
   },
   created() {
@@ -264,6 +290,41 @@ export default {
   methods: {
     searchMoreFans(){
       this.$router.push('/centerFull/partner/inviteFansMy365');
+    },
+    open365Tip(){
+      var userType = this.user.user_type;
+      var issmallshop = this.redmessageInfo.is_smallshop;
+      var states='';//1表示我要开店，2表示邀请好友开店
+      if (userType == 2 || userType == 3){
+        states=2;
+      }else{
+        if(issmallshop==0){
+          states=1;
+        }else{
+          states=2;
+        }
+      }
+      window.location.href = 'https://m.xiepinhui.com.cn/html/openStore/index.html?states=' + states;
+    },
+    async hasGetHuiDou(){
+      let data = {
+        account: this.account,
+        token: this.token,
+      }
+      const [err, res] = await api.taket_vcoin_packet(data);
+      if (err) {
+        this.$vux.toast.text(err.msg);
+        return;
+      }
+      if(res){
+        this.noReceive365 = false;
+      }
+    },
+    goSearchHowManyHuiDou(){
+      this.$router.push('/drawIndex/myWallet');
+    },
+    closeShowGive365(){
+      this.showGive365Modal = false;
     },
     // 个人中心首页接口
     async newredmessage() {
@@ -303,6 +364,9 @@ export default {
           this.$vux.toast.text('暂未开放','top');
           return;
           break;
+      }
+      if(!this.token){
+        url = '/user/login';
       }
       this.$router.push({
         path: url
@@ -393,6 +457,7 @@ export default {
         if(res.code==2000){
             var commonRedpacket = res.data.commonRedpacket;//普通红包的对象 非365开通的红包
             var thidSixFivePacket = res.data.thidSixFivePacket;//365红包的对象 365开通的红包
+            var vcoinPacket = res.data.vcoinPacket;//365开通荟豆
             if (commonRedpacket.red_num>0){//普通红包个数大于0的时候
               this.isShowModalRedPack=true;
               this.redpackBg=commonRedpacket.imgUrl;
@@ -401,6 +466,11 @@ export default {
             if (thidSixFivePacket.red_num>0){//365红包个数大于0的时候
               this.closeModal365=true;
               this.fanli365Obj=thidSixFivePacket;
+            }
+            console.log('vcoinPacket',vcoinPacket,res.data.vcoinPacket.imgUrl)
+            if(vcoinPacket.red_num > 0){
+              this.showGive365Modal = true;
+              this.vcoinPacket = vcoinPacket;
             }
         }
        
@@ -669,6 +739,72 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.vip_center{
+  width: 100%;
+  font-size: 0;
+}
+.vip_center img{
+  width: 100%;
+}
+.give365ModalBox{
+  height:100%;
+  overflow:hidden;
+  position:fixed;
+  top:0px;
+  width:100%;
+  z-index:999;
+  background: rgba(0, 0, 0, 0.5);
+}
+.give365ModalContent{
+  width: 514/100rem;
+  height: 595/100rem;
+  background:url('http://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/packet365/give365ContentBg.png') no-repeat; 
+  background-size:100%;
+  position: relative;
+ 
+}
+.tipGetHowMany{
+   position: absolute;
+   bottom: 142/100rem;
+   text-align: center;
+   font-size: 34/100rem;
+   color: #F64C3E;
+   padding-left: 14/100rem;
+   width: 100%;
+}
+.btnReceiveHuiDou{
+  
+  background: #FBEC53;
+  color: #F64C3E;
+  font-size: 36/100rem;
+  width: 280/100rem;
+  height: 62/100rem;
+  line-height: 62/100rem;
+  position: absolute;
+  bottom: 40/100rem;
+  text-align: center;
+  left: 50%;
+  margin-left: -140/100rem;
+  border-radius: 32/100rem;
+}
+.close_huidou{
+  width:65/100rem;
+height:65/100rem;
+position:absolute;
+bottom: 0/100rem;
+left:50%;
+margin-left:-32.5/100rem;
+}
+.huidouneirong{
+  width: 514/100rem;
+  height: 739/100rem;
+  position: absolute;
+  left: 50%;
+   margin-left:-257/100rem;
+   top:50%;
+   margin-top:-369.5/100rem;
+    text-align: center;
+}
 ._line{
   height: 0.12rem;
   background-color: #f8f8f8;
@@ -811,39 +947,52 @@ export default {
 
         .start-vip {
           display: flex;
-          justify-content: flex-start;
           align-items: center;
-          white-space: nowrap;
-          margin-top: 0.25rem;
+          white-space: wrap;
+          margin-top: 0.15rem;
           width: 1.27rem;
           height: 0.33rem;
           flex: 0 0 1.27rem;
           font-size: 0.22rem;
           color: #fff;
           box-sizing: border-box;
-          padding: 0.012rem 0.12rem;
+          // padding: 0.012rem 0.12rem;
           border-radius: 0.8rem;
-          background: rgba(0, 0, 0, 0.36);
-          background: rgba(24, 131, 124, 1);
-
+          // background: rgba(0, 0, 0, 0.36);
+          // background: rgba(24, 131, 124, 1);
           .vip-text {
             position: relative;
           }
 
-          .vip-text::after {
-            position: absolute;
-            top: 0;
-            right: -0.06rem;
-            height: 6px;
-            width: 6px;
-            border-top: 1px solid #fff;
-            border-right: 1px solid #fff;
-            transform: rotate(45deg);
-          }
+          // .vip-text::after {
+          //   position: absolute;
+          //   top: 0;
+          //   right: -0.06rem;
+          //   height: 6px;
+          //   width: 6px;
+          //   border-top: 1px solid #fff;
+          //   border-right: 1px solid #fff;
+          //   transform: rotate(45deg);
+          // }
 
           img {
             width: 1.27rem;
-            margin-left: -0.12rem;
+            margin-left: 0.12rem;
+            &:first-child{
+              margin-left: 0;
+            }
+          }
+        }
+        .identi{
+          display: flex;
+          margin-top: 0.1rem;
+          img{
+            width: 1.27rem;
+            height: 0.33rem;
+            margin-left: 0.1rem;
+            &:first-child{
+              margin-left: 0;
+            }
           }
         }
       }
@@ -853,6 +1002,7 @@ export default {
 
         .sign-box {
           position: relative;
+          top: -0.3rem;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -887,6 +1037,7 @@ export default {
   }
 
   .invitation-code {
+    margin-top: 0.1rem;
     margin-left: 1.79rem;
     color: #fff;
     font-size: 0.2rem;
@@ -1256,7 +1407,7 @@ export default {
   margin-left: -32.5/100rem;
   left: 50%;
 }
-/* 792rpx;622rpx; 365粉丝红包的*/
+/* 792/100rem;622/100rem; 365粉丝红包的*/
 .imgs_collection_box{
   width:622/100rem;
   position: absolute;
@@ -1285,6 +1436,20 @@ export default {
     background-size: contain;
     width: 100%;
     height: 100%;
+  }
+}
+/* 荟豆红包的 */
+.imgs_collection_box3{
+  width:600/100rem;
+  position: absolute;
+  top:200/100rem;
+  left:50%;
+  margin-left:-3rem;
+  z-index: 999;
+  span{}
+  .receive_red_img {
+    background-size: contain;
+    width: 100%;
   }
 }
 .content365bg_box {

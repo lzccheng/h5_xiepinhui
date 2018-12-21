@@ -2,6 +2,7 @@ import axios from 'axios'
 import router from '../router'
 import store from '../store'
 import constant from './constant'
+import {getQueryString} from './comm'
 import qs from 'qs'
 import Vue from 'vue'
 
@@ -25,9 +26,13 @@ axiosUtil.interceptors.response.use(
       switch (error.response.status) {
         case 401:
           // 返回 401 清除token信息并跳转到登录页面
+          let url = getQueryString('url') || location.pathname + location.search + location.hash;
           localStorage.clear();
           router.push({
             path: '/user/login',
+            query: {
+              url
+            }
           });
           break;
       }
@@ -55,6 +60,7 @@ function request(method) {
     }
     return await axiosUtil(options).then((res) => {
       if (res.data.code === 5000) { // tokan过期 => 重新登录
+        let url = getQueryString('url') || location.pathname + location.search + location.hash;
         store.dispatch('updateUser', "");
         store.dispatch('updateToken', "");
         store.dispatch('updateAccount', "");
@@ -62,6 +68,9 @@ function request(method) {
         localStorage.clear();
         router.push({
           path: '/user/login',
+          query: {
+            url
+          }
         });
         return;
       }

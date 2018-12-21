@@ -50,8 +50,8 @@
 }
 </style>
 <template>
-    <div class="page" v-if="!account">
-        <x-header :left-options="{backText:''}" :title='nvabarData.title' id='vux-header'></x-header>
+    <div class="page">
+        <x-header :left-options="{backText:'',showBack: false}" :title='nvabarData.title' id='vux-header'></x-header>
         <div>
             <div class="smallShopDv1">
                 <img mode="widthFix" src="http://img.xiepinhui.com.cn/small_app/mine/aboutIntro365/aboutIntro1.jpg"/>
@@ -136,7 +136,7 @@ export default {
     },
     mounted() {
         if(this.account){
-            this.getredmessageInfo();
+            // this.getredmessageInfo();
         }
     },
     methods: {

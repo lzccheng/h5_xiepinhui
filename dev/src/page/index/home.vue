@@ -615,6 +615,7 @@ import { share } from "@/utils/wx_sdk.js";
 import nullData from "@/components/nullData";
 import CountDown from "vue2-countdown";
 import { isScrollBottom , _getDocumentTop} from "@/utils/comm.js";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "index",
@@ -687,14 +688,11 @@ export default {
     this.getHome();
     this.getActivityList();
     this.getGoods(0); //默认精品
-    
-    // var tabFixBar=document.getElementById('tabFixBar');
-    // console.log('132223',tabFixBar)
-    // var tabFixBar_Top=tabFixBar.offsetTop;
-    // var sTop = document.body.scrollTop;
-    // var result = tabFixBar_Top - sTop;
-    // console.log('juli',result)
-  },
+    console.log(this.$route.query)
+    if(this.$route.query.inviteCode){
+      this.binding(this.$route.query.inviteCode)
+    }
+  },  
   mounted() {
     //之后
     this.$nextTick(function() {
@@ -752,6 +750,24 @@ export default {
     window.onscroll = null;
   },
   methods: {
+    async binding(code){
+      if(!this.token){
+        this.$router.push({
+          path: '/user/login',
+          query: {
+            url: '/index?inviteCode=' + code
+          }
+        })
+        return;
+      }
+      let data = {
+        plat: 3,
+        account: this.account,
+        token: this.token,
+        code
+      };
+      const [err, res] = await api.receiveweidian(data);
+    },
     //滚动到底部回调
     scrollBottomCB() {
       var cur=this.currentTab;
@@ -824,9 +840,6 @@ export default {
 
           this.startTime = data.seckill.now_time * 1000;
           this.endTime = data.seckill.end_time * 1000;
-
-          console.log("timetime");
-          console.log(this.startTime);
           this.nseckilltypes = res.data;
           this.countdown = totalSecond;
           this.isShowdonghua = true;
@@ -860,6 +873,10 @@ export default {
               imgUrl: this.nseckilltypes.homegoods[0].img,
               link: window.location.href
             }
+            if(this.token){
+              shareConfig.link = window.location.origin + '/index?inviteCode=' + this.user.member_code;
+            }
+            console.log(shareConfig)
             share(this, {share: shareConfig});
           }
           this.isShare = true;
@@ -940,7 +957,6 @@ export default {
       }
     },
     link(type , id) {
-      console.log(88888,type, id)
       let url = null;
       let query = {};
       switch (type) {
@@ -990,7 +1006,8 @@ export default {
         return window.innerHeight - this.$refs.tabFixBar.clientHeight;
       })
       return height;
-    }
+    },
+    ...mapGetters(["user", "account", "token"])
   }
 };
 </script>

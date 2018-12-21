@@ -12,6 +12,7 @@ import VueClipboard from 'vue-clipboard2' // 剪切板
 import { LoadingPlugin, ToastPlugin, ConfirmPlugin, WechatPlugin, AlertPlugin } from 'vux'
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import vuePicturePreview from 'vue-picture-preview';
+import { isWeiXin } from '@/utils/comm';
 
 
 
@@ -33,7 +34,7 @@ Vue.prototype.$api = 1
 Vue.prototype.$stopClick = stopClick
 Vue.config.productionTip = false
 window.isClick = false
-
+window.isWeixin = isWeiXin()
 
 // Vue.use(Button);
 /* eslint-disable no-new */

@@ -94,7 +94,7 @@ contact-button {
 }
 
 .price {
-  color: #fb4c72;
+  color: #61D8D0;
   font-size: 10pt;
 }
 
@@ -1160,19 +1160,30 @@ export default {
         window.onscroll = null;
     },
     mounted(){
-        this.$vux.loading.show({
-            text: "加载中..."
-        });
         this.goodsId = this.$route.query.goodsId;
         this.goodstype = this.$route.query.goodstype || 1;
         this.showXiangqing();
         this.getData();
-        this.bangding();
+        let shareCode = this.$route.query.shareCode || this.$store.state.center.shareCode || '';
+        if(shareCode){
+          if(this.token){
+            this.bangding(shareCode);
+          }else{
+            this.$router.push({
+              path: '/user/login',
+              query: {
+                url: '/index/goodsInfoPindan?goodsId=' + this.goodsId + '&shareCode=' + shareCode
+              }
+            })
+          }
+          
+        }
+        
     },
     methods: {
-        async bangding(){
+        async bangding(shareCode){
           var version = "";
-          let shareCode = this.$route.query.shareCode || this.$store.state.center.shareCode;
+          // let shareCode = this.$route.query.shareCode || this.$store.state.center.shareCode;
           if(shareCode){
             let data = {
               plat: 3,
@@ -1182,10 +1193,10 @@ export default {
               version
             }
             const [err, res] = await api.bindrebate(data);
-            if(err){
-                this.$vux.toast.text(err.msg);
-                return;
-            }
+            // if(err){
+            //     this.$vux.toast.text(err.msg);
+            //     return;
+            // }
           }
           
         },

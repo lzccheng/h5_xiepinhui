@@ -72,6 +72,17 @@ const share = (that,data)=>{
     _requestConfig(that,jsApiList,callback,data);
 }
 const wxPay = async (that,data)=>{
+    if(!window.isWeixin){
+        let divDom = document.createElement('div');
+        divDom.innerHTML = data.pay_param;
+        let dd = document.querySelector('body');
+        dd.appendChild(divDom);
+        divDom.firstChild.submit();
+        setTimeout(() => {
+            dd.removeChild(divDom);
+        }, 13);
+        return;
+    }
     let jsApiList = ['chooseWXPay'];
     let success = res =>{
         console.log('wxPay success',res)

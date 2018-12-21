@@ -116,7 +116,7 @@ export default {
       localStorage["user"] = JSON.stringify(res.data);
       localStorage["account"] = res.data.account;
       localStorage["token"] = res.data.token;
-      if(this.phone.length > 11){
+      if(this.phone.length > 11 && window.isWeiXin){
         var fromurl = window.location.href.split('#')[0];
         window.location.href =
           "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx47d52b6420c14397&redirect_uri=" +

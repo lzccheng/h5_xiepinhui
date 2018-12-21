@@ -258,13 +258,13 @@ export default {
           }
         }
       }
-      this.onelistInfo.push({
-        member_id: "11", //ID
-        red_amount: "100.00", //金额
-        red_addtime: "1533279633",
-        nick: "Thnaos_Liu", //下单用户
-        rebate_addtime: "2018-08-03" //时间
-      });
+      // this.onelistInfo.push({
+      //   member_id: "11", //ID
+      //   red_amount: "100.00", //金额
+      //   red_addtime: "1533279633",
+      //   nick: "Thnaos_Liu", //下单用户
+      //   rebate_addtime: "2018-08-03" //时间
+      // });
     },
     //已收益
     async getRebatelist() {

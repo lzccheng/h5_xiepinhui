@@ -171,6 +171,33 @@
 font-size:24/100rem;
 color:#666;
 }
+.tabBox{
+    border-bottom: 1px solid #eee;
+    color: #555;
+    .tabItem{
+        position: relative;
+        width: 50%;
+        text-align: center;
+        padding: 0.2rem 0;
+        span{
+            
+        }
+        &.active{
+            color: #61d8d0;
+            &::after{
+                content: '';
+                position: absolute;
+                left: 50%;
+                bottom: 0;
+                width: 2rem;
+                height: 2px;
+                background-color: #61d8d0;
+                margin-left: -1rem;
+            }
+        }
+        
+    }
+}
 </style>
 <template>
     <div class="page">
@@ -193,6 +220,11 @@ color:#666;
                     <span style="font-size:14px;">总消费：<span style="font-size:20px;">{{user_info.order_amount}}</span></span>
                 </div>
                 <div class="gap_box"></div>
+                <div class="tabBox flex">
+                    <div v-for="(item, i) in tabArr" @click="tabHandle(i)" :class="currentTab == i?'active': ''" :key="i" class="tabItem">
+                        <span>{{item.name}}</span>
+                    </div>
+                </div>
                 <div v-if="listObj.length<=0">
                     <null-data>
                         暂无数据
@@ -235,7 +267,7 @@ color:#666;
                         </div>
                         </div>
                 </div>
-                <div class="bottom_box" v-if="show_bottom">
+                <div class="bottom_box" v-if="show_bottom && listObj.length!=0">
                     已经到达底部~
                 </div>
                 </div>
@@ -260,13 +292,21 @@ export default {
                 showCapsule: 1,
                 title: '粉丝订单详情',
             },
+            tabArr: [
+                {name: '未返收益订单'},
+                {name: '已返收益订单'},
+            ],
             // height: app.globalData.height + 40,
             window_height: '',
             page:0,
             listObj:[],
             total_count:'',
             user_info: '',
-            show_bottom: false
+            show_bottom: false,
+            currentTab: 0,
+            dataObj: {
+
+            }
         }
     },
     created() {
@@ -283,15 +323,33 @@ export default {
     },
     methods: {
         async fansOrderList(){
-            this.page ++;
+            let record_status = Number(this.currentTab) + 1;
+            if(!this.dataObj[record_status]){
+                this.dataObj[record_status] = {};
+                this.dataObj[record_status].list = [];
+                this.dataObj[record_status].page = 1;
+                this.dataObj[record_status].total_count = '';
+            }else{
+                if(this.dataObj[record_status].list.length >= Number(this.dataObj[record_status].total_count)){
+                    this.listObj = this.dataObj[record_status].list;
+                    this.show_bottom = true;
+                    return;
+                }
+            }
+            this.show_bottom = false;
             let that = this;
             let data = {
                 account: this.account,
                 token: this.token,
                 fan_member_id: this.fanid,
-                page: this.page
+                page: this.dataObj[record_status].page,
+                record_status
             }
+            this.$vux.loading.show({
+                text: '加载中...'
+            })
             const [err, res_data] = await api.fanorder1(data);
+            this.$vux.loading.hide();
             if (err) {
                 this.$vux.toast.text(err.msg)
                 return;
@@ -303,23 +361,21 @@ export default {
                 var user_info = res_data.data.user_info;
                 var shop_title = res_data.data.shop_title;
                 var page = that.page;//页数
-                var newListObj = listObj.concat(resList);
-                this.listObj = newListObj;
-                this.total_count = total_count;
+                this.dataObj[record_status].list = this.dataObj[record_status].list.concat(resList);
+                this.dataObj[record_status].total_count = total_count;
+                this.dataObj[record_status].page ++;
+                this.listObj = this.dataObj[record_status].list;
+                this.total_count = this.dataObj[record_status].total_count;
                 this.user_info = user_info;
                 this.shop_title = shop_title;
             }
         },
+        tabHandle(i){
+            this.currentTab = i;
+            this.fansOrderList();
+        },
         onBottom(){
-            var that = this;
-            var total_count = that.total_count;
-            var listObjLen = that.listObj.length;
-            var fanid = that.fanid;
-            if (Number(total_count) > listObjLen) {
-                this.fansOrderList();
-            } else {
-                this.show_bottom = true;
-            }
+            this.fansOrderList();
         }
     },
     computed: {

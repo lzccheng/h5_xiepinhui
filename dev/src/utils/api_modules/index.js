@@ -125,6 +125,17 @@ export const memberhome = (data) => {
   return POST(url, data)
 }
 
+//vip支付
+export const gradepay = (data) => {
+  const url = `${domain}/member/gradepay`
+  return POST(url, data)
+}
+
+//vip
+export const privilege = (data) => {
+  const url = `${domain}/member/privilege`
+  return POST(url, data)
+}
 //地址删除
 export const addressdel = (data) => {
   const url = `${domain}/order/addressdel`
