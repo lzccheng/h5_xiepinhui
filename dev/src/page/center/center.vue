@@ -1,7 +1,6 @@
 <template>
   <div class="center-box" v-show="!$route.query.url">
     <!-- 个人信息 -->
-    个人信息
     <div class="header">
       <div class="top">
         <div class="icon i1" @click="scanQRCode"></div>
