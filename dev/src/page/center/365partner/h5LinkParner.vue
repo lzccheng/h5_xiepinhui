@@ -54,7 +54,7 @@
         <x-header :left-options="{backText:'',showBack: false}" :title='nvabarData.title' id='vux-header'></x-header>
         <div>
             <div class="smallShopDv1">
-                <img mode="widthFix" src="http://img.xiepinhui.com.cn/small_app/mine/aboutIntro365/aboutIntro1.jpg"/>
+                <img mode="widthFix" src="http://img.xiepinhui.com.cn/small_app/mine/aboutIntro365/aboutIntro1.png"/>
             </div>
             <div class="goIndex" @click="gotoIndex">去首页</div>
             <div class="contentSmallShopDv1">

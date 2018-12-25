@@ -40,9 +40,27 @@ export default {
   created() {
     this.url = getQueryString("url");
     console.log("url", this.url);
+    // localStorage.setItem('close','我还在哦，亲~~')
+    console.log(5555,localStorage.getItem('close'))
+    // window.onunload = function(){
+    //   alert('你确定离开？')
+    //   return alert('你确定离开？');
+    // }
+    // window.onbeforeunload  = function(){
+    //   alert('你确定离开？？？？？？？')
+    //   return alert('你确定离开？？？？？？？');
+    // }
   },
   computed: {
     ...mapGetters(["user"])
+  },
+  beforeDestroy () {
+    // alert(8888888)
+    // return false;
+  },
+  destroyed () {
+    // alert(9999)
+    // return false;
   },
   methods: {
     // 获取验证码

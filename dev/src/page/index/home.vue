@@ -499,8 +499,8 @@
                       <div class="weui-grid__label">{{itemActive.title}}</div></div>
               </div>
           </div>
-          <!-- <div class="active-to-box ">
-              <div class="news-silder flex flex-align-center">
+          <div class="active-to-box ">
+              <!-- <div class="news-silder flex flex-align-center">
                   <div class="swiper-shadow"></div>
                   <img class="gonggao-img" src='http://img.xiepinhui.com.cn/small_app/programOldImgFile/gonggao.png' />
                   <swiper :options="swiperOption2" class="swiper_container">
@@ -512,10 +512,11 @@
                               <img :src='item.goods_image' /></div>
                       </swiper-slide>
                     </swiper>
+              </div> -->
+              <div class="active-img-box" @click='linkTo' :data-type="nseckilltypes.temporary.type" :data-id="nseckilltypes.temporary.data" v-if="nseckilltypes.temporary.is_show && nseckilltypes.temporary!=''">
+                  <img :src="nseckilltypes.temporary.img" />
               </div>
-              <div class="active-img-box" @click='link' :data-type="nseckilltypes.temporary.type" :data-id="nseckilltypes.temporary.data" v-if="nseckilltypes.temporary.is_show && nseckilltypes.temporary!=''">
-                  <img :src="nseckilltypes.temporary.img" /></div>
-          </div> -->
+          </div>
           <!-- <div class="like flex flex-pack-justify" >
               <div class="left" catchtap='openSpike' :data-type='nseckilltypes.seckill.type' :id="nseckilltypes.seckill.value">
                   <img class="bg-left-img" :src="nseckilltypes.seckill.img" bindload="imgsrc" style='height:leftHeigthpx' />
@@ -955,6 +956,11 @@ export default {
         this.total_count = '';
         this.getGoods(cur);
       }
+    },
+    linkTo(){
+      window.location.href = 'https://m.xiepinhui.com.cn/html/christmas/christmas.html';
+      return;
+      this.$router.push('/HuiBiArea');
     },
     link(type , id) {
       let url = null;

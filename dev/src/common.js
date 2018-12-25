@@ -19,7 +19,7 @@ if(!config.debug){
   }
 }else{
   //调试
-  let vCon = new VConsole();
+  // let vCon = new VConsole();
 }
 
 export default config

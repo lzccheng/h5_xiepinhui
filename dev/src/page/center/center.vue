@@ -18,18 +18,20 @@
               <span class="user-name" v-if="!user" @click="$router.push('/user/login')">请登录</span>
               <span class="user-edit icon"></span>
             </div>
-            <div class="identi">
+            <div class="identi" v-if="redmessageInfo">
               <img v-if="redmessageInfo.is_smallshop == 1" src="http://img.xiepinhui.com.cn/small_app/mine/aboutUserInfo/365_userType.png" alt="">
               <img v-if="user.user_type==1 && redmessageInfo.is_smallshop==0"  src="http://img.xiepinhui.com.cn/small_app/mine/aboutUserInfo/ordinary_userType.png" alt="">
               <img v-if="user.user_type==2" src="http://img.xiepinhui.com.cn/small_app/mine/aboutUserInfo/shoper_userType.png" alt="">
               <img v-if="user.user_type==3" src="http://img.xiepinhui.com.cn/small_app/mine/aboutUserInfo/offlineShop_userType.png" alt="">
-            </div>
-            <div class="start-vip" v-if="redmessageInfo">
               <img src="~@/assets/images/center/vip1.png" v-if="redmessageInfo.member_info.member_grade==1" alt="">
               <img src="~@/assets/images/center/vip2.png" v-if="redmessageInfo.member_info.member_grade==2" alt="">
               <img src="~@/assets/images/center/vip0.png" @click="$router.push('/index/myvip')" v-if="redmessageInfo.member_info.member_grade==0" alt="">
-              
             </div>
+            <!-- <div class="start-vip" v-if="redmessageInfo">
+              <img src="~@/assets/images/center/vip1.png" v-if="redmessageInfo.member_info.member_grade==1" alt="">
+              <img src="~@/assets/images/center/vip2.png" v-if="redmessageInfo.member_info.member_grade==2" alt="">
+              <img src="~@/assets/images/center/vip0.png" @click="$router.push('/index/myvip')" v-if="redmessageInfo.member_info.member_grade==0" alt="">
+            </div> -->
           </div>
           <div class="info-right">
             <div class="sign-box">
@@ -150,6 +152,9 @@
     </div>
     <!-- loading -->
     <loading type="type3" v-if="showLoding"></loading>
+    <div class="logout" v-if="!user">
+      <img src="@/assets/images/loginout.png" alt="">
+    </div>
     <!-- login -->
     <div>
       <x-button @click.native="exitLogin" type="primary" class="exit-btn">{{!user?'登录':'退出登录'}}</x-button>
@@ -285,6 +290,13 @@ export default {
       this.newredmessage();
       //this.redpackethtml();
       this.getredpacketinfo();
+    }else{
+      // console.log(this.$store)
+      this.updateUser("");
+      this.updateToken("");
+      this.updateAccount("");
+      this.updateCenter("");
+      localStorage.clear();
     }
   },
   methods: {
@@ -739,6 +751,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.logout{
+  text-align: center;
+  margin: 0.4rem 0;
+  img{
+    width: 65%;
+    display: inline-block;
+  }
+}
 .vip_center{
   width: 100%;
   font-size: 0;
@@ -986,10 +1006,12 @@ margin-left:-32.5/100rem;
         .identi{
           display: flex;
           margin-top: 0.1rem;
+          flex-wrap: wrap;
           img{
             width: 1.27rem;
             height: 0.33rem;
             margin-left: 0.1rem;
+            margin-bottom: 0.1rem;
             &:first-child{
               margin-left: 0;
             }

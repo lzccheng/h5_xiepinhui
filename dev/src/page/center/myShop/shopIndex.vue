@@ -282,7 +282,7 @@ export default {
   text-align: center;
 }
 .funds-number {
-  font-size: 0.5rem;
+  font-size: 16px;
   color: rgba(255, 255, 255, 1);
 }
 .store-income {
