@@ -335,8 +335,8 @@
             <div class='cetenr-goodsinfo'>
               <div class="goodsname">{{item.goods_info.goods_name}}</div>
               <div class="goods-spec">{{item.goods_info.goods_spec}}</div>
-              <!-- <div class="goodsprice" style="color: #888" v-if="!(item.order_type==4)">￥{{item.goods_info.unit_price}}</div> -->
-              <div class="goodsprice2">
+              <div class="goodsprice" style="color: #61D8D0" v-if="!(item.order_type==4)">￥{{item.goods_info.unit_price}}</div>
+              <div class="goodsprice2" v-else>
                 ￥{{item.goods_info.unit_price}}+{{item.goods_info.vcoin_price}}
                 <img class="huidouIcon" src="@/assets/images/huidou.png" mode="widthFix"/>
               </div>

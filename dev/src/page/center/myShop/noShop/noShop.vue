@@ -30,9 +30,9 @@ export default {
     },
     data() {
         return {
-            title: '我的店铺',
+            title: '',
             height: 0,
-            url: 'https://m.xiepinhui.com.cn/join/index.html'
+            url: ''
         }
     },
     created() {

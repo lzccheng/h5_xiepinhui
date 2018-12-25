@@ -46,6 +46,9 @@ const inviteFansMy365 = ()=>import('@/page/center/365partner/inviteFansMy365')
 //我的收益
 const redenvelope = ()=>import('@/page/center/365partner/redenvelope')
 
+//签到
+const signIn = () => import('@/page/center/signIn/signIn')
+
 // module 订单
 const orderFull = ()=>import('@/page/center/orderlist/orderFull')
 //订单列表
@@ -348,13 +351,14 @@ let router = new Router({
       name: 'center',
       component: centerWrap,
       children: [{
-        path: '',
-        component: center,
-        meta: {
-          title: '个人中心'
-        }
-      },
-    ],
+          path: '',
+          component: center,
+          meta: {
+            title: '个人中心'
+          }
+        },
+        
+      ],
       meta: {
         title: '个人中心'
       }
@@ -515,6 +519,14 @@ let router = new Router({
           
         ]
       }, {
+        path: 'signIn',
+        name: 'signIn',
+        component: signIn,
+        meta: {
+          title: '鞋品荟'
+        }
+      },
+      {
         path: 'myshop',
         component: myShopFull,
         children: [{

@@ -176,7 +176,23 @@ export const pointsOrderlist = (data) => {
   const url = `${domain}/points/orderlist`
   return POST(url, data)
 }
+//签到
+export const pointSignlog = (data) => {
+  const url = `${domain}/points/signlog`
+  return POST(url, data)
+}
 
+//签到商品
+export const ninehomepage = (data) => {
+  const url = `${domain}/nine/homepage`
+  return POST(url, data)
+}
+
+//签到商品
+export const pointssign = (data) => {
+  const url = `${domain}/points/sign`
+  return POST(url, data)
+}
 //删除订单
 export const cancelorder = (data) => {
   const url = `${domain}/nine/cancelorder`
