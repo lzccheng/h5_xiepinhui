@@ -1,5 +1,5 @@
 <template>
-  <div class="fbpj-wrap">
+  <div class="fbpj-wrap idnexWrapBox">
     <!-- header -->
     <x-header :left-options="{backText:''}" title="鞋品荟" id="vux-header"></x-header>
     <group style="margin-top:-1.17647059em">
@@ -74,7 +74,7 @@ export default {
           account: this.account,
           content: this.value,
           order_id: this.$route.query.orderid,
-          goods_item_id: this.$route.query.itemid,
+          goods_item_id: this.$route.query.itemId,
           geval_star: this.start,
           geval_level: this.geval_level,
           sn: ""
@@ -89,6 +89,9 @@ export default {
       } else {
         console.log("函数防抖");
       }
+    },
+    onEvent(){
+
     },
     ...mapActions(["update_storeInfo"])
   },

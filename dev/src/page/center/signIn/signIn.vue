@@ -395,6 +395,7 @@
 <script type="text/ecmascript-6">
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { api } from '@/utils/api.js';
+import { isScrollBottom } from '@/utils/comm.js';
 import { Group, Cell, XButton, Badge, XHeader } from 'vux';
 export default {
     components: {
@@ -427,7 +428,12 @@ export default {
         this.showGoods();
     },
     mounted() {
-
+        this.$nextTick(()=>{
+            isScrollBottom(this.showGoods);
+        })
+    },
+    destroyed () {
+        window.onscroll = null;
     },
     methods: {
         async showSignin(){
@@ -449,19 +455,20 @@ export default {
             }
         },
         async showGoods(){
+            if(this.upLoadingComplete)return;
             let data = {
                 page: this.page
             }
+            this.upLoading = true;
             const [err, res] = await api.ninehomepage(data);
             if (err) {
                 this.$vux.toast.text(err.msg);
+                this.upLoading = false;
                 return;
             }
             if(res.code == 2000){
-                if (res.data.list != '') {
+                if (res.data.list.length) {
                     this.list == ""? this.list = res.data.list : this.list = this.list.concat(res.data.list);
-                    this.upLoading = false;
-                    this.upLoadingComplete = false;
                     this.page ++;
                 } else {
                     this.upLoading = false;

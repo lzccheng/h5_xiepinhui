@@ -54,7 +54,7 @@
             <span class="goodsnum">x {{item.num}}</span>
           </div>
           <div class="goodsprice flex flex-pack-justify">
-            <div class="priceNumDv" v-if="infodata.order_type!=4">¥:{{item.unit_price}}</div>
+            <div class="priceNumDv" style="color: #61D8D0" v-if="infodata.order_type!=4">¥:{{item.unit_price}}</div>
             <div class="priceNumDv2" v-if="infodata.order_type==4">
                 <span class="signMoney">￥:</span>{{item.vcoin_pay_price}}+{{item.vcoin_price}}
                 <img src="@/assets/images/huidou.png" class="iconH" mode="widthFix"/>
@@ -79,7 +79,7 @@
 
       <div class="order-bottom flex  flex-align-center flex-pack-end  line_xi_after">
         <span class="text-font" v-if="infodata.goods_item_data">
-          共{{infodata.goods_item_data[0].num}}件商品 合计:<span style='color:#FB4C72'>￥{{infodata.pay_amount}}</span>
+          共{{infodata.goods_item_data[0].num}}件商品 合计:<span style='color:#61d8d0'>￥{{infodata.pay_amount}}</span>
           (含运费￥{{infodata.shipping_amount}})
         </span>
       </div>

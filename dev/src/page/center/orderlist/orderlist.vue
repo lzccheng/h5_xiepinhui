@@ -429,12 +429,12 @@
             <span class="order-btn order-btn-hui" @click='quxiaoOrder' data-deleteType="2" :data-index="index"
               :data-orderid="item.order_id">删除订单</span>
             <span class="order-btn order-btn-hui" @click="buyagain(item.goods_info.goods_id)" :data-goodsid='item.goods_info.goods_id'>再次购买</span>
-            <span class="order-btn" @click="goeva" :data-orderId='item.order_id' :data-itemid='item.goods_info.goods_item_id'>立即评价</span>
+            <span class="order-btn" @click="goeva(item.order_id, item.goods_info.goods_item_id)" :data-orderId='item.order_id' :data-itemid='item.goods_info.goods_item_id'>立即评价</span>
           </div>
           <div class="order-bottom-btn " v-if='item.order_state=="60"'>
             <span class="order-btn order-btn-hui" @click='quxiaoOrder' data-deleteType="2" :data-index="index"
               :data-orderid="item.order_id">删除订单</span>
-            <span class="order-btn" @click="goeva" :data-orderId='item.order_id' :data-itemid='item.goods_info.goods_item_id'>追加评价</span>
+            <span class="order-btn" @click="goeva(item.order_id, item.goods_info.goods_item_id)" :data-orderId='item.order_id' :data-itemid='item.goods_info.goods_item_id'>追加评价</span>
           </div>
           <div class="order-bottom-btn " v-if='item.order_state=="61"'>
             <span class="order-btn order-btn-hui" @click='quxiaoOrder' data-deleteType="2" :data-index="index"
@@ -706,9 +706,9 @@ export default {
       })
     },
     //评价
-    goeva(e) {
-      let orderid = e.currentTarget.dataset.orderid;
-      let itemId = e.currentTarget.dataset.itemid;
+    goeva(orderid, itemId) {
+      // let orderid = e.currentTarget.dataset.orderid;
+      // let itemId = e.currentTarget.dataset.itemid;
       this.$router.push({
         path: "/indexFull/goodsFull/fbPingjia",
         query: {
