@@ -144,6 +144,10 @@ export const getredpacketinfo = (data) => {
   return POST(url, data)
 }
 
+export const authentication = (data) => {
+  const url = `${domain}/member/authentication`
+  return POST(url, data)
+}
 //领取荟豆
 export const taket_vcoin_packet = (data) => {
   const url = `${domain}/restore/taket_vcoin_packet`

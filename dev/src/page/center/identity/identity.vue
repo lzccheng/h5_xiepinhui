@@ -34,6 +34,7 @@
             position: relative;
             img{
                 width: 7.18rem;
+                height: 4.4rem;
             }
             input{
                 width: 7.18rem;
@@ -107,12 +108,14 @@
             <div class="idenimg">
                 <div>上传身份证</div>
                 <div class="face">
-                    <img src="@/assets/images/center/iden/face.png" alt="">
-                    <input type="file" @change="upimage" id="face">
+                    <img :src="img1" v-if="img1" alt="">
+                    <img src="@/assets/images/center/iden/face.png" v-else alt="">
+                    <input type="file" @change="upimage($event, 'img1')" id="face">
                 </div>
                 <div class="face">
-                    <img src="@/assets/images/center/iden/back.png" alt="">
-                    <input type="file" id="back">
+                    <img :src="img2"  v-if="img2" alt="">
+                    <img src="@/assets/images/center/iden/back.png" v-else alt="">
+                    <input type="file" id="back" @change="upimage($event, 'img2')">
                 </div>
             </div>
             <div class="protocol">
@@ -143,11 +146,13 @@ export default {
             idCode: '',
             name: '',
             img1: '',
-            img2: ''
+            img2: '',
+            img1_sn: '',
+            img2_sn: '',
         }
     },
     created() {
-
+        
     },
     mounted() {
 
@@ -156,7 +161,7 @@ export default {
         changeIsselect(){
             this.isSelect = !this.isSelect;
         },
-        submit(){
+        async submit(){
             if(!this.name){
                 return this.$vux.toast.text('请输入真实姓名', 'top');
             }
@@ -172,10 +177,91 @@ export default {
             if(!this.isSelect){
                 return this.$vux.toast.text('请勾选实名认证相关协议', 'top');
             }
-
+            let data = {
+                account: this.account,
+                token: this.token,
+                auth_realname: this.name,
+                auth_idcardnum: this.idCode,
+                auth_idcardpic_front: this.img1_sn,
+                auth_idcardpic_back: this.img2_sn,
+            }  
+            this.$vux.loading.show({
+                text: '提交中...'
+            }) 
+            const [err, res] = await api.authentication(data);
+            this.$vux.loading.hide();
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            if(res.code == 2000){
+                console.log(res)
+                if(res.data.status == 1){
+                    this.$vux.toast.text('提交成功', 'top');
+                    this.$router.push({
+                        path: '/centerFull/identity/identityStatus'
+                    })
+                }else{
+                    this.$vux.toast.text('提交失败', 'top');
+                }
+            }
         },
-        upimage(e){
-            console.log(e.target.files)
+        upimage(e, name){
+            let that = this;
+            let file = e.target.files[0];
+            let data = {
+                plat: 3,
+                token: this.token,
+                account: this.account,
+                type: 17,
+                num: 1
+            };
+            if (name === "img1") {
+                this._ossImg(data, file, name);
+                this.img1 = window.URL.createObjectURL(file);
+            } else {
+                this._ossImg(data, file, name);
+                this.img2 = window.URL.createObjectURL(file);
+            }
+        },
+        async _ossImg(data, file, name){
+            let that = this;
+            const [err, res] = await api.getpaths(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            if (res.code == "2000") {
+                let config = {
+                secure: true,
+                // region: window.location.origin,
+                accessKeyId: res.data.AccessKeyId,
+                accessKeySecret: res.data.AccessKeySecret,
+                bucket: res.data.bucket,
+                region: 'oss-cn-shenzhen',
+                // stsToken: res.data.SecurityToken
+                }
+                console.log(res)
+                console.log(config)
+                this.client = new OSS.Wrapper(config);
+                // const result = await this.client.list();
+                // console.log('result.objects',result.objects)
+                this.client
+                .multipartUpload(res.data.files, file)
+                .then(function(result) {
+                    if (name === "img1") {
+                    that.img1_sn = res.data.sn;
+                    } else {
+                    that.img2_sn = res.data.sn;
+                    }
+                    console.log("result", result);
+                })
+                .catch(function(err) {
+                    console.log("err", err);
+                    console.log("err.name : " + err.name);
+                    console.log("err.message : " + err.message);
+                });
+            }
         }
     },
     computed: {

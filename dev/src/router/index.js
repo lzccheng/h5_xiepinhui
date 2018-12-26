@@ -116,9 +116,14 @@ const allgoods = () => import('@/page/index/allgoods/allgoods')
 const editaddress = ()=>import('@/page/index/editaddress/editaddress')
 
 const subStoreList = () => import('@/page/center/myShop/subStoreList')
-
+//身份认证
 const identityWrap = () => import('@/page/center/identity/identityWrap')
 const identity = () => import('@/page/center/identity/identity')
+const identityStatus = () => import('@/page/center/identity/identityStatus')
+//设置
+const setting = () => import('@/page/center/setting/setting')
+const settingWrap = () => import('@/page/center/setting/settingWrap')
+
 const noShop = () => import('@/page/center/myShop/noShop/noShop')
 const addSubStore = ()=>import('@/page/center/myShop/addSubStore')
 const offlineStore = ()=>import('@/page/center/myShop/offlineStore')
@@ -536,7 +541,15 @@ let router = new Router({
             meta: {
               title: '实名认证'
             },
-          }
+          }, 
+          {
+            path: 'identityStatus',
+            name: 'identityStatus',
+            component: identityStatus,
+            meta: {
+              title: '实名认证'
+            },
+          },
         ]
       }, {
         path: 'signIn',
@@ -545,6 +558,28 @@ let router = new Router({
         meta: {
           title: '鞋品荟'
         }
+      },
+      {
+        path: 'settingWrap',
+        name: 'settingWrap',
+        component: settingWrap,
+        meta: {
+          title: '鞋品荟'
+        },
+        children: [
+          {
+            path: '',
+            redirect: 'setting'
+          },
+          {
+            path: 'setting',
+            name: 'setting',
+            component: setting,
+            meta: {
+              title: '鞋品荟'
+            },
+          }
+        ]
       },
       {
         path: 'myshop',

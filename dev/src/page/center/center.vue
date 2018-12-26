@@ -4,7 +4,7 @@
     <div class="header">
       <div class="top">
         <div class="icon i1" @click="scanQRCode"></div>
-        <div class="icon i2"></div>
+        <div class="icon i2" @click="token && $router.push('/centerFull/settingWrap/setting')"></div>
       </div>
       <div class="user-box">
         <div class="userImg">
@@ -12,7 +12,7 @@
             <img :src="user.avatar||'http://img.xiepinhui.com.cn/sys/default/user/avatar.jpg?x-oss-process=image/resize,m_fill,h_200,w_200'"
               alt="" class="user-img">
           </div>
-          <img class="iden" v-if="redmessageInfo && redmessageInfo.member_info.member_auth_status == 3" src="@/assets/images/center/noiden.png" alt="">
+          <img class="iden" v-if="redmessageInfo && (redmessageInfo.member_info.member_auth_status == 3 || redmessageInfo.member_info.member_auth_status == 1 || redmessageInfo.member_info.member_auth_status == 0)" src="@/assets/images/center/noiden.png" alt="">
           <img class="iden" v-if="redmessageInfo && redmessageInfo.member_info.member_auth_status == 2" src="@/assets/images/center/actiden.png" alt="">
         </div>
         
@@ -635,6 +635,15 @@ export default {
         case 10:
           if(this.user.user_type == 3){
             return this.$vux.toast.text('暂无权限','top');
+          }
+          let member_auth_status = this.redmessageInfo.member_info.member_auth_status;
+          if(member_auth_status == 0 || member_auth_status == 1 || member_auth_status == 2){
+            return this.$router.push({
+              path: '/centerFull/identity/identityStatus',
+              query: { 
+                status: member_auth_status == 1? 3 : member_auth_status == 2? 2 : 1
+              }
+            })
           }
           url = '/centerFull/identity';
           break;
