@@ -34,7 +34,7 @@
             </div> -->
           </div>
           <div class="info-right">
-            <div class="sign-box" @click="$router.push('/centerFull/signIn')">
+            <div class="sign-box" @click="token && $router.push('/centerFull/signIn')">
               <span class="sign-icon icon"></span>
               <span class="sign-text">点击签到</span>
             </div>
