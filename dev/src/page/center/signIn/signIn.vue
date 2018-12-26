@@ -279,12 +279,14 @@
         top: 1rem;
         left: 50%;
         width: 85%;
-        height: 70%;
+        height: 8rem;
         margin: 0 auto;
         margin-left: -42.5%;
         border-radius: 10px;
         padding: 0.3rem 0.2rem 0.2rem;
         background-color: #fff;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
         iframe{
             width: 100%;
             height: 100%;
@@ -293,10 +295,15 @@
             border-radius: 10px;
         }
         .img{
+            position: absolute;
+            width: 100%;
+            left: 50%;
+            bottom: -1rem;
             text-align: center;
-            padding-top: 0.3rem;
+            padding-top: -0.3rem;
             img{
                 width: 0.6rem;
+                height: auto;
                 display: inline-block;
             }
         }
@@ -378,12 +385,12 @@
                 <div class="loading complete" v-if="upLoadingComplete">暂无更多数据</div>
             </div>
             <transition name="fade">
-                <div class="alertBox" v-if="ruleBoxShow">
+                <div class="alertBox" v-if="ruleBoxShow" @click.self="ruleBox">
                     <div class="contenBox">
                         <iframe src="https://m.xiepinhui.com.cn/smallweb/guize.html?type=qiandao" frameborder="0"></iframe>
-                        <div class="img">
-                            <img @click="ruleBox" src="@/assets/images/close_red.png" alt="">
-                        </div>
+                        <!-- <div class="img">
+                            <img @click.stop="ruleBox" src="@/assets/images/close_red.png" alt="">
+                        </div> -->
                     </div>
                 </div>
             </transition>
