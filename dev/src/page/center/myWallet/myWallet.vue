@@ -211,7 +211,7 @@ padding-left:10/50rem;
                         <div class="descRightOne"  @click='withdrawDetail'>提现明细</div>
                     </div>
                     <div class="flex flex-pack-justify descAmountBox">
-                        <div style="color:#EC7B7D"><text style="font-size:20rpx;">¥</text>{{infoData.money_data[1].money_amout}}</div>
+                        <div style="color:#61d8d0"><span style="font-size:20rpx;">¥</span>{{Number(infoData.money_data[1].money_amout).toFixed(2) || 0.00}}</div>
                         <div class="btn-withdraw" @click.stop="goWithdraw">提现</div>
                     </div>
                     <div class="flex flex-pack-justify descAmountBox line_bottom" :data-name="item.name" @click="goFanLiPage(item.red_type)" :key="index" v-for="(item,index) in infoData.money_data[1].list">

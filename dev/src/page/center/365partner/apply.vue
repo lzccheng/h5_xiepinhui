@@ -23,21 +23,19 @@
         </div>
       </div>
       <!-- 证件 -->
-      <div class="scbox">
+      <!-- <div class="scbox">
         <div class="scboxTitle">
           <span class="title">上传证件</span>
         </div>
         <div class="imgbox" :style="{backgroundImage: img1? 'url(' + img1 + ')' : '~@/assets/images/center/partner/sf1.png',backgroundSize: 'cover', backgroundPosition: 'center',backgroundRepeat: 'no-repeat'}">
           <img src="~@/assets/images/center/partner/sf1.png" v-if="!img1" :alt="img1">
-          <!-- <img :src="img1" v-else :alt="img1"> -->
           <input type="file" accept="image/*" @change="upimg($event,'img1')" id="">
         </div>
         <div class="imgbox mt" :style="{backgroundImage: img2? 'url(' + img2 + ')' : '~@/assets/images/center/partner/sf1.png',backgroundSize: 'cover', backgroundPosition: 'center',backgroundRepeat: 'no-repeat'}">
           <img src="~@/assets/images/center/partner/sf2.png" v-if="!img2" :alt="img2">
-          <!-- <img :src="img2" v-else :alt="img2"> -->
           <input type="file" accept="image/*" @change="upimg($event,'img2')" id="">
         </div>
-      </div>
+      </div> -->
       <!-- 支付方式 -->
       <span class="title">支付方式</span>
       <div class="pay-box">
@@ -146,12 +144,12 @@ export default {
     async pay() {
       // 校验信息
       if(!this._check())return;
-      if(!this.img1_sn){
-        return this.$vux.toast.text("请重新上传身份证人像面");
-      }
-      if(!this.img2_sn){
-        return this.$vux.toast.text("请重新上传身份证国旗面");
-      }
+      // if(!this.img1_sn){
+      //   return this.$vux.toast.text("请重新上传身份证人像面");
+      // }
+      // if(!this.img2_sn){
+      //   return this.$vux.toast.text("请重新上传身份证国旗面");
+      // }
       let data = {
         plat: 3,
         account: this.account,
@@ -159,8 +157,8 @@ export default {
         shop_name: this.store,
         real_name: this.name,
         mobile: this.phone,
-        sn_up: this.img1_sn,
-        sn_down: this.img2_sn,
+        // sn_up: this.img1_sn,
+        // sn_down: this.img2_sn,
         openid: this.user.openid,
         pay_code: this.payFun, // 1微信 2支付宝 3银联
         type: 3,
@@ -185,59 +183,9 @@ export default {
           let fail = err => {
             this.$vux.toast.text('支付失败');
           }
-          wxPay(this, {...res.data.pay_param,success,fail})
+          wxPay(this, {...res.data.pay_param,success,fail});
         }else{
-          console.log(res)
-          // let arr = res.data.pay_param.split('&');
-          // let data = {};
-          // arr.forEach(item => {
-          //   let Iarr = item.split('=');
-          //   data[Iarr[0]] = Iarr[1];
-          // })
-          // let params = {
-          //   notify_url: data.notify_url,
-          //   method: data.method,
-          //   partner: data.app_id,
-          //   _input_charset: data.charset,
-          //   sign_type: data.sign_type,
-          //   sign: data.sign,
-          //   notify_url: data.notify_url,
-          //   return_url: window.location.href,
-          //   body: data.biz_content
-          // }
-          // data.biz_content = decodeURI(data.biz_content);
-          // data.biz_content.replace(/%2C/ig, ':');
-          // data.biz_content.replace(/%3A/ig, ',');
-          // console.log(data)
-          // data.biz_content = JSON.parse(data.biz_content);
-          // let html = `
-          //   <form id="alipaysubmit" name="alipaysubmit" action="https://openapi.alipay.com/gateway.do" method="get">
-          //     <input type="hidden" name="service" value="alipay.wap.create.direct.pay.by.user" />
-          //     <input type="hidden" name="partner" value="${data.biz_content.partner}" />
-          //     <input type="hidden" name="_input_charset" value="${data.charset}" />
-          //     <input type="hidden" name="sign_type" value="${data.sign_type}" />
-          //     <input type="hidden" name="sign" value="${data.sign}" />
-          //     <input type="hidden" name="notify_url" value="${data.notify_url}" />
-          //     <input type="hidden" name="return_url" value="${window.location.href}" />
-          //     <input type="hidden" name="out_trade_no" value="${data.biz_content.out_trade_no}" />
-          //     <input type="hidden" name="subject" value="${data.biz_content.subject}" />
-          //     <input type="hidden" name="total_fee" value="${data.biz_content.total_amount}" />
-          //     <input type="hidden" name="seller_id" value="${data.biz_content.seller_id}" />
-          //     <input type="hidden" name="payment_type" value="1" />
-          //     <input type="hidden" name="method" value="${data.method}" />
-          //     <input type="hidden" name="body" value="${data.biz_content.body}" />
-          // </form>
-          // `;
-          // let str = `https://openapi.alipay.com/gateway.do?partner="2088101568358171"&seller_id="xxx@alipay.com"&out_trade_no="0819145412-6177"&subject="测试"&body="测试测试"&total_fee="0.01"&notify_url="http://notify.msp.hk/notify.htm"&service="mobile.securitypay.pay"&payment_type="1"&_input_charset="utf-8"&it_b_pay="30m"&sign="lBBK%2F0w5LOajrMrji7DUgEqNjIhQbidR13GovA5r3TgIbNqv231yC1NksLdw%2Ba3JnfHXoXuet6XNNHtn7VE%2BeCoRO1O%2BR1KugLrQEZMtG5jmJIe2pbjm%2F3kb%2FuGkpG%2BwYQYI51%2BhA3YBbvZHVQBYveBqK%2Bh8mUyb7GM1HxWs9k4%3D"&sign_type="RSA"`
-          // let a = `https://openapi.alipay.com/gateway.do?service="alipay.wap.create.direct.pay.by.user"&partner="2088721304880492"&_input_charset="UTF-8"&sign_type=RSA2&sign="dG2v7Mqvh%2FG%2Fun7BSTQADinsZxia%2BS6JBa9OPvI0rVm8Rp%2BEeeuSu0%2BSAYJp2WViPWipr%2BK7Uj7JvMA4QnLtXujcONw5Bcg%2BBIOkYpBNWK1w%2BZ%2Fs8QBGiDNbiPoZGmyJgZm38YB%2F3TMtvtjZ0NpaNfx%2FMpWk7gJe26%2BWJH7Hl%2FE%2F%2FwsOPnkFIDdPaZx26F3f%2FY77Yntmp3XGQawb8o0Prgxw8MHvh0f4%2FIciQMMi%2FKwXr0Ycz4CQokbDBc2g86Rk8DgU%2Fgod6b1LS57UozLqFN9Fcg5Wfoe0hvHmKl5j9Cd4vm%2B%2BAhGv4%2F5jm3RDnn73HHrxX9H%2FC0bx%2Ff7LFsflsA%3D%3D"&notify_url=https%3A%2F%2Fapi.dev.xiepinhui.com.cn%2Fmembercallback%2Fcall_alipay`
-          // console.log(data)
-          
-          this.aliForm = res.data.pay_param;
-          // console.log(html)
-          // return
-          this.$nextTick(()=>{
-            this.$refs.aliPay.children[0].submit();
-          })
+          wxPay(this, {pay_param: res.data.pay_param});
         }
       }
       console.log("pay", res);
@@ -258,10 +206,10 @@ export default {
         this.$vux.toast.text("请填写正确店铺名称");
         return;
       }
-      if (!this.img1 || !this.img2) {
-        this.$vux.toast.text("请上传证件");
-        return;
-      }
+      // if (!this.img1 || !this.img2) {
+      //   this.$vux.toast.text("请上传证件");
+      //   return;
+      // }
       if (!this.tips) {
         this.$vux.toast.text("请勾选协议");
         return;
