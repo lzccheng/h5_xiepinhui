@@ -282,8 +282,13 @@ export default {
                 }else{
                     
                     if(res.code==2000){
-                        this.$vux.toast.text('银行卡添加成功！');
-                        this.$router.push('/addCard');
+                        this.$vux.toast.text("银行卡添加成功！",'top');
+                        this.$router.push({
+                            path: '/addCard',
+                            query: {
+                                ...this.$route.query
+                            }
+                        });
                     }
                 }
 

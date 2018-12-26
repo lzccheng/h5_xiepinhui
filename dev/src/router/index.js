@@ -116,6 +116,9 @@ const allgoods = () => import('@/page/index/allgoods/allgoods')
 const editaddress = ()=>import('@/page/index/editaddress/editaddress')
 
 const subStoreList = () => import('@/page/center/myShop/subStoreList')
+
+const identityWrap = () => import('@/page/center/identity/identityWrap')
+const identity = () => import('@/page/center/identity/identity')
 const noShop = () => import('@/page/center/myShop/noShop/noShop')
 const addSubStore = ()=>import('@/page/center/myShop/addSubStore')
 const offlineStore = ()=>import('@/page/center/myShop/offlineStore')
@@ -419,7 +422,7 @@ let router = new Router({
             meta: {
               title: '帮助中心'
             }
-          },{
+          }, {
             path: 'code',
             name: 'code',
             component: code,
@@ -517,6 +520,23 @@ let router = new Router({
             }
           }
           
+        ]
+      }, , {
+        path: 'identity',
+        name: 'identityWrap',
+        component: identityWrap,
+        meta: {
+          title: '实名认证'
+        },
+        children: [
+          {
+            path: '/',
+            name: 'identity',
+            component: identity,
+            meta: {
+              title: '实名认证'
+            },
+          }
         ]
       }, {
         path: 'signIn',

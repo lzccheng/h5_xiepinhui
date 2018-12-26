@@ -7,10 +7,15 @@
         <div class="icon i2"></div>
       </div>
       <div class="user-box">
-        <div class="user-img-wrap">
-          <img :src="user.avatar||'http://img.xiepinhui.com.cn/sys/default/user/avatar.jpg?x-oss-process=image/resize,m_fill,h_200,w_200'"
-            alt="" class="user-img">
+        <div class="userImg">
+          <div class="user-img-wrap">
+            <img :src="user.avatar||'http://img.xiepinhui.com.cn/sys/default/user/avatar.jpg?x-oss-process=image/resize,m_fill,h_200,w_200'"
+              alt="" class="user-img">
+          </div>
+          <img class="iden" v-if="redmessageInfo && redmessageInfo.member_info.member_auth_status == 3" src="@/assets/images/center/noiden.png" alt="">
+          <img class="iden" v-if="redmessageInfo && redmessageInfo.member_info.member_auth_status == 2" src="@/assets/images/center/actiden.png" alt="">
         </div>
+        
         <div class="user-info-box">
           <div class="info-left">
             <div class="user">
@@ -34,7 +39,7 @@
             </div> -->
           </div>
           <div class="info-right">
-            <div class="sign-box" @click="$router.push('/centerFull/signIn')">
+            <div class="sign-box" @click="token && $router.push('/centerFull/signIn')">
               <span class="sign-icon icon"></span>
               <span class="sign-text">点击签到</span>
             </div>
@@ -80,7 +85,7 @@
       <span class="title">我的服务</span>
       <div class="gounp-wrap">
         <div class="gounp-row">
-          <div class="gounp-item" v-for="(item,index) in redmessageInfo.list" :key="index" @click="linkToService(item.type)">
+          <div class="gounp-item" v-for="(item,index) in redmessageInfo.list" :key="index" @click="linkToService(item.type, item.title)">
             <div class="icon" :style="{backgroundImage:'url(' + item.url_img + ')'}" v-if="!!item.url_img"></div>
             <div class="gounp-text">{{item.title}}</div>
           </div>
@@ -603,7 +608,7 @@ export default {
       }
     },
     //我的服务转跳
-    linkToService(type){
+    linkToService(type, title){
       let url = '';
       switch(type){
         case 9:
@@ -626,6 +631,12 @@ export default {
           break;
         case 1:
           url = '/centerFull/myService/coupon_list';
+          break;
+        case 10:
+          if(this.user.user_type == 3){
+            return this.$vux.toast.text('暂无权限','top');
+          }
+          url = '/centerFull/identity';
           break;
       }
       if(!url){
@@ -917,7 +928,15 @@ margin-left:-32.5/100rem;
     height: 1.45rem;
     box-sizing: border-box;
     padding: 0.21rem 0 0.21rem 0.42rem;
-
+    .userImg{
+      position: relative;
+      .iden{
+        position: absolute;
+        left: -0.2rem;
+        bottom: -0.1rem;
+        width: 97/100rem;
+      }
+    }
     .user-img-wrap {
       width: 1.07rem;
       height: 1.07rem;
@@ -926,11 +945,11 @@ margin-left:-32.5/100rem;
       border: 2px solid #fff;
       overflow: hidden;
       margin-right: 0.3rem;
-
       .user-img {
         width: 100%;
         height: 100%;
       }
+      
     }
 
     .user-info-box {
@@ -1009,7 +1028,7 @@ margin-left:-32.5/100rem;
           flex-wrap: wrap;
           img{
             width: 1.27rem;
-            height: 0.33rem;
+            height: 0.38rem;
             margin-left: 0.1rem;
             margin-bottom: 0.1rem;
             &:first-child{

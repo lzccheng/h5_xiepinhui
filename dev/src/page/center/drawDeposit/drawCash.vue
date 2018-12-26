@@ -149,9 +149,15 @@
     <div class="main">
       <img src="https://img.xiepinhui.com.cn/mobile/step.png" class="img-step"/>
       <div class="cell select-type" @click="showBankList">
-        <img :src="methodType.icon" class="img-type"/>
-        <span>{{methodType.title}}</span>
-        <div class="arrow-left"></div>
+        <div v-if="methodType.type == 3">
+          <img :src="methodType.icon" class="img-type"/>
+          <span>{{methodType.title}}</span>
+          <div class="arrow-left"></div>
+        </div>
+        <div v-else>
+          <span>请选择银行卡</span>
+          <div class="arrow-left"></div>
+        </div>
       </div>
       <div class="cell">
         <div class="withdraw-title">提现金额（免收服务费）</div>
@@ -200,7 +206,7 @@
       <div class="withdraw-rule">
         <div class="title">提现规则</div>
         <div class="desc">
-          <span>1.单笔提现1万元以上提现次数不限制,单笔1万元以下每月只能提现一次，最低为100元;</span>
+          <span>1.单笔提现1万元以上提现次数不限制,单笔1万元以下每月只能提现一次，最低为10元;</span>
           <span>2.余额提现成功后,到账时间为财务审核后2~3个工作日</span>
           <span>3.有任何问题或未及时到账,即可联系客服400-963-9299</span>
         </div>
@@ -215,9 +221,9 @@
         <div class="popup-list">
           <div class="popup-list-item" v-for="(item,index) in methodList" :key="index">
             <div class="popup-list-item-btn" :data-index="index" @click="selectType"></div>
-            <img :src="item.icon"/>
-            <span>{{item.title}}</span>
-          </div>
+              <img :src="item.icon"/>
+              <span>{{item.title}}</span>
+            </div>
         </div>
         <div class="bank-manage" @click="linkToBankCard">
           银行卡管理
@@ -253,9 +259,9 @@ export default {
   data() {
     return {
       initialization: {},
-    money: '',
+    money: '0',
     methodType: {
-      type: 1
+      
     },
     methodList: [],
 
@@ -277,6 +283,8 @@ export default {
   created() {
     
     this.tel=this.user.tel;
+    this.card_id = this.$route.query.card_id || '';
+    this.withdrawMethod();
   },
   mounted(){
      this.$nextTick(function() {
@@ -351,8 +359,18 @@ export default {
         return;
       }else{
         if(res.code==2000){
-          console.log(res)
-          this.methodList=res.data.list;
+          this.methodList=res.data.list.filter(item=>{
+            if(item.type == 3){
+              return item;
+            }
+          });
+          if(this.card_id){
+            this.methodType = this.methodList.filter(item=>{
+              if(item.card_id == this.card_id){
+                return item;
+              }
+            })[0];
+          }
         }
       }
     },
@@ -373,12 +391,19 @@ export default {
 
     },
     async sureWithdraw(){
-      if(this.methodType.type != 3 && this.account_number.length < 1 || this.account_name.length < 1) {
+      if(!this.methodType.type){
+        return this.$vux.toast.text('请选择银行卡');
+      }
+      if(this.methodType.type != 3 && (this.account_number.length < 1 || this.account_name.length < 1)) {
         this.$vux.toast.text('请输入账号或提现姓名');
         return false;
-      } else if( this.methodType.type == 3 && this.ver_code.length < 1 ) {
+      }
+      if( this.methodType.type == 3 && this.ver_code.length < 1 ) {
         this.$vux.toast.text('请输入手机验证码');
         return false;
+      }
+      if(!this.money){
+        return this.$vux.toast.text('提现金额不能为空');
       }
       var sub_member_id='';
       sub_member_id=this.$route.query.sub_member_id;
@@ -399,6 +424,12 @@ export default {
       
       const [err, res] = await api.withdrawCash(data);
       if(err){
+        if(err.code == 4009){
+          return this.$vux.toast.text('输入的验证码不正确');
+        }
+        if(err.code == 4005){
+          return this.$vux.toast.text('可提现金额不足');
+        }
         this.$vux.toast.text(err.msg);
         return;
       }else{
@@ -434,9 +465,12 @@ export default {
         if(res.code==2000){
           console.log('res：',res);
           this.initialization=res.data;
-          this.methodType.type=res.data.type;
-          this.methodType.icon=res.data.icon;
-          this.methodType.title=res.data.title;
+          if(res.data.type == 3){
+            this.methodType.type=res.data.type;
+            this.methodType.icon=res.data.icon;
+            this.methodType.title=res.data.title;
+          }
+          
           //this.account_number=res.data.account_number;
           //this.account_name=res.data.account_name;
         }
@@ -445,7 +479,12 @@ export default {
     },
    linkToBankCard(){
       this.showBankList();
-      this.$router.push('./addCard');
+      this.$router.push({
+        path: 'addCard',
+        query: {
+          url: 'drawCash'
+        }
+      });
    }
     
     

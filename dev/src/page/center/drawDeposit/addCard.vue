@@ -178,7 +178,7 @@
     <div class="cell add-card" @click="shadowToggle">+添加银行卡</div>
 
     <div v-if="bankList.length > 0">
-      <div class="card-list" v-for="(item,index) in bankList" :key="index">
+      <div class="card-list" v-for="(item,index) in bankList" :key="index" @click="turnBack(item)">
         <div class="card-info">
           <div class="info-img">
             <img :src="item.icon"/>
@@ -342,7 +342,13 @@ export default {
       }else{
         if(res.code==2000){
           this.shadowToggle();
-          this.$router.push('/bindNewCard');
+          
+          this.$router.push({
+            path: '/bindNewCard',
+            query: {
+              ...this.$route.query
+            }
+          });
           //this.linkToPage('../addCard/addCard')  //跳到去绑定卡的页面
         }else{
           this.$vux.toast.text(res.msg);
@@ -396,6 +402,17 @@ export default {
     //滚动到底部回调
     scrollBottomCB() {
       this.getBankList();
+    },
+    turnBack(item){
+      let path = this.$route.query.url;
+      if(path){
+        this.$router.push({
+          path,
+          query: {
+            card_id: item.card_id
+          }
+        })
+      }
     }
   },
   filters: {},
