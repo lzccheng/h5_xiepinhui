@@ -12,8 +12,8 @@
             <img :src="user.avatar||'http://img.xiepinhui.com.cn/sys/default/user/avatar.jpg?x-oss-process=image/resize,m_fill,h_200,w_200'"
               alt="" class="user-img">
           </div>
-          <img class="iden" v-if="redmessageInfo && (redmessageInfo.member_info.member_auth_status == 3 || redmessageInfo.member_info.member_auth_status == 1 || redmessageInfo.member_info.member_auth_status == 0)" src="@/assets/images/center/noiden.png" alt="">
-          <img class="iden" v-if="redmessageInfo && redmessageInfo.member_info.member_auth_status == 2" src="@/assets/images/center/actiden.png" alt="">
+          <img class="iden" @click="linkToService(10)" v-if="redmessageInfo && (redmessageInfo.member_info.member_auth_status == 3 || redmessageInfo.member_info.member_auth_status == 1 || redmessageInfo.member_info.member_auth_status == 0)" src="@/assets/images/center/noiden.png" alt="">
+          <img class="iden" @click="linkToService(10)" v-if="redmessageInfo && redmessageInfo.member_info.member_auth_status == 2" src="@/assets/images/center/actiden.png" alt="">
         </div>
         
         <div class="user-info-box">
@@ -85,7 +85,7 @@
       <span class="title">我的服务</span>
       <div class="gounp-wrap">
         <div class="gounp-row">
-          <div class="gounp-item" v-for="(item,index) in redmessageInfo.list" :key="index" @click="linkToService(item.type, item.title)">
+          <div class="gounp-item" v-for="(item,index) in redmessageInfo.list" :key="index" @click="linkToService(item.type)">
             <div class="icon" :style="{backgroundImage:'url(' + item.url_img + ')'}" v-if="!!item.url_img"></div>
             <div class="gounp-text">{{item.title}}</div>
           </div>
