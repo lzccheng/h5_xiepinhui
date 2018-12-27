@@ -281,10 +281,12 @@ export default {
       upLoading: false,
       upLoadingComplete: false,
       upmore: true,
+      member_auth_status: ''
     };
   },
   created() {
     this.getBankList();
+    this.getIden();
   },
   mounted() {
     this.$nextTick(function() {
@@ -292,6 +294,20 @@ export default {
     });
   },
   methods: {
+    async getIden(){
+      let data = {
+        account: this.account,
+        token: this.token
+      };
+      const [err, res] = await api.memberbalance(data);
+      if (err) {
+        this.$vux.toast.text(err.msg);
+        return;
+      }
+      if(res.code == 2000){
+        this.member_auth_status = res.data.member_auth_status;
+      }
+    },
     showConfirm(e){
       const isTrue = this.isConfirm ? false :true
       this.isConfirm=isTrue;
@@ -303,7 +319,31 @@ export default {
       }
     },
     shadowToggle(){
-      
+      if(this.member_auth_status === ''){
+        return this.$vux.toast.text('你还没有完成实名认证哦~~');
+      };
+      let that = this;
+      if(this.member_auth_status != 2){
+        return this.$vux.confirm.show({
+          content: '添加银行卡需实名认证哦~',
+          confirmText: '前往实名',
+          onCancel () {
+          },
+          onConfirm () {
+            if(that.member_auth_status == 0 || that.member_auth_status == 1 || that.member_auth_status == 3){
+              if(that.member_auth_status == 3){
+                return that.$router.push('/centerFull/identity/');
+              }
+              that.$router.push({
+                path: '/centerFull/identity/identityStatus',
+                query: {
+                  status: that.member_auth_status
+                }
+              })
+            }
+          }
+        })
+      }
       if(this.is_paypwd) {
         const isTrue = this.isAdd ? false :true;
         this.isAdd=isTrue;
@@ -312,7 +352,6 @@ export default {
         const isTrue = this.isShadow ? false :true;
         this.isShadow=isTrue;
       }
-
     },
     bindPwd(e){
       var password=this.password;
@@ -323,6 +362,7 @@ export default {
         console.log(this.password.length)
         var length_password=this.password.length;
         if(length_password==6){
+          
           this.checkPay();
         }
       }
@@ -342,7 +382,6 @@ export default {
       }else{
         if(res.code==2000){
           this.shadowToggle();
-          
           this.$router.push({
             path: '/bindNewCard',
             query: {

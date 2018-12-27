@@ -7,7 +7,7 @@ import qs from 'qs'
 import Vue from 'vue'
 
 let axiosUtil = axios.create({
-  timeout: 2500
+  timeout: 3000
 })
 
 axiosUtil.interceptors.response.use(

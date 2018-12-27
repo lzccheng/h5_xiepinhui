@@ -5,7 +5,8 @@
 .add-remind {
     font-size: 26/100rem;
     color: #999;
-    padding: 20/100rem 20/100rem 0;
+    padding: 20/100rem;
+    background: #f8f8f8;
 }
 
 .cell-input span {
@@ -91,6 +92,13 @@
     color: #61D8D0;
     margin-top: 40/100rem;
 }
+.cell{
+    margin-top: 0;
+}
+.cell .cell-input .img{
+    width: 0.35rem;
+    height: 0.35rem;
+}
 .cell .cell-input input{
     background: none;
 }
@@ -102,10 +110,15 @@
     height: 100%;
     z-index: 111;
 }
+.line{
+    height: 8px;
+    width: 100%;
+    background-color: #f8f8f8;
+}
 </style>
 
 <template>
-  <div class="shopindex">
+  <div class="shopindex idnexWrapBox">
     <x-header :left-options="{backText:''}" title="绑定银行卡" id="vux-header"></x-header>
     <!-- 主体内容 -->
     <div class="addCard">
@@ -114,14 +127,16 @@
         <div class="add-remind">请绑定持卡人本人的银行卡</div>
         <div class="cell" v-if="!isInfo">
             <div class="cell-input">
-                <span>姓名</span>
+                <span>持卡人</span>
                 <input type="text" placeholder=" 请输入姓名" v-model="name"  v-on:input="bindName"/>
+                <img class="img" src="https://img.xiepinhui.com.cn/mobile/wallet/ico_remind.png" mode="widthFix"  @click="shadowToggle"/>
             </div>
-            <div class="cell-input">
+            <!-- <div class="cell-input">
                 <span>身份证号</span>
                 <input type="number" maxlength="18" placeholder="请输入身份证号" v-model="idCard" v-on:input="bindIdCard" />
-            </div>
+            </div> -->
         </div>
+        <div class="line"></div>
         <div class="cell" v-if="isInfo">
             <div class="cell-input">
                 <span>持卡人</span>
@@ -208,7 +223,7 @@ export default {
     };
   },
   created() {
-    
+    this.getname();
   },
   mounted() {
     this.$nextTick(function() {
@@ -223,10 +238,24 @@ export default {
 
       },
       shadowToggle(){
-
+          this.isShadow = !this.isShadow;
       },
       bindNum(){
 
+      },
+      async getname(){
+        let data = {
+            token: this.token,
+            account: this.account
+        }
+        const [err, res] = await api.getbanktmp(data);
+        if(err){
+            this.$vux.toast.text(err.msg);
+            return;
+        }
+        if(res.code == 2000){
+            this.name = res.data.real_name;
+        }
       },
       selectToggle(){
         const isTrue = this.isSelect ? false :true;
@@ -256,7 +285,6 @@ export default {
       },
       async addCard(){
             if(this.name.length>0 && this.idCard.length>0 && this.cardNum.length>0 && this.selected.bank_name){
-                
                 const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
                 const regBank = /^([1-9]{1})(\d{15}|\d{18})$/
                 if (!this.isInfo && !reg.test(this.idCard)){

@@ -4,6 +4,7 @@
           color: #999;
           padding: 20/100rem 0rem;
           text-align: center;
+          background-color: #f8f8f8;
       }
       .cell-input span {
           display: block;
@@ -65,7 +66,7 @@
 </style>
 
 <template>
-  <div class="shopindex">
+  <div class="shopindex idnexWrapBox">
     <x-header :left-options="{backText:''}" title="交易密码" id="vux-header"></x-header>
     <!-- 主体内容 -->
     <div>
@@ -73,7 +74,7 @@
       <div class="cell">
         <div class="cell-input">
           <span>手机号</span>
-          <input type="text" v-model="tel" />
+          <input type="text" style="background: #fff;" v-model="tel" disabled/>
         </div>
         <div class="cell-input">
           <span>校验码</span>
@@ -99,6 +100,7 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 import { api } from "@/utils/api.js";
 import loading from "@/components/loading.vue";
 import { Group, Cell, XButton, Badge, XHeader, ConfirmPlugin } from "vux";
+import { clearTimeout } from 'timers';
 export default {
   name: "subStoreList",
   props: {},
@@ -114,7 +116,7 @@ export default {
     return {
       isShadow: false,
       isPwd: 0,
-      tel:13726768507,
+      tel:'',
       num: 60,
       code:''
     };
@@ -123,7 +125,11 @@ export default {
     
   },
   mounted() {
+    this.tel = this.user.tel;
     this.$nextTick(function() {});
+  },
+  destroyed () {
+    this.setTimeout && clearTimeout(this.setTimeout);
   },
   methods: {
     countDown () {
@@ -146,7 +152,7 @@ export default {
 
       console.log('c',c)
 
-      setTimeout(()=>{
+      this.setTimeout = setTimeout(()=>{
         this.countDown();
       },1000)
     },

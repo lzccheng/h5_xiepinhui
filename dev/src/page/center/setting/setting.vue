@@ -26,6 +26,15 @@
                     <span>修改手机号</span>
                     <span class="iconfont icon-right-jiantou"></span>
                 </div>
+                <div class="line"></div>
+                <div class="flex flex-pack-justify item" @click="$router.push('paySetting')">
+                    <span>支付设置</span>
+                    <span class="iconfont icon-right-jiantou"></span>
+                </div>
+                <div class="flex flex-pack-justify item" @click="goIden" v-if="member_auth_status !== ''">
+                    <span>实名认证</span>
+                    <span class="iconfont icon-right-jiantou"></span>
+                </div>
             </div>
         </div>
     </div>
@@ -43,17 +52,42 @@ export default {
         return {
             nav: {
                 title: '设置'
-            }
+            },
+            member_auth_status: ''
         }
     },
     created() {
-
+        this.getIden();
     },
     mounted() {
-
+        
     },
     methods: {
-
+        async getIden(){
+            let data = {
+                account: this.account,
+                token: this.token
+            }
+            const [err, res] = await api.newredmessage(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            if(res.code == 2000){
+                this.member_auth_status = res.data.member_info.member_auth_status;
+            }
+        },
+        goIden(){
+            if(this.member_auth_status == 3){
+                return this.$router.push('/centerFull/identity');
+            }
+            this.$router.push({
+                path: '/centerFull/identity/identityStatus',
+                query: {
+                    status: this.member_auth_status
+                }
+            })
+        }
     },
     computed: {
         ...mapGetters(['user', 'account', 'token'])

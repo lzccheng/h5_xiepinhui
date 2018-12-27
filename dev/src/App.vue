@@ -116,5 +116,7 @@ export default {
   position: relative;
   padding-top: 0.92rem;
 }
-
+.weui-dialog__btn_primary{
+  color: #61d8d0;
+}
 </style>

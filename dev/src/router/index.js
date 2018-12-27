@@ -123,6 +123,12 @@ const identityStatus = () => import('@/page/center/identity/identityStatus')
 //设置
 const setting = () => import('@/page/center/setting/setting')
 const settingWrap = () => import('@/page/center/setting/settingWrap')
+//支设置
+const paySetting = () => import('@/page/center/setting/paySetting')
+const paySettinNext = () => import('@/page/center/setting/paySettinNext')
+const setPayPwd = () => import('@/page/center/setting/setPayPwd')
+const paySettinForget = () => import('@/page/center/setting/paySettinForget')
+
 
 const noShop = () => import('@/page/center/myShop/noShop/noShop')
 const addSubStore = ()=>import('@/page/center/myShop/addSubStore')
@@ -578,7 +584,37 @@ let router = new Router({
             meta: {
               title: '鞋品荟'
             },
+          },
+          {
+            path: 'paySetting',
+            name: 'paySetting',
+            component: paySetting,
+            meta: {
+              title: '鞋品荟'
+            },
+          }, {
+            path: 'paySettinNext',
+            name: 'paySettinNext',
+            component: paySettinNext,
+            meta: {
+              title: '鞋品荟'
+            },
+          }, {
+            path: 'setPayPwd',
+            name: 'setPayPwd',
+            component: setPayPwd,
+            meta: {
+              title: '鞋品荟'
+            },
+          }, {
+            path: 'paySettinForget',
+            name: 'paySettinForget',
+            component: paySettinForget,
+            meta: {
+              title: '鞋品荟'
+            },
           }
+          
         ]
       },
       {

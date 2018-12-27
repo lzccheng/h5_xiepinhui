@@ -293,7 +293,6 @@ export default {
   },
   methods: {
     countDown () {
-      console.log(888)
       console.log(this.num)
       let c = this.num
       c--

@@ -108,7 +108,7 @@ outline:none;
             <div class="btn" @click="withdraw" data-submemberid=''>提现</div>
             <div class="btn-list">
               <div data-url="./clearness/clearness" @click="linkToPage('/balance/clearness')">提现明细</div>
-              <div data-url="isPwd == 0 ? '../password/moblieCode/moblieCode' : '../password/password'" @click="linkToPage('/setTradeCode')">设置密码</div>
+              <div data-url="isPwd == 0 ? '../password/moblieCode/moblieCode' : '../password/password'" @click="linkToPage('/centerFull/settingWrap/paySetting')">设置密码</div>
               <div data-url="./bankCard/bankCard" @click="linkToPage('/addCard')">银行卡管理</div>
             </div>
         </div>
@@ -153,6 +153,7 @@ export default {
       balance: "0",
       isShadow: false,
       isPwd: '',
+      member_auth_status: ''
     };
   },
   created() {
@@ -184,6 +185,7 @@ export default {
         this.balance=res.data.rebate_amout;
         var isPwd=res.data.is_paypwd;
         this.isPwd=isPwd;
+        this.member_auth_status = res.data.member_auth_status;
         if (!isPwd) {
           this.shadowToggle();
           return;
@@ -203,8 +205,30 @@ export default {
         this.shadowToggle();
         return;
       }else{
+        let that = this;
+        if(this.member_auth_status != 2){
+          return this.$vux.confirm.show({
+            content: '提现需实名认证哦~',
+            confirmText: '前往实名',
+            onCancel () {
+            },
+            onConfirm () {
+              if(that.member_auth_status == 0 || that.member_auth_status == 1 || that.member_auth_status == 3){
+                if(that.member_auth_status == 3){
+                  return that.$router.push('/centerFull/identity/');
+                }
+                that.$router.push({
+                  path: '/centerFull/identity/identityStatus',
+                  query: {
+                    status: that.member_auth_status
+                  }
+                })
+              }
+            }
+          })
+        }
         var sub_member_id='';
-        sub_member_id=this.$route.query.sub_member_id;
+        sub_member_id = this.$route.query.sub_member_id;
         //this.$router.push('/drawCash');
         this.$router.push({//跳路由
           path: '/drawCash',
@@ -215,7 +239,7 @@ export default {
       }
     },
     goPage(){
-      this.$router.push('./moblieCodeTrade');
+      this.$router.push('/centerFull/settingWrap/paySetting');
     },
     cancelshadowToggle() {
      this.isShadow=false;

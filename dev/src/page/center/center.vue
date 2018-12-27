@@ -20,7 +20,7 @@
           <div class="info-left">
             <div class="user">
               <span class="user-name" v-if="user">{{user?user.nick||'请设置用户名':'请登录'}}</span>
-              <span class="user-name" v-if="!user" @click="$router.push('/user/login')">请登录</span>
+              <span class="user-name" v-if="!user" @click="$router.push('/user/login')">请点击登录</span>
               <span class="user-edit icon"></span>
             </div>
             <div class="identi" v-if="redmessageInfo">
@@ -641,7 +641,7 @@ export default {
             return this.$router.push({
               path: '/centerFull/identity/identityStatus',
               query: { 
-                status: member_auth_status == 1? 3 : member_auth_status == 2? 2 : 1
+                status: member_auth_status
               }
             })
           }
@@ -773,7 +773,7 @@ export default {
 <style lang="less" scoped>
 .logout{
   text-align: center;
-  margin: 0.4rem 0;
+  // margin: 0.4rem 0;
   img{
     width: 65%;
     display: inline-block;

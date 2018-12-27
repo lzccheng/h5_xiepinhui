@@ -25,7 +25,7 @@
     <div class="page idnexWrapBox">
         <x-header :left-options="{backText:''}" :title='nav.title' id='vux-header'></x-header>
         <div class="content">
-            <div class="ing" v-if="status == 1">
+            <div class="ing" v-if="status == 0">
                 <img src="@/assets/images/center/iden/ing.png" alt="">
                 <div class="text">
                     <span>正在审核中...</span>
@@ -44,7 +44,7 @@
                     <span @click="$router.push('/center')">完成</span>
                 </div>
             </div>
-            <div class="ing" v-if="status == 3">
+            <div class="ing" v-if="status == 1">
                 <img src="@/assets/images/center/iden/fail.png" alt="">
                 <div class="text">
                     <span>认证失败</span>
@@ -74,10 +74,10 @@ export default {
         }
     },
     created() {
-        this.status = this.$route.query.status || 1;
+        
     },
     mounted() {
-
+        this.status = this.$route.query.status || 0;
     },
     methods: {
 

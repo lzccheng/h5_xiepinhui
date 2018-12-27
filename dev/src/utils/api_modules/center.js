@@ -148,6 +148,11 @@ export const authentication = (data) => {
   const url = `${domain}/member/authentication`
   return POST(url, data)
 }
+//
+export const getbanktmp = (data) => {
+  const url = `${domain}/restore/getbanktmp`
+  return POST(url, data)
+}
 //领取荟豆
 export const taket_vcoin_packet = (data) => {
   const url = `${domain}/restore/taket_vcoin_packet`
