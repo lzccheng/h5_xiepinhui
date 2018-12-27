@@ -231,6 +231,10 @@ const integral_pay = () => import('@/page/center/myService/integral_sc/integral_
 //积分订单详情
 const integral_goods_info = () => import('@/page/center/myService/integral_sc/integral_goods_info')
 
+//活动
+const activeWrap = () => import('@/page/active/activeWrap')
+const activity = () => import('@/page/active/activity')
+
 const base = config.path
 
 console.log(`base : ${base}`)
@@ -973,6 +977,27 @@ let router = new Router({
       meta: {
         title: '用户设置'
       }
+    }, {
+      path: '/activeWrap',
+      name: 'activeWrap',
+      component: activeWrap,
+      meta: {
+        title: '鞋品荟'
+      },
+      children: [
+        {
+          path: '',
+          redirect: 'activity'
+        },
+        {
+          path: 'activity',
+          name: 'activity',
+          component: activity,
+          meta: {
+            title: '鞋品荟'
+          },
+        }
+      ]
     },
     
     {

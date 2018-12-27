@@ -750,6 +750,9 @@ export default {
   beforeDestroy(){
     window.onscroll = null;
   },
+  destroyed () {
+    
+  },
   methods: {
     async binding(code){
       if(!this.token){
@@ -878,7 +881,14 @@ export default {
               shareConfig.link = window.location.origin + '/index?inviteCode=' + this.user.member_code;
             }
             console.log(shareConfig)
-            share(this, {share: shareConfig});
+            let fail = err => {
+              if(!sessionStorage['shareFail']){
+                window.location.href = window.location.href;
+                sessionStorage['shareFail'] = 1;
+              }
+              console.log('share fail')
+            }
+            share(this, {share: shareConfig, fail});
           }
           this.isShare = true;
           var timer = setTimeout(() => {

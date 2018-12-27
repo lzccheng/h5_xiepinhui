@@ -38,6 +38,7 @@ let _requestConfig = async (that,jsApiList,cb,data)=>{
         })
         wx.error((err)=>{
             console.log('wx config err',err)
+            data.fail && data.fail()
         })
     }
 }
