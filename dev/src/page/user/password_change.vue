@@ -1,5 +1,6 @@
 <template>
-  <div class="wrap">
+  <div class="wrap idnexWrapBox">
+    <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header>
     <div class="box">
       <input type="text" v-model="orign_val" placeholder="原密码">
       <input type="text" v-model="new_val1" placeholder="新密码">
@@ -11,17 +12,21 @@
 
 <script>
 import { api } from "@/utils/api.js";
-import { XButton } from "vux";
+import { XButton, XHeader } from "vux";
 import { mapGetters } from "vuex";
 
 export default {
   name: "login",
   props: {},
   components: {
+    XHeader,
     XButton
   },
   data() {
     return {
+      nvabarData: {
+        title: '修改密码'
+      },
       orign_val: "",
       new_val1: "",
       new_val2: ""

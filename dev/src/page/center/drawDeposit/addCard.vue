@@ -362,7 +362,6 @@ export default {
         console.log(this.password.length)
         var length_password=this.password.length;
         if(length_password==6){
-          
           this.checkPay();
         }
       }

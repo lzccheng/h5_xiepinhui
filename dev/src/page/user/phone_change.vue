@@ -1,5 +1,6 @@
 <template>
-  <div class="wrap">
+  <div class="wrap idnexWrapBox">
+    <x-header :left-options="{backText:''}" :title="nvabarData.title" id="vux-header"></x-header>
     <div class="registerMain">
       <ul>
         <li class="df ac">
@@ -18,16 +19,20 @@
 
 <script>
 import { api } from "@/utils/api.js";
-import { XButton } from "vux";
+import { XHeader, XButton } from "vux";
 import { mapGetters } from "vuex";
 export default {
   name: "login",
   props: {},
   components: {
+    XHeader,
     XButton
   },
   data() {
     return {
+      nvabarData: {
+        title: '修改手机号'
+      },
       phone: "",
       code: "",
       new_password1: "",
@@ -127,7 +132,7 @@ export default {
 
 <style lang="less">
 .registerMain {
-  padding: 0.6rem;
+  padding: 0 0.6rem 0.6rem;
 }
 .registerMain li {
   list-style: none;
