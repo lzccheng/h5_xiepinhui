@@ -811,6 +811,7 @@ export default {
             }
             if(res.code == 2000){
                 var selfData = res;
+                this.order_id = selfData.data.order_id;
                 if (selfData.data.total_amount == 0 || selfData.data.total_amount == "0.00") {
                     this.$router.push({
                         path: '/centerFull/orderFull/orderlistinfo',

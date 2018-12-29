@@ -22,9 +22,10 @@
         }
         .rules{
             position: absolute;
-            top: 0.2rem;
+            top: 0.15rem;
             right: 0.3rem;
             span{
+                font-size: 12px;
                 color: #fff;
                 border: 1px solid #fff;
                 border-radius: 0.5rem;
@@ -85,7 +86,7 @@
         padding: 0.45rem 0.15rem 0.5rem;
         background-position: center;
         background-repeat: no-repeat;
-        background-image: url('https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/bgKuang.png');
+        background-image: url('https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/bgKuang2.png');
         .img{
             position: absolute;
             left: 0;
@@ -95,14 +96,20 @@
             height: 3.37rem;
             
             &.back{
-                &:nth-child(odd){
-                    transform: translateZ(1px);
-                }
                 &:nth-child(even){
-                    transform: translateZ(-1px) rotateY(180deg);
-
+                     transform: translateZ(-1px);
+                }
+                &:nth-child(odd){
+                    transform: translateZ(1px) rotateY(180deg);
                 }
             }
+        }
+        .light{
+            position: absolute;
+            left: -1.63rem;
+            top: -1.5rem;
+            width: 5.4rem;
+            height: 6.15rem;
         }
         .active{
             transform: rotateY(180deg);
@@ -130,18 +137,26 @@
         display: flex;
         justify-content: center;
         margin: 0.2rem 0;
+        overflow: hidden;
         img{
+            height: 0.2rem;
             vertical-align: middle;
-        }
-        .right{
-            transform: rotate(180deg);
-            -ms-transform:rotate(180deg); 	/* IE 9 */
-            -moz-transform:rotate(180deg); 	/* Firefox */
-            -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
-            -o-transform:rotate(180deg); 
             position: relative;
-            top: -2px;
+            top: 9px;
         }
+        span{
+            white-space: nowrap;
+            padding: 0 0.2rem;
+        }
+        // .right{
+        //     transform: rotate(180deg);
+        //     -ms-transform:rotate(180deg); 	/* IE 9 */
+        //     -moz-transform:rotate(180deg); 	/* Firefox */
+        //     -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+        //     -o-transform:rotate(180deg); 
+        //     position: relative;
+        //     top: -2px;
+        // }
     }
     .recode{
         position: relative;
@@ -311,55 +326,62 @@
 
 </style>
 <template>
-    <div class="page" :style="{minHeight: pageH + 'px'}">
+    <div class="page" :style="{minHeight: pageH + 'px'}" v-if='pageData'>
         <!-- <x-header :left-options="{backText:''}" title='title' id='vux-header'></x-header> -->
         <div class="content">
             <div class="top">
-                <img class="img" src="@/assets/images/active/20181227/topbg.png" alt="">
-                <div class="newYear">
+                <img class="img" :src="pageData.header_bgimage.image" :style="{ width: pageData.header_bgimage.with / 100 + 'rem' }"  alt="">
+                <!-- <div class="newYear">
                     <img src="@/assets/images/active/20181227/new_year.png" alt="">
-                </div>
+                </div> -->
                 <div class="rules"> 
                     <span @click="lineToRules">活动规则</span>
                 </div>
-                <div class="info">
-                    <img class="infoimg" src="@/assets/images/active/20181227/shangpin.png" alt="">
+                <div class="info" v-if="pageData.order_info">
+                    <img class="infoimg" :src="pageData.order_info.goods_image" alt="">
                     <div class="text">
-                        [男鞋]2017冬季新款平底鞋运动 休闲2017冬季新款平底鞋运动2017冬季新款平底鞋运动
+                        {{pageData.order_info.goods_name}}
                     </div>
                     <div class="text" style="font-size: 16px;font-weight: bold">
-                        ￥322.00
+                        ￥{{pageData.order_info.order_amount}}
                     </div>
                 </div>
                 <div class="repeat">
-                    <img src="@/assets/images/active/20181227/repeat.png" alt="">
+                    <img @click="onReload" src="@/assets/images/active/20181227/repeat.png" alt="">
                 </div>
             </div>
             <div class="get">
-                <img src="@/assets/images/active/20181227/left_line.png" alt=""> 
-                <span>你还有2次抽奖机会</span>
-                <img class="right" src="@/assets/images/active/20181227/left_line.png" alt="">
+                <img src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/xianLeft.jpg" alt=""> 
+                <span>你还有{{pageData.lottery_times}}次抽奖机会</span>
+                <img class="right" src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/xianRight.jpg
+" alt="">
             </div>
             
             <div class="cards flex">
-                <div v-for="(item, i) in imgArr" class="act" :class="item.turn?'active': ''" :key="i" @click="turnBack(i)">
-                    <img class="img back" src="@/assets/images/active/20181227/back.png" alt="">
-                    <img class="img back" :src="item.src" alt="">
+                <div v-for="(item, i) in imgArr" class="act" :class="item.turn?'active': ''" :key="i" @click="turnBack(i, item.options_id)">
+                    <div>
+                        <img class="img back" :src="item.image" alt="">
+                    </div>
+                    <div>
+                        <img class="img back" :src="activeAward[i].image" alt="">
+                    </div>
+                    <img class="img back light" v-if="activeAward[i].award_value == 1"  src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/shine.png" alt="">
                 </div>
                 
                 <!-- <img class="img" src="@/assets/images/active/20181227/back.png" alt=""> -->
                 <!-- <img class="img" src="@/assets/images/active/20181227/back.png" alt=""> -->
             </div>
             <div class="button">
-                <img class="img" @click="$router.push('/index')" src="@/assets/images/active/20181227/btn.gif" alt="">
+                <img class="img" @click="$router.push('/index')" :style="{ width: pageData.ad_image.width / 100 + 'rem' }" :src="pageData.ad_image.image" alt="">
             </div>
             <div class="button" style="margin-top: 0.1rem;">
                 <img class="img" src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/shareYandan.png" alt="">
             </div>
             <div class="get">
-                <img src="@/assets/images/active/20181227/left_line.png" alt=""> 
-                <span>已有11人领取</span>
-                <img class="right" src="@/assets/images/active/20181227/left_line.png" alt="">
+                <img src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/xianLeft.jpg" alt=""> 
+                <span>已有{{record.total_count}}人领取</span>
+                <img class="right" src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/xianRight.jpg
+" alt="">
             </div>
             <div class="recode">
                 <img class="img" src="@/assets/images/active/20181227/record.png" alt="">
@@ -367,30 +389,36 @@
                     <span>用户昵称</span>
                     <span>获得奖励</span>
                 </div>
-                <div class="list">
-                    <div class="item flex" v-for="(item, index) in list" :key="index">
-                        <div class="left">
-                            <span class="radius">
-                                <img :src="item.img" alt="">
-                            </span>
-                            <span>{{item.text}}</span>
-                        </div>
-                        <div class="cen">抽中了</div>
-                        <div class="right">
-                            <div v-if="item.type == 1">
-                                <img class="money" src="@/assets/images/active/20181227/money.png" alt="">
-                                <span>+{{item.num}}</span>
+                <div class="list" id="wrapper" ref="wrapper">
+                    <div>
+                        <div class="item flex" v-for="(item, index) in recordList" :key="index">
+                            <div class="left">
+                                <span class="radius">
+                                    <img :src="item.member_avator" alt="">
+                                </span>
+                                <span>{{item.member_nick}}</span>
                             </div>
-                            <div v-if="item.type == 2">
-                                <img class="miandan" src="@/assets/images/active/20181227/miandan.png" alt="">
-                                <span>+{{item.num}}张</span>
-                            </div>
-                            <div v-if="item.type == 3">
-                                <img class="huidou" src="@/assets/images/active/20181227/huidou.png" alt="">
-                                <span>+{{item.num}}个</span>
+                            <div class="cen">抽中了</div>
+                            <div class="right">
+                                <!-- 充值余额 -->
+                                <div v-if="item.lottery_record.options_type == 3">
+                                    <img class="money" :src="item.lottery_record.icon" alt="">
+                                    <span>+{{item.lottery_record.award_value}}</span>
+                                </div>
+                                <!-- 免单券 -->
+                                <div v-if="item.lottery_record.options_type == 1">
+                                    <img class="miandan" :src="item.lottery_record.icon" alt="">
+                                    <span>+{{item.lottery_record.award_value}}张</span>
+                                </div>
+                                <!-- 荟豆 -->
+                                <div v-if="item.lottery_record.options_type == 2">
+                                    <img class="huidou" :src="item.lottery_record.icon" alt="">
+                                    <span>+{{item.lottery_record.award_value}}个</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -411,6 +439,7 @@
 <script type="text/ecmascript-6">
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { api } from '@/utils/api.js';
+import { share } from '@/utils/wx_sdk.js';
 import { Group, Cell, XButton, Badge, XHeader } from 'vux';
 export default {
     components: {
@@ -444,18 +473,34 @@ export default {
                 // {src: 'http://pic21.photophoto.cn/20111114/0034034868007888_b.jpg', img: 'http://pic1.win4000.com/pic/b/18/c1601227067.jpg', trun: false, imgT: false},
                 // {src: '@/assets/images/active/20181227/back.png', img: 'http://pic1.win4000.com/pic/b/18/c1601227067.jpg'},
             ],
-            currentIndex: 3
+            order_id: '',
+            from: 2,
+            currentIndex: 3,
+            pageData: '',
+            record: '',
+            recordList: [],
+            page: 1,
+            activeAward: []
         }
     },
     created() {
         this.pageH = window.innerHeight;
-        this.getData();
-    },
-    mounted() {
+        this.order_id = this.$route.query.order_id || '';
+        this.from = this.$route.query.from || 2;
+        this.getNew_year_share();
+        this.new_year_share_record();
+        // this.new_year_share_lottery();
         
     },
+    mounted() {
+
+    },
     methods: {
-        turnBack(i){
+        async turnBack(i, cardId){
+            if(this.imgArr[i].turn)return;
+            this.new_year_share_lottery(i);
+        },
+        cardsTurn(i){
             let that = this;
             this.currentIndex = i;
             let item = this.imgArr[i];
@@ -463,28 +508,138 @@ export default {
             this.imgArr.splice(i,1,item);
             setTimeout(() => {
                 for (let i = 0; i < that.imgArr.length; i++) {
-                    if(!that.imgArr[i].turn)that.imgArr[i].turn = true;
+                    if(!that.imgArr[i].turn){
+                        let item = that.imgArr[i];
+                        item.turn = true;
+                        that.imgArr.splice(i,1,item);
+                    }
                 }
             }, 800);
-            console.log(i)
         },
-        async getData(){
+        //获取活动页面信息
+        async getNew_year_share(){
             let data = {
                 account: this.account,
-                inter_sence: 2
+                inter_sence: this.from,
+                order_id: this.order_id
             }
+            this.$vux.loading.show({
+                text: '加载中...'
+            })
             const [err, res] = await api.new_year_share(data);
+            console.log('reapet3')
+            this.$vux.loading.hide();
             if (err) {
                 this.$vux.toast.text(err.msg);
                 return;
             }
             if(res.code == 2000){
-                console.log(res)
+                this.pageData = res.data;
+                this.imgArr = res.data.lottery_options.filter(item =>{
+                    item.turn = false;
+                    return item;
+                });
+                this.activeAward = res.data.lottery_options;
             }
+        },
+        //获取翻牌记录
+        async new_year_share_record(){
+            let data = {
+                account: this.account,
+                page: this.page
+            }
+            const [err, res] = await api.new_year_share_record(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            if(res.code == 2000){
+                this.record = res.data;
+                this.recordList = res.data.list;
+                console.log('new_year_share_record',res)
+            }
+        },
+        //抽奖
+        async new_year_share_lottery(i){
+            let that = this;
+            if(!this.user){
+                return this.$vux.confirm.show({
+                    title: '提示',
+                    content: '你还没登录哦~~',
+                    confirmText: '前往登录',
+                    onCancel () {
+                        console.log(this) // 非当前 vm
+                        console.log(_this) // 当前 vm
+                    },
+                    onConfirm () {
+                        console.log(that.$route)
+                        that.$router.push({
+                            path: '/user/login',
+                            query: {
+                                url: that.$route.fullPath
+                            }
+                        })
+                    }
+                })
+            }
+            if(!this.pageData.lottery_id){
+                return this.$vux.toast.text('你没有抽奖机会了哦', 'top');
+            }
+            let data = {
+                account: this.account,
+                lottrey_id: this.pageData.lottery_id,
+                token: this.token,
+                lottrey_index: i
+            }
+            const [err, res] = await api.new_year_share_lottery(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            if(res.code == 2000){
+                this.activeAward = res.data.lottery_options.filter(item =>{
+                    item.image = item.award_image;
+                    return item;
+                });
+                console.log(this.activeAward)
+                this.cardsTurn(i);
+            }
+        },
+        async onReload(){
+            this.$vux.loading.show({
+                text: '重置中...'
+            })
+            await this.getNew_year_share();
+            await this.new_year_share_record();
+            this.$vux.loading.hide();
+            this.$vux.toast.text('重置完成', 'top');
         },
         lineToRules(){
             window.location.href = 'https://m.xiepinhui.com.cn/html/active/20190101/'
-        }
+        },
+        weixinShare(){
+            let shareConfig = {
+                title: '元旦假日，抽奖买买',
+                desc: '活动玩不停，元旦赠豪礼，快来和我一起参与抽奖，赢取大礼吧！',
+                imgUrl: this.pageData.order_info? this.pageData.order_info.goods_image : this.pageData.header_bgimage.iamge,
+                link: window.location.href
+            }
+            //activeWrap
+            console.log(this.user)
+            if(this.user){
+                // if(this.user.user_type == 1 && )
+            }
+            share(this, {share: shareConfig});
+        },
+    },
+    watch: {
+        pageData(){
+            this.weixinShare();
+            this.$nextTick(()=>{
+
+            })
+            
+        }  
     },
     computed: {
         ...mapGetters(['user', 'account', 'token'])

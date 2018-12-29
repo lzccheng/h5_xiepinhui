@@ -617,6 +617,7 @@ import nullData from "@/components/nullData";
 import CountDown from "vue2-countdown";
 import { isScrollBottom , _getDocumentTop} from "@/utils/comm.js";
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import { setTimeout } from 'timers';
 
 export default {
   name: "index",
@@ -870,29 +871,33 @@ export default {
           this.nseckilltypes.seckill = res.data.seckill;
           this.nseckilltypes.activity = res.data.activity;
           this.nseckilltypes = this.nseckilltypes;
-          let shareConfig = {
-            title: '鞋品荟-真皮女鞋，尖货分享',
-            desc: '大牌设计，工厂价格，平台优质选款，买鞋就上鞋品荟',
-            imgUrl: this.nseckilltypes.homegoods[0].img,
-            link: window.location.href
-          }
-          if(this.token){
-            shareConfig.link = window.location.origin + '/index?inviteCode=' + this.user.member_code;
-          }
-          console.log(shareConfig)
-          console.log(sessionStorage['shareFail'])
-          let fail = err => {
-            if(!sessionStorage['shareFail']){
-              window.location.href = window.location.href;
-              sessionStorage['shareFail'] = 1;
-            }
-          }
-          share(this, {share: shareConfig, fail});
+          
           // var timer = setTimeout(() => {
           //   this.getLimitData();
           // }, 3000);
         }
       }
+    },
+    weixinShare(){
+      let shareConfig = {
+        title: '鞋品荟-真皮女鞋，尖货分享',
+        desc: '大牌设计，工厂价格，平台优质选款，买鞋就上鞋品荟',
+        imgUrl: this.nseckilltypes.homegoods[0].img,
+        link: window.location.href
+      }
+      if(this.token){
+        shareConfig.link = window.location.origin + '/index?inviteCode=' + this.user.member_code;
+      }
+      console.log(shareConfig)
+      console.log(sessionStorage['shareFail'])
+      let fail = err => {
+        console.log('weixin share fail')
+        if(!sessionStorage['shareFail']){
+          window.location.href = window.location.href;
+          sessionStorage['shareFail'] = 1;
+        }
+      }
+      share(this, {share: shareConfig, fail});
     },
     openActive_tj(type){
       this.$router.push({
@@ -965,6 +970,8 @@ export default {
       }
     },
     linkTo(){
+      this.$router.push('/activeWrap');
+      return;
       window.location.href = 'https://m.xiepinhui.com.cn/html/christmas/christmas.html';
       return;
       this.$router.push('/HuiBiArea');
@@ -1009,6 +1016,12 @@ export default {
         return;
       };
       this.$router.push(url);
+    }
+  },
+  watch: {
+    nseckilltypes(){
+      console.log(this.nseckilltypes)
+      this.weixinShare();
     }
   },
   computed: {

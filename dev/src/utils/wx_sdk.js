@@ -58,9 +58,16 @@ const share = (that,data)=>{
             desc: data.share.desc || '鞋品荟',
             link: data.share.link || window.location.href.split('#')[0],
             imgUrl: data.share.imgUrl || '',
-            success: data.share.success || function(){},
-            cancel: data.share.success || function(){}
+            success: data.share.success || function(res){console.log('successShare',res)},
+            cancel: data.share.cancel || function (res) {
+              console.log('cance;Share', res)
+            },
+            fail: err => {
+                console.log('sharefailerr', err)
+            }
         }
+        console.log('data.share',data.share)
+        console.log('shareConfig', shareConfig)
         //data.jsApiList分享函数列表
         wx.updateAppMessageShareData&&wx.updateAppMessageShareData(shareConfig);
         wx.onMenuShareQZone&&wx.onMenuShareQZone(shareConfig);
@@ -87,6 +94,13 @@ const wxPay = async (that,data)=>{
     let jsApiList = ['chooseWXPay'];
     let success = res =>{
         console.log('wxPay success',res)
+        that.$router.replace({
+            path: '/activeWrap/activity',
+            query: {
+                from: 1,
+                order_id: that.order_id
+            }
+        })
     }
     let fail = err =>{
         console.log('wxpay fail',err)
@@ -99,7 +113,8 @@ const wxPay = async (that,data)=>{
             package: data.package,
             signType: data.signType,
             paySign: data.paySign || 'MD5',
-            success: data.success || success,
+            // success: data.success || success,
+            success: success,
             fail: data.fail || fail,
         }
         wx.chooseWXPay(payconfig)
