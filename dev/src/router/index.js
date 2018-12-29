@@ -233,7 +233,7 @@ const integral_goods_info = () => import('@/page/center/myService/integral_sc/in
 
 //活动
 const activeWrap = () => import('@/page/active/activeWrap')
-const activity = () => import('@/page/active/activity')
+const activity = () => import('@/page/active/20190101/activity')
 
 const base = config.path
 

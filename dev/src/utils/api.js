@@ -6,7 +6,9 @@ import * as myshop from './api_modules/myshop'
 import * as draw from './api_modules/draw'
 import * as wallet from './api_modules/wallet'
 import * as index from './api_modules/index'
+import * as active from './api_modules/active'
 export const api = {
+  ...active,
   ...user,
   ...center,
   ...wx,

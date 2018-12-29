@@ -303,6 +303,7 @@ export default {
       this.updateCenter("");
       localStorage.clear();
     }
+    sessionStorage.clear();
   },
   methods: {
     searchMoreFans(){

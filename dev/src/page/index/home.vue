@@ -870,30 +870,27 @@ export default {
           this.nseckilltypes.seckill = res.data.seckill;
           this.nseckilltypes.activity = res.data.activity;
           this.nseckilltypes = this.nseckilltypes;
-          if(!this.isShare){
-            let shareConfig = {
-              title: '鞋品荟-真皮女鞋，尖货分享',
-              desc: '大牌设计，工厂价格，平台优质选款，买鞋就上鞋品荟',
-              imgUrl: this.nseckilltypes.homegoods[0].img,
-              link: window.location.href
-            }
-            if(this.token){
-              shareConfig.link = window.location.origin + '/index?inviteCode=' + this.user.member_code;
-            }
-            console.log(shareConfig)
-            let fail = err => {
-              if(!sessionStorage['shareFail']){
-                window.location.href = window.location.href;
-                sessionStorage['shareFail'] = 1;
-              }
-              console.log('share fail')
-            }
-            share(this, {share: shareConfig, fail});
+          let shareConfig = {
+            title: '鞋品荟-真皮女鞋，尖货分享',
+            desc: '大牌设计，工厂价格，平台优质选款，买鞋就上鞋品荟',
+            imgUrl: this.nseckilltypes.homegoods[0].img,
+            link: window.location.href
           }
-          this.isShare = true;
-          var timer = setTimeout(() => {
-            this.getLimitData();
-          }, 3000);
+          if(this.token){
+            shareConfig.link = window.location.origin + '/index?inviteCode=' + this.user.member_code;
+          }
+          console.log(shareConfig)
+          console.log(sessionStorage['shareFail'])
+          let fail = err => {
+            if(!sessionStorage['shareFail']){
+              window.location.href = window.location.href;
+              sessionStorage['shareFail'] = 1;
+            }
+          }
+          share(this, {share: shareConfig, fail});
+          // var timer = setTimeout(() => {
+          //   this.getLimitData();
+          // }, 3000);
         }
       }
     },
