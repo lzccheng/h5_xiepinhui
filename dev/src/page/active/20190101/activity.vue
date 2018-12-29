@@ -331,7 +331,15 @@
         /*将第一个l向前移动100像素，形成前面的面*/
     }
 }
+// .alert{
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     background-color: rgba(0,0,0,0.5);
+//     width: 100%;
+//     height: 100%;
 
+// }
 </style>
 <template>
     <div class="page" :style="{minHeight: pageH + 'px'}" v-if='pageData'>
@@ -444,7 +452,9 @@
                 </div>
             </div>
         </div>
+        <div class="alert">
 
+        </div>
         <!-- <div class="test">
             <ul>
                 <li>1</li>
@@ -689,10 +699,8 @@ export default {
     watch: {
         pageData(){
             this.weixinShare();
-            console.log(this.record,document.querySelector('#wrapper'))
             if(this.isOnScroll)return;
             this.$nextTick(()=>{
-                console.log(document.querySelector('#wrapper').clientHeight)
                 this.isOnScroll = true;
                 document.querySelector('#wrapper').onscroll = this.onscroll;
             })
