@@ -436,6 +436,9 @@
                         <div v-if="complete" class="bottom">
                             <span>到底了~~</span>
                         </div>
+                        <div v-if="!recordList.length" class="bottom">
+                            <span>暂无数据</span>
+                        </div>
                     </div>
                     
                 </div>
@@ -501,7 +504,7 @@ export default {
             page: 1,
             activeAward: [],
             complete: false,
-            upload: true
+            upload: false
         }
     },
     created() {
@@ -542,6 +545,7 @@ export default {
         async getNew_year_share(){
             let data = {
                 account: this.account,
+                token: this.token,
                 inter_sence: this.from,
                 order_id: this.order_id
             }
@@ -577,6 +581,7 @@ export default {
             }
             let data = {
                 account: this.account,
+                 token: this.token,
                 page: this.page
             }
             if(this.page != 1){
@@ -648,6 +653,7 @@ export default {
             this.$vux.loading.show({
                 text: '重置中...'
             })
+            this.order_id = '';
             await this.getNew_year_share();
             await this.new_year_share_record();
             this.$vux.loading.hide();
@@ -684,8 +690,10 @@ export default {
         pageData(){
             this.weixinShare();
             console.log(this.record,document.querySelector('#wrapper'))
+            if(this.isOnScroll)return;
             this.$nextTick(()=>{
                 console.log(document.querySelector('#wrapper').clientHeight)
+                this.isOnScroll = true;
                 document.querySelector('#wrapper').onscroll = this.onscroll;
             })
         },
