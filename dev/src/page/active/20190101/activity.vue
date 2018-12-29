@@ -86,6 +86,7 @@
         padding: 0.45rem 0.15rem 0.5rem;
         background-position: center;
         background-repeat: no-repeat;
+        overflow: hidden;
         background-image: url('https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/bgKuang2.png');
         .img{
             position: absolute;
@@ -104,9 +105,10 @@
                 }
             }
         }
+        
         .light{
             position: absolute;
-            left: -1.63rem;
+            left: -1.67rem;
             top: -1.5rem;
             width: 5.4rem;
             height: 6.15rem;
@@ -128,6 +130,9 @@
             transform-style: preserve-3d;
             // transform: rotateY(180deg);
             // background-image: url('@/assets/images/active/20181227/back.png');
+            .span{
+                transform: rotateY(180deg);
+            }
         }
     }
     .get{
@@ -166,7 +171,6 @@
         border-radius: 5px;
         padding: 0.3rem;
         color: #fff;
-
         .img{
             width: 3.36rem;
             position: absolute;
@@ -183,6 +187,10 @@
                 }
                 float: right;
             }
+        }
+        .bottom{
+            text-align: center;
+            padding: 0.2rem;
         }
         .list{
             height: 8rem;
@@ -364,8 +372,13 @@
                     </div>
                     <div>
                         <img class="img back" :src="activeAward[i].image" alt="">
+                        <span style="transform: rotateY(180deg);color: orange;position: absolute;bottom: 0.2rem;left: 0;width: 100%;text-align: center;" v-if="activeAward[i].options_type != 1">
+                            <span v-if="activeAward[i].options_type == 2" style="color: #555">荟豆{{activeAward[i].award_value}}个</span>
+                            <span v-if="activeAward[i].options_type == 3">现金￥{{activeAward[i].award_value}}</span>
+                            <span v-if="activeAward[i].options_type == 4" style="color: #fff;position: relative;bottom: 0.5rem">{{activeAward[i].award_value.split(',')[0]}}<br/>减{{activeAward[i].award_value.split(',')[1]}}</span>
+                        </span>
                     </div>
-                    <img class="img back light" v-if="activeAward[i].award_value == 1"  src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/shine.png" alt="">
+                    <img class="img back light" v-if="activeAward[i].award_status == 1"  src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/shine.png" alt="">
                 </div>
                 
                 <!-- <img class="img" src="@/assets/images/active/20181227/back.png" alt=""> -->
@@ -416,6 +429,12 @@
                                     <span>+{{item.lottery_record.award_value}}个</span>
                                 </div>
                             </div>
+                        </div>
+                        <div v-if="upload" class="bottom">
+                            <span>加载中...</span>
+                        </div>
+                        <div v-if="complete" class="bottom">
+                            <span>到底了~~</span>
                         </div>
                     </div>
                     
@@ -480,13 +499,16 @@ export default {
             record: '',
             recordList: [],
             page: 1,
-            activeAward: []
+            activeAward: [],
+            complete: false,
+            upload: true
         }
     },
     created() {
         this.pageH = window.innerHeight;
         this.order_id = this.$route.query.order_id || '';
         this.from = this.$route.query.from || 2;
+        this.page = 1;
         this.getNew_year_share();
         this.new_year_share_record();
         // this.new_year_share_lottery();
@@ -527,7 +549,6 @@ export default {
                 text: '加载中...'
             })
             const [err, res] = await api.new_year_share(data);
-            console.log('reapet3')
             this.$vux.loading.hide();
             if (err) {
                 this.$vux.toast.text(err.msg);
@@ -544,19 +565,40 @@ export default {
         },
         //获取翻牌记录
         async new_year_share_record(){
+            let that = this;
+            if(this.page != 1 && this.recordList.length >= this.record.total_count){
+                this.complete = true;
+                this.upload = false;
+                return;
+            }
+            if(this.page != 1 && this.recordList.length > 9){
+                this.upload = true;
+                this.complete = false;
+            }
             let data = {
                 account: this.account,
                 page: this.page
             }
+            if(this.page != 1){
+                this.$vux.loading.show({
+                    text: '加载中...'
+                })
+            }
             const [err, res] = await api.new_year_share_record(data);
+            setTimeout(() => {
+                that.$vux.loading.hide();
+            }, 1000);
             if (err) {
                 this.$vux.toast.text(err.msg);
                 return;
             }
             if(res.code == 2000){
-                this.record = res.data;
-                this.recordList = res.data.list;
-                console.log('new_year_share_record',res)
+                if(this.page == 1){
+                    this.recordList = [];
+                    this.record = res.data;
+                }
+                this.recordList = this.recordList.concat(res.data.list);
+                this.page ++;
             }
         },
         //抽奖
@@ -568,8 +610,6 @@ export default {
                     content: '你还没登录哦~~',
                     confirmText: '前往登录',
                     onCancel () {
-                        console.log(this) // 非当前 vm
-                        console.log(_this) // 当前 vm
                     },
                     onConfirm () {
                         console.log(that.$route)
@@ -601,7 +641,6 @@ export default {
                     item.image = item.award_image;
                     return item;
                 });
-                console.log(this.activeAward)
                 this.cardsTurn(i);
             }
         },
@@ -625,19 +664,32 @@ export default {
                 link: window.location.href
             }
             //activeWrap
-            console.log(this.user)
             if(this.user){
                 // if(this.user.user_type == 1 && )
             }
             share(this, {share: shareConfig});
         },
+        onscroll(){
+            let parentDom = this.$refs.wrapper;
+            let parentHeight = parentDom.clientHeight;
+            let scrollTop = parentDom.scrollTop;
+            let innerHeight = parentDom.firstChild.clientHeight;
+            if(parentHeight + scrollTop >= innerHeight){
+                console.log('到底了~~')
+                this.new_year_share_record();
+            }
+        }
     },
     watch: {
         pageData(){
             this.weixinShare();
+            console.log(this.record,document.querySelector('#wrapper'))
             this.$nextTick(()=>{
-
+                console.log(document.querySelector('#wrapper').clientHeight)
+                document.querySelector('#wrapper').onscroll = this.onscroll;
             })
+        },
+        record(){
             
         }  
     },

@@ -618,6 +618,7 @@ export default {
       }
       if(res.code == 2000){
         var selfData = res;
+        this.order_id = orderid;
         let success = res =>{
           that.$router.push({
             path: '/centerFull/orderFull/orderlistinfo',

@@ -311,6 +311,7 @@ export default {
       }
       if(res.code == 2000){
         var selfData = res;
+        this.order_id = selfData.data.order_id;
         let success = res =>{
           that.showdata();
         }
