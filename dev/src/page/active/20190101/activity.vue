@@ -331,15 +331,20 @@
         /*将第一个l向前移动100像素，形成前面的面*/
     }
 }
-// .alert{
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     background-color: rgba(0,0,0,0.5);
-//     width: 100%;
-//     height: 100%;
-
-// }
+.alert{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    img{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 5rem;
+    }
+}
 </style>
 <template>
     <div class="page" :style="{minHeight: pageH + 'px'}" v-if='pageData'>
@@ -396,7 +401,7 @@
                 <img class="img" @click="$router.push('/index')" :style="{ width: pageData.ad_image.width / 100 + 'rem' }" :src="pageData.ad_image.image" alt="">
             </div>
             <div class="button" style="margin-top: 0.1rem;">
-                <img class="img" src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/shareYandan.png" alt="">
+                <img @click="onShareShow" class="img" src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/shareYandan.png" alt="">
             </div>
             <div class="get">
                 <img src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/xianLeft.jpg" alt=""> 
@@ -452,9 +457,12 @@
                 </div>
             </div>
         </div>
-        <div class="alert">
-
-        </div>
+        <transition name='fade'>
+            <div class="alert" v-show="shareShow" @click="onShareShow">
+                <img src="@/assets/images/share_right.png">
+            </div>
+        </transition>
+        
         <!-- <div class="test">
             <ul>
                 <li>1</li>
@@ -468,7 +476,7 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { api } from '@/utils/api.js';
 import { share } from '@/utils/wx_sdk.js';
@@ -514,13 +522,16 @@ export default {
             page: 1,
             activeAward: [],
             complete: false,
-            upload: false
+            upload: false,
+            shareCode: '',
+            shareShow: false
         }
     },
     created() {
         this.pageH = window.innerHeight;
         this.order_id = this.$route.query.order_id || '';
         this.from = this.$route.query.from || 2;
+        this.shareCode = this.$route.query.shareCode || '';
         this.page = 1;
         this.getNew_year_share();
         this.new_year_share_record();
@@ -528,9 +539,33 @@ export default {
         
     },
     mounted() {
+        if(this.user){
+            if(this.shareCode){
+                this.bindShareCode(this.shareCode);
+            }
+            this.bindShareCode(this.user.member_code, 1);
+        }
 
     },
     methods: {
+        onShareShow(){
+            if(this.$stopClick(500))return;
+            if(!window.isWeixin)return;
+            this.shareShow = !this.shareShow;
+        },
+        async bindShareCode(code, bool){
+            let data = {
+                account: this.account,
+                token: this.token,
+                code
+            };
+            const [err, res] = await api.receiveweidian(data);
+            if(!bool)return;
+            if(err.code == 4003){
+                this.isShop = err.data.is_smallshop || '';
+                this.weixinShare()
+            }
+        },
         async turnBack(i, cardId){
             if(this.imgArr[i].turn)return;
             this.new_year_share_lottery(i);
@@ -676,12 +711,14 @@ export default {
             let shareConfig = {
                 title: '元旦假日，抽奖买买',
                 desc: '活动玩不停，元旦赠豪礼，快来和我一起参与抽奖，赢取大礼吧！',
-                imgUrl: this.pageData.order_info? this.pageData.order_info.goods_image : this.pageData.header_bgimage.iamge,
-                link: window.location.href
+                imgUrl: 'https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/activity/share/new_year_top.png',
+                link: location.origin + '/activeWrap'
             }
             //activeWrap
             if(this.user){
-                // if(this.user.user_type == 1 && )
+                if(!(this.user.user_type == 1 && this.isShop != 1)){
+                    shareConfig.link = location.origin + '?shareCode=' + this.user.member_code;
+                };
             }
             share(this, {share: shareConfig});
         },
@@ -698,7 +735,6 @@ export default {
     },
     watch: {
         pageData(){
-            this.weixinShare();
             if(this.isOnScroll)return;
             this.$nextTick(()=>{
                 this.isOnScroll = true;
