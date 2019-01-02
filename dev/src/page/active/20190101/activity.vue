@@ -331,15 +331,20 @@
         /*将第一个l向前移动100像素，形成前面的面*/
     }
 }
-// .alert{
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     background-color: rgba(0,0,0,0.5);
-//     width: 100%;
-//     height: 100%;
-
-// }
+.alert{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    img{
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 5rem;
+    }
+}
 </style>
 <template>
     <div class="page" :style="{minHeight: pageH + 'px'}" v-if='pageData'>
@@ -396,7 +401,7 @@
                 <img class="img" @click="$router.push('/index')" :style="{ width: pageData.ad_image.width / 100 + 'rem' }" :src="pageData.ad_image.image" alt="">
             </div>
             <div class="button" style="margin-top: 0.1rem;">
-                <img class="img" src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/shareYandan.png" alt="">
+                <img @click="onShareShow" class="img" src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/shareYandan.png" alt="">
             </div>
             <div class="get">
                 <img src="https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/small_app/mine/yandan/xianLeft.jpg" alt=""> 
@@ -452,9 +457,12 @@
                 </div>
             </div>
         </div>
-        <div class="alert">
-
-        </div>
+        <transition name="fade">
+            <div class="alert" v-show="shareShow" @click.self="onShareShow">
+                <img src="@/assets/images/share_right.png" alt="">
+            </div>
+        </transition>
+        
         <!-- <div class="test">
             <ul>
                 <li>1</li>
@@ -514,7 +522,8 @@ export default {
             page: 1,
             activeAward: [],
             complete: false,
-            upload: false
+            upload: false,
+            shareShow: false
         }
     },
     created() {
@@ -531,6 +540,10 @@ export default {
 
     },
     methods: {
+        onShareShow(){
+            if(this.$stopClick(500))return;
+            this.shareShow = !this.shareShow;
+        },
         async turnBack(i, cardId){
             if(this.imgArr[i].turn)return;
             this.new_year_share_lottery(i);
@@ -676,7 +689,7 @@ export default {
             let shareConfig = {
                 title: '元旦假日，抽奖买买',
                 desc: '活动玩不停，元旦赠豪礼，快来和我一起参与抽奖，赢取大礼吧！',
-                imgUrl: this.pageData.order_info? this.pageData.order_info.goods_image : this.pageData.header_bgimage.iamge,
+                imgUrl: 'https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/activity/share/new_year_top.png',
                 link: window.location.href
             }
             //activeWrap
