@@ -413,14 +413,14 @@ export default {
         account:this.account,
         amount: this.money,
         payment_code: this.methodType.type,
-        account_number: this.account_number,
-        account_name: this.account_name,
+        account_number: this.account_number || this.methodType.account_number,
+        account_name: this.account_name || this.methodType.account_name,
         card_id: this.methodType.card_id,
         ver_code: this.ver_code,
         tel: this.tel,
         sub_member_id: sub_member_id
       };
-      
+      console.log(this.methodType)
       const [err, res] = await api.withdrawCash(data);
       if(err){
         if(err.code == 4009){
@@ -468,6 +468,9 @@ export default {
             this.methodType.type=res.data.type;
             this.methodType.icon=res.data.icon;
             this.methodType.title=res.data.title;
+            this.methodType.account_name=res.data.account_name;
+            this.methodType.account_number=res.data.account_number;
+            this.methodType.card_id=res.data.card_id;
           }
           
           //this.account_number=res.data.account_number;

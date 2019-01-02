@@ -340,8 +340,8 @@
     height: 100%;
     img{
         position: absolute;
-        right: 0;
         top: 0;
+        right: 0;
         width: 5rem;
     }
 }
@@ -457,9 +457,9 @@
                 </div>
             </div>
         </div>
-        <transition name="fade">
-            <div class="alert" v-show="shareShow" @click.self="onShareShow">
-                <img src="@/assets/images/share_right.png" alt="">
+        <transition name='fade'>
+            <div class="alert" v-show="shareShow" @click="onShareShow">
+                <img src="@/assets/images/share_right.png">
             </div>
         </transition>
         
@@ -476,7 +476,7 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { api } from '@/utils/api.js';
 import { share } from '@/utils/wx_sdk.js';
@@ -523,6 +523,7 @@ export default {
             activeAward: [],
             complete: false,
             upload: false,
+            shareCode: '',
             shareShow: false
         }
     },
@@ -530,6 +531,7 @@ export default {
         this.pageH = window.innerHeight;
         this.order_id = this.$route.query.order_id || '';
         this.from = this.$route.query.from || 2;
+        this.shareCode = this.$route.query.shareCode || '';
         this.page = 1;
         this.getNew_year_share();
         this.new_year_share_record();
@@ -537,12 +539,32 @@ export default {
         
     },
     mounted() {
+        if(this.user){
+            if(this.shareCode){
+                this.bindShareCode(this.shareCode);
+            }
+            this.bindShareCode(this.user.member_code, 1);
+        }
 
     },
     methods: {
         onShareShow(){
             if(this.$stopClick(500))return;
+            if(!window.isWeixin)return;
             this.shareShow = !this.shareShow;
+        },
+        async bindShareCode(code, bool){
+            let data = {
+                account: this.account,
+                token: this.token,
+                code
+            };
+            const [err, res] = await api.receiveweidian(data);
+            if(!bool)return;
+            if(err.code == 4003){
+                this.isShop = err.data.is_smallshop || '';
+                this.weixinShare()
+            }
         },
         async turnBack(i, cardId){
             if(this.imgArr[i].turn)return;
@@ -640,7 +662,6 @@ export default {
                     onCancel () {
                     },
                     onConfirm () {
-                        console.log(that.$route)
                         that.$router.push({
                             path: '/user/login',
                             query: {
@@ -690,11 +711,13 @@ export default {
                 title: '元旦假日，抽奖买买',
                 desc: '活动玩不停，元旦赠豪礼，快来和我一起参与抽奖，赢取大礼吧！',
                 imgUrl: 'https://xiepinhui.oss-cn-shenzhen.aliyuncs.com/activity/share/new_year_top.png',
-                link: window.location.href
+                link: location.origin + '/activeWrap/activity'
             }
             //activeWrap
             if(this.user){
-                // if(this.user.user_type == 1 && )
+                if(!(this.user.user_type == 1 && this.isShop != 1)){
+                    shareConfig.link = location.origin + '/activeWrap/activity?shareCode=' + this.user.member_code;
+                };
             }
             share(this, {share: shareConfig});
         },
@@ -711,7 +734,6 @@ export default {
     },
     watch: {
         pageData(){
-            this.weixinShare();
             if(this.isOnScroll)return;
             this.$nextTick(()=>{
                 this.isOnScroll = true;
