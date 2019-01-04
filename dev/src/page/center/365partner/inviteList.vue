@@ -296,6 +296,7 @@ export default {
       const [err, res] = await api.receiveweidian(data);
       this.inviteOthersCode = '';
       window.localStorage.removeItem('inviteOthersCode');
+      let userName;
       if(err){
         console.log(3333,err)
         let codeStatus = err.code;
@@ -327,10 +328,12 @@ export default {
             return;
           }
           console.log(err)
-          this.$vux.toast.text(err.msg);
+          if(codeStatus == 4007){
+            userName = err.data.member_name
+          }
         }
       }
-      let userName = res.data.member_name;
+      if(res)userName = res.data.member_name;
       this.$router.push({
         path: "code",
         query: {

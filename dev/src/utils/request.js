@@ -31,7 +31,7 @@ axiosUtil.interceptors.response.use(
           router.push({
             path: '/user/login',
             query: {
-              url
+              // url
             }
           });
           break;
@@ -69,7 +69,7 @@ function request(method) {
         router.push({
           path: '/user/login',
           query: {
-            url
+            // url
           }
         });
         return;

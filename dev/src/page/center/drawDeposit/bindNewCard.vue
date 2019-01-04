@@ -156,7 +156,7 @@
                 <div class="shadow-btn" @click="selectToggle"></div>
             </div>
         </div>
-        <div :class="name.length>0 && idCard.length>0 && cardNum.length>0 && selected.bank_name ? 'btn ' :'btn btn-disabled'" @click="addCard">确定</div>
+        <div class="btn" @click="addCard">确定</div>
     </div>
 
     <div v-else>
@@ -284,44 +284,49 @@ export default {
         
       },
       async addCard(){
-            if(this.name.length>0 && this.idCard.length>0 && this.cardNum.length>0 && this.selected.bank_name){
-                const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
-                const regBank = /^([1-9]{1})(\d{15}|\d{18})$/
-                if (!this.isInfo && !reg.test(this.idCard)){
-                    this.$vux.toast.text('身份证输入不合法');
-                    return
-                } else if (!regBank.test( this.cardNum)) {
-                    this.$vux.toast.text('银行卡号输入不合法');
-                    return
-                }
-                let data={
-                    plat: 3,
-                    token:this.token,
-                    account:this.account,
-                    bank_id: this.selected.bank_id,
-                    card_user_name: this.name,
-                    card_number: this.cardNum,
-                    idcard: this.idCard
-                };
-                const [err, res] = await api.BindingNewBank(data);
-                if(err){
-                    this.$vux.toast.text(err.msg);
-                    return;
-                }else{
-                    
-                    if(res.code==2000){
-                        this.$vux.toast.text("银行卡添加成功！",'top');
-                        this.$router.push({
-                            path: '/addCard',
-                            query: {
-                                ...this.$route.query
-                            }
-                        });
+          if(!this.name){
+            return this.$vux.toast.text('请输入持卡人姓名','top');
+          }
+          if(!this.cardNum.length){
+            return this.$vux.toast.text('请输银行卡号','top');
+          }
+          
+        // const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+        const regBank = /^([1-9]{1})(\d{15}|\d{18})$/
+        if (!regBank.test( this.cardNum)) {
+            this.$vux.toast.text('银行卡号输入不合法','top');
+            return
+        }
+        if(!this.selected.bank_name){
+            return this.$vux.toast.text('请输选择发卡银行','top');
+        }
+        let data={
+            plat: 3,
+            token:this.token,
+            account:this.account,
+            bank_id: this.selected.bank_id,
+            card_user_name: this.name,
+            card_number: this.cardNum,
+            idcard: this.idCard
+        };
+        const [err, res] = await api.BindingNewBank(data);
+        if(err){
+            this.$vux.toast.text(err.msg);
+            return;
+        }else{
+            
+            if(res.code==2000){
+                this.$vux.toast.text("银行卡添加成功！",'top');
+                this.$router.push({
+                    path: '/addCard',
+                    query: {
+                        ...this.$route.query
                     }
-                }
-
-
+                });
             }
+        }
+
+
         
       },
       selectBank(e){

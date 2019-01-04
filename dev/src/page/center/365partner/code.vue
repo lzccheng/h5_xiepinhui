@@ -60,11 +60,15 @@ export default {
         };
         this.$vux.loading.show();
         const [err, res] = await api.receiveweidian(data);
+        let info;
         if (err) {
-          this.$vux.toast.text(err.msg);
-          return;
+          if(err.code != 4007){
+            this.$vux.toast.text(err.msg);
+            return;
+          }
+          info = err.data;
         }
-        let info = res.data;
+        if(res)info = res.data;
         console.log("info", info);
         let userName = info.member_name;
         console.log(userName)
