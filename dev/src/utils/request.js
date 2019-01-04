@@ -59,7 +59,7 @@ function request(method) {
       }
     }
     return await axiosUtil(options).then((res) => {
-      if (res.data.code === 5000) { // tokan过期 => 重新登录
+      if (res.data.code == 5000) { // 5000: tokan过期 => 重新登录
         let url = getQueryString('url') || location.pathname + location.search + location.hash;
         store.dispatch('updateUser', "");
         store.dispatch('updateToken', "");

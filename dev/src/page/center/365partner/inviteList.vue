@@ -303,35 +303,37 @@ export default {
         var issmallshop = err.data.is_smallshop;
         var store_state = err.data.store_state;
         console.log('inviteOthersCode',this.inviteOthersCode)
-        if(codeStatus!=2000){
-          if(store_state == 3){//审核中
-            this.$router.push({
-              path: "/centerFull/partner/applyStatic",
-              query: {
-                status: 1
-              }
-            });
-            return;
-          }
-          if(store_state == 4){//审核失败
-            this.$router.push({
-              path: "/centerFull/partner/applyStatic",
-              query: {
-                status: 0
-              }
-            });
-            return;
-          }
-          if(store_state == 1){//审核通过
-            // this.$vux.toast.text(err.msg)
-            this.inviteShow = true;
-            return;
-          }
-          console.log(err)
-          if(codeStatus == 4007){
-            userName = err.data.member_name
-          }
-        }
+        if(!(this.user.user_type == 1 && issmallshop != 1))return;
+        userName = err.data.member_name;
+        // if(codeStatus!=2000){
+        //   if(store_state == 3){//审核中
+        //     this.$router.push({
+        //       path: "/centerFull/partner/applyStatic",
+        //       query: {
+        //         status: 1
+        //       }
+        //     });
+        //     return;
+        //   }
+        //   if(store_state == 4){//审核失败
+        //     this.$router.push({
+        //       path: "/centerFull/partner/applyStatic",
+        //       query: {
+        //         status: 0
+        //       }
+        //     });
+        //     return;
+        //   }
+        //   if(store_state == 1){//审核通过
+        //     // this.$vux.toast.text(err.msg)
+        //     this.inviteShow = true;
+        //     return;
+        //   }
+        //   console.log(err)
+        //   if(codeStatus == 4007){
+        //     userName = err.data.member_name
+        //   }
+        // }
       }
       if(res)userName = res.data.member_name;
       this.$router.push({
