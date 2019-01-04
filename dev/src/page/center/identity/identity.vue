@@ -120,7 +120,7 @@
             </div>
             <div class="protocol">
                 <span class="select icon" :class="isSelect? 'active': ''" @click="changeIsselect"></span>
-                <span class="read">我已阅读<span class="pro">《实名认证相关协议》</span></span>
+                <span class="read">我已阅读<span class="pro" @click="$router.push({path: '/centerFull/myshop/noShop',query: {url: 'https://m.xiepinhui.com.cn/html/protocal/protocal.html',title: '实名认证相关协议'}})">《实名认证相关协议》</span></span>
             </div>
             <div class="btn">
                 <span @click="submit">确定</span>

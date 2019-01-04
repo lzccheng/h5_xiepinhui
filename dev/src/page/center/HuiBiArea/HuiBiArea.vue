@@ -151,7 +151,7 @@ color:#666;
         </transition>
         
         <div>
-            <div class="statusBtnCon"><div class="rightOrderBtn" @click="goHuiBi">荟币规则</div></div>
+            <div class="statusBtnCon"><div class="rightOrderBtn" @click="goHuiBi">荟豆规则</div></div>
             <div class="goodsInfo flex flex-warp flex-pack-justify" v-if="listObj.length>0">
                 <!-- <div wx:if="{{listObj.length>0}}"> -->
                     <div class="goods-li" :data-id="item.n_goods_id" @click='goGoodsDetail(item.n_goods_id)' v-for="(item, index) in listObj" :key="index">
@@ -196,7 +196,7 @@ export default {
         return {
             nvabarData: {
                 showCapsule: 1,
-                title: '荟币专区',
+                title: '荟豆专区',
             },
             // height: app.globalData.height + 40,
             listObj: [],

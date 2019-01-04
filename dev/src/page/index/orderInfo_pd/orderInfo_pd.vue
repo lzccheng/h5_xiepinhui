@@ -488,6 +488,9 @@ export default {
             restMoney: 0
         }
     },
+    created () {
+        this.goodsInfo = JSON.parse(sessionStorage['goodsInfo']);
+    },
     mounted(){
         this.s_id = this.$route.query.s_id || this.goodsInfo._s_id || '';
         this.init();
@@ -495,8 +498,8 @@ export default {
     },
     methods: {  
         init(){
-            let that = this;
             let goodsInfo = this.goodsInfo;
+            let that = this;
             if(goodsInfo.btnType = 'buy'){
                 this.ordertype = 0;
             }else if(goodsInfo.btnType = 'pindan'){
@@ -780,7 +783,7 @@ export default {
                 reciver_city_id: that.addressInfo.city_id,
                 address_id: that.addressInfo.address_id,
                 goods_json: goods_json,
-                pay_code: 2,
+                pay_code: window.isWeixin?2 : 1,
                 express_id: that.nowSelectshipping.e_id,
                 use_coupon: that.isUsecoupon,
                 uc_id: that.nowCouponInfo.uc_id,
@@ -788,6 +791,7 @@ export default {
                 goods_id: that.goodsInfo.goods_id,
                 goods_item_id: that.goodsInfo.goodspec.goods_item_id,
                 num: that.num,
+                return_url: window.isWeixin? '': window.location.origin + '/centerFull/orderFull/orderlist?tabindex=3'
             }
             let _data = {};
             if(this.s_id){
@@ -845,7 +849,10 @@ export default {
                     that.$vux.toast.text('支付失败','top');
                 }
                 // aliPay({ orderStr: res.data.pay_param })
-                wxPay(this,{...res.data.pay_param,success, fail})
+                if(window.isWeixin){
+                    return wxPay(this,{...res.data.pay_param,success, fail})
+                }
+                // wxPay(this,{pay_param: res.data.pay_param,success, fail})
             }
             
         },
@@ -1076,7 +1083,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["user", "account", "token", "goodsInfo","_addressInfo"])
+        ...mapGetters(["user", "account", "token" ,"_addressInfo"])
     },
 }
 </script>

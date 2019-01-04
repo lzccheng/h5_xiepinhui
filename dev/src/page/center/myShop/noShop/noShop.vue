@@ -37,7 +37,8 @@ export default {
     },
     created() {
         this.title = this.$route.query.title || '我的店铺';
-        this.url = this.$route.query.url || 'https://m.xiepinhui.com.cn/join/index.html';
+        // this.url = this.$route.query.url || 'https://m.xiepinhui.com.cn/join/index.html';
+        this.url = this.$route.query.url || 'https://m.xiepinhui.com.cn/html/offlineJoin/index.html';
     },
     mounted() {
         this.$nextTick(()=>{

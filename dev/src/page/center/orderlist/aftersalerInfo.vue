@@ -110,7 +110,7 @@ input, textarea{
                 </div>
                 </div>
                 <div class="weui-cells__tips">(退款金额不得超过
-                <span class="erro-color">{{refuse_data.refund_amount}}</span>元)</div>
+                <span class="erro-color">{{refuse_data.refund_thirdpayment_amount}}</span>元)</div>
             </div>
             <div class="well-box">
                 <div class="weui-cells__title shuoming-title line_xi_after">退款说明</div>
@@ -292,8 +292,8 @@ export default {
         tuiKuanmoney(event){
             console.log(event.target.valueAsNumber,this.price)
             let value = event.target.valueAsNumber;
-            if (value > this.refuse_data.refund_amount) {
-                this.$vux.toast.text("退款金额不得超过" + this.refuse_data.refund_amount);
+            if (value > this.refuse_data.refund_thirdpayment_amount) {
+                this.$vux.toast.text("退款金额不得超过" + this.refuse_data.refund_thirdpayment_amount);
             } else if (value < 0) {
                 this.price = 0.00;
                 this.$vux.toast.text("退款金额不得小于0");
@@ -329,7 +329,7 @@ export default {
                     this.refund_address = res.data.refund_address;
                     this.arerylist = res.data;
                     this.typeStatus = res.data.refund_data.refund_type;
-                    this.price = res.data.refund_data.refund_amount;
+                    this.price = res.data.refund_data.refund_thirdpayment_amount;
                     this.phoneNumber = res.data.refund_data.member_mobile; 	//买家联系电话，默认拿买家的收货电话
                     this.desc = res.data.refund_data.reason_info; //退换货原因(描述)
                     console.log(this.phoneNumber,3333)
@@ -366,7 +366,7 @@ export default {
                     for (var i = 0; i < res.data.refund_type.length; i++) {
                         if (res.data.refund_type[i].value == that.typeStatus) {
                             this.refuse_data =res.data;
-                            this.price = res.data.refund_amount;
+                            this.price = res.data.refund_thirdpayment_amount;
                             this.typeText = res.data.refund_type[i].name;
                             this.phoneNumber = res.data.member_mobile;
                             this.init()

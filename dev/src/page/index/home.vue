@@ -485,6 +485,10 @@
 <template>
     <div class="index-box" style="background:#fff;" v-if="newHomelist">
           <!-- 首页内容开始 -->
+          <!-- 标签导航 -->
+          <div>
+
+          </div>
           <!-- swiper -->
           <swiper :options="swiperOption">
               <swiper-slide v-for="(item,index) in newHomelist.banner_data" :key="index"  :data-index="index" :data-type="item.type" :data-id="item.data">

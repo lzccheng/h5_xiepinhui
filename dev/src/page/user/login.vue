@@ -67,8 +67,11 @@ export default {
       this.access_codeShow = false;
       this.wxLogin();
     }
+    
   },
-  mounted() {},
+  mounted() {
+    console.log('process',process.env.NODE_ENV)
+  },
   methods: {
     ...mapMutations(["updateManager", "updateToken", "updateAccount"]),
     ...mapActions(["updateUser"]),
@@ -156,9 +159,10 @@ export default {
         } else {
           this.url = this.url.substring(0, this.url.indexOf("&code"));
         }
+        let url = process.env.NODE_ENV === 'development'? 'https://api.dev.xiepinhui.com.cn/user/hfiveopenid': 'https://api.xiepinhui.com.cn/user/hfiveopenid';
         axios
           //https://api.dev.xiepinhui.com.cn/old/wxnewlogin
-          .get("https://api.dev.xiepinhui.com.cn/user/hfiveopenid", {
+          .get(url, {
             params: {
               code: this.access_code
             }

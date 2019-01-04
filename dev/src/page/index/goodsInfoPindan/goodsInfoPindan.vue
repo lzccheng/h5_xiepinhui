@@ -830,6 +830,18 @@ contact-button {
 .huidouprice{
   color: #61D8D0;
 }
+.shareGetTip{
+  color: #61D8D0;
+  text-align: left;
+  font-size: 10pt;
+}
+.shareGetCoin{
+  width: 38/100rem;
+  vertical-align: middle;
+}
+.priceGetTip{
+  padding-left:10/100rem;
+}
 </style>
 <template>
     <div  style="width: 7.5rem">
@@ -877,6 +889,10 @@ contact-button {
                             </span>
                             <span class="price padd-top" v-else>价格:￥{{goodsInfo.purchase_price}}</span>
                             <span class="salenum padd-top">销量:{{goodsInfo.goods_salenum}}件</span>
+                        </div>
+                        <div class="shareGetTip" v-if="goodsInfo.partner_rebate != 0">
+                          <img class="shareGetCoin" src="http://img.xiepinhui.com.cn/small_app/goodsInfo/fenxiangzhuan.png" alt="">
+                          <span class="priceGetTip">分享赚 ￥:{{goodsInfo.partner_rebate}}</span>
                         </div>
                         <div class='fanli-box flex flex-align-center' :class="{'flex-pack-end': partner_type==0,'flex-pack-justify': partner_type!=0}">
                           <div class="rebate-box" v-if="partner_type=='1'||partner_type=='2'">
@@ -1491,6 +1507,7 @@ export default {
             ...this.goodsInfo
           }
           this.$store.dispatch('update_goodsInfo',goodsInfo);
+          sessionStorage['goodsInfo'] = JSON.stringify(goodsInfo);
           // return
           this.$router.push({
             path: '/index/orderInfo_pd',
