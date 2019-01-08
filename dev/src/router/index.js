@@ -8,7 +8,10 @@ import store from '@/store'
 //首页
 const indexWrap = ()=>import('@/page/index/indexWrap')
 const indexFull = ()=>import('@/page/index/indexFull')
-const home = ()=>import('@/page/index/home')
+//旧首页
+// const home = () => import('@/page/index/home')
+//新首页
+const home = ()=>import('@/page/index/home/newhome')
 // import indexWrap from '@/page/index/indexWrap'
 // import indexFull from '@/page/index/indexFull'
 // import home from '@/page/index/home'
