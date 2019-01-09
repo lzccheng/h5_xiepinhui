@@ -173,6 +173,8 @@ const HuiBiArea = () => import('@/page/center/HuiBiArea/HuiBiArea') //荟币专�
 const userWrap = ()=>import('@/page/user/userWrap')
 //登录
 const login = ()=>import('@/page/user/login')
+//新登录页
+// const login = () => import('@/page/user/newlogin')
 //找回密码
 const find_password = ()=>import('@/page/user/find_password')
 //修改密码

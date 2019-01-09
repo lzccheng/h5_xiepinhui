@@ -82,3 +82,9 @@ export const loginthird = (data) => {
     const url = `${domain}/user/loginthird`
     return POST(url,data)
 }
+
+//登录验证码
+export const userLogin_sms = (data) => {
+  const url = `${domain}/user/login_sms`
+  return POST(url, data)
+}

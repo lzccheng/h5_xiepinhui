@@ -1,5 +1,6 @@
 <template>
   <div class="wrap">
+    <x-header :left-options="{backText:''}" title="找回密码" id="vux-header"></x-header>
     <div class="registerMain">
       <ul>
         <li class="df ac">
@@ -20,12 +21,13 @@
 
 <script>
 import { api } from "@/utils/api.js";
-import { XButton } from "vux";
+import { XButton, XHeader } from "vux";
 export default {
   name: "login",
   props: {},
   components: {
-    XButton
+    XButton,
+    XHeader
   },
   data() {
     return {
@@ -142,7 +144,7 @@ export default {
 
 <style lang="less">
 .registerMain {
-  padding: 0.6rem;
+  padding: 1rem 0.6rem;
 }
 .registerMain li {
   list-style: none;
