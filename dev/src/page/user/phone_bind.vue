@@ -3,15 +3,16 @@
     <div class="registerMain">
       <ul>
         <li class="df ac">
-          <span class="phone">+86</span>
+          <img src="@/assets/images/login/me_login_mobile@2x.png" alt="">
           <input type="number" v-model="phone" placeholder="请输入新的手机号" maxlength="11" class="phoneNum">
         </li>
         <li>
+          <img src="@/assets/images/login/me_login_code@2x.png" class="codeNumImg" alt="">
           <input type="number" v-model="code" placeholder="验证码" class="codeNum">
-          <input type="button" :value="countdown===60?'获取验证码':`${countdown+1}秒后重发`" class="sendCode_f" @click="getcode" :class="phone.length>10?'getcode':''">
+          <input type="button" :value="countdown===60?'获取验证码':`${countdown+1}秒后重发`" class="sendCode_f" @click="getcode" :class="phone.length>10?'':'opcity'">
         </li>
       </ul>
-      <button href="javascript:void(0);" @click="checkInfo" class="forgetBtn">提交</button>
+      <button href="javascript:void(0);" :class="phone.length>10?'':'opcity'" @click="checkInfo" class="forgetBtn">提交</button>
     </div>
   </div>
 </template> 
@@ -163,11 +164,22 @@ export default {
 .registerMain li {
   list-style: none;
   border-bottom: 1px solid #e6e6e6;
+  .codeNumImg{
+    position: relative;
+    top: 0.1rem;
+  }
+  img{
+    width: 0.35rem;
+    vertical-align: center;
+    margin-right: 0.2rem;
+  }
+  .password{
+    width: 70%;
+  }
 }
 .registerMain li input.sendCode_f {
   width: 28%;
   float: right;
-  color: #999;
   box-sizing: border-box;
   border-radius: 0px;
   -webkit-appearance: none;
@@ -175,16 +187,18 @@ export default {
   border-radius: 5px;
   font-size: 0.24rem;
   height: 0.6rem;
-  border-radius: 1rem;
-  background: #fff;
-  border: 0.01rem solid rgba(153, 153, 153, 1);
+  border-radius: 3px;
+  color: #fff;
+  background: #61D8D0;
+  border: none;
+}
+.opcity{
+  opacity: 0.5;
 }
 .registerMain li input.sendCode_f.getcode {
-  color: #61D8D0;
-  border: 0.01rem solid #61D8D0;
 }
 .registerMain .forgetBtn {
-  width: 5.1rem;
+  width: 100%;
   line-height: 0.92rem;
   background: #404042;
   display: block;
@@ -196,7 +210,7 @@ export default {
   margin-top: 0.8rem;
   height: 0.92rem;
   background: #61D8D0;
-  border-radius: 0.54rem;
+  border-radius: 3px;
   border: none;
 }
 .registerMain li input {
@@ -207,7 +221,7 @@ export default {
   font-size: 0.28rem;
 }
 .registerMain li input.codeNum {
-  width: 70%;
+  width: 50%;
 }
 .phone {
   position: relative;

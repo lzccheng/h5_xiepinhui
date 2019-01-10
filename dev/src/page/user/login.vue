@@ -361,9 +361,6 @@ export default {
         localStorage["partner_type"] = res.data.partner_type;
       }
     },
-    wxLogin(){
-
-    },
     onTabHandle(i){
         this.curTabIndex = i;
     },
@@ -448,16 +445,6 @@ export default {
     color: rgb(51, 51, 51);
     padding-bottom: 0.61rem;
   }
-}
-.wxLogin {
-  width: 1.8rem;
-  height: 1.8rem;
-  border-radius: 100%;
-  background: url(http://img.xiepinhui.com.cn/web_logion/wx-login-btn.png);
-  background-size: 100% 100%;
-  margin: auto;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 .loginMain .login-input li {
   border-bottom: 1px #e6e6e6 solid;
