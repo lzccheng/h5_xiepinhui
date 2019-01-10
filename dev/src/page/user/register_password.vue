@@ -4,7 +4,7 @@
     <div class="registerMain">
       <ul>
         <li class="df ac">
-          <span class="phone">+86</span>
+          <img src="@/assets/images/login/me_login_mobile@2x.png" alt="">
           <input type="number" v-model="phone" placeholder="请输入手机号" maxlength="11" class="phoneNum">
         </li>
         <li>
@@ -145,6 +145,10 @@ export default {
 .registerMain li {
   list-style: none;
   border-bottom: 1px solid #e6e6e6;
+  img{
+    width: 0.35rem;
+    vertical-align: center;
+  }
 }
 .registerMain li input.sendCode_f {
   width: 28%;

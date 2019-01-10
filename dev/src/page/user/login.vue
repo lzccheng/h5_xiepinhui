@@ -24,51 +24,50 @@
     </div> -->
 
     <!-- 新登录页面 -->
-    <div>
-      <div class="page">
-        <div>
-            <div class="top">
-                <div class="other_login" v-if="isWX" @click="wxLogin">
-                    <div class="wxLogin"></div>
-                    <div class="test">
-                    微信一键登录，安全又方便
-                    </div>
-                </div>
-            </div>
-            <div class="elseLogin">
-                <div class="tab flex">
-                    <span @click="onTabHandle(i)" :class="curTabIndex == i? 'active': ''" :key="i" v-for="(item, i) in ['账号登录', '验证码登录']">{{item}}</span>
-                </div>
-                <div class="infoBox">
-                    <div class="input">
-                        <p>
-                            <img class="me_login_mobile" src="@/assets/images/login/me_login_mobile@2x.png" alt="">
-                            <input type="text" v-model="phone" placeholder="手机号码">
-                        </p>
-                        <p v-if="curTabIndex == 0">
-                            <img class="me_login_mobile" src="@/assets/images/login/me_login_pwd@2x.png" alt="">
-                            <input :type="onLook? 'text': 'password'" v-model="password" placeholder="请输入密码">
-                            <img class="me_login_mobile pass" @click="onChangeEye" v-if="onLook" src="@/assets/images/login/me_login_eye_open@2x.png" alt="">
-                            <img class="me_login_mobile pass" @click="onChangeEye" v-else src="@/assets/images/login/me_login_eye@2x.png" alt="">
-                        </p>
-                        <p class="code" v-if="curTabIndex == 1">
-                            <img class="me_login_mobile" src="@/assets/images/login/me_login_code@2x.png" alt="">
-                            <input v-model="codeSMS" type="text" placeholder="请输入验证码">
-                            <span class="sendCode" @click="onSendCode" :class="{ opacity: !phone || second < 60}">{{second == 60?'发送验证码': second + 's'}}</span>
-                        </p>
-                    </div>
-                    <div class="btn" :class="{ opacity: !phone }" @click="checkInfo">
-                        <span>登录</span>
-                    </div>
-                    <div class="flex flex-pack-justify regist">
-                        <div @click="$router.push('register_password')">注册</div>
-                        <div v-if="curTabIndex == 0" @click="$router.push('find_password')">忘记密码?</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="page">
+      <div>
+          <div class="top">
+              <div class="other_login" v-if="isWX" @click="wxLogin">
+                  <div class="wxLogin"></div>
+                  <div class="test">
+                  微信一键登录，安全又方便
+                  </div>
+              </div>
+          </div>
+          <div class="elseLogin">
+              <div class="tab flex">
+                  <span @click="onTabHandle(i)" :class="curTabIndex == i? 'active': ''" :key="i" v-for="(item, i) in ['账号登录', '验证码登录']">{{item}}</span>
+              </div>
+              <div class="infoBox">
+                  <div class="input">
+                      <p>
+                          <img class="me_login_mobile" src="@/assets/images/login/me_login_mobile@2x.png" alt="">
+                          <input type="text" v-model="phone" placeholder="手机号码">
+                      </p>
+                      <p v-if="curTabIndex == 0">
+                          <img class="me_login_mobile" src="@/assets/images/login/me_login_pwd@2x.png" alt="">
+                          <input :type="onLook? 'text': 'password'" v-model="password" placeholder="请输入密码">
+                          <img class="me_login_mobile pass" @click="onChangeEye" v-if="onLook" src="@/assets/images/login/me_login_eye_open@2x.png" alt="">
+                          <img class="me_login_mobile pass" @click="onChangeEye" v-else src="@/assets/images/login/me_login_eye@2x.png" alt="">
+                      </p>
+                      <p class="code" v-if="curTabIndex == 1">
+                          <img class="me_login_mobile" src="@/assets/images/login/me_login_code@2x.png" alt="">
+                          <input v-model="codeSMS" type="text" placeholder="请输入验证码">
+                          <span class="sendCode" @click="onSendCode" :class="{ opacity: !phone || second < 60}">{{second == 60?'发送验证码': second + 's'}}</span>
+                      </p>
+                  </div>
+                  <div class="btn" :class="{ opacity: !phone }" @click="checkInfo">
+                      <span>登录</span>
+                  </div>
+                  <div class="flex flex-pack-justify regist">
+                      <div @click="$router.push('register_password')">注册</div>
+                      <div v-if="curTabIndex == 0" @click="$router.push('find_password')">忘记密码?</div>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
-    </div>
+    
   </div>
 </template>
 
@@ -95,7 +94,8 @@ export default {
       onLook: false,
       second: 60,
       phone: '',
-      codeSMS: ''
+      codeSMS: '',
+      isRegister: true
     };
   },
   created() {
@@ -160,10 +160,20 @@ export default {
         data.pwd = this.$encrypt(this.password);
       }
       if(this.curTabIndex == 1){
-        data.login_type = 2;
-        data.sms_code = this.$encrypt(this.codeSMS);
+        if(this.isRegister){
+          data.login_type = 2;
+          data.sms_code = this.$encrypt(this.codeSMS);
+        }else{
+          data.register_type = 2;
+          // data.code = this.$encrypt(this.codeSMS);
+          data.code = this.codeSMS;
+        }
       }
-      [err, res] = await api.login(data);
+      if(this.isRegister){
+        [err, res] = await api.login(data);
+      }else{
+        [err, res] = await api.register(data);
+      }
       if (err) {
         if (err.code === 4004) {
           this.$vux.toast.text("该账号尚未注册,清先注册");
@@ -381,10 +391,18 @@ export default {
         let data = {
           param: this.$encrypt(JSON.stringify(param))
         };
-        const [err, res] = await api.userLogin_sms(data);
+        let [err, res] = await api.userLogin_sms(data);
         if (err) {
-          this.$vux.toast.text(err.msg);
-          return;
+          if(err.code != 4002){
+            this.$vux.toast.text(err.msg);
+            return;
+          }
+          this.isRegister = false;
+          [err, res] = await api.register_sms(data);
+          if(err){
+            this.$vux.toast.text(err.msg);
+            return;
+          }
         }
         this.$vux.toast.text(res.msg, 'top');
         this.timeInterval = setInterval(() => {
@@ -405,6 +423,7 @@ export default {
 
 
 <style lang="less" scoped>
+@color : #61D8D0;
 .wrap {
   height: 110%;
   min-height: 100%;
@@ -529,9 +548,9 @@ a {
   font-size: 0.28rem;
   line-height: 40px;
 }
-@color : #61D8D0;
+// @color : #61D8D0;
 .page{
-    position: absolute;
+    position: fixed;
     width: 100%;
 }
 .other_login {
