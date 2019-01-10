@@ -444,7 +444,7 @@ export default {
 .other_login {
   .test {
     text-align: center;
-    font-size: 0.28rem;
+    font-size: 12px;
     color: rgb(51, 51, 51);
     padding-bottom: 0.61rem;
   }
@@ -578,7 +578,7 @@ a {
         width: 80%;
         margin: 0 auto;
         text-align: center;
-        font-size: 20px;
+        font-size: 18px;
         span{
             display: inline-block;
             width: 50%;

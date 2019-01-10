@@ -4,17 +4,28 @@
     <div class="registerMain">
       <ul>
         <li class="df ac">
-          <span class="phone">+86</span>
-          <input type="number" v-model="phone" placeholder="请输入注册的手机号" maxlength="11" class="phoneNum">
+          <img src="@/assets/images/login/me_login_mobile@2x.png" alt="">
+          <input type="number" v-model="phone" placeholder="请输入手机号" maxlength="11" class="phoneNum">
         </li>
         <li>
-          <input type="number" v-model="code" placeholder="验证码" class="codeNum">
-          <input type="button" :value="countdown===60?'获取验证码':`${countdown+1}秒后重发`" class="sendCode_f" @click="getcode" :class="phone.length>10?'getcode':''">
+          <img src="@/assets/images/login/me_login_code@2x.png" class="codeNumImg" alt="">
+          <input type="number" v-model="code" placeholder="验证码" style="width: 50%;" class="codeNum">
+          <input type="button" :value="countdown===60?'获取验证码':`${countdown+1}秒后重发`" class="sendCode_f" @click="getcode" :class="phone.length>=11?'':'opcity'">
         </li>
-        <li><input type="password" v-model="new_password1" placeholder="请输入新密码" class="password"></li>
-        <li><input type="password" v-model="new_password2" placeholder="请确认新密码" class="repassword"></li>
+        <li>
+          <img src="@/assets/images/login/me_login_pwd@2x.png" alt="">
+          <input :type="onLook?'text':'password'" v-model="new_password1" placeholder="请输入新密码" class="password">
+          <img class="me_login_mobile pass" @click="onChangeEye" v-if="onLook" src="@/assets/images/login/me_login_eye_open@2x.png" alt="">
+          <img class="me_login_mobile pass" @click="onChangeEye" v-else src="@/assets/images/login/me_login_eye@2x.png" alt="">
+        </li>
+        <li>
+          <img src="@/assets/images/login/me_login_pwd@2x.png" alt="">
+          <input :type="onLook?'text':'password'" v-model="new_password2" placeholder="请确认新密码" class="password">
+          <img class="me_login_mobile pass" @click="onChangeEye" v-if="onLook" src="@/assets/images/login/me_login_eye_open@2x.png" alt="">
+          <img class="me_login_mobile pass" @click="onChangeEye" v-else src="@/assets/images/login/me_login_eye@2x.png" alt="">
+        </li>
       </ul>
-      <button href="javascript:void(0);" @click="checkInfo" class="forgetBtn">完成</button>
+      <button href="javascript:void(0);" @click="checkInfo" class="forgetBtn" :class="phone.length>=11?'':'opcity'">完成</button>
     </div>
   </div>
 </template>
@@ -35,11 +46,15 @@ export default {
       code: "",
       new_password1: "",
       new_password2: "",
-      countdown: 60
+      countdown: 60,
+      onLook: false,
     };
   },
   created() {},
   methods: {
+    onChangeEye(){
+      this.onLook = !this.onLook;
+    },
     // 获取验证码
     getcode() {
       let reg = /^1[0-9]{10,}$/; //10位以上
@@ -92,26 +107,27 @@ export default {
     // 校验信息
     async checkInfo() {
       let that = this;
-      // let reg = /^1[0-9]{10,}$/; //10位以上
-      // let _test = reg.test(this.phone);
-      // if (!_test) {
-      //   this.$vux.toast.text("请输入正确的手机号");
-      //   return;
-      // }
-      // if (!this.code) {
-      //   this.$vux.toast.text("请输入正确的验证码");
-      //   return;
-      // }
-      // if (!this.new_password1 || !this.new_password2) {
-      //   this.$vux.toast.text("请输入新的密码");
-      //   return;
-      // }
-      // if (this.new_password1 !== this.new_password2) {
-      //   this.$vux.toast.text("两次密码输入不一致");
-      //   return;
-      // }
+      let reg = /^1[0-9]{10,}$/; //10位以上
+      let _test = reg.test(this.phone);
+      if (!_test) {
+        this.$vux.toast.text("请输入正确的手机号");
+        return;
+      }
+      if (!this.code) {
+        this.$vux.toast.text("请输入正确的验证码");
+        return;
+      }
+      if (!this.new_password1 || !this.new_password2) {
+        this.$vux.toast.text("请输入新的密码");
+        return;
+      }
+      if (this.new_password1 !== this.new_password2) {
+        this.$vux.toast.text("两次密码输入不一致");
+        return;
+      }
       let data = {
         tel: this.phone,
+        // code: this.$encrypt(this.code.toString()),
         code: this.code,
         pwd: this.$encrypt(this.new_password1.toString()),
         review_pwd: this.$encrypt(this.new_password2.toString()),
@@ -149,11 +165,22 @@ export default {
 .registerMain li {
   list-style: none;
   border-bottom: 1px solid #e6e6e6;
+  .codeNumImg{
+    position: relative;
+    top: 0.1rem;
+  }
+  img{
+    width: 0.35rem;
+    vertical-align: center;
+    margin-right: 0.2rem;
+  }
+  .password{
+    width: 70%;
+  }
 }
 .registerMain li input.sendCode_f {
   width: 28%;
   float: right;
-  color: #999;
   box-sizing: border-box;
   border-radius: 0px;
   -webkit-appearance: none;
@@ -161,16 +188,18 @@ export default {
   border-radius: 5px;
   font-size: 0.24rem;
   height: 0.6rem;
-  border-radius: 1rem;
-  background: #fff;
-  border: 0.01rem solid rgba(153, 153, 153, 1);
+  border-radius: 3px;
+  color: #fff;
+  background: #61D8D0;
+  border: none;
+}
+.opcity{
+  opacity: 0.5;
 }
 .registerMain li input.sendCode_f.getcode {
-  color: #61D8D0;
-  border: 0.01rem solid #61D8D0;
 }
 .registerMain .forgetBtn {
-  width: 5.1rem;
+  width: 100%;
   line-height: 0.92rem;
   background: #404042;
   display: block;
@@ -182,7 +211,7 @@ export default {
   margin-top: 0.8rem;
   height: 0.92rem;
   background: #61D8D0;
-  border-radius: 0.54rem;
+  border-radius: 3px;
   border: none;
 }
 .registerMain li input {
