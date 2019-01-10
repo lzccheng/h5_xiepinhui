@@ -148,6 +148,7 @@ export default {
   img{
     width: 0.35rem;
     vertical-align: center;
+    margin-right: 0.1rem;
   }
 }
 .registerMain li input.sendCode_f {
