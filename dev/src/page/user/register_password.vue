@@ -184,7 +184,7 @@ export default {
         this.$vux.toast.text(err.msg);
         return;
       }
-      this.$vux.toast.text(res.msg);
+      this.$vux.toast.text('注册成功');
       setTimeout(() => {
         that.$router.push("/user/login");
       }, 500);

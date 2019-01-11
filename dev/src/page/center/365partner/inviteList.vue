@@ -303,7 +303,7 @@ export default {
         var issmallshop = err.data.is_smallshop;
         var store_state = err.data.store_state;
         console.log('inviteOthersCode',this.inviteOthersCode)
-        if(!(this.user.user_type == 1 && issmallshop != 1))return;
+        if(this.user.user_type != 1)return;
         userName = err.data.member_name;
         // if(codeStatus!=2000){
         //   if(store_state == 3){//审核中

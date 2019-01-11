@@ -956,10 +956,10 @@ contact-button {
                           </swiper-slide>
                           <div class="swiper-pagination2" slot="pagination" style="text-align: center;"></div>
                         </swiper>
-                        <div class="tj-bottom-more">
+                        <!-- <div class="tj-bottom-more">
                           查看更多热卖推荐
                           <span class="iconfont icon-yuanyou"></span>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
@@ -1271,7 +1271,7 @@ export default {
                 this.goodsinfoImage = _res.data.goods_body
             }
             this.showPindan(this);
-            this.newWiperBarFn();
+            
         },
         newWiperBarFn(){
           let  that = this;
@@ -1317,7 +1317,6 @@ export default {
             const [err, res] = await api.groupinglist(data);
             if(err){
                 this.$vux.toast.text(err.msg);
-                return;
             }
             if(res.code == 2000){
                 this.grouplist = res.data.data;
@@ -1329,6 +1328,9 @@ export default {
                     // comm.daojishi(totalSecond, that, i, list, app);
                 }
             }
+            this.$nextTick(()=>{
+              this.newWiperBarFn();
+            })
         },
         async showXiangqing(){
             let that = this;

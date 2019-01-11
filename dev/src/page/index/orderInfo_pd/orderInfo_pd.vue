@@ -1,6 +1,6 @@
 <style lang="less" scoped>
     @import '~@/assets/mobileSelect.less';
-
+    @color: #61D8D0;
     .order-address-box {
     padding: 5/50rem 0/50rem 0;
     background: #fff;
@@ -83,7 +83,7 @@
     font-size: 12pt;
     }
     .redCoupon{
-    color: rgba(251,76,114,1) !important;
+    color: @color !important;
     }
     .order-goods-space {
     font-size: 11pt;
@@ -92,9 +92,16 @@
 
     .order-goods-price {
     font-size: 12pt;
-    color: red;
+    color: @color;
     }
-
+    .oldPrice{
+        color: #ccc !important;
+        margin-left: 0.2rem;
+        font-size: 10px;
+        span{
+            text-decoration: line-through !important;
+        }
+    }
     .weui-label {
     font-size: 12pt;
     }
@@ -136,7 +143,7 @@
     padding-left:15/50rem;
     font-size: 10pt;
     text-align: center;
-    color: rgba(251,76,114,1);
+    color: @color;
     }
     .coupon-box-left{
     width: 100%;
@@ -203,7 +210,7 @@
     .heji {
     padding-left: 15/50rem;
     font-size: 12pt;
-    color: #FB4C72;
+    color: @color;
     }
     .zongjiaqian{
     font-size: 14pt;
@@ -345,7 +352,7 @@
                               <img src="@/assets/images/huidou.png" class="iconH" mode="widthFix"/>
                             </span>
                         </div>
-                        <div v-else class='order-goods-price'>{{goodsInfo.goodsprice}}</div>
+                        <div v-else class='order-goods-price'><span style="font-size: 10px">￥</span>{{(goodsInfo.goodsprice * member_discount).toFixed(2)}}<span v-if="!s_id && user.user_type == 4" class="oldPrice">￥<span>{{goodsInfo.goodsprice}}</span>(365会员:{{(member_discount * 10).toFixed(1)}}折)</span></div>
                     </div>
                 </div>
                 <div class="flex flex-pack-justify flex-align-center stepperBox line_xi_after" v-if="!s_id">
@@ -359,7 +366,7 @@
                         <span class="normal" @click="bindPlus">+</span>
                     </div>
                 </div>
-                <div class="weui-cell  weui-cell_select line_xi_after" v-if="coupon_num!=0">
+                <!-- <div class="weui-cell  weui-cell_select line_xi_after" v-if="coupon_num!=0">
                     <div class="weui-cell__hd weui-cell__hd_in-select-after coupon-box">
                         <div class="weui-label coupon-box-left">优惠券
                             <span class="coupon-num-box" v-if="coupon_num!=0">{{coupon_num}}张优惠券</span>
@@ -368,7 +375,7 @@
                     <div class="weui-cell__bd " @click="selectCoupon">
                         <div class="weui-select weui-select_in-select-after" :class="coupon_text=='请选择优惠券'?'':'redCoupon'"></div>
                     </div>
-                </div>
+                </div> -->
                 <div class="weui-cell weui-cell_select line_xi_after" style="padding: 0">
                     <div class="weui-cell__hd weui-cell__hd_in-select-after">
                         <div class="weui-label fontSize">快递选择</div>
@@ -485,7 +492,8 @@ export default {
             s_id: '',
             ifUseBalance: false,
             huidounum: 0,
-            restMoney: 0
+            restMoney: 0,
+            member_discount: 1
         }
     },
     created () {
@@ -493,8 +501,19 @@ export default {
     },
     mounted(){
         this.s_id = this.$route.query.s_id || this.goodsInfo._s_id || '';
+        if(!this.token){
+            this.$vux.toast.text('你还没登录哦~', 'top');
+            return this.$router.replace({
+                path: '/user/login',
+                query: {
+                    url: this.$route.fullPath
+                }
+            })
+        }
+        console.log(this.user.user_type)
         this.init();
-        this.s_id && this.getHuidou();
+        // this.s_id && this.getHuidou();
+        this.getHuidou();
     },
     methods: {  
         init(){
@@ -629,7 +648,8 @@ export default {
             var exprice = parseFloat(parseFloat(proWeight * that.nowSelectshipping.m_weight_price) + parseFloat(that.nowSelectshipping.f_weight_price)).toFixed(2);
             var coupon_price = that.nowCouponInfo.amount;
             if (!coupon_price) { coupon_price = 0 }
-            var count = parseFloat(parseFloat(that.goodsInfo.goodsprice * that.num) - parseFloat(coupon_price)).toFixed(2);
+            let member_discount = this.s_id ? 1 :that.member_discount;
+            var count = parseFloat(parseFloat(that.goodsInfo.goodsprice * member_discount * that.num) - parseFloat(coupon_price)).toFixed(2);
             if (count < 0) {
                 count = 0;
             }
@@ -667,14 +687,14 @@ export default {
             var exprice = parseFloat(parseFloat(proWeight * this.nowSelectshipping.m_weight_price) + parseFloat(this.nowSelectshipping.f_weight_price)).toFixed(2);
             this.getTotal(this);
             this.couponNum();
-            if (this.isUsecoupon == 1) {
-                if (parseFloat(this.goodsInfo.goodsprice * this.num) < this.nowCouponInfo.min_money) {
-                    this.isUsecoupon = 0;
-                    this.coupon_text = "请选择优惠券";
-                    this.nowCouponInfo = "";
-                    this.getTotal(this);
-                }
-            }
+            // if (this.isUsecoupon == 1) {
+            //     if (parseFloat(this.goodsInfo.goodsprice * this.num) < this.nowCouponInfo.min_money) {
+            //         this.isUsecoupon = 0;
+            //         this.coupon_text = "请选择优惠券";
+            //         this.nowCouponInfo = "";
+            //         this.getTotal(this);
+            //     }
+            // }
         },
         /* 点击加号 */
         bindPlus(){
@@ -984,6 +1004,8 @@ export default {
                 return;
             }
             if(res.code == 2000){
+                this.member_discount = res.data.member_discount;
+                if(!this.s_id)return;
                 var f_weight_price = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0].f_weight_price : 0;
                 var m_weight_price = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0].m_weight_price : 0;
                 var goods_weight = res.data.goods_weight;
@@ -1024,6 +1046,7 @@ export default {
                     }
                 } 
                 var ifUserestMoney = that.ifUseBalance;
+                this.member_discount = res.data.member_discount;
                 this.nowSelectshipping = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0] : 0;
                 this.exprice = expressPrice;
                 this.shippingInfo = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company : 0;
@@ -1072,7 +1095,7 @@ export default {
                 total_count = this.accAdd(OriginalPrice, huidoujia);  //OriginalPrice+huidoujia+postFree;
                 total_count = this.accAdd(total_count, postFree);
             }
-            this.total_count = total_count;
+            this.total_count = total_count.toFixed(2);
         }   
     },
     watch: {
@@ -1080,6 +1103,9 @@ export default {
             if(this.shippingInfo){
                 this.mobileSelect1.updateWheel(0, this.shippingInfo);
             }
+        },
+        member_discount(){
+            if(!this.s_id)this.getTotal();
         }
     },
     computed: {

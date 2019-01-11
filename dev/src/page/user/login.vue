@@ -192,13 +192,13 @@ export default {
       localStorage["user"] = JSON.stringify(res.data);
       localStorage["account"] = res.data.account;
       localStorage["token"] = res.data.token;
-      if(this.phone.length > 11 && window.isWeiXin){
+      if((this.phone.length > 11 || !res.data.openid) && window.isWeiXin){
         var fromurl = window.location.href.split('#')[0];
         window.location.href =
           "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx47d52b6420c14397&redirect_uri=" +
           encodeURIComponent(fromurl) +
           "&response_type=code&scope=snsapi_userinfo&state=child#wechat_redirect";
-        return
+        return;
       }
       this.$vux.toast.show({
         type: "success",
@@ -241,7 +241,7 @@ export default {
             }
           })
           .then(async function(res) {
-            //子账号获取oppenid
+            //子账号或者没oppenid时获取oppenid （用于微信支付）
             if(that.state === 'child'){
               try {
                 let user = JSON.parse(window.localStorage.getItem('user'));

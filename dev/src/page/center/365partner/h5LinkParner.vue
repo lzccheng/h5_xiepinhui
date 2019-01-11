@@ -175,7 +175,7 @@ export default {
                 codeInvite = window.localStorage.getItem('inviteOthersCode')
                 console.log(codeInvite)
             }
-            if (this.user.user_type == 2 || this.user.user_type == 3) {
+            if (this.user.user_type != 1) {
               this.$router.push("/centerFull/partner/inviteList");
             } else {
                 let issmallshop = redmessageInfo.is_smallshop;

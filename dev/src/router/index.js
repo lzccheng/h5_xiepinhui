@@ -26,15 +26,21 @@ const partnerWrap = ()=>import('@/page/center/365partner/partnerWrap')
 //365邀请码
 const code = ()=>import('@/page/center/365partner/code')
 //365开通
-const apply = ()=>import('@/page/center/365partner/apply')
-//365开通
+const apply = () => import('@/page/center/365partner/apply')
+
+const littleShop365 = () => import('@/page/center/365partner/littleShop365')
+
+//
 const myNewFansDetail = () => import('@/page/center/365partner/myNewFansDetail')
 //邀请365伙人
 const inviteParner365 = () => import('@/page/center/365partner/inviteParner365')
 //h5LinkParner
 const h5LinkParner = () => import('@/page/center/365partner/h5LinkParner')
 //365排行
-const inviteList = ()=>import('@/page/center/365partner/inviteList')
+const inviteList = () => import('@/page/center/365partner/inviteList')
+//365介绍
+const introduce365 = () => import('@/page/center/365partner/introduce365')
+
 //邀请规则
 const inviteFriendRecord = ()=>import('@/page/center/365partner/inviteFriendRecord')
 //365规则
@@ -461,9 +467,9 @@ let router = new Router({
               title: '粉丝订单详情'
             }
           }, {
-            path: 'applyStatic',
-            name: 'applyStatic',
-            component: applyStatic,
+            path: 'littleShop365',
+            name: 'littleShop365',
+            component: littleShop365,
             meta: {
               title: '365合伙人'
             }
@@ -518,6 +524,14 @@ let router = new Router({
             component: inviteList,
             meta: {
               title: '邀请好友'
+            }
+          }, 
+          {
+            path: 'introduce365',
+            name: 'introduce365',
+            component: introduce365,
+            meta: {
+              title: '365'
             }
           },
           {

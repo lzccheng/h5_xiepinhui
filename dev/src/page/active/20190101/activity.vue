@@ -715,7 +715,7 @@ export default {
             }
             //activeWrap
             if(this.user){
-                if(!(this.user.user_type == 1 && this.isShop != 1)){
+                if(this.user.user_type != 1){
                     shareConfig.link = location.origin + '/activeWrap/activity?shareCode=' + this.user.member_code;
                 };
             }

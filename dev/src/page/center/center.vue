@@ -19,7 +19,7 @@
         <div class="user-info-box">
           <div class="info-left">
             <div class="user">
-              <span class="user-name" v-if="user">{{user?user.nick||'请设置用户名':'请登录'}}</span>
+              <span class="user-name" v-if="user">{{user.nick || user.tel}}</span>
               <span class="user-name" v-if="!user" @click="$router.push('/user/login')">请点击登录</span>
               <span class="user-edit icon"></span>
             </div>
@@ -680,10 +680,13 @@ export default {
           this.$router.push("/centerFull/myshop/index");
           break;
         case "365合伙人":
+          
           //0 普通用户 1 店主非365店 2 365店主
-          if (this.user.user_type == 2 || this.user.user_type == 3) {
+          if (this.redmessageInfo.is_smallshop == 1 || this.user.user_type == 2 || this.user.user_type == 3 || this.user.user_type == 4) {
               this.$router.push("/centerFull/partner/inviteList");
           } else {
+            return this.$router.push("/centerFull/partner/introduce365");
+
             let issmallshop = this.redmessageInfo.is_smallshop;
             let store_state = this.redmessageInfo.store_state;
             //判断是否已开通
