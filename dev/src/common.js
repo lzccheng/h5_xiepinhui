@@ -2,7 +2,7 @@ const env = process.env || {};
 const domain = env.API_ROOT;
 import VConsole from 'vconsole';
 let path = '/'
-let debug = true;
+let debug = false;
 
 // 设置参数默认值
 let config = Object.assign({
