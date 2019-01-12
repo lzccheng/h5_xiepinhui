@@ -95,7 +95,7 @@
     color: @color;
     }
     .oldPrice{
-        color: #ccc !important;
+        color: #FB4C72 !important;
         margin-left: 0.2rem;
         font-size: 10px;
         span{
@@ -352,7 +352,7 @@
                               <img src="@/assets/images/huidou.png" class="iconH" mode="widthFix"/>
                             </span>
                         </div>
-                        <div v-else class='order-goods-price'><span style="font-size: 10px">￥</span>{{(goodsInfo.goodsprice * member_discount).toFixed(2)}}<span v-if="!s_id && user.user_type == 4" class="oldPrice">￥<span>{{goodsInfo.goodsprice}}</span>(365会员:{{(member_discount * 10).toFixed(1)}}折)</span></div>
+                        <div v-else class='order-goods-price'><span style="font-size: 10px">￥</span>{{(goodsInfo.goodsprice * member_discount).toFixed(2)}}<span v-if="!s_id && user.user_type == 4" class="oldPrice">￥<span>{{goodsInfo.goodsprice}}</span>(365专享{{(member_discount * 10).toFixed(1)}}折)</span><span v-if="!s_id && user.user_type == 1" class="oldPrice" @click="$router.push('/centerFull/partner/introduce365')">(开通365小店专享7折优惠)</span></div>
                     </div>
                 </div>
                 <div class="flex flex-pack-justify flex-align-center stepperBox line_xi_after" v-if="!s_id">
