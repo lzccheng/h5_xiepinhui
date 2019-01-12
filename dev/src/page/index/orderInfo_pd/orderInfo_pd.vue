@@ -1004,7 +1004,7 @@ export default {
                 return;
             }
             if(res.code == 2000){
-                this.member_discount = res.data.member_discount;
+                this.member_discount = res.data.member_discount || 1;
                 if(!this.s_id)return;
                 var f_weight_price = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0].f_weight_price : 0;
                 var m_weight_price = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0].m_weight_price : 0;
@@ -1046,7 +1046,6 @@ export default {
                     }
                 } 
                 var ifUserestMoney = that.ifUseBalance;
-                this.member_discount = res.data.member_discount;
                 this.nowSelectshipping = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0] : 0;
                 this.exprice = expressPrice;
                 this.shippingInfo = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company : 0;

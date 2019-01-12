@@ -308,7 +308,7 @@
       </div>
       <!-- detail -->
       <div class="content" :class="isshow == 2?'noPadd': ''">
-        <div class='order-list-box' v-for="(item,index) in listInfo" :key="index" v-if="listInfo">
+        <div class='order-list-box' v-for="(item,index) in listInfo" :key="index">
           <div class='list-top-box flex flex-align-center flex-pack-justify'>
             <div class='top-left flex flex-align-center'>
               <!-- <img src="http://img.xiepinhui.com.cn/small_app/programOldImgFile/smalllogo.png" /> -->
@@ -337,7 +337,7 @@
               <div class="goods-spec">{{item.goods_info.goods_spec}}</div>
               <div class="goodsprice" style="color: #61D8D0" v-if="!(item.order_type==4)">￥{{item.goods_info.unit_price}}</div>
               <div class="goodsprice2" v-else>
-                ￥{{item.goods_info.unit_price}}+{{item.goods_info.vcoin_price}}
+                ￥{{item.goods_info.vcoin_pay_price}}+{{item.goods_info.vcoin_price}}
                 <img class="huidouIcon" src="@/assets/images/huidou.png" mode="widthFix"/>
               </div>
             </div>

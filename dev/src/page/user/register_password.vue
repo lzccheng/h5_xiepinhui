@@ -46,6 +46,7 @@
 <script>
 import { api } from "@/utils/api.js";
 import { XButton, XHeader } from "vux";
+import { mapActions, mapMutations, mapGetters } from "vuex";
 export default {
   name: "login",
   props: {},
@@ -68,6 +69,8 @@ export default {
   },
   created() {
     let that = this;
+  },
+  mounted () {
   },
   methods: {
     onTabChange(i){
@@ -184,11 +187,25 @@ export default {
         this.$vux.toast.text(err.msg);
         return;
       }
-      this.$vux.toast.text('注册成功');
-      setTimeout(() => {
-        that.$router.push("/user/login");
-      }, 500);
-    }
+      // this.$vux.toast.text('注册成功');
+      // 存储token
+      this.updateUser(res.data);
+      this.updateToken(res.data.token);
+      this.updateAccount(res.data.account);
+      localStorage["user"] = JSON.stringify(res.data);
+      localStorage["account"] = res.data.account;
+      localStorage["token"] = res.data.token;
+      var fromurl = window.location.origin + '/user/login' + window.location.search;
+      window.location.href =
+          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx47d52b6420c14397&redirect_uri=" +
+          encodeURIComponent(fromurl) +
+          "&response_type=code&scope=snsapi_userinfo&state=child#wechat_redirect";
+      // setTimeout(() => {
+      //   that.$router.push("/user/login");
+      // }, 500);
+    },
+    ...mapMutations(["updateManager", "updateToken", "updateAccount"]),
+    ...mapActions(["updateUser"]),
   }
 };
 </script>

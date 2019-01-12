@@ -566,7 +566,7 @@
               </div>
             </div>
           <div  :class="ifResultTop? 'tabHeight': ''">
-             <div class="row-goodsInfo" v-if="currentTab==1">
+             <div class="row-goodsInfo" v-if="currentTab == 1">
                   <div class="row-goodsli" v-for="(item,index) in goodsInfo" :id="item.n_goods_id" :key="index">
                       <router-link tag="div" :to="'/index/goodsInfoPindan?goodsId='+item.n_goods_id">
                           <img mode="widthFix" :src="item.goods_image.split('?')[0]" lazy-load="true" />
