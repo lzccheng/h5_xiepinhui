@@ -36,10 +36,15 @@ const myNewFansDetail = () => import('@/page/center/365partner/myNewFansDetail')
 const inviteParner365 = () => import('@/page/center/365partner/inviteParner365')
 //h5LinkParner
 const h5LinkParner = () => import('@/page/center/365partner/h5LinkParner')
+//改版365
+const index365 = () => import('@/page/center/365partner/index365')
+
 //365排行
 const inviteList = () => import('@/page/center/365partner/inviteList')
 //365介绍
 const introduce365 = () => import('@/page/center/365partner/introduce365')
+//365特权
+const privilege = () => import('@/page/center/365partner/privilege')
 
 //邀请规则
 const inviteFriendRecord = ()=>import('@/page/center/365partner/inviteFriendRecord')
@@ -495,6 +500,13 @@ let router = new Router({
             meta: {
               title: '365合伙人加盟'
             }
+          }, {
+            path: 'index365',
+            name: 'index365',
+            component: index365,
+            meta: {
+              title: '鞋品荟'
+            }
           },
           {
             path: 'redenvelope',
@@ -532,6 +544,14 @@ let router = new Router({
             component: introduce365,
             meta: {
               title: '365'
+            }
+          }, 
+          {
+            path: 'privilege',
+            name: 'privilege',
+            component: privilege,
+            meta: {
+              title: '鞋品荟'
             }
           },
           {

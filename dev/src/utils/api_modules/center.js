@@ -291,9 +291,24 @@ export const addsmallshop = (data) => {
   const url = `${domain}/restore/addsmallshop`
   return POST(url, data)
 }
+// 365活动商品列表
+export const seckillGoodslist = (data) => {
+  const url = `${domain}/seckill/goodslist`
+  return POST(url, data)
+}
 // 365规则接口
 export const guize = (data) => {
   const url = `${domain}/restore/guize`
+  return POST(url, data)
+}
+// 365特权接口
+export const privilege_info = (data) => {
+  const url = `${domain}/smallstore/privilege_info`
+  return POST(url, data)
+}
+// 365主页接口
+export const smallstoreIndex = (data) => {
+  const url = `${domain}/smallstore/index`
   return POST(url, data)
 }
 // 365邀请合伙人接口
