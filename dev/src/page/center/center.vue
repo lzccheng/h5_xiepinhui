@@ -303,7 +303,6 @@ export default {
       this.updateCenter("");
       localStorage.clear();
     }
-    sessionStorage.clear();
   },
   methods: {
     searchMoreFans(){
@@ -669,7 +668,7 @@ export default {
     },
     //跳转365or我的店铺
     linkTo(link) {
-      console.log(this.user.user_type);
+      console.log(link);
       switch (link) {
         case "我的店铺":
           if (this.user.user_type == 1) {
@@ -679,11 +678,14 @@ export default {
           }
           this.$router.push("/centerFull/myshop/index");
           break;
-        case "365合伙人":
+        case "365小店":
           
           //0 普通用户 1 店主非365店 2 365店主
           if (this.redmessageInfo.is_smallshop == 1 || this.user.user_type == 2 || this.user.user_type == 3 || this.user.user_type == 4) {
-              this.$router.push("/centerFull/partner/inviteList");
+              if(this.redmessageInfo.is_smallshop == 1 || this.user.user_type == 4){
+                return this.$router.push("/centerFull/partner/index365");
+              }
+              return this.$router.push("/centerFull/partner/inviteList");
           } else {
             return this.$router.push("/centerFull/partner/introduce365");
 

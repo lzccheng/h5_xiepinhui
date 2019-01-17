@@ -1,5 +1,6 @@
 <style scoped lang="less">
 @color: #61d8d0;
+@color2: #F35A7E;
 .page{
     min-height: 100%;
 }
@@ -22,7 +23,7 @@
     .info{
         width: 100%;
         padding: 0 0.25rem;
-        margin-top: -2rem;
+        margin-top: -2.5rem;
         .head{
             color: #fff;
             position: relative;
@@ -47,7 +48,7 @@
                 right: 0.25rem;
                 top: 0.2rem;
                 border: 1px solid #fff;
-                padding: 0.08rem 0.3rem;
+                padding: 0.06rem 0.3rem;
                 border-radius: 0.6rem;
             }
         }
@@ -103,8 +104,25 @@
                 border-radius: 8px;
                 font-size: 14px;
                 color: #fff;
-                padding: 0.5rem 0.4rem 0.1rem;
+                padding: 0.5rem 0.3rem 0.1rem;
+                img{
+                    width: 0.12*2rem;
+                    vertical-align: middle;
+                }
             }
+            .newBoxMsg{
+                position: relative;
+                white-space: nowrap;
+                &:nth-child(2){
+                    display: inline-block;
+                    height: .5rem;
+                    width: 5rem;
+                    overflow: hidden;
+                    position: relative;
+                    top: .18rem;
+                }
+            }
+            
             .angle{
                 position: absolute;
                 left: 1rem;
@@ -113,11 +131,10 @@
                 border-left: 10px solid transparent;
                 border-right: 10px solid transparent;
                 border-top: 10px solid transparent;
-                z-index: 99;
+                z-index: 2;
             }
         }
         .taskBox{
-            margin-top: 0.9rem;
             background-color: #fff;
             border-radius: 8px;
             padding: 0.2rem;
@@ -162,7 +179,7 @@
                         display: inline-block;
                         &:first-child{
                             font-size: 12px;
-                            color: #F35A7E;
+                            color: @color2;
                         }
                         &:last-child{
                             background-color: @color;
@@ -197,15 +214,25 @@
                     display: inline-block;
                     background-color: #F2FFFE;
                     border-radius: 8px;
+                    margin: 0 .07rem;
+                    border: solid 1px #8BE3DD;
+                    &.had{
+                        border: solid 1px #E0E0E0;
+                        background-color: #F6F6F6;
+                    }
                 }
                 .btn365{
                     width: 1.28*2rem;
-                    height: 0.27*2rem;
+                    line-height: 0.27*2rem;
                     color: #fff;
                     background-color: @color;
                     border-radius: 0.5rem;
                     text-align: center; 
                     margin: 0 auto;
+                    font-size: 14px;
+                    &.opacity{
+                        background-color: #CDCDCD;
+                    }
                 }
                 img{
                     width: 0.7rem;
@@ -229,6 +256,24 @@
                 }
                 .text{
                     padding: 0.15rem;
+                    >div{
+                        &:first-child{
+                            text-align: left;
+                            @heig: .8rem;
+                            width: @heig;
+                            line-height: @heig;
+                        }
+                    }
+                    .ico{
+                        font-size: 12px;
+                        position: relative;
+                        left: .15rem;
+                        top: -.1rem;
+                    }
+                    .value{
+                        font-size: 18px;
+                        font-weight: bold;
+                    }
                 }
             }
         }
@@ -258,7 +303,7 @@
                 overflow: auto;
                 .privilegeItem{
                     text-align: center;
-                    width: 25%;
+                    width: 20%;
                     display: inline-block;
                     padding: 0.2rem 0;
                     img{
@@ -300,7 +345,7 @@
                     }
                     .detail{
                         width: calc(100% - 1*2rem);
-                        margin-left: 0.2rem;
+                        margin-left: 0.25rem;
                         flex-direction: column;
                         justify-content: space-between;
                         position: relative;
@@ -310,13 +355,15 @@
                             -webkit-line-clamp: 2; 	//行数
                             overflow: hidden;
                             color: #666666;
+                            font-size: 16px;
                         }
                         .text{
                             color: #999999;
                         }
                         .price{
-                            color: #F35A7E;
+                            color: #666;
                             font-size: 20px;
+                            margin-left: -.1rem;
                         }
                         .throuh{
                             font-size: 12px;
@@ -337,6 +384,31 @@
                         }
                         .priceBox{
                             width: 100%;
+                            white-space: nowrap;
+                        }
+                        .text{
+                            display: inline-block;
+                            font-size: 12px;
+                        }
+                        .goods_salenum{
+                            color: #999;
+                            font-size: 12px;
+                        }
+                    }
+                    .tipTop{
+                        position: relative;
+                        span{
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            white-space: nowrap;
+                            font-size: 12px;
+                            color: #fff;
+                            background-color: @color2;
+                            padding: 0 .1rem 0 .05rem;
+                            border-top-right-radius: 10px;
+                            border-bottom-right-radius: 10px;
+                            line-height: 1.4;
                         }
                     }
                 }
@@ -344,6 +416,7 @@
         }
     }
 }
+
 </style>
 <template>
     <div class="page">
@@ -359,31 +432,39 @@
                         <div class="name">{{user.nick || user.tel}}</div>
                         <div  class="date">{{info.header.validity_date}}到期</div>
                     </div>
-                    <div class="manage">管理续费</div>
+                    <div class="manage" @click="handleManage">管理续费</div>
                 </div>
                 <div class="headNum flex">
-                    <div class="headNumItem flex" v-for="(item, i) in info.header.statistics" :key="i">
+                    <div class="headNumItem flex" @click="gotoPage(item.statistic_id)" v-for="(item, i) in info.header.statistics" :key="i">
                         <span class="title">{{item.title}}</span>
-                        <span class="total"><span>{{item.total}}</span>个</span>
+                        <span class="total"><span>{{item.total}}</span>{{item.unit}}</span>
                         <span class="btn_name">{{item.btn_name}}</span>
                     </div>
-                    
                 </div>
                 <div class="newsBox">
                     <div class="news">
-                        <span></span>
-                        <span>消息：365小店特权兑换，福利免费领</span>
+                        <span><img src="@/assets/images/new365/news.png" alt=""><span>消息:</span></span>
+                        <div class="newBoxMsg">
+                            <div>
+                                <swiper :options="swiperOptions" class="">
+                                    <swiper-slide class="" v-for="(item, i) in info.header.radio_message" :key="i">
+                                        <div>{{item.msg}}</div>
+                                    </swiper-slide>
+                                </swiper>
+                            </div>
+                        </div>
                     </div>
                     <div class="angle"></div>
                 </div>
-                <div class="taskBox">
+                <div style="height: .9rem"></div>
+                <div class="taskBox" v-if="false">
                     <div class="taskTop flex">
                         <span><span class="title">今日限时任务</span>(三选一)</span>
                         <span v-if="false">更多</span>
                     </div>
                     <div class="taskList">
                         <div class="taskItem flex" v-for="(item, i) in info.daily_task.list" :key="i">
-                            <div  class="img"><img :src="item.task_icon" alt=""></div>
+                            <div  class="img"><img :src="returnPath(item.task_icon)" alt=""></div>
                             <!-- <div"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547458194397&di=7aabbffef78f62873d3cdd5878e6540b&imgtype=0&src=http%3A%2F%2Fs15.sinaimg.cn%2Fmiddle%2F6906431ag743adc03370e%26690" alt=""></div> -->
                             <div class="taskName flex">
                                 <span>{{item.task_name}}</span>
@@ -401,50 +482,61 @@
                         <span>365小店专享福利</span>
                     </div>
                     <div class="list365">
-                        <div class="listItem365" v-for="(item, i) in info.welfare.list" :key="i">
+                        <div class="listItem365" :class="{had: item.status != 1}" v-for="(item, i) in info.welfare.list" :key="i">
                             <div class="text flex">
                                 <!-- <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547458194397&di=7aabbffef78f62873d3cdd5878e6540b&imgtype=0&src=http%3A%2F%2Fs15.sinaimg.cn%2Fmiddle%2F6906431ag743adc03370e%26690" alt=""> -->
-                                <img :src="item.icon" alt="">
+                                <!-- <img :src="item.icon" alt=""> -->
+                                <div>
+                                    <span class="ico">￥</span>
+                                    <span class="value">{{item.value}}</span>
+                                </div>
                                 <div class="title">
                                     <div>{{item.title}}</div>
                                     <div>无门槛</div>
                                 </div>
                             </div>
-                            <div class="btn365">{{item.btn_name}}</div>
+                            <div class="btn365" @click="handleGet(item.welfare_id, item.status)" :class="{opacity: item.status != 1}">{{item.status == 1? item.btn_name : '已领完'}}</div>
                         </div>
                     </div>
                 </div>
                 <div class="privilege">
                     <div class="privilegeTop flex">
                         <span>365小店特权</span>
-                        <span>详情<span class="row iconfont icon-right-jiantou"></span></span>
+                        <span @click="$router.push('privilege')">详情<span class="row iconfont icon-right-jiantou"></span></span>
                     </div>
                     <div class="privilegeList">
-                        <div class="privilegeItem" v-for="(item, i) in info.privilege.list" :key="i">
+                        <div class="privilegeItem" @click="gotoPrivilege(item.privilege_id)" v-for="(item, i) in info.privilege.list" :key="i">
                             <div><img :src="item.icon" alt=""></div>
                             <div class="text">{{item.title}}</div>
                         </div>
                     </div>
                 </div>
-                <div class="goods">
+                <div class="goods" v-if="goodListShow">
                     <div class="goodsTitle flex">
                         <span>专享商品</span>
-                        <span>更多<span class="row iconfont icon-right-jiantou"></span></span>
+                        <span @click="$router.push('goodList')">更多<span class="row iconfont icon-right-jiantou"></span></span>
                     </div>
-                    <div class="goodsList">
+                    <!-- <div class="goodsList">
                         <div class="goodsItem flex" v-for="(item, i) in goodsList" :key="i">
-                            <img :src="item.goods_image" alt="">
+                            <div class="tipTop">
+                                <img :src="item.goods_image" alt="">
+                                <span>365小店7折专享</span>
+                            </div>
                             <div class="detail flex">
                                 <div class="name">{{item.goods_name}}</div>
+                                <div class="goods_salenum">销量：{{item.goods_salenum*1 + item.fictitious_salenum*1}}</div>
                                 <div class="priceBox">
-                                    <span class="text">￥</span>
-                                    <span class="price">{{item.group_price}}</span>
-                                    <span class="throuh text">￥{{item.goods_marketprice}}</span>
-                                    <span class="buy">立即抢</span>
+                                    <span>
+                                        <span class="text">￥</span>
+                                        <span class="price">{{item.s_goods_price}}</span>
+                                        <span class="throuh text">￥{{item.goods_marketprice}}</span>
+                                    </span>
+                                    <span class="buy" @click="gotoDetail(item.n_goods_id)">立即抢</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+                    <goods-list @datachange="goodListChange"></goods-list>
                 </div>
             </div>
         </div>
@@ -455,50 +547,93 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { api } from '@/utils/api.js';
 import { Group, Cell, XButton, Badge, XHeader } from 'vux';
+import 'swiper/dist/css/swiper.css';
+import GoodsList from '@/components/goodsList365';
 export default {
     components: {
-        XHeader
+        XHeader,
+        GoodsList
     },
     data() {
         return {
+            swiperOptions: {
+                autoplay: true,
+                direction: 'vertical'
+            },
             info: null,
-            goodsList: [
-                {
-                    img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547458194397&di=6049701e25c72c31e3955a4e26fdbfd6&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1303%2F11%2Fc15%2F18826255_18826255_1363010310000.jpg',
-                    name: 'sjfkalsfjlasjflasjdf',
-                    price: 2000,
-                    oldprice: 3000,
-                },
-                {
-                    img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547458194397&di=6049701e25c72c31e3955a4e26fdbfd6&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1303%2F11%2Fc15%2F18826255_18826255_1363010310000.jpg',
-                    name: 'sjfkalsfjlasjflasjdf',
-                    price: 2000,
-                    oldprice: 3000,
-                },
-                {
-                    img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547458194397&di=6049701e25c72c31e3955a4e26fdbfd6&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1303%2F11%2Fc15%2F18826255_18826255_1363010310000.jpg',
-                    name: 'sjfkalsfjlasjflasjdf',
-                    price: 2000,
-                    oldprice: 3000,
-                },
-                {
-                    img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547458194397&di=6049701e25c72c31e3955a4e26fdbfd6&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1303%2F11%2Fc15%2F18826255_18826255_1363010310000.jpg',
-                    name: 'sjfkalsfjlasjflasjdf',
-                    price: 2000,
-                    oldprice: 3000,
-                },
-            ],
-            page: 1
+            goodsList: [],
+            page: 1,
+            goodListShow: true
         }
     },
     created() {
         this.getData();
-        this.getGoodList();
+        // this.getGoodList();
     },
     mounted() {
-        console.log(this.user)
     },
     methods: {
+        goodListChange(total_count){
+            if(total_count*1 == 0){
+                this.goodListShow = false;
+            }
+        },
+        gotoDetail(goodsId){
+            this.$router.push({
+                path: '/index/goodsInfoPindan',
+                query: {
+                    goodsId
+                }
+            })
+        },
+        handleManage(){
+            this.$vux.toast.text('开发中', 'top');
+        },
+        gotoPrivilege(id){
+            this.$router.push({
+                path: 'privilege',
+                query: {
+                    index: id
+                }
+            })
+        },
+        async handleGet(welfare_id, status){
+            if(status == 2){
+                return this.$vux.toast.text('您已经领完', 'top');
+            }
+            let data = {
+                account: this.account,
+                token: this.token,
+                welfare_id
+            }
+            const [err, res] = await api.welfare_take(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            if(res.code == 2000){
+                this.$vux.toast.text('领取成功');
+            }
+        },
+        gotoPage(id){   
+            let url;
+            switch (id) {
+                case '1':
+                    return this.$vux.toast.text('开发中', 'top');
+                    break;
+                case '3':
+                    url = 'inviteList';
+                    break;
+                case '2':
+                    url = 'exchange';
+                    break;
+            }
+            if(url){
+                this.$router.push({
+                    path: url
+                })
+            }
+        },
         async getData(){
             let data = {
                 account: this.account,
@@ -539,10 +674,13 @@ export default {
                 console.log(res)
                 this.goodsList = res.data.list;
             }
+        },
+        returnPath(path){
+            return path.replace(/\\/g, '');
         }
     },
     computed: {
-        ...mapGetters(['user', 'account', 'token'])
+        ...mapGetters(['user', 'account', 'token']),
     }
 }
 </script>

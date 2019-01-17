@@ -113,8 +113,8 @@ const wxPay = async (that,data)=>{
             package: data.package,
             signType: data.signType,
             paySign: data.paySign || 'MD5',
-            // success: data.success || success,
-            success: success,
+            success: data.success || success,
+            // success: success,
             fail: data.fail || fail,
         }
         wx.chooseWXPay(payconfig)

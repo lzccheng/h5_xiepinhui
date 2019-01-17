@@ -45,6 +45,10 @@ const inviteList = () => import('@/page/center/365partner/inviteList')
 const introduce365 = () => import('@/page/center/365partner/introduce365')
 //365特权
 const privilege = () => import('@/page/center/365partner/privilege')
+//365兑换
+const exchange = () => import('@/page/center/365partner/exchange')
+//365专享列表
+const goodList = () => import('@/page/center/365partner/goodList')
 
 //邀请规则
 const inviteFriendRecord = ()=>import('@/page/center/365partner/inviteFriendRecord')
@@ -550,6 +554,21 @@ let router = new Router({
             path: 'privilege',
             name: 'privilege',
             component: privilege,
+            meta: {
+              title: '鞋品荟'
+            }
+          },  {
+            path: 'goodList',
+            name: 'goodList',
+            component: goodList,
+            meta: {
+              title: '鞋品荟'
+            }
+          },
+          {
+            path: 'exchange',
+            name: 'exchange',
+            component: exchange,
             meta: {
               title: '鞋品荟'
             }

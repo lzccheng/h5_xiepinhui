@@ -93,7 +93,6 @@ export default {
       curTabIndex: 0,
       onLook: false,
       second: 60,
-      phone: '',
       codeSMS: '',
       isRegister: true
     };
@@ -186,22 +185,17 @@ export default {
       // return 
       
       // 存储token
-      this.updateUser(res.data);
-      this.updateToken(res.data.token);
-      this.updateAccount(res.data.account);
-      localStorage["user"] = JSON.stringify(res.data);
-      localStorage["account"] = res.data.account;
-      localStorage["token"] = res.data.token;
-      console.log('openidopenidopenid',2,!res.data.openid, this.phone.length > 11,window.isWeiXin)
-      if((this.phone.length > 11 || !res.data.openid) && this.isWX){
-        console.log('openidopenidopenid',1)
-        var fromurl = window.location.href.split('#')[0];
-        window.location.href =
-          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx47d52b6420c14397&redirect_uri=" +
-          encodeURIComponent(fromurl) +
-          "&response_type=code&scope=snsapi_userinfo&state=child#wechat_redirect";
-        return;
-      }
+      this.saveUserData(res.data);
+      // console.log('openidopenidopenid',2,!res.data.openid, this.phone.length > 11,window.isWeiXin)
+      // if((this.phone.length > 11 || !res.data.openid) && this.isWX){
+      //   console.log('openidopenidopenid',1)
+      //   var fromurl = window.location.href.split('#')[0];
+      //   window.location.href =
+      //     "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx47d52b6420c14397&redirect_uri=" +
+      //     encodeURIComponent(fromurl) +
+      //     "&response_type=code&scope=snsapi_userinfo&state=child#wechat_redirect";
+      //   return;
+      // }
       this.$vux.toast.show({
         type: "success",
         text: "登录成功"
@@ -219,9 +213,48 @@ export default {
         window.location.href = unescape(this.url);
       }
     },
+    saveUserData(data){
+      //存储user
+      if(!data.openid){
+        //子账号或者没oppenid时获取oppenid （用于微信支付）
+        let wxUser = JSON.parse(window.sessionStorage.getItem('wxUser'));
+        data.openid = wxUser.openid;
+      }
+      this.updateUser(data);
+      this.updateToken(data.token);
+      this.updateAccount(data.account);
+      localStorage["user"] = JSON.stringify(data);
+      localStorage["token"] = data.token;
+      localStorage["account"] = data.account;
+    },
+    getOpenId(data){
+      let data1 = {
+        plat: 3,
+        type: 1,
+        unionid: data.unionid,
+        openid: data.openid,
+        nick: data.nickname,
+        avatar: data.headimgurl
+      };
+      //存储user
+      this.saveUserData(data)
+      this.loginthirdFun(data1); //第三方登录
+    },
     //微信登录
     async wxLogin() {
+      let goOn = ()=>{
+        if(sessionStorage.wxUser){
+          let wxUser = JSON.parse(window.sessionStorage.getItem('wxUser'));
+          if(wxUser.openid){
+              this.getOpenId(wxUser);
+              return true;
+          }
+        }
+        return false;
+      }
+      if(goOn())return;
       let that = this;
+      this.access_code = this.access_code;
       console.log(this.access_code)
       if (
         !!this.access_code &&
@@ -243,40 +276,16 @@ export default {
             }
           })
           .then(async function(res) {
-            //子账号或者没oppenid时获取oppenid （用于微信支付）
-            if(that.state === 'child'){
-              try {
-                let user = JSON.parse(window.localStorage.getItem('user'));
-                user.openid = res.data.data.openid;
-                that.updateUser(user);
-                localStorage["user"] = JSON.stringify(user);
-                that.$vux.toast.show({
-                  type: "success",
-                  text: "登录成功"
-                });
-                that.$router.replace('/center')
-              } catch (error) {
-                this.access_codeShow = true;
-              }
+            if(res.data.code == 2000 && res.data.data.openid){
+              sessionStorage['wxUser'] = JSON.stringify(res.data.data)
+              that.getOpenId(res.data.data);
               return;
             }
-            let data = {
-              plat: 3,
-              type: 1,
-              unionid: res.data.data.unionid,
-              openid: res.data.data.openid,
-              nick: res.data.data.nickname,
-              avatar: res.data.data.headimgurl
-            };
-            //存储user
-            console.log('user user',res.data.data)
-            that.updateUser(res.data.data);
-            localStorage["user"] = JSON.stringify(res.data.data);
-            that.loginthirdFun(data); //第三方登录
+            goOn()
           })
           .catch(function(error) {
             console.log(error);
-            this.access_codeShow = true;
+            that.access_codeShow = true;
             that.$vux.toast.text("微信登录参数出错");
           });
       } else {
@@ -319,13 +328,7 @@ export default {
       }
       //第三方登录成功 => 存储token
       //存储user
-      console.log('user user',res.data)
-      this.updateUser(res.data);
-      localStorage["user"] = JSON.stringify(res.data);
-      this.updateToken(res.data.token);
-      this.updateAccount(res.data.account);
-      localStorage["token"] = res.data.token;
-      localStorage["account"] = res.data.account;
+      this.saveUserData(res.data)
       that.$vux.toast.show({
         type: "success",
         text: "微信登录成功"

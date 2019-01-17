@@ -296,6 +296,26 @@ export const seckillGoodslist = (data) => {
   const url = `${domain}/seckill/goodslist`
   return POST(url, data)
 }
+// 365领取特权福利
+export const welfare_take = (data) => {
+  const url = `${domain}/smallstore/welfare_take`
+  return POST(url, data)
+}
+// 365领取特权福利
+export const smallstoreIntroduce = (data) => {
+  const url = `${domain}/smallstore/introduce`
+  return POST(url, data)
+}
+// 365荟豆兑换充值余额
+export const smallstoreExchange = (data) => {
+  const url = `${domain}/smallstore/vcoin-exchange`
+  return POST(url, data)
+}
+// 365荟币兑换充值余额页面信息
+export const vcoinexchangepageinfo = (data) => {
+  const url = `${domain}/smallstore/vcoin-exchange-page-info`
+  return POST(url, data)
+}
 // 365规则接口
 export const guize = (data) => {
   const url = `${domain}/restore/guize`

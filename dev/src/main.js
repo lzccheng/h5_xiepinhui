@@ -13,6 +13,7 @@ import { LoadingPlugin, ToastPlugin, ConfirmPlugin, WechatPlugin, AlertPlugin } 
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import vuePicturePreview from 'vue-picture-preview';
 import { isWeiXin } from '@/utils/comm';
+import './utils/getFollowStatus';
 
 
 

@@ -1,4 +1,5 @@
 <style lang="less" scoped>
+@color: #61D8D0;
 .index-box {
   background: #f5f5f5;
   min-height: 100%;
@@ -481,6 +482,59 @@
 .tabHeight{
   min-height: 700px;
 }
+.xiepinhui{
+  // width: 98%;
+  // border: 1px solid @color;
+  // border-radius: 10px;
+  // margin: 0 auto;
+  // padding: 0 .1rem;
+  // line-height: 1rem;
+  position: fixed;
+  right: 0;
+  top: 50%;
+  z-index: 999;
+  img{
+    width: 2rem;
+    height: 2rem;
+    vertical-align: middle;
+    margin-top: -1rem;
+  }
+  span{
+    font-size: 14px;
+  }
+  .follow{
+    float: right;
+    border: 1px solid @color;
+    border-radius: 8px;
+    height: .6rem;
+    padding: 0 .3rem;
+    color: @color;
+    margin-top: .2rem;
+    line-height: .6rem;
+  }
+}
+.alert{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  text-align: center;
+  >div{
+    transform: translateY(40%);
+  }
+  .close{
+    width: .8rem;
+    display: inline-block;
+    margin: .5rem auto;
+  }
+  .body{
+    width: 80%;
+
+  }
+}
 </style>
 
 <template>
@@ -488,7 +542,12 @@
           <!-- 首页内容开始 -->
           <!-- 标签导航 -->
           <div>
-
+            <div class="xiepinhui" v-show="followBtn">
+              <!-- <img src="https://m.xiepinhui.com.cn/favicon.png" alt="">
+              <span>关注鞋品荟公众号</span>
+              <span class="follow" @click="onFollow">点击关注</span> -->
+              <img @click="onFollow" src="https://img.xiepinhui.com.cn/small_app/publicCodeFile/guanzhuTipIcon.gif" alt="">
+            </div>
           </div>
           <!-- swiper -->
           <swiper :options="swiperOption">
@@ -606,6 +665,15 @@
           </div>
           <!-- </div> -->
           <!-- 首页内容结束 -->
+          <transition name="fade">
+            <div class="alert" v-if="follow">
+              <div>
+                <div><img class="body" src="@/assets/images/qrcode.png" alt=""></div>
+                <img @click="onFollow" class="close" src="@/assets/images/close_red.png" alt="">
+              </div>
+            </div>
+          </transition>
+          
     </div>
     
 </template>
@@ -687,7 +755,9 @@ export default {
       total_count: '',
       listHeight: '200',
       tabHeight: 700,
-      isShare: false
+      isShare: false,
+      follow: false,
+      followBtn: true
     };
   },
   created() {
@@ -699,6 +769,8 @@ export default {
     if(this.$route.query.inviteCode){
       this.binding(this.$route.query.inviteCode)
     }
+    this.followBtn = window.localStorage['subscribe'] == 1? true : false;
+    console.log(this.followBtn)
   },  
   mounted() {
     //之后
@@ -760,6 +832,10 @@ export default {
     
   },
   methods: {
+    onFollow(){
+      if(this.$stopClick(500))return;
+      this.follow = !this.follow;
+    },
     async binding(code){
       if(!this.token){
         this.$router.push({
