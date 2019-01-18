@@ -42,7 +42,7 @@
                   <div class="input">
                       <p>
                           <img class="me_login_mobile" src="@/assets/images/login/me_login_mobile@2x.png" alt="">
-                          <input type="text" v-model="phone" placeholder="手机号码">
+                          <input type="number" v-model="phone" placeholder="手机号码">
                       </p>
                       <p v-if="curTabIndex == 0">
                           <img class="me_login_mobile" src="@/assets/images/login/me_login_pwd@2x.png" alt="">

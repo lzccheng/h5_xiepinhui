@@ -304,6 +304,11 @@ export default {
       localStorage.clear();
     }
   },
+  mounted () {
+      if(this.center){
+        this.redmessageInfo = JSON.parse(this.center);
+      }
+  },
   methods: {
     searchMoreFans(){
       this.$router.push('/centerFull/partner/inviteFansMy365');
@@ -771,7 +776,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["user", "account", "token"])
+    ...mapGetters(["user", "account", "token", "center"])
   }
 };
 </script>

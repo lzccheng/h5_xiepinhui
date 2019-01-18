@@ -42,6 +42,7 @@ input{
     text-align: center;
     line-height: .6rem;
     font-size: 20px;
+    width: 4rem;
 }
 .color2{
     margin-left: .2rem;
@@ -70,7 +71,7 @@ input{
             <div class="top">
                 <div>
                     <img src="@/assets/images/new365/huidou.png" alt="">
-                    <span class="span">荟豆<span class="color"><input type="num" v-model="vcoin_amount"></span></span>
+                    <span class="span">荟豆<span class="color"><input type="num" style="width: 4rem" v-model="vcoin_amount"></span></span>
                     <p class="vcoin_amount">您当前共有{{info.vcoin_amount || 0}}个荟豆</p>
                 </div>
                 <div class="to">

@@ -104,19 +104,30 @@
                 border-radius: 8px;
                 font-size: 14px;
                 color: #fff;
-                padding: 0.5rem 0.3rem 0.1rem;
+                padding: 1rem 0.1rem .08rem;
+                vertical-align: middle;
+                line-height: .28rem;
                 img{
                     width: 0.12*2rem;
                     vertical-align: middle;
                 }
+                .imgText{
+                    position: absolute;
+                    left: .15rem;
+                    bottom: 0.15rem;
+                }
             }
             .newBoxMsg{
-                position: relative;
                 white-space: nowrap;
+                // margin-left: 1.2rem;
+                img{
+                    margin: 0 .1rem;
+                    vertical-align: middle;
+                }
                 &:nth-child(2){
                     display: inline-block;
                     height: .5rem;
-                    width: 5rem;
+                    width: 6.5rem;
                     overflow: hidden;
                     position: relative;
                     top: .18rem;
@@ -443,12 +454,14 @@
                 </div>
                 <div class="newsBox">
                     <div class="news">
-                        <span><img src="@/assets/images/new365/news.png" alt=""><span>消息:</span></span>
+                        <span class="imgText">
+                            <!-- <img src="@/assets/images/new365/news.png" alt=""><span>消息:</span> -->
+                        </span>
                         <div class="newBoxMsg">
                             <div>
                                 <swiper :options="swiperOptions" class="">
                                     <swiper-slide class="" v-for="(item, i) in info.header.radio_message" :key="i">
-                                        <div>{{item.msg}}</div>
+                                        <div><img src="@/assets/images/new365/news.png" alt="">消息：{{item.msg}}</div>
                                     </swiper-slide>
                                 </swiper>
                             </div>
