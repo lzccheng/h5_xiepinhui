@@ -413,6 +413,9 @@ export default {
         case 3:
           return this.$router.push("/centerFull/integral/");
           break;
+        case 17:
+          return this.$router.push('/centerFull/partner/inviteFansMy365');
+          break;
       }
     },
     //新个人中心接口（2019.1.18）
