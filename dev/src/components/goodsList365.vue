@@ -155,13 +155,21 @@ export default {
     },
     methods: {
         upLoad(){
-            if(this.goodsList.length >= this.total_count*1){
+            if(this.total_count && (this.goodsList.length >= this.total_count*1)){
                 this.upload = false;
                 this.loading = false;
                 this.complete = true;
                 return;
             }
             this.getGoodList();
+        },
+        gotoDetail(goodsId){
+            this.$router.push({
+                path: '/index/goodsInfoPindan',
+                query: {
+                    goodsId
+                }
+            })
         },
         datachange(total_count){
             this.$emit('datachange', total_count);

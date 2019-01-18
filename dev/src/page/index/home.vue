@@ -532,7 +532,6 @@
   }
   .body{
     width: 80%;
-
   }
 }
 </style>

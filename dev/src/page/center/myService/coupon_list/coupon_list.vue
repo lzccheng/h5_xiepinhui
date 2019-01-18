@@ -220,10 +220,11 @@ page, .page, .page__bd {
                       </div>
                   </div>
                 </div>
-                <div class="eva-null" v-if="isnull">
+                <!-- <div class="eva-null" v-if="isnull">
                     <img mode='widthFix' src='@/assets/images/null/zw_my.png'/>
                     <div>当前暂无优惠券</div>
-                </div>
+                </div> -->
+                <null-data v-if="!cou_list || !cou_list.length">当前暂无优惠券</null-data>
                 <div class="loading" v-if="upLoading">加载中...</div>
                 <div class="loading complete" v-if="upLoadingComplete">已加载全部</div>
             </div>
@@ -234,10 +235,12 @@ page, .page, .page__bd {
 <script type="text/ecmascript-6">
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { api } from '@/utils/api.js';
+import nullData from '@/components/nullData.vue';
 import { Group, Cell, XButton, Badge, XHeader } from 'vux';
 export default {
     components: {
-        XHeader
+        XHeader,
+        nullData
     },
     data() {
         return {
@@ -251,6 +254,7 @@ export default {
           upLoadingComplete: false,
           isnull: false,
           nowShuoming: -1,
+          conData: {},
           // 组件所需的参数
           nvabarData: {
             showCapsule: 1, //是否显示左上角图标

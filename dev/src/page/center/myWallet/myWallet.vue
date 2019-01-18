@@ -194,11 +194,11 @@ padding-left:10/50rem;
                         <div class="descLeftOne">充值金额(元)</div>
                         <div class="descRightOne"  @click='rechargeDetail'>充值明细</div>
                     </div>
-                    <div class="flex flex-pack-justify descAmountBox">
-                        <div style="color:#61D8D0"><span style="font-size:20rpx;">¥</span>{{infoData.money_data[0].money_amout}}</div>
+                    <div class="flex flex-pack-justify descAmountBox" v-if="infoData.money_data[0]">
+                        <div style="color:#61D8D0"><span style="font-size:20rpx;">¥</span>{{infoData.money_data[0]&&infoData.money_data[0].money_amout}}</div>
                         <div class="btn-recharge" @click="goRecharge" :style="{background:user_type==3?'#ccc':''}">充值</div>
                     </div>
-                    <div class="flex flex-pack-justify descAmountBox" @click="lineTo({path: '/balance/clearness',query: {recordType: 2}})">
+                    <div class="flex flex-pack-justify descAmountBox" v-if="infoData.money_data[0]" @click="lineTo({path: '/balance/clearness',query: {recordType: 2}})">
                         <div class="huibidv">
                             <img :src="infoData.money_data[0].list[0].image" mode="widthFix"/>{{infoData.money_data[0].list[0].name}}
                         </div>
@@ -210,16 +210,19 @@ padding-left:10/50rem;
                         <div class="descLeftOne">收益总金额(元)</div>
                         <div class="descRightOne"  @click='withdrawDetail'>提现明细</div>
                     </div>
-                    <div class="flex flex-pack-justify descAmountBox">
-                        <div style="color:#61d8d0"><span style="font-size:20rpx;">¥</span>{{Number(infoData.money_data[1].money_amout).toFixed(2) || 0.00}}</div>
-                        <div class="btn-withdraw" @click.stop="goWithdraw">提现</div>
-                    </div>
-                    <div class="flex flex-pack-justify descAmountBox line_bottom" :data-name="item.name" @click="goFanLiPage(item.red_type)" :key="index" v-for="(item,index) in infoData.money_data[1].list">
-                        <div class="huibidv">
-                            <img :src="item.image" mode="widthFix"/>{{item.name}}
+                    <div v-if="infoData.money_data[1]">
+                        <div class="flex flex-pack-justify descAmountBox">
+                            <div style="color:#61d8d0"><span style="font-size:20rpx;">¥</span>{{Number(infoData.money_data[1].money_amout).toFixed(2) || 0.00}}</div>
+                            <div class="btn-withdraw" @click.stop="goWithdraw">提现</div>
                         </div>
-                        <div class="huibiNum">{{item.amount}}<span class="iconfont icon-right-jiantou"></span></div>
+                        <div class="flex flex-pack-justify descAmountBox line_bottom" :data-name="item.name" @click="goFanLiPage(item.red_type)" :key="index" v-for="(item,index) in infoData.money_data[1].list">
+                            <div class="huibidv">
+                                <img :src="item.image" mode="widthFix"/>{{item.name}}
+                            </div>
+                            <div class="huibiNum">{{item.amount}}<span class="iconfont icon-right-jiantou"></span></div>
+                        </div>
                     </div>
+                    
                     
                     <!-- <div class="flex flex-pack-justify descAmountBox line_bottom">
                         <div class="huibidv">

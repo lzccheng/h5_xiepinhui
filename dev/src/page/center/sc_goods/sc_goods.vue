@@ -103,7 +103,7 @@
                 <div class="weui-loading"></div>
                 <div class="weui-loadmore__tips">正在加载</div>
                 </div>
-                <div class="loading complete" v-if="upLoadingComplete">已加载全部</div>
+                <div class="loading complete" v-if="upLoadingComplete && sc_info.length">已加载全部</div>
                 <div class="allselect flex flex-pack-justify" v-if="isbianji">
                 <div class="check-box flex flex-align-center" @click='allSelect'>
                     <span class="item-select iconfont" :class="isallSelect?'icon-live-select':'icon-live-unselect'" style='padding-right:5px;'></span> 全选

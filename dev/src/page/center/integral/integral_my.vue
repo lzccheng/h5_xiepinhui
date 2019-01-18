@@ -1,5 +1,5 @@
 <style scoped lang="less">
-page{
+.page{
   padding-bottom: 51px;
 }
 .wrap {

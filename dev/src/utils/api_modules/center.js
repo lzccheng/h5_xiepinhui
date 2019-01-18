@@ -275,6 +275,11 @@ export const cancelcollectgoods = (data) => {
   return POST(url, data)
 }
 
+//新个人中心接口（2019.1.18）
+export const nineProfile = (data) => {
+  const url = `${domain}/nine/profile`
+  return POST(url, data)
+}
 //我的钱包
 export const usermoneyprofile = (data) => {
   const url = `${domain}/member/usermoneyprofile`

@@ -15,6 +15,12 @@ npm run dev
 npm run build
 
 ```
+```
+git:
+
+home分支： 新首页
+
+```
 
 * **目录**
    * config
