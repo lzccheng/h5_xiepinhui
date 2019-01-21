@@ -123,7 +123,10 @@
         <div class="gounp-wrap">
           <div class="gounp-row">
             <div class="gounp-item" v-for="(item,index) in nineProfile.service_menu" :key="index" @click="linkToService(item.type)">
-              <div class="icon" :style="{backgroundImage:'url(' + item.url_img + ')'}" v-if="!!item.url_img"></div>
+              
+              <div class="icon" :style="{backgroundImage:'url(' + item.url_img + ')'}" v-if="!!item.url_img">
+                <div class="red-dot" v-if="item.num*1 > 0">{{item.num}}</div>
+              </div>
               <div class="gounp-text">{{item.title}}</div>
             </div>
           </div>
@@ -929,6 +932,7 @@ export default {
   font-size: 0;
 }
 .banner{
+  height: 2.04rem;
   img{
     width: 7.5rem;
     height: 2.04rem;
@@ -1396,6 +1400,22 @@ margin-left:-32.5/100rem;
 .top_lab{
   margin-bottom: 20/100rem;
 }
+.red-dot {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.4rem;
+  font-size: 0.18rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 0.28rem;
+  min-width: 0.28rem;
+  text-align: center;
+  background: #f74c31;
+  color: #fff;
+  border-radius: 1rem;
+  padding: 0.015rem;
+}
 .menu-wrap {
   background: #fff;
 
@@ -1416,22 +1436,7 @@ margin-left:-32.5/100rem;
       padding: 0.28rem 0 0.1rem;
       border-bottom: 2px solid #F9F9F9;
       
-      .red-dot {
-        position: absolute;
-        top: 0.25rem;
-        right: 0.4rem;
-        font-size: 0.18rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 0.28rem;
-        min-width: 0.28rem;
-        text-align: center;
-        background: #f74c31;
-        color: #fff;
-        border-radius: 1rem;
-        padding: 0.015rem;
-      }
+      
 
       .text {
         font-size: 0.22rem;
@@ -1491,7 +1496,7 @@ margin-left:-32.5/100rem;
         text-align: center;
         box-sizing: border-box;
         padding: 0.1rem 0 0.2rem;
-
+        position: relative;
         .icon {
           width: 0.6rem;
           height: 0.6rem;
@@ -1516,6 +1521,11 @@ margin-left:-32.5/100rem;
     .icon {
       width: 0.52rem;
       height: 0.52rem;
+      position: relative;
+      .red-dot{
+        right: -.1rem;
+        top: -.1rem;
+      }
     }
   }
 }

@@ -47,7 +47,7 @@
                     <img class="img" :src="user.avatar" alt="">
                     <div class="info flex">
                         <p>{{user.nick || user.tel}}</p>
-                        <p>个性签名：{{user.sign}}</p>
+                        <p>个性签名：{{user.sign || '您还没设置签名哦~'}}</p>
                     </div>
                     <span class="_icon flex">
                         <span class="iconfont icon-right-jiantou"></span>
