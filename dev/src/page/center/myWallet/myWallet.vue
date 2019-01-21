@@ -121,6 +121,7 @@ padding-left:10/50rem;
   padding:0px 24/100rem;
   background: #fff;
 }
+
 .btn-recharge,.btn-withdraw{
   color: #fff;
   width:120/100rem;
@@ -157,7 +158,10 @@ padding-left:10/50rem;
 .btn-withdraw{
   background: #EC7B7D;
 }
-* { touch-action: none; } 
+._line{
+    height: .25rem;
+    background-color: #f8f8f8;
+}
 </style>
 <template>
     <div class="page idnexWrapBox">
@@ -188,6 +192,7 @@ padding-left:10/50rem;
                 
                 <!-- 内容上end -->
             </div>
+            <div class="_line"></div>
             <div class="contentPartBox">
                 <div class="top_part_content">
                     <div class="flex flex-pack-justify descAmountBox line_bottom">
@@ -205,6 +210,7 @@ padding-left:10/50rem;
                         <div class="huibiNum">{{infoData.money_data[0].list[0].amount}}<span class="iconfont icon-right-jiantou"></span></div>
                     </div>
                 </div>
+                <div class="_line"></div>
                 <div class="bottom_part_content">
                     <div class="flex flex-pack-justify descAmountBox line_bottom">
                         <div class="descLeftOne">收益总金额(元)</div>
@@ -223,6 +229,7 @@ padding-left:10/50rem;
                         </div>
                     </div>
                     
+
                     
                     <!-- <div class="flex flex-pack-justify descAmountBox line_bottom">
                         <div class="huibidv">
@@ -237,6 +244,13 @@ padding-left:10/50rem;
                         <div class="huibiNum">6000<icon class="iconfont icon-right-jiantou"></icon></div>
                     </div> -->
                 </div>  
+                <div class="_line"></div>
+                <div v-if="infoData.money_data[2]" class="flex flex-pack-justify descAmountBox line_bottom" style="padding: .24rem" :data-name="item.name" @click="$router.push('/centerFull/partner/redenvelope')" :key="index" v-for="(item,index) in infoData.money_data[2].list">
+                    <div class="huibidv">
+                        <img :src="item.image" mode="widthFix"/>{{item.name}}
+                    </div>
+                    <div class="huibiNum">{{item.amount}}<span class="iconfont icon-right-jiantou"></span></div>
+                </div>
             </div>
         </div>
         

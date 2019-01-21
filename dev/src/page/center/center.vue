@@ -66,9 +66,17 @@
     <!-- <div class="vip_center" @click='open365Tip' v-if="redmessageInfo">
       <img mode='widthFix' :src='redmessageInfo.about_shop365.image'/>
     </div> -->
+    <!-- 我的信息 -->
     
+    <div v-if="token && nineProfile" class="myInfo flex">
+      <div v-for="(item, i) in nineProfile.account_amount" @click="onTagHandle(item.stateTitle)" class="myInfoItem flex" :key="i">
+        <span class="_num" :class="{color1: item.stateTitle === '我的钱包', color2: item.stateTitle === '我的荟豆', color3: item.stateTitle === '我的积分'}">{{item.amout}} <span class="unit">{{unitArr[i]}}</span> </span>
+        <span class="_title">{{item.stateTitle}}</span>
+      </div>
+    </div>
     <!-- 订单操作栏 -->
-    <div v-if="token && nineProfile">
+    <div v-if="token && nineProfile" class="centerBox">
+      <div class="_line"></div>
       <div class="menu-wrap">
         <div class="menu-row">
           <div class="menu-item" v-for="(it,id) in nineProfile.main_menu" :key="id" @click="orderDetail(id)"
@@ -80,17 +88,17 @@
           </div>
         </div>
       </div>
-      <div class="_line"></div>
+      <!-- <div class="_line" v-if="nineProfile.big_menu.length"></div>
       <div class="bigNav flex">
         <div v-for="(item, i) in nineProfile.big_menu" @click="handleBigNav(item.type)" :key="i" class="bigNavItem flex">
           <img :src="item.url_img" alt="">
           <span>{{item.title}}</span>
         </div>
-      </div>
+      </div> -->
       <div class="_line"></div>
       <div class="small_store_ad_box">
-        <div class="small_store_ad" @click="handleBigNav(15)">
-          <div class="adtitle flex">
+        <div class="small_store_ad">
+          <div class="adtitle flex" @click="handleBigNav(15)">
             <img :src="nineProfile.small_store_ad.privilege_icon" alt="">
             <div class="privilege_title">
               <div class="_title">{{nineProfile.small_store_ad.privilege_title}}</div>
@@ -99,53 +107,60 @@
             <span class="_icon"><img src="@/assets/images/center/ico_arrow.png" alt=""></span>
           </div>
           <div class="privilege_ad">
-            <img :src="nineProfile.small_store_ad.privilege_ad.image" :width="nineProfile.small_store_ad.privilege_ad.width / 2" alt="">
+            <!-- <img :src="nineProfile.small_store_ad.privilege_ad.image" :width="nineProfile.small_store_ad.privilege_ad.width / 2" alt=""> -->
+            <swiper :options="swiperOption">
+              <swiper-slide v-for="(item,index) in nineProfile.small_store_ad.banner_ad" :key="index"  :data-index="index" :data-type="item.type" :data-id="item.data">
+                <img :src="item.image.image" @click="goToBanner(item.id)" class="slide-image"/>
+              </swiper-slide>
+              <div class="swiper-pagination" slot="pagination"></div>
+            </swiper>
           </div>
         </div>
       </div>
-      <div class="_line"></div>
+      <!-- <div class="_line"></div>
       <div class="banner">
         <swiper :options="swiperOption">
-            <swiper-slide v-for="(item,index) in nineProfile.banner_ad" :key="index"  :data-index="index" :data-type="item.type" :data-id="item.data">
-              <img :src="item.image.image" @click="goToBanner(item.id)" class="slide-image"/>
-            </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
-          </swiper>
-      </div>
-      <div class="_line"></div>
+          <swiper-slide v-for="(item,index) in nineProfile.banner_ad" :key="index"  :data-index="index" :data-type="item.type" :data-id="item.data">
+            <img :src="item.image.image" @click="goToBanner(item.id)" class="slide-image"/>
+          </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
+        </swiper>
+      </div> -->
+      
       <!-- 隐藏广告 -->
       <!-- <div class="ad" v-if="nineProfile.member_vcoingoods_img && nineProfile.member_vcoingoods_img.image!=''">
         <img @click.self="$router.push('/HuiBiArea')" :src="nineProfile.member_vcoingoods_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
       </div> -->
-      <!-- 我的服务 -->
-      <div class="item-gounp gounp server">
-        <span class="title">工具服务</span>
-        <div class="gounp-wrap">
-          <div class="gounp-row">
-            <div class="gounp-item" v-for="(item,index) in nineProfile.service_menu" :key="index" @click="linkToService(item.type)">
-              
-              <div class="icon" :style="{backgroundImage:'url(' + item.url_img + ')'}" v-if="!!item.url_img">
-                <div class="red-dot" v-if="item.num*1 > 0">{{item.num}}</div>
+        <div class="footer_menu">
+          <div class="footer_menuItem" v-for="(item, i) in nineProfile.footer_menu" :key="i">
+            <div class="_line"></div>
+            <div class="footer_menuItemBox" @click="lineToFooter_menu(item.type)">
+              <img class="img" :src="item.url_img" alt="">
+              <span>{{item.title}}</span>
+              <span class="_icon"><img src="@/assets/images/center/ico_arrow.png" alt=""></span>
+            </div>
+            
+          </div>
+        </div>
+        <div class="_line"></div>
+        <!-- 我的服务 -->
+        <div class="item-gounp gounp server">
+          <span class="title">工具服务</span>
+          <div class="gounp-wrap">
+            <div class="gounp-row">
+              <div class="gounp-item" v-for="(item,index) in nineProfile.service_menu" :key="index" @click="linkToService(item.type)">
+                <div class="icon" :style="{backgroundImage:'url(' + item.url_img + ')'}" v-if="!!item.url_img">
+                  <div class="red-dot" v-if="item.num*1 > 0">{{item.num}}</div>
+                </div>
+                <div class="gounp-text">{{item.title}}</div>
               </div>
-              <div class="gounp-text">{{item.title}}</div>
             </div>
           </div>
         </div>
+        <div class="_line"></div>
       </div>
       
-      <div class="footer_menu">
-        <div class="footer_menuItem" v-for="(item, i) in nineProfile.footer_menu" :key="i">
-          <div class="_line"></div>
-          <div class="footer_menuItemBox" @click="lineToFooter_menu(item.type)">
-            <img class="img" :src="item.url_img" alt="">
-            <span>{{item.title}}</span>
-            <span class="_icon"><img src="@/assets/images/center/ico_arrow.png" alt=""></span>
-          </div>
-        </div>
-      </div>
-      <div class="_line"></div>
-    </div>
-    
+      
     <!-- 我的店铺 or 365 -->
     <!-- <group class="gounp_top" v-if="redmessageInfo">
       <cell :title="item.name" class="_cell" style="margin-top: 0" is-link v-for="(item,index) in redmessageInfo.membert_shopInfo" :key="index"
@@ -302,10 +317,11 @@ export default {
     Cell,
     XButton,
     Badge,
-    loading
+    loading,
   },
   data() {
     return {
+      unitArr: ['元', '个', '分'],
       swiperOption: {
         autoplay: {
           delay: 2500,
@@ -370,6 +386,25 @@ export default {
       }
   },
   methods: {
+    onTagHandle(stateTitle){
+      let clickUrl;
+      switch(stateTitle){
+        case "我的荟豆":
+          clickUrl="/drawIndex";
+          break;
+        case "我的积分":
+          clickUrl="/centerFull/integral/";
+          break;
+        case "我的钱包":
+          clickUrl="/drawIndex"
+          break;
+      }
+      if(clickUrl){
+        this.$router.push({
+          path: clickUrl
+        })
+      }
+    },
     goToBanner(id){
       switch (id) {
         case 2:
@@ -390,6 +425,16 @@ export default {
           break;
         case 15:
           return this.$router.push('/centerFull/myService/coupon_list');
+          break;
+        case 17:
+          return this.$router.push('/centerFull/partner/inviteFansMy365');;
+          break;
+        case 16:
+          if (this.user.user_type == 1 || this.user.user_type == 4) {
+            this.$router.push('/centerFull/myshop/noShop');
+            return;
+          }
+          return this.$router.push("/centerFull/myshop/index");
           break;
       }
     },
@@ -435,11 +480,11 @@ export default {
         return;
       }
       if(res.code == 2000){
-        res.data.footer_menu = res.data.footer_menu.filter(item =>{
-          if(item.type != 16){
-            return item;
-          }
-        })
+        // res.data.footer_menu = res.data.footer_menu.filter(item =>{
+        //   if(item.type != 16){
+        //     return item;
+        //   }
+        // })
         this.nineProfile = res.data;
         this.updateCenter(JSON.stringify(this.nineProfile));
       }
@@ -567,7 +612,7 @@ export default {
           break;
         case "我的收益":
           tabindex = 9;
-          clickUrl="centerFull/partner/redenvelope";//"/balance/remain"
+          clickUrl="/centerFull/partner/redenvelope";//"/balance/remain"
           break;
         case "我的钱包":
           tabindex = 10;
@@ -927,6 +972,33 @@ export default {
     display: inline-block;
   }
 }
+.myInfo{
+  justify-content: space-around;
+  text-align: center;
+  padding: .3rem 0;
+  .myInfoItem{
+    flex-direction: column;
+    ._num{
+      font-size: 18px;
+      &.color1{
+        color: #FFB15B;
+      }
+      &.color2{
+        color: #61D8D0;
+      }
+      &.color3{
+        color: #F08572;
+      }
+      .unit{
+        font-size: 10px;
+      }
+    }
+    ._title{
+      font-size: 12px;
+      color: #333;
+    }
+  }
+}
 .vip_center{
   width: 100%;
   font-size: 0;
@@ -1046,13 +1118,14 @@ margin-left:-32.5/100rem;
     color: #333;
     padding: .2rem;
     line-height: .5rem;
+    background-color: #fff;
+    border-radius: 5px;
   }
   ._icon{
     float: right;
     img{
       width: .15*1.2rem;
       height: .3*1.2rem;
-
     }
   }
 }
@@ -1078,6 +1151,8 @@ margin-left:-32.5/100rem;
 }
 .small_store_ad_box{
   padding: .35rem 0.25rem 0.25rem;
+  background-color: #fff;
+  border-radius: 5px;
   .small_store_ad{
     .adtitle{
       color: #666;
@@ -1090,15 +1165,17 @@ margin-left:-32.5/100rem;
       font-size: 14px;
     }
     .privilege_desc{
-      font-size: 16px;
+      font-size: 14px;
+      white-space: nowrap;
     }
     .privilege_title{
       margin-left: .2rem;
     }
     .privilege_ad{
+      margin-top: .25rem;
       text-align: center;
       img{
-        margin: .25rem auto 0;
+        width: 100%;
         display: inline-block;
       }
     }
@@ -1108,7 +1185,7 @@ margin-left:-32.5/100rem;
         height: .25*1.2rem;
         position: relative;
         top: 50%;
-        left: .3rem;
+        left: 0.3rem;
         transform: translateY(-50%);
       }
     }
@@ -1479,7 +1556,6 @@ margin-left:-32.5/100rem;
   font-size: 0.26rem;
   color: #333;
   background: #fff;
-  margin-top: 0.21rem;
 
   .gounp-wrap {
     .gounp-row {
@@ -1488,7 +1564,7 @@ margin-left:-32.5/100rem;
       align-items: center;
       flex-wrap: wrap;
       width: 100%;
-      border-bottom: 1px solid #eee;
+      // border-bottom: 1px solid #eee;
 
       .gounp-item {
         width: 25%;
@@ -1517,6 +1593,8 @@ margin-left:-32.5/100rem;
 }
 
 .server {
+  padding: .15rem 0;
+  border-radius: 5px;
   .gounp-wrap .gounp-row .gounp-item {
     .icon {
       width: 0.52rem;
@@ -1602,7 +1680,10 @@ margin-left:-32.5/100rem;
     height: 1rem;
   }
 }
-
+.centerBox{
+  background-color: #f8f8f8;
+  padding: 0 .2rem;
+}
 .fans {
   height: 2.66rem;
 
