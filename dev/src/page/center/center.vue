@@ -1175,7 +1175,8 @@ margin-left:-32.5/100rem;
       margin-top: .25rem;
       text-align: center;
       img{
-        width: 100%;
+        width: 6.6rem;
+        height: 1.8rem;
         display: inline-block;
       }
     }

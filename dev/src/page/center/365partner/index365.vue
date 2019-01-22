@@ -443,7 +443,7 @@
                         <div class="name">{{user.nick || user.tel}}</div>
                         <div  class="date">{{info.header.validity_date}}到期</div>
                     </div>
-                    <div class="manage" @click="handleManage">管理续费</div>
+                    <div class="manage" @click="handleManage">分享赚钱</div>
                 </div>
                 <div class="headNum flex">
                     <div class="headNumItem flex" @click="gotoPage(item.statistic_id)" v-for="(item, i) in info.header.statistics" :key="i">
@@ -490,6 +490,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="privilege">
+                    <div class="privilegeTop flex">
+                        <span>365小店特权</span>
+                        <span @click="$router.push('privilege')">详情<span class="row iconfont icon-right-jiantou"></span></span>
+                    </div>
+                    <div class="privilegeList">
+                        <div class="privilegeItem" @click="gotoPrivilege(item.privilege_id)" v-for="(item, i) in info.privilege.list" :key="i">
+                            <div><img :src="item.icon" alt=""></div>
+                            <div class="text">{{item.title}}</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="shop365">
                     <div class="top365">
                         <span>365小店专享福利</span>
@@ -509,18 +521,6 @@
                                 </div>
                             </div>
                             <div class="btn365" @click="handleGet(item.welfare_id, item.status)" :class="{opacity: item.status != 1}">{{item.status == 1? item.btn_name : '已领完'}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="privilege">
-                    <div class="privilegeTop flex">
-                        <span>365小店特权</span>
-                        <span @click="$router.push('privilege')">详情<span class="row iconfont icon-right-jiantou"></span></span>
-                    </div>
-                    <div class="privilegeList">
-                        <div class="privilegeItem" @click="gotoPrivilege(item.privilege_id)" v-for="(item, i) in info.privilege.list" :key="i">
-                            <div><img :src="item.icon" alt=""></div>
-                            <div class="text">{{item.title}}</div>
                         </div>
                     </div>
                 </div>
@@ -600,7 +600,8 @@ export default {
             })
         },
         handleManage(){
-            this.$vux.toast.text('开发中', 'top');
+            this.$router.push('inviteList')
+            // this.$vux.toast.text('开发中', 'top');
         },
         gotoPrivilege(id){
             this.$router.push({
@@ -632,20 +633,22 @@ export default {
             let url;
             switch (id) {
                 case '1':
-                    return this.$vux.toast.text('开发中', 'top');
+                    url = '/myBlack';
                     break;
                 case '3':
-                    url = 'inviteList';
+                    // url = 'inviteList';
+                    url = '/centerFull/partner/inviteFansMy365';
                     break;
                 case '2':
-                    url = 'exchange';
+                    // url = 'exchange';
                     break;
             }
             if(url){
-                this.$router.push({
+                return this.$router.push({
                     path: url
                 })
             }
+            this.$vux.toast.text('开发中', 'top');
         },
         async getData(){
             let data = {
