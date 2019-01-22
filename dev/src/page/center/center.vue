@@ -109,8 +109,8 @@
           <div class="privilege_ad">
             <!-- <img :src="nineProfile.small_store_ad.privilege_ad.image" :width="nineProfile.small_store_ad.privilege_ad.width / 2" alt=""> -->
             <swiper :options="swiperOption">
-              <swiper-slide v-for="(item,index) in nineProfile.small_store_ad.banner_ad" :key="index"  :data-index="index" :data-type="item.type" :data-id="item.data">
-                <img :src="item.image.image" @click="goToBanner(item.id)" class="slide-image"/>
+              <swiper-slide v-for="(item,index) in nineProfile.small_store_ad.banner_ad" :key="index">
+                <img :src="item.ad_image.image" @click="goToBanner(item.ad_id)" class="slide-image"/>
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
             </swiper>
@@ -405,8 +405,8 @@ export default {
         })
       }
     },
-    goToBanner(id){
-      switch (id) {
+    goToBanner(ad_id){
+      switch (ad_id) {
         case 2:
           return this.$router.push('/HuiBiArea');
           break;
@@ -1597,8 +1597,8 @@ margin-left:-32.5/100rem;
   border-radius: 5px;
   .gounp-wrap .gounp-row .gounp-item {
     .icon {
-      width: 0.52rem;
-      height: 0.52rem;
+      width: 0.4rem;
+      height: 0.4rem;
       position: relative;
       .red-dot{
         right: -.1rem;
