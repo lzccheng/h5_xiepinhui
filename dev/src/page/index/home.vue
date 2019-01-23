@@ -648,7 +648,8 @@
                               <img mode="widthFix" class="imgSeletor" :src="item.goods_image.split('?')[0]" lazy-load="true" /></div>
                           <span class="goods-name">{{item.goods_name}}</span>
                           <div class="all-list-biaoqian">
-                              <img mode='widthFix' :src='item.member_price_img' />
+                              <!-- <img mode='widthFix' :src='item.member_price_img' /> -->
+                              <img mode='widthFix' src='http://img.xiepinhui.com.cn/small_app/home/goods_list_biaoqian.png' />
                               <span class="goods-label" v-if="item.goods_label!=''">{{item.goods_label}}</span></div>
                           <div class="flex flex-pack-justify bottom-goods-price">
                               <span class="goods-price">￥{{item.group_price}}</span>

@@ -214,7 +214,7 @@ export default {
       }
     },
     saveUserData(data){
-      //存储user
+      // 
       if(this.isWx && !data.openid){
         //子账号或者没oppenid时获取oppenid （用于微信支付）
         let wxUser = JSON.parse(window.sessionStorage.getItem('wxUser'));
