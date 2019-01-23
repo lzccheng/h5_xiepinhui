@@ -58,7 +58,7 @@ const inviteRelu = ()=>import('@/page/center/365partner/inviteRelu')
 const applyStatic = ()=>import('@/page/center/365partner/applyStatic')
 //我的粉丝
 const inviteFansMy365 = ()=>import('@/page/center/365partner/inviteFansMy365')
-//我的收益
+//我的奖励金
 const redenvelope = ()=>import('@/page/center/365partner/redenvelope')
 
 //签到
@@ -517,7 +517,7 @@ let router = new Router({
             name: 'redenvelope',
             component: redenvelope,
             meta: {
-              title: '我的收益'
+              title: '我的奖励金'
             }
           }, {
             path: 'inviteRelu',

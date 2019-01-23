@@ -229,7 +229,7 @@
               </div>
               <div class="item-top-transaction-item">
                 <div class="transaction-item-num">{{item.total_revenue || 0}}</div>
-                <div>总收益</div>
+                <div>总奖励金</div>
               </div>
             </div>
           </div>

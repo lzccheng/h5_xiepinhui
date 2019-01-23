@@ -40,7 +40,7 @@
                     <div class="record-list-item" v-for="(item,index) in record" :key="index">
                         <div class="type-cash flex-pack-justify">
                             <span class="type">{{nick_name}}</span>
-                            <span class="cash" v-if="item.log_type==1"><span style="color:#333;">获得收益</span> &nbsp;{{item.amount}}</span>
+                            <span class="cash" v-if="item.log_type==1"><span style="color:#333;">获得奖励金</span> &nbsp;{{item.amount}}</span>
                             <span class="cash" v-else-if="item.log_type==2"><span style="color:#ec655f">提现金额</span> &nbsp;{{item.amount}}</span>
                             <span class="cash" v-else-if="item.log_type==3"><span style="color:#bbb">提现失败</span> &nbsp;{{item.amount}}</span>
                         </div>

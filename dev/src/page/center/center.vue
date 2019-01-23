@@ -174,16 +174,16 @@
     <!-- <div class="ad" v-if="redmessageInfo">
       <img @click="$router.push('/index/myvip')" :src="redmessageInfo.member_centre_img.image" :height="redmessageInfo.member_centre_img.height" alt="">
     </div> -->
-    <!-- 我的收益 -->
+    <!-- 我的奖励金 -->
     <!-- <div class="item-gounp gounp earnings" v-if="redmessageInfo" @click="linkEarnings">
-      <span class="title">我的收益</span>
+      <span class="title">我的奖励金</span>
       <div class="gounp-wrap">
-        <p class="earn-title"><span>总收益:&nbsp;</span><span class="earn-count">{{redmessageInfo.member_info.received||0}}</span></p>
+        <p class="earn-title"><span>总奖励金:&nbsp;</span><span class="earn-count">{{redmessageInfo.member_info.received||0}}</span></p>
         <div class="earn-box">
-          <div class="earn-item"><span>待收益:&nbsp;{{redmessageInfo.member_info.to_receive||0}}</span></div>
-          <div class="earn-item"><span>已收益:&nbsp;{{redmessageInfo.member_info.all_bonuses||0}}</span></div>
+          <div class="earn-item"><span>待奖励金:&nbsp;{{redmessageInfo.member_info.to_receive||0}}</span></div>
+          <div class="earn-item"><span>已奖励金:&nbsp;{{redmessageInfo.member_info.all_bonuses||0}}</span></div>
         </div>
-        <div class="btn">我的收益</div>
+        <div class="btn">我的奖励金</div>
       </div>
     </div> -->
     <!-- 我的粉丝 -->
@@ -211,7 +211,7 @@
             <span>{{redmessageInfo.rebate_amout_fans||0}}</span>
             <div class="tips">
               <img width='40' src="~@/assets/images/center/fans_shouyi1.png" alt="">
-              <div>粉丝收益</div>
+              <div>粉丝奖励金</div>
             </div>
           </div>
         </div>
@@ -237,7 +237,7 @@
           <div class="txt_desc_hongbao">
             <div style="width:85%;margin:auto">{{popName||''}}</div>
           </div>
-          <div class="btn_redpacket" @click='catchEnvelopes' data-type="0">领取收益</div>
+          <div class="btn_redpacket" @click='catchEnvelopes' data-type="0">领取奖励金</div>
           <img :src="closeimg" class="close_img" @click="isShowModalRedPack = false">
         </div>
       </div>
@@ -332,7 +332,7 @@ export default {
         }
       },
       redPacketInfo: "", //领取红包金额
-      isShowModalRedPack: false, //收益弹窗
+      isShowModalRedPack: false, //奖励金弹窗
       redpackBg: "", //红包背景
       popName: "",
       closeimg: require("@/assets/images/home/close.png"), //close图标
@@ -610,7 +610,7 @@ export default {
           tabindex = 8;
           clickUrl="/centerFull/integral/";
           break;
-        case "我的收益":
+        case "我的奖励金":
           tabindex = 9;
           clickUrl="/centerFull/partner/redenvelope";//"/balance/remain"
           break;
@@ -728,7 +728,7 @@ export default {
     //     }
     //   }
     // },
-    //领取普通红包收益
+    //领取普通红包奖励金
     async catchEnvelopes(e) {
       let type_is = e.target.dataset.type;
       let data = {
@@ -759,7 +759,7 @@ export default {
         // }
       }
     },
-    //领取365红包收益
+    //领取365红包奖励金
     async catchEnvelopes2(e) {
       let type_is = e.target.dataset.type;
       let data = {
@@ -916,7 +916,7 @@ export default {
           break;
       }
     },
-    // 跳转收益
+    // 跳转奖励金
     linkEarnings() {
       this.$router.push("/centerFull/partner/redenvelope");
     },

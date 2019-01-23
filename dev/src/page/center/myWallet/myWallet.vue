@@ -213,7 +213,7 @@ padding-left:10/50rem;
                 <div class="_line"></div>
                 <div class="bottom_part_content">
                     <div class="flex flex-pack-justify descAmountBox line_bottom">
-                        <div class="descLeftOne">收益总金额(元)</div>
+                        <div class="descLeftOne">奖励金总金额(元)</div>
                         <div class="descRightOne"  @click='withdrawDetail'>提现明细</div>
                     </div>
                     <div v-if="infoData.money_data[1]">

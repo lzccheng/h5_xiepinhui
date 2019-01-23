@@ -113,12 +113,12 @@
 
 <template>
   <div class="sy-wrap">
-    <x-header :left-options="{backText:''}" title="我的收益" id="vux-header"></x-header>
+    <x-header :left-options="{backText:''}" title="我的奖励金" id="vux-header"></x-header>
     <div class="switchbar">
       <tab v-model="index" default-color="#999" class="switchbar" :scroll-threshold="2" active-color="#fb4c72"
         bar-active-color="#fb4c72">
-        <tab-item @on-item-click="outEarnings">待收益</tab-item>
-        <tab-item @on-item-click="inEarnings">已收益</tab-item>
+        <tab-item @on-item-click="outEarnings">待奖励金</tab-item>
+        <tab-item @on-item-click="inEarnings">已奖励金</tab-item>
       </tab>
     </div>
 
@@ -198,7 +198,7 @@ export default {
       twolistInfo: [],
       twoupLoading: true,
       twoupLoadingComplete: false,
-      total_amout: 0, //总收益
+      total_amout: 0, //总奖励金
       swiperOption: {
         initialSlide: 0, //设定初始化时slide的索引
         direction: "horizontal", //Slides的滑动方向，可设置水平(horizontal)或垂直(vertical)。
@@ -235,7 +235,7 @@ export default {
         this.getRebatelist();
       }
     },
-    //待收益
+    //待奖励金
     async getReceivelist() {
       if (this.oneupLoadingComplete) {
         return;
@@ -266,7 +266,7 @@ export default {
       //   rebate_addtime: "2018-08-03" //时间
       // });
     },
-    //已收益
+    //已奖励金
     async getRebatelist() {
       if (this.twoupLoadingComplete) {
         return;

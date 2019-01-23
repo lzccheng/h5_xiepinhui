@@ -54,7 +54,7 @@
                           <div class="timeBind" v-if="item.is_smallshop==1">
                             <div class="style_sign">365</div>985
                           </div>
-                          <div class="benefit">收益：{{item.amount}}元</div>
+                          <div class="benefit">奖励金：{{item.amount}}元</div>
                         </div>
                         <div class="btnInvite" @click="now_invitefun" v-if="item.is_smallshop==0">立即推荐</div>
                       </div>
@@ -408,8 +408,8 @@ export default {
       //   member_name: "xph_597c2ef07d48f86",
       //   member_avatar:
       //     "http://img.xiepinhui.com.cn/sys/default/user/avatar.jpg",
-      //   amount: 0, //总收益
-      //   red_amount_365: 0, //开通365粉丝总收益
+      //   amount: 0, //总奖励金
+      //   red_amount_365: 0, //开通365粉丝总奖励金
       //   order_amount: 0, //总消费
       //   vip_amount: 0
       // });

@@ -4,7 +4,7 @@
     <div class="top_content_part">
       <div class="summarize_fans_box">
         <div class="txt_fansLi"><span class="txt_fansLiTab">粉丝人数：</span>{{fansContent.fansNumber || 0}}人</div>
-        <div class="txt_fansLi"><span class="txt_fansLiTab">粉丝收益：</span>{{fansContent.fanAmount || 0}}元</div>
+        <div class="txt_fansLi"><span class="txt_fansLiTab">粉丝奖励金：</span>{{fansContent.fanAmount || 0}}元</div>
       </div>
       <div class="bg_invite_box" @click="goInviteList">
         <div class="invite_title_box">邀请好友开通365合伙人</div>
@@ -42,7 +42,7 @@
                   <div class="timeBind" v-if="item.is_smallshop==1">
                     <div class="style_sign">365</div>985
                   </div>
-                  <div class="benefit">收益：{{item.amount}}元</div>
+                  <div class="benefit">奖励金：{{item.amount}}元</div>
                 </div>
                 <div class="btnInvite colorTheam colorTheamBorder" catchtap="now_invitefun"  v-if="item.is_smallshop==0">立即查看</div>
               </div>
@@ -75,7 +75,7 @@
                   <div class="timeBind">
                     <div class="style_sign">365</div>985
                   </div>
-                  <div class="benefit">收益：{{item.amount}}元</div>
+                  <div class="benefit">奖励金：{{item.amount}}元</div>
                 </div>
               </div>
               <div class="explain_part">
@@ -93,7 +93,7 @@
       没有更多数据了
     </div>
 
-    <!-- 收益礼包注释    -->
+    <!-- 奖励金礼包注释    -->
     <div class="incomePicBgBox" v-if="isShop == 1" @click='incomeModal'></div>
       <!-- 弹窗-->
       <div class="rankModalBox" v-if="showIncomeModal">
@@ -103,7 +103,7 @@
               <div class="bgTopContentBg">
                   <div class="xipinhuiIcon xipinhui-close closeIcon" @click='closeIncomeModal'></div>
                   <div class="headlineTxt">领取奖励</div>
-                  <div class="have_benefit_box">累积收益<span class="num_show">{{fansContent.fanAmount || 0}}</span>元</div>
+                  <div class="have_benefit_box">累积奖励金<span class="num_show">{{fansContent.fanAmount || 0}}</span>元</div>
               </div>
               <div class="giftRankBox">
                   <div  class="scrollHeight">
@@ -124,7 +124,7 @@
 
                       <div v-for="(item,index) in redBackList" :key="index" class="itemContentRank flex flex-align-center flex-pack-justify">
                           <div class="leftPartRank">
-                              <div class="txtRank">触发收益达到{{item.redMoney}}</div>
+                              <div class="txtRank">触发奖励金达到{{item.redMoney}}</div>
                               <div class="valueRank">
                                   <img src="@/assets/images/gold.png" class="goldPic" mode="widthFix"/>{{item.award}}
                               </div>
@@ -180,7 +180,7 @@
 
 <script>
 // var redBackList=[
-//    //收益红包弹窗数据
+//    //奖励金红包弹窗数据
 //     {
 //       "redMoney": "10000",//触发金
 //       "award": "800",//奖金
@@ -244,7 +244,7 @@ export default {
         ]
       },
       show_bottom:false,
-      redBackList: [],//收益红包弹窗数据
+      redBackList: [],//奖励金红包弹窗数据
       closeComsumeModal:false,
       isShop: ''
     };

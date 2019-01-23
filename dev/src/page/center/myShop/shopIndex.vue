@@ -13,7 +13,7 @@
         </div>
         <div class="funds-item">
           <div class="funds-number" :class="{'smallfont':storeInfo.total_revenue>=10000}">{{storeInfo.total_revenue}}</div>
-          <div>总收益(元)</div>
+          <div>总奖励金(元)</div>
         </div>
         <div class="funds-item">
           <div class="funds-number" :class="{'smallfont':storeInfo.total_fan>=10000}">{{storeInfo.total_fan}}</div>

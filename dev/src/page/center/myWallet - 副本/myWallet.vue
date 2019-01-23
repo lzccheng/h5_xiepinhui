@@ -206,7 +206,7 @@ padding-left:10/50rem;
                 </div>
                 <div class="bottom_part_content">
                     <div class="flex flex-pack-justify descAmountBox line_bottom">
-                        <div class="descLeftOne">收益总金额(元)</div>
+                        <div class="descLeftOne">奖励金总金额(元)</div>
                         <div class="descRightOne">提现明细</div>
                     </div>
                     <div class="flex flex-pack-justify descAmountBox">

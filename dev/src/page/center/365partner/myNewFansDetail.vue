@@ -293,8 +293,8 @@ export default {
                 title: '粉丝订单详情',
             },
             tabArr: [
-                {name: '未返收益订单'},
-                {name: '已返收益订单'},
+                {name: '未返奖励金订单'},
+                {name: '已返奖励金订单'},
             ],
             // height: app.globalData.height + 40,
             window_height: '',

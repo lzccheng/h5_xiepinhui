@@ -171,7 +171,7 @@
           </div>
         </div>
         <div class="body-right">
-          <div class="right-shouyi">收益：{{itemFan.amount}}元</div>
+          <div class="right-shouyi">奖励金：{{itemFan.amount}}元</div>
           <div class="right-xiaofei">总消费：{{itemFan.order_amount}}元</div>
         </div>
       </div>
