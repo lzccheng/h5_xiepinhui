@@ -49,6 +49,8 @@ const privilege = () => import('@/page/center/365partner/privilege')
 const exchange = () => import('@/page/center/365partner/exchange')
 //365专享列表
 const goodList = () => import('@/page/center/365partner/goodList')
+//365任务福利
+const taskList = () => import('@/page/center/365partner/taskList')
 
 //邀请规则
 const inviteFriendRecord = ()=>import('@/page/center/365partner/inviteFriendRecord')
@@ -561,6 +563,13 @@ let router = new Router({
             path: 'goodList',
             name: 'goodList',
             component: goodList,
+            meta: {
+              title: '鞋品荟'
+            }
+          },  {
+            path: 'taskList',
+            name: 'taskList',
+            component: taskList,
             meta: {
               title: '鞋品荟'
             }

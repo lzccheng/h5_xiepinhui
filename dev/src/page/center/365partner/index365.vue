@@ -156,6 +156,12 @@
                     font-weight: bold;
                     font-size: 16px;
                 }
+                ._right{
+                    color: #999;
+                }
+                .row{
+                    font-size: 12px;
+                }
             }
             .taskList{
                 .taskItem{
@@ -193,7 +199,7 @@
                             color: @color2;
                         }
                         &:last-child{
-                            background-color: @color;
+                            background: linear-gradient(90deg, #96ECE7, #61d8d0);
                             width: 1.34rem;
                             @height: 0.5rem;
                             height: @height;
@@ -201,6 +207,12 @@
                             color: #fff;
                             border-radius: 0.5rem;
                             font-size: 12px;
+                        }
+                        &.ing{
+                            background: #F95B79;
+                        }
+                        &.finish{
+                            background: #BBC3C2;
                         }
                     }
                 }
@@ -470,10 +482,10 @@
                     <div class="angle"></div>
                 </div>
                 <div style="height: .9rem"></div>
-                <div class="taskBox" v-if="false">
+                <div class="taskBox">
                     <div class="taskTop flex">
-                        <span><span class="title">今日限时任务</span>(三选一)</span>
-                        <span v-if="false">更多</span>
+                        <span><span class="title">任务福利</span></span>
+                        <span class="_right" @click="$router.push('taskList')">更多<span class="row iconfont icon-right-jiantou"></span></span>
                     </div>
                     <div class="taskList">
                         <div class="taskItem flex" v-for="(item, i) in info.daily_task.list" :key="i">
@@ -485,7 +497,9 @@
                             </div>
                             <div class="taskBtn flex">
                                 <span>{{item.task_award_tips}}</span>
-                                <span>{{item.task_takename}}</span>
+                                <span @click="onHandleTask(item.task_id)" v-if="item.record_status == 2">领任务</span>
+                                <span v-if="item.record_status == 0" class="ing">任务进行中</span>
+                                <span v-if="item.record_status == 1" class="finish">已完成</span>
                             </div>
                         </div>
                     </div>
@@ -586,6 +600,22 @@ export default {
     mounted() {
     },
     methods: {
+        async onHandleTask(task_id){
+            let data = {
+                account: this.account,
+                token: this.token,
+                task_id
+            }
+            const [err, res] = await api.membertaskTake(data);
+            if (err) {
+                this.$vux.toast.text(err.msg);
+                return;
+            }
+            if(res.code == 2000){
+                this.$vux.toast.text('领取成功', 'top');
+                this.getData()
+            }
+        },
         goodListChange(total_count){
             if(total_count*1 == 0){
                 this.goodListShow = false;

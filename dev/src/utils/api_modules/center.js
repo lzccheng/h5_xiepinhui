@@ -296,6 +296,16 @@ export const addsmallshop = (data) => {
   const url = `${domain}/restore/addsmallshop`
   return POST(url, data)
 }
+// 365领取任务
+export const membertaskTake = (data) => {
+  const url = `${domain}/membertask/take`
+  return POST(url, data)
+}
+// 365任务列表
+export const my_task_list = (data) => {
+  const url = `${domain}/membertask/my_task_list`
+  return POST(url, data)
+}
 // 365活动商品列表
 export const seckillGoodslist = (data) => {
   const url = `${domain}/seckill/goodslist`
