@@ -453,7 +453,7 @@
                     <img :src="user.avatar" alt="">
                     <div class="headInfo">
                         <div class="name">{{user.nick || user.tel}}</div>
-                        <div  class="date">{{info.header.validity_date}}到期</div>
+                        <div  class="date" v-if="user.user_type == 4">{{info.header.validity_date}}到期</div>
                     </div>
                     <div class="manage" @click="handleManage">分享赚钱</div>
                 </div>

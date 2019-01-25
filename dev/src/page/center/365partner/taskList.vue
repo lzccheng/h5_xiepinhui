@@ -55,6 +55,18 @@
     text-align: center;
     padding: .2rem;
 }
+.noList{
+    text-align: center;
+    margin-top: 2rem;
+    img{
+        width: 4.5rem;
+    }
+    p{
+        margin: .6rem;
+        color: @color2;
+        font-size: 14px;
+    }
+}
 </style>
 <template>
     <div class="page" :style="{minHeight: pageHeight - 46 + 'px'}">
@@ -69,8 +81,12 @@
                     <div class="bottom padL">{{item.task_desc}}</div>
                 </div>
             </div>
+            <div class="noList" v-if="complete && !taskList.length">
+                <img src="@/assets/images/new365/no_task.png" alt="">
+                <p>你当前还没有任务哦</p>
+            </div>
             <div v-if="loading" class="tips">加载中...</div>
-            <div v-if="complete" class="tips">到底了~</div>
+            <div v-if="complete && taskList.length" class="tips">到底了~</div>
             <div v-if="upload" class="tips">上拉加载更多</div>
         </div>
     </div>

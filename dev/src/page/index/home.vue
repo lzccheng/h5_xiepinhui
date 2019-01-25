@@ -244,6 +244,7 @@
   padding: 0 3px;
 }
 .model-header-img {
+  padding: 0 5px;
   width: 100%;
   font-size: 0;
 }
@@ -357,6 +358,7 @@
   background: #fff;
   margin-bottom: 10/50rem;
   position: relative;
+  padding: 0 5px;
 }
 .row-goodsli img {
   width: 100%;
@@ -545,7 +547,8 @@
               <!-- <img src="https://m.xiepinhui.com.cn/favicon.png" alt="">
               <span>关注鞋品荟公众号</span>
               <span class="follow" @click="onFollow">点击关注</span> -->
-              <img @click="onFollow" src="https://img.xiepinhui.com.cn/small_app/publicCodeFile/guanzhuTipIcon.gif" alt="">
+              <!-- <img @click="onFollow" src="https://img.xiepinhui.com.cn/small_app/publicCodeFile/guanzhuTipIcon.gif" alt=""> -->
+              <img @click="onFollow" src="https://img.xiepinhui.com.cn/small_app/publicCodeFile/guanzhuTipIcon.png" alt="">
             </div>
           </div>
           <!-- swiper -->
@@ -649,7 +652,8 @@
                           <span class="goods-name">{{item.goods_name}}</span>
                           <div class="all-list-biaoqian">
                               <!-- <img mode='widthFix' :src='item.member_price_img' /> -->
-                              <img mode='widthFix' src='http://img.xiepinhui.com.cn/small_app/home/goods_list_biaoqian.png' />
+                              <img mode='widthFix' v-if="user.user_type == 4" src='http://img.xiepinhui.com.cn/small_app/home/newTab365Icon.png'/>
+                              <img mode='widthFix' v-else src='http://img.xiepinhui.com.cn/small_app/home/newTabOderIcon.png'/>
                               <span class="goods-label" v-if="item.goods_label!=''">{{item.goods_label}}</span></div>
                           <div class="flex flex-pack-justify bottom-goods-price">
                               <span class="goods-price">￥{{item.group_price}}</span>
@@ -769,7 +773,7 @@ export default {
     if(this.$route.query.inviteCode){
       this.binding(this.$route.query.inviteCode)
     }
-    this.followBtn = window.localStorage['subscribe'] == 1? true : false;
+    this.followBtn = window.localStorage['subscribe'] == 1? false : true;
     console.log(this.followBtn)
   },  
   mounted() {

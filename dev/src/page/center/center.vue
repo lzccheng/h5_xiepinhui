@@ -443,10 +443,11 @@ export default {
       switch (type) {
         case 15:
           if (user_type == 2 || user_type == 3 || user_type == 4) {
-              if(user_type == 4){
-                return this.$router.push("/centerFull/partner/index365");
-              }
-              return this.$router.push("/centerFull/partner/inviteList");
+              return this.$router.push("/centerFull/partner/index365");
+              // if(user_type == 4){
+              //   return this.$router.push("/centerFull/partner/index365");
+              // }
+              // return this.$router.push("/centerFull/partner/inviteList");
           } else {
             return this.$router.push("/centerFull/partner/introduce365");
           }
