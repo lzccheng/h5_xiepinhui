@@ -224,7 +224,7 @@
     border: 0 !important;
     }
     .fontSize{
-        font-size: 10pt
+        font-size: 14px;
     }
     .payBtn::after {
     display: none;
@@ -306,6 +306,13 @@
         line-height: 30/100rem;
         height: 30/100rem;
     }
+    .myselft{
+        white-space: nowrap;
+        span{
+            margin-left: .2rem;
+            color: #888
+        }
+    }
 </style>
 <template>
     <div class="idnexWrapBox" :style="{height: '100%'}">
@@ -313,6 +320,15 @@
         <!-- <loading type="type3" v-if="loadingShow"></loading> -->
         <div style="background-color: #f8f8f8;height: 100%;">
             <div class="content">
+                <div class="weui-cell weui-cell_select line_xi_after" style="padding: 0" @click="$router.push({path: 'GoodsExpress', query: {query: $route.query,store_id}})">
+                    <div class="weui-cell__hd weui-cell__hd_in-select-after">
+                        <div class="weui-label fontSize myselft">配送方式 <span class="">可选到店自提</span></div>
+                    </div>
+                    <div class="weui-cell__bd ">
+                        <div class="weui-select weui-select_in-select-after fontSize">{{myselft || '快递送货'}}</div>
+                        <!-- <div class="_select_mob" id="_select_mob">{{nowSelectshipping.e_name}}</div> -->
+                    </div>
+                </div>
                 <div class='order-address-box' @click="selectAddress">
                     <div class="address-add flex flex-pack-justify flex-align-center" v-if="addressInfo==''">
                         <div class="flex flex-align-center address-text">
@@ -356,7 +372,7 @@
                     </div>
                 </div>
                 <div class="flex flex-pack-justify flex-align-center stepperBox line_xi_after" v-if="!s_id">
-                    <span class="num-title">购买数量</span>
+                    <span class="num-title fontSize">购买数量</span>
                     <div class="stepper flex">
                         <!-- 减号 -->
                         <span :class="minusStatus" @click="bindMinus">-</span>
@@ -493,11 +509,20 @@ export default {
             ifUseBalance: false,
             huidounum: 0,
             restMoney: 0,
-            member_discount: 1
+            member_discount: 1,
+            myselft: '',
+            aboutShopInfo: '',
+            store_id: ''
         }
     },
     created () {
         this.goodsInfo = JSON.parse(sessionStorage['goodsInfo']);
+        this.myselft = this.$route.query.myselft || '';
+        this.aboutShopInfo = this.$route.query.aboutShopInfo? JSON.parse(this.$route.query.aboutShopInfo) : '';
+        if(this.aboutShopInfo){
+            this.myselft = this.aboutShopInfo.shop_name;
+            this.store_id = this.aboutShopInfo.shop_id;
+        }
     },
     mounted(){
         this.s_id = this.$route.query.s_id || this.goodsInfo._s_id || '';
@@ -818,8 +843,8 @@ export default {
                 _data.use_coupon = 0;
                 _data.uc_id = 0;
                 _data.free_post = 0;
-                _data.shipping_type = 2;
-                _data.pick_shop_id = 0;
+                _data.shipping_type = this.store_id? 3 : 2;
+                _data.pick_shop_id = this.aboutShopInfo? this.aboutShopInfo.shop_id || 0 : 0;
                 _data.pay_recharge = this.ifUseBalance? 1 : 0;
                 _data.pay_vcoin = 1;
                 _data.order_type = 4;

@@ -59,8 +59,9 @@ function request(method) {
       }
     }
     return await axiosUtil(options).then((res) => {
-      if (res.data.code == 5000) { // 5000: tokan过期 => 重新登录
-        let url = getQueryString('url') || location.pathname + location.search + location.hash;
+      if (res.data.code == 5000 || res.data.code == 4021) { // 5000: tokan过期 => 重新登录 4021: member_id不存在 => 重新登录
+        // let url = getQueryString('url') || location.pathname + location.search + location.hash;
+        Vue.$vux.toast.text('请重新登录');
         store.dispatch('updateUser', "");
         store.dispatch('updateToken', "");
         store.dispatch('updateAccount', "");

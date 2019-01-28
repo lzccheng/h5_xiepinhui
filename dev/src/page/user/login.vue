@@ -542,16 +542,16 @@ a {
 }
 // @color : #61D8D0;
 .page{
-    position: fixed;
+    // position: fixed;
     width: 100%;
 }
 .other_login {
-  margin-top: 1rem;
+  margin-top: 1rem; 
   .test {
     text-align: center;
     font-size: 0.28rem;
     color: rgb(51, 51, 51);
-    padding-bottom: 0.61rem;
+    padding-bottom: 0.61rem; 
   }
 }
 .wxLogin {

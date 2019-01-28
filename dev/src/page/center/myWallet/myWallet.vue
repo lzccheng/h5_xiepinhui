@@ -207,7 +207,7 @@ padding-left:10/50rem;
                         <div class="huibidv">
                             <img :src="infoData.money_data[0].list[0].image" mode="widthFix"/>{{infoData.money_data[0].list[0].name}}
                         </div>
-                        <div class="huibiNum">{{infoData.money_data[0].list[0].amount}}<span class="iconfont icon-right-jiantou"></span></div>
+                        <div class="huibiNum">{{infoData.money_data[0].list[0].amount || 0}}<span class="iconfont icon-right-jiantou"></span></div>
                     </div>
                 </div>
                 <div class="_line"></div>
@@ -225,7 +225,7 @@ padding-left:10/50rem;
                             <div class="huibidv">
                                 <img :src="item.image" mode="widthFix"/>{{item.name}}
                             </div>
-                            <div class="huibiNum">{{item.amount}}<span class="iconfont icon-right-jiantou"></span></div>
+                            <div class="huibiNum">{{item.amount || 0}}<span class="iconfont icon-right-jiantou"></span></div>
                         </div>
                     </div>
                     

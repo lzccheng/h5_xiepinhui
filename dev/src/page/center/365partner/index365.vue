@@ -414,7 +414,7 @@
                             font-size: 12px;
                         }
                         .goods_salenum{
-                            color: #999;
+                            color: @color2;
                             font-size: 12px;
                         }
                     }

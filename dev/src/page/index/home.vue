@@ -311,7 +311,7 @@
   color: #fff;
   font-size: 12px;
   margin-left: -1.9rem;
-  z-index: 9999;
+  z-index: 9;
 }
 .tab-h {
   height: 1rem;

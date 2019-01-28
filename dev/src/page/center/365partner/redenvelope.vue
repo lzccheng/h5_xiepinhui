@@ -10,13 +10,13 @@
 
 .on {
   color: rgba(251, 76, 114, 1);
-  border-bottom: 5rpx solid rgba(251, 76, 114, 1);
+  border-bottom: 5px solid rgba(251, 76, 114, 1);
 }
 
 .swiper-box {
   display: block;
   width: 100%;
-  padding-top: 90rpx;
+  padding-top: 0/100rem;
 }
 
 .jinggao {
@@ -51,7 +51,7 @@
 }
 
 .bottom-after {
-  border-bottom: 1rpx #f1f1f1 solid;
+  border-bottom: 1px #f1f1f1 solid;
 }
 
 .swiper-box {
@@ -117,8 +117,8 @@
     <div class="switchbar">
       <tab v-model="index" default-color="#999" class="switchbar" :scroll-threshold="2" active-color="#fb4c72"
         bar-active-color="#fb4c72">
-        <tab-item @on-item-click="outEarnings">待奖励金</tab-item>
-        <tab-item @on-item-click="inEarnings">已奖励金</tab-item>
+        <tab-item @on-item-click="outEarnings">待返奖励金</tab-item>
+        <tab-item @on-item-click="inEarnings">已返奖励金</tab-item>
       </tab>
     </div>
 

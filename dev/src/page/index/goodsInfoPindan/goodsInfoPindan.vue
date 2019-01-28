@@ -795,6 +795,7 @@ contact-button {
 }
 .itemList1{
   padding-top: 40/50rem;
+  position: relative;
   // overflow: auto;
 }
 .page{
@@ -834,13 +835,43 @@ contact-button {
   color: #61D8D0;
   text-align: left;
   font-size: 10pt;
+  position: relative;
+  display: inline-block;
 }
 .shareGetCoin{
-  width: 38/100rem;
+  width: 230/100rem;
   vertical-align: middle;
 }
 .priceGetTip{
-  padding-left:10/100rem;
+  position: absolute;
+  width: 1.7rem;
+  left: 0.5rem;
+  top: 0.22rem;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+}
+.acticves_img{
+  .top_right{
+    position: absolute;
+    right: 0;
+    top: 40/50rem;
+    z-index: 9;
+    width: 1.5rem;
+  }
+  .top_bottom{
+    width: 100%;
+  }
+}
+.shareImg{
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 5rem;
+}
+.z-index99{
+  z-index: 99;
 }
 </style>
 <template>
@@ -873,6 +904,12 @@ contact-button {
                     <div class="miaoshaTitle" v-if="goodsInfo.coupon_type=='1'">
                       <img src="~@/assets/images/miaosha/haohuan_title.png" alt="">
                     </div>
+                    <div class="acticves_img" v-if="goodsInfo.acticves_img">
+                      <img class="top_right" v-if="goodsInfo.acticves_img.top_right.show_status == 1" :src="goodsInfo.acticves_img.top_right.img" alt="">
+                    </div>
+                    <div class="acticves_img" v-if="goodsInfo.acticves_img">
+                      <img class="top_bottom" v-if="goodsInfo.acticves_img.top_bottom.show_status == 1" :src="goodsInfo.acticves_img.top_bottom.img" alt="">
+                    </div>
                     <div class="goods-info line_xi_after">
                       <div class='flex flex-align-center flex-pack-justify'>
                         <span class="goodsinfo-name">
@@ -890,13 +927,11 @@ contact-button {
                             <span class="price padd-top" v-else>价格:￥{{goodsInfo.purchase_price}}</span>
                             <span class="salenum padd-top">销量:{{goodsInfo.goods_salenum}}件</span>
                         </div>
-                        <div class="shareGetTip" v-if="goodsInfo.partner_rebate != 0">
-                          <img class="shareGetCoin" src="http://img.xiepinhui.com.cn/small_app/goodsInfo/fenxiangzhuan.png" alt="">
-                          <span class="priceGetTip">分享赚 ￥:{{goodsInfo.partner_rebate}}</span>
-                        </div>
-                        <div class='fanli-box flex flex-align-center' :class="{'flex-pack-end': partner_type==0,'flex-pack-justify': partner_type!=0}">
-                          <div class="rebate-box" v-if="partner_type=='1'||partner_type=='2'">
-                            返利：{{goodsInfo.purchase_rate}}
+                        <!-- <div class="shareGetTip" v-if="goodsInfo.partner_rebate != 0 && user.user_type != 1"> -->
+                        <div class="shareGetTip" @click="showShareGetTip" v-if="goodsInfo.partner_rebate != 0 && user.user_type != 1">
+                          <img class="shareGetCoin" src="@/assets/images/goodsInfo/btn.png" alt="">
+                          <div class="priceGetTip">
+                            <span class="">分享赚￥:{{goodsInfo.partner_rebate}}</span>
                           </div>
                         </div>
                       </div>
@@ -1077,6 +1112,30 @@ contact-button {
                 </div>
               </div>
             </transition>
+
+            <transition name="fade">
+              <div class="alert" @click.self="showShareGetTip('coupon_actionSheetHidden')" v-if="shereShow" >
+                <div style="width:100%;  overflow: hidden;" class="shuoming con">
+                  <div class="coupon-action-top ">分享赚说明</div>
+                  <div class="coupon-action-scroll" style="width:100%;padding-top: 0">
+                    <div class="">{{goodsInfo.share_intro.title}} <span style="color: #F17847">￥{{goodsInfo.purchase_price * 1000 * .3 / 1000}}</span></div>
+                    <div class="fuwu-shuoming flex " v-for="(item, index) in goodsInfo.share_intro.desc_list" :key="index">
+                      <!-- <div class="fuwu-left-icon iconfont icon-duihao"></div> -->
+                      <div class="shuoming-content">
+                        <!-- <div class="shuoming-title">{{item.desc}}</div> -->
+                        <div class="shuoming-text">{{(index + 1) + '、' + item.desc}}</div>
+                      </div>
+                    </div>
+                    <div class="shuoming-bottom-btn" @click="showShareBg">{{isWeixin?'去分享': '知道了'}}</div>
+                  </div>
+                </div>
+              </div>
+            </transition>
+            <transition name="fade">
+              <div class="alert z-index99" @click.self="showShareBg" v-if="shareBg" >
+                <img class="shareImg" src="@/assets/images/share_right.png" alt="">
+              </div>
+            </transition>
             
         </div>
         <div v-if="spec_info == '' && backBtnBool" class="backBtn" @click="routerBack">返回</div>
@@ -1116,6 +1175,11 @@ export default {
                 // bulletClass: 'my-bullet',
                 // bulletActiveClass: 'my-bullet-active',
                 clickable: true
+              },
+              on: {
+                transitionStart: function(){
+                  console.log(this)
+                }
               }
             },
             swiperOption2: {
@@ -1164,6 +1228,9 @@ export default {
                 title: '鞋品荟', //导航栏 中间的标题
             },
             s_id: '',
+            shereShow: false,
+            shareBg: false,
+            isWeixin: window.isWeixin
         }
     },
     created(){
@@ -1197,6 +1264,15 @@ export default {
         
     },
     methods: {
+        showShareBg(){
+          if(!window.isWeixin){
+            return this.showShareGetTip();
+          }
+          this.shareBg = !this.shareBg;
+        },
+        showShareGetTip(){
+          this.shereShow = !this.shereShow;
+        },
         async bangding(shareCode){
           var version = "";
           // let shareCode = this.$route.query.shareCode || this.$store.state.center.shareCode;
@@ -1364,7 +1440,6 @@ export default {
                     imgUrl: that.goodsInfo.goods_image_arr[0],
                     link: window.location.origin + '/index/goodsInfoPindan?goodsId=' + this.goodsId+'&shareCode=' + res_.data.code
                   }
-                  console.log(res_,66666666666,shareConfig)
                   share(this,{share: shareConfig})
                 }
             }

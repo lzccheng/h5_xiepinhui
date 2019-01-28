@@ -119,4 +119,7 @@ export default {
 .weui-dialog__btn_primary{
   color: #61d8d0;
 }
+a{
+  text-decoration: none;
+}
 </style>

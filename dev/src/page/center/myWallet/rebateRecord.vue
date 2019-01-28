@@ -1,4 +1,5 @@
 <style scoped lang="less">
+@color: #61D8D0;
 .page {
   padding-bottom: 51px;
 }
@@ -23,7 +24,7 @@
 }
 .rightItem{
   font-size: 28/100rem;
-  color: #333;
+  color: @color;
 }
 .itemInfoBox{
   border-bottom: 1/100rem solid #f2f2f2;
@@ -57,6 +58,7 @@ color: #333;
 .navis span{
 padding: 18/100rem;
 display: inline-block;
+white-space: nowrap;
 }
 .navAboutDetail{
 border-top:1px solid #f7f7f7;
@@ -66,6 +68,7 @@ background: #fff;
 .line_bottom{
 border-bottom: 1px solid #61D8D0;
 color: #61D8D0;
+
 }
 .goodsPrice{
   font-size:30/100rem;
@@ -96,7 +99,7 @@ color: #61D8D0;
 }
 .rightItem{
   font-size: 28/100rem;
-  color: #333;
+  color: @color;
 }
 .itemInfoBox{
   border-bottom: 1px solid #f2f2f2;
@@ -128,15 +131,20 @@ color: #61D8D0;
    
                 <div class="flex flex-pack-justify flex-align-center itemInfoBox" v-for="(item,index) in listObj" v-if="listObj.length" :key="index">
                     <div class="flex leftItem">
-                        <img  v-if="recordType==1" :src="item.member_info.member_avatar" class="picWho" mode="widthFix"/>
+                        <img  v-if="recordType==1" :src="item.member_info.member_avatar || 'http://img.xiepinhui.com.cn/mobile/app/task_icon.png'" class="picWho" mode="widthFix"/>
                         <img  v-else-if="recordType==2 || recordType==3" :src="item.order_goods&&item.order_goods.goods_image" class="picWho" mode="widthFix"/>
+                        <img  v-else-if="recordType==4" :src="item.task_info.task_icon" class="picWho" mode="widthFix"/>
                         <div class="flex flex-align-center">
                             <div class="nameWho" v-if="recordType==1">
-                                {{item.member_info.member_nick}}
+                                {{item.member_info.member_nick || item.red_text}}
                                 <div class="timeis">{{item.red_addtime}}</div>
                             </div>
                             <div class="nameWho" v-else-if="recordType==2 || recordType==3">
-                                推广返利
+                                <span>{{recordType==2? item.red_text: '推广返利'}}</span>
+                                <div class="timeis">{{item.red_addtime}}</div>
+                            </div>
+                            <div class="nameWho" v-if="recordType==4">
+                                {{item.member_info.member_nick || item.red_text || '任务奖励金'}}
                                 <div class="timeis">{{item.red_addtime}}</div>
                             </div>
                         </div>
@@ -168,7 +176,7 @@ export default {
         return {
             nvabarData: {
                 showCapsule: 1,
-                title: '返利',
+                title: '奖励金',
             },
             page: 0,
             listObj: [],
@@ -245,7 +253,11 @@ export default {
         },
         choiceTab(tab){
             this.recordType = tab;
-            this.nvabarData.title = this.choiceTabArr[this.recordType - 1].name;
+            if(this.recordType == 4){
+                this.nvabarData.title = this.choiceTabArr[this.recordType - 2].name;
+            }else{
+                this.nvabarData.title = this.choiceTabArr[this.recordType - 1].name;
+            }
             this.fanli_list();
         }
     },

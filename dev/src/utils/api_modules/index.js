@@ -81,6 +81,11 @@ export const cancelcollectgoods = (data) => {
   return POST(url, data)
 }
 
+//商品配送方式
+export const get_offlinestore_list = (data) => {
+  const url = `${domain}/restore/get_offlinestore_list`
+  return POST(url, data)
+}
 //获取邀请码
 export const getsharecode = (data) => {
   const url = `${domain}/rebate/getsharecode`

@@ -74,6 +74,7 @@ const orderlist = ()=>import('@/page/center/orderlist/orderlist')
 const orderlistinfo = ()=>import('@/page/center/orderlist/orderlistinfo')
 
 
+
 // 我的积分
 
 const integralWrap = () => import('@/page/center/integral/integralWrap')
@@ -110,6 +111,8 @@ const active = () => import('@/page/index/active/active')
 
 //订单详情
 const orderInfo_pd = ()=>import('@/page/index/orderInfo_pd/orderInfo_pd')
+// 订单配送方式
+const GoodsExpress = () => import('@/page/index/orderInfo_pd/GoodsExpress')
 
 //订单地址
 const orderAddress = ()=>import('@/page/index/orderAddress/orderAddress')
@@ -340,6 +343,13 @@ let router = new Router({
         component: orderInfo_pd,
         meta: {
           title: '订单详情'
+        }
+      },  {
+        path: 'GoodsExpress',
+        name: 'GoodsExpress',
+        component: GoodsExpress,
+        meta: {
+          title: '鞋品荟'
         }
       },
       {
