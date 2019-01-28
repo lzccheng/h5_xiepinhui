@@ -894,7 +894,7 @@ contact-button {
                 <div class="swiper-wrapper">
                   <div class="item swiper-slide">
                     <div class="silder-box">
-                        <swiper :options="swiperOption">
+                        <swiper :options="swiperOption" ref="swiperOption">
                           <swiper-slide class="goods-silder" v-for="(slide,index) in goodsInfo.goods_image_arr" :key="index">
                             <img v-preview="slide" :src="slide" alt="" class="slide-image">
                           </swiper-slide>
@@ -905,7 +905,9 @@ contact-button {
                       <img src="~@/assets/images/miaosha/haohuan_title.png" alt="">
                     </div>
                     <div class="acticves_img" v-if="goodsInfo.acticves_img">
-                      <img class="top_right" v-if="goodsInfo.acticves_img.top_right.show_status == 1" :src="goodsInfo.acticves_img.top_right.img" alt="">
+                      <transition name="fade">
+                        <img class="top_right" v-if="goodsInfo.acticves_img.top_right.show_status == 1 && top_rightShow" :src="goodsInfo.acticves_img.top_right.img" alt="">
+                      </transition>
                     </div>
                     <div class="acticves_img" v-if="goodsInfo.acticves_img">
                       <img class="top_bottom" v-if="goodsInfo.acticves_img.top_bottom.show_status == 1" :src="goodsInfo.acticves_img.top_bottom.img" alt="">
@@ -935,7 +937,7 @@ contact-button {
                           </div>
                         </div>
                       </div>
-                      <div class="now-activity flex flex-align-center flex-pack-justify" @click="openActivity" v-if="goodsInfo.activity_other==1">
+                      <!-- <div class="now-activity flex flex-align-center flex-pack-justify" @click="openActivity" v-if="goodsInfo.activity_other==1">
                         <div class=' flex flex-align-center'>
                           <img src="~@/assets/images/goodsInfo/activity_kanjia.png" v-if="goodsInfo.activity_type=='3'" alt="">
                           <img src="~@/assets/images/goodsInfo/activity_miaosha.png" v-if="goodsInfo.activity_type=='9'" alt="">
@@ -943,7 +945,7 @@ contact-button {
                           <span>{{goodsInfo.activity_other_title}}</span>
                         </div>
                         <span class="iconfont icon-youbian"></span>
-                      </div>
+                      </div> -->
                     </div>
                     <div>
                       <div class="shuoming flex flex-align-center flex-pack-justify" @click="coupon_actionSheetbindchange">
@@ -1168,6 +1170,7 @@ export default {
     data(){
         return {
             slide: true,
+            top_rightShow: true,
             swiperOption: {
               autoplay: true,
               pagination: {
@@ -1177,8 +1180,9 @@ export default {
                 clickable: true
               },
               on: {
-                transitionStart: function(){
-                  console.log(this)
+                transitionStart: ()=>{
+                  let index = this.$refs.swiperOption.swiper.realIndex;
+                  this.top_rightShow = index == 0? true : false;
                 }
               }
             },
@@ -1435,7 +1439,7 @@ export default {
                 const [err_, res_] = await api.getsharecode(data);
                 if(res_.code == 2000){
                   let shareConfig = {
-                    title: '鞋品荟-真皮女鞋，尖货分享',
+                    title: '鞋品荟邀请您'+this.goodsInfo.purchase_price+'元一起抢真皮鞋,全场包邮,新品任您挑选!',
                     desc: '大牌设计，工厂价格，平台优质选款，买鞋就上鞋品荟',
                     imgUrl: that.goodsInfo.goods_image_arr[0],
                     link: window.location.origin + '/index/goodsInfoPindan?goodsId=' + this.goodsId+'&shareCode=' + res_.data.code

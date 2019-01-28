@@ -140,6 +140,7 @@ export default {
   },
   mounted() {},
   methods: {
+    ...mapActions(["updateUser"]),
     // 立即申请
     async pay() {
       // 校验信息
@@ -171,6 +172,7 @@ export default {
         return;
       }
       if(res.code == 2000){
+        let that = this;
         if(this.payFun == 1){
           let success = res => {
             this.$router.replace({
@@ -179,6 +181,10 @@ export default {
                 status: 1
               }
             })
+            let dd = that.user;
+            dd.user_type = 4;
+            that.updateUser(dd);
+            localStorage["user"] = JSON.stringify(dd);
           }
           let fail = err => {
             this.$vux.toast.text('支付失败');

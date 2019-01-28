@@ -52,6 +52,7 @@ page {
 .navis{
 // width:33.33333%;
 text-align: center;
+display: inline-block;
 font-size: 28/100rem;
 color: #333;
 }
@@ -64,6 +65,9 @@ white-space: nowrap;
 border-top:1px solid #f7f7f7;
 border-bottom:1px solid #f7f7f7;
 background: #fff;
+width: 100%;
+overflow-y: auto;
+white-space: nowrap;
 }
 .line_bottom{
 border-bottom: 1px solid #61D8D0;
@@ -122,7 +126,7 @@ color: #61D8D0;
         <x-header :left-options="{backText:''}" :title='nvabarData.title' id='vux-header'></x-header>
         <div>
             <!-- 标签导航 -->
-            <div class="flex flex-pack-center navAboutDetail">
+            <div class="navAboutDetail">
                 <div v-for="(item, index) in choiceTabArr" class="navis" :style="{width: tabWidth}" @click="choiceTab(item.red_type)" :key="index">
                     <span :class="recordType==item.red_type ? 'line_bottom':''" >{{item.name}}</span>
                 </div>
@@ -211,6 +215,9 @@ export default {
             if(res.code == 2000){
                 this.choiceTabArr = res.data.money_data[1].list;
                 this.tabWidth = 100 / this.choiceTabArr.length + '%';
+                if(this.choiceTabArr.length > 3){
+                    this.tabWidth = '30%';
+                }
                 this.choiceTabArr.some((item, i) => {
                     let data = {
                         page: 0,
@@ -238,8 +245,11 @@ export default {
                 red_type: recordType,
                 page
             }
-            this.$vux.loading.show();
+            this.$vux.loading.show({
+                text: '加载中...'
+            });
             const [err, res_data] = await api.rebate_record(data);
+            this.$vux.loading.hide()
             if(err){
                 this.$vux.toast.text(err.msg);
                 return;

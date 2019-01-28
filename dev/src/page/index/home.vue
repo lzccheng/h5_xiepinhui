@@ -653,7 +653,7 @@
                           <div class="all-list-biaoqian">
                               <!-- <img mode='widthFix' :src='item.member_price_img' /> -->
                               <img mode='widthFix' v-if="user.user_type == 4" src='http://img.xiepinhui.com.cn/small_app/home/newTab365Icon.png'/>
-                              <img mode='widthFix' v-else src='http://img.xiepinhui.com.cn/small_app/home/newTabOderIcon.png'/>
+                              <!-- <img mode='widthFix' v-else src='http://img.xiepinhui.com.cn/small_app/home/newTabOderIcon.png'/> -->
                               <span class="goods-label" v-if="item.goods_label!=''">{{item.goods_label}}</span></div>
                           <div class="flex flex-pack-justify bottom-goods-price">
                               <span class="goods-price">￥{{item.group_price}}</span>

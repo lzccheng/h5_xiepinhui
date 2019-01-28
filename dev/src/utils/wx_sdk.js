@@ -129,7 +129,7 @@ const getShareConfig = ( that, isShop) =>{
         return 'getShareConfig  userType为空'
     }
     let shareConfig = {};
-    if (shop == 1) {
+    if (userType == 4) {
         shareConfig = {
           title: '和我一起开店，分享就能赚钱',
           desc: '【' + that.user.nick + '】邀请您赶紧开通365创业小店，一天一元钱，创业0成本，分享就能赚钱，快来开启吧！',

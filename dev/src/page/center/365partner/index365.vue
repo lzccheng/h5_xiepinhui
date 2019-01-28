@@ -490,7 +490,6 @@
                     <div class="taskList">
                         <div class="taskItem flex" v-for="(item, i) in info.daily_task.list" :key="i">
                             <div  class="img"><img :src="returnPath(item.task_icon)" alt=""></div>
-                            <!-- <div"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547458194397&di=7aabbffef78f62873d3cdd5878e6540b&imgtype=0&src=http%3A%2F%2Fs15.sinaimg.cn%2Fmiddle%2F6906431ag743adc03370e%26690" alt=""></div> -->
                             <div class="taskName flex">
                                 <span>{{item.task_name}}</span>
                                 <span>{{item.task_desc}}</span>

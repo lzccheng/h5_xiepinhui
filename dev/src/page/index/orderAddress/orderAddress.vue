@@ -182,7 +182,7 @@ export default {
         },
         async deladdress(data,index){
             let that = this;
-            const [err, res] = await api.addressdetail(data);
+            const [err, res] = await api.addressdel(data);
             if (err) {
                 that.$vux.toast.text(err.msg);
                 return;
