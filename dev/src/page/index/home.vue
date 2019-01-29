@@ -558,6 +558,9 @@
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
+          <div >
+            <img style="width: 100%" src="http://img.xiepinhui.com.cn/small_app/home/tingyun.png" alt="">
+          </div>
           <div class="page__bd">
               <div class="weui-grids">
                   <div class="weui-grid" hover-class="weui-grid_active" v-for="(itemActive,index) in newHomelist.center_module" :key="index" @click='nacigator(itemActive.type, itemActive.status)' :data-status="itemActive.status" :data-type="itemActive.type" :data-value="itemActive.value" :data-index="index">
@@ -652,7 +655,8 @@
                           <span class="goods-name">{{item.goods_name}}</span>
                           <div class="all-list-biaoqian">
                               <!-- <img mode='widthFix' :src='item.member_price_img' /> -->
-                              <img mode='widthFix' v-if="user.user_type == 4" src='http://img.xiepinhui.com.cn/small_app/home/newTab365Icon.png'/>
+                              <img mode='widthFix' v-if="user.user_type == 4" :src='item.member_price_img'/>
+                              <!-- <img mode='widthFix' v-if="user.user_type == 4" src='http://img.xiepinhui.com.cn/small_app/home/newTab365Icon.png'/> -->
                               <!-- <img mode='widthFix' v-else src='http://img.xiepinhui.com.cn/small_app/home/newTabOderIcon.png'/> -->
                               <span class="goods-label" v-if="item.goods_label!=''">{{item.goods_label}}</span></div>
                           <div class="flex flex-pack-justify bottom-goods-price">

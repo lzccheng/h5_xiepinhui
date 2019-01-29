@@ -517,6 +517,7 @@ export default {
     },
     created () {
         this.goodsInfo = JSON.parse(sessionStorage['goodsInfo']);
+        this.num = this.goodsInfo.buyValue || 1;
         this.myselft = this.$route.query.myselft || '';
         this.aboutShopInfo = this.$route.query.aboutShopInfo? JSON.parse(this.$route.query.aboutShopInfo) : '';
         if(this.aboutShopInfo){
@@ -661,7 +662,11 @@ export default {
                 for (var i = 0; i < res.data.transport_company.length; i++) {
                     if (res.data.transport_company[i].is_default == '1') {
                         this.nowSelectshipping = res.data.transport_company[i];
-                        this.exprice = res.data.transport_company[i].f_weight_price;
+                        if(this.num > 1){
+                            this.sumExprice()
+                        }else{
+                            this.exprice = res.data.transport_company[i].f_weight_price;
+                        }
                         !this.s_id && this.getTotal();
                     }
                 }
@@ -708,8 +713,7 @@ export default {
             // 将数值与状态写回 
             this.num = num;
             this.minusStatus = minusStatus;
-            var proWeight = Math.ceil(this.num * this.goods_weight) - 1;
-            var exprice = parseFloat(parseFloat(proWeight * this.nowSelectshipping.m_weight_price) + parseFloat(this.nowSelectshipping.f_weight_price)).toFixed(2);
+            this.sumExprice()
             this.getTotal(this);
             this.couponNum();
             // if (this.isUsecoupon == 1) {
@@ -735,11 +739,13 @@ export default {
                 this.num = num;
                 this.minusStatus = minusStatus;
             }
-            var proWeight = Math.ceil(this.num * this.goods_weight) - 1;
-            var exprice = parseFloat(parseFloat(proWeight * this.nowSelectshipping.m_weight_price) + parseFloat(this.nowSelectshipping.f_weight_price)).toFixed(2);
-            this.exprice = exprice;
+            this.sumExprice()
             this.getTotal(this);
             this.couponNum();
+        },
+        sumExprice(){
+            var proWeight = Math.ceil(this.num * this.goods_weight) - 1;
+            this.exprice = parseFloat(parseFloat(proWeight * this.nowSelectshipping.m_weight_price) + parseFloat(this.nowSelectshipping.f_weight_price)).toFixed(2);
         },
         selectAddress(){
             this.$router.push({

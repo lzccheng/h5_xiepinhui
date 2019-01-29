@@ -873,6 +873,10 @@ contact-button {
 .z-index99{
   z-index: 99;
 }
+.buyvalue{
+  justify-content: space-between;
+  padding: 2/50rem 15/50rem 0;
+}
 </style>
 <template>
     <div  style="width: 7.5rem">
@@ -1086,7 +1090,12 @@ contact-button {
                         </div>
                       </div>
                     </div>
+                    <div class="flex buyvalue">
+                      <span>购买数量</span>
+                      <van-stepper v-model="buyValue" min="1" :max="nowSelectspec.goods_storage" step="1" :integer="true" @change="buyValueChange"/>
+                    </div>
                   </div>
+                  
                   <div class="action-btn">
                     <div class="btn" @click="goBuy">
                       <span v-if="btnType=='pindan'">确认拼单</span>
@@ -1234,7 +1243,8 @@ export default {
             s_id: '',
             shereShow: false,
             shareBg: false,
-            isWeixin: window.isWeixin
+            isWeixin: window.isWeixin,
+            buyValue: 1
         }
     },
     created(){
@@ -1268,6 +1278,9 @@ export default {
         
     },
     methods: {
+        buyValueChange(num){
+            // console.log(num)
+        },
         showShareBg(){
           if(!window.isWeixin){
             return this.showShareGetTip();
@@ -1585,6 +1598,7 @@ export default {
             goods_id: this.goodsInfo.n_goods_id,
             btnType: this.btnType,
             _s_id: this.s_id,
+            buyValue: this.buyValue,
             ...this.goodsInfo
           }
           this.$store.dispatch('update_goodsInfo',goodsInfo);
