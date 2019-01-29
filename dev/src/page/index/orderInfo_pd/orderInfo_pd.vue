@@ -81,6 +81,15 @@
 
     .order-goods-name {
     font-size: 12pt;
+        .gName{
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; 	//行数
+            overflow: hidden;
+        }
+        .buyNum{
+            color: #888;
+        }
     }
     .redCoupon{
     color: @color !important;
@@ -359,7 +368,7 @@
                         <div class="sign_dv" v-if="s_id">荟币专区商品</div>
                     </div>
                     <div class="order-goods-right-text">
-                        <div class='order-goods-name fontSize'>{{goodsInfo.goodsname}}</div>
+                        <div class='order-goods-name flex fontSize'><span class="gName">{{goodsInfo.goodsname}}</span><span class="buyNum">x{{num}}</span></div>
                         <div class="order-goods-space fontSize">{{goodsInfo.goodspec.spec}}</div>
                         <div v-if="s_id == '-1'">
                             <span class="huidouprice padd-top" v-if="s_id == '-1'">
@@ -407,7 +416,7 @@
                         <div class="weui-cell__ft">￥{{exprice}}</div>
                     </div>
                 </div>
-                <div class="deductionBox" v-if="s_id">
+                <div class="deductionBox" >
                     <div class="itemDeduction">
                         <div class="flex flex-pack-justify lDeductionBox">
                             <div class="flex">
@@ -423,7 +432,7 @@
                                 <div :class="ifUseBalance?'aboutChoice':'grayIsIcon'" class="xipinhuiIcon xipinhui-choice"></div>
                             </div>  -->
                         </div>
-                        <div class="flex  flex-pack-justify lDeductionBox" style="padding-top: 0;">
+                        <div v-if="s_id" class="flex  flex-pack-justify lDeductionBox" style="padding-top: 0;">
                             <div class="flex">
                                 <img mode="widthFix" style="position: relative;bottom: -0.10rem;" src="@/assets/images/HIcon.png" class="iconPicHIcon"/>
                                 <div class="huibiDeduction fontSize">
@@ -431,6 +440,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <!-- <div class="openVip" v-if="!vipInfo.whether_member && !s_id" @click="openvip">
@@ -456,7 +466,7 @@
                 </div> -->
             </div>
             <div class='bottom-pay-box flex flex-pack-justify flex-align-center' style="border-top: 1px solid #eee;">
-                <span class="heji fontSize" :class="s_id ? 'huidouprice' : ''">{{s_id?'需付款':'合计'}}:￥<span class="zongjiaqian">{{total_count}}</span></span>
+                <span class="heji fontSize" :class="s_id ? 'huidouprice' : ''">{{s_id?'需付款':'合计'}}:￥<span class="zongjiaqian">{{total_count}}</span><span v-if="addressInfo==''">（请填写收货地址）</span></span>
                 <span class="payBtn" @click.self="gopay">微信支付</span>
             </div>
         </div>
@@ -674,6 +684,9 @@ export default {
         },
         getTotal(){
             let that = this;
+            if(!this.addressInfo){
+                return this.total_count = (this.goodsInfo.goodsprice * this.member_discount * this.num).toFixed(2)
+            }
             var proWeight = Math.ceil(that.num * that.goods_weight) - 1;
             var exprice = parseFloat(parseFloat(proWeight * that.nowSelectshipping.m_weight_price) + parseFloat(that.nowSelectshipping.f_weight_price)).toFixed(2);
             var coupon_price = that.nowCouponInfo.amount;
@@ -694,6 +707,15 @@ export default {
                             exprice = 0;
                         }
                     }
+                }
+            }
+            if(this.ifUseBalance){
+                let isEnable = parseFloat(parseFloat(count) + parseFloat(exprice)) - this.restMoney;
+                console.log(isEnable)
+                if(isEnable > 0){
+                    return that.total_count = isEnable.toFixed(2);
+                }else{
+                    return that.total_count = '0.00';
                 }
             }
             that.total_count = parseFloat(parseFloat(count) + parseFloat(exprice)).toFixed(2);
@@ -744,6 +766,9 @@ export default {
             this.couponNum();
         },
         sumExprice(){
+            if(!this.addressInfo){
+                return this.exprice = '0.00';
+            }
             var proWeight = Math.ceil(this.num * this.goods_weight) - 1;
             this.exprice = parseFloat(parseFloat(proWeight * this.nowSelectshipping.m_weight_price) + parseFloat(this.nowSelectshipping.f_weight_price)).toFixed(2);
         },
@@ -842,6 +867,7 @@ export default {
                 goods_id: that.goodsInfo.goods_id,
                 goods_item_id: that.goodsInfo.goodspec.goods_item_id,
                 num: that.num,
+                pay_recharge: this.ifUseBalance? 1 : 0,
                 return_url: window.isWeixin? '': window.location.origin + '/centerFull/orderFull/orderlist?tabindex=3'
             }
             let _data = {};
@@ -851,7 +877,7 @@ export default {
                 _data.free_post = 0;
                 _data.shipping_type = this.store_id? 3 : 2;
                 _data.pick_shop_id = this.aboutShopInfo? this.aboutShopInfo.shop_id || 0 : 0;
-                _data.pay_recharge = this.ifUseBalance? 1 : 0;
+                // _data.pay_recharge = this.ifUseBalance? 1 : 0;
                 _data.pay_vcoin = 1;
                 _data.order_type = 4;
                 data = Object.assign(data, _data);
@@ -985,6 +1011,14 @@ export default {
             }
         },
         useBalanceFun(){
+            if(!this.addressInfo){
+                this.ifUseBalance = false;
+                return this.$vux.toast.text('请选择地址', 'top');
+            }
+            if(this.restMoney <= 0){
+                this.ifUseBalance = false;
+                return this.$vux.toast.text('余额不足请充值', 'top');
+            }
             this.calculateZongjia();
         },
         accAdd(num1, num2){
@@ -1036,6 +1070,18 @@ export default {
             }
             if(res.code == 2000){
                 this.member_discount = res.data.member_discount || 1;
+                var paymemt_method = res.data.paymemt_method;
+                var restMoney='';
+                var huidounum='';
+                for(var u=0;u<paymemt_method.length;u++){
+                    if (paymemt_method[u].pay_code==3){//表示账户余额
+                        restMoney = paymemt_method[u].amount;
+                    }
+                    if(paymemt_method[u].pay_code == 4){//表示荟豆数
+                        huidounum = paymemt_method[u].amount;
+                    }
+                } 
+                this.restMoney = restMoney;
                 if(!this.s_id)return;
                 var f_weight_price = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0].f_weight_price : 0;
                 var m_weight_price = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0].m_weight_price : 0;
@@ -1065,17 +1111,6 @@ export default {
                 }
                 var vcoin_pay_price=that.goodsInfo.vcoin_pay_price;
                 var vcoin_price = that.goodsInfo.vcoin_price;
-                var paymemt_method = res.data.paymemt_method;
-                var restMoney='';
-                var huidounum='';
-                for(var u=0;u<paymemt_method.length;u++){
-                    if (paymemt_method[u].pay_code==3){//表示账户余额
-                        restMoney = paymemt_method[u].amount;
-                    }
-                    if(paymemt_method[u].pay_code == 4){//表示荟豆数
-                        huidounum = paymemt_method[u].amount;
-                    }
-                } 
                 var ifUserestMoney = that.ifUseBalance;
                 this.nowSelectshipping = res.data.shipping_method && res.data.shipping_method.transport_company ? res.data.shipping_method.transport_company[0] : 0;
                 this.exprice = expressPrice;
@@ -1084,7 +1119,7 @@ export default {
                 this.goods_num = goods_num;
                 this.free_shipping = free_shipping;
                 this.paymemt_method = paymemt_method;
-                this.restMoney = restMoney;
+                
                 this.huidounum = huidounum;
                 this.vcoin_pay_price = vcoin_pay_price;
                 this.vcoin_price = vcoin_price;
@@ -1100,6 +1135,10 @@ export default {
             return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
         },
         calculateZongjia(){
+            if(!this.s_id){
+                this.getTotal();
+                return;
+            }
             let OriginalPrice = this.vcoin_pay_price;
             let needHuidouNum = this.vcoin_price;
             let huidouNum = this.huidounum;

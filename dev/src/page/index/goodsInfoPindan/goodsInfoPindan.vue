@@ -875,7 +875,7 @@ contact-button {
 }
 .buyvalue{
   justify-content: space-between;
-  padding: 2/50rem 15/50rem 0;
+  padding: 2/50rem 15/50rem .2rem;
 }
 </style>
 <template>
@@ -930,7 +930,7 @@ contact-button {
                               <span>{{goodsInfo.vcoin_pay_price}}+{{goodsInfo.vcoin_price}}</span>
                               <img src="@/assets/images/huidou.png" class="iconH" mode="widthFix"/>
                             </span>
-                            <span class="price padd-top" v-else>价格:￥{{goodsInfo.purchase_price}}</span>
+                            <span class="price padd-top" v-else>￥{{goodsInfo.purchase_price}}</span>
                             <span class="salenum padd-top">销量:{{goodsInfo.goods_salenum}}件</span>
                         </div>
                         <!-- <div class="shareGetTip" v-if="goodsInfo.partner_rebate != 0 && user.user_type != 1"> -->
@@ -1068,7 +1068,7 @@ contact-button {
                       <div class="close-icon iconfont icon-guanbi" @click="actionSheetbindchange"></div>
                     </div>
                   </div>
-                  <div style="height: 5rem;margin-top:2rem;padding-bottom:0.5rem; overflow: scroll;" v-if="spec_info">
+                  <div style="height: 5rem;margin-top:2rem;padding-bottom:1.3rem; overflow: scroll;" v-if="spec_info">
                     <div class="info_choose " v-for="(specBox, Idx) in spec_info.goods_specname" :key="Idx">
                       <div v-if="Idx==0">
                         <div class="catalog_name">{{specBox.sp_name}}</div>
@@ -1095,7 +1095,6 @@ contact-button {
                       <van-stepper v-model="buyValue" min="1" :max="nowSelectspec.goods_storage" step="1" :integer="true" @change="buyValueChange"/>
                     </div>
                   </div>
-                  
                   <div class="action-btn">
                     <div class="btn" @click="goBuy">
                       <span v-if="btnType=='pindan'">确认拼单</span>
@@ -1129,7 +1128,7 @@ contact-button {
                 <div style="width:100%;  overflow: hidden;" class="shuoming con">
                   <div class="coupon-action-top ">分享赚说明</div>
                   <div class="coupon-action-scroll" style="width:100%;padding-top: 0">
-                    <div class="">{{goodsInfo.share_intro.title}} <span style="color: #F17847">￥{{goodsInfo.purchase_price * 1000 * .3 / 1000}}</span></div>
+                    <div class="">{{goodsInfo.share_intro.title}} <span style="color: #F17847">￥{{goodsInfo.partner_rebate}}</span></div>
                     <div class="fuwu-shuoming flex " v-for="(item, index) in goodsInfo.share_intro.desc_list" :key="index">
                       <!-- <div class="fuwu-left-icon iconfont icon-duihao"></div> -->
                       <div class="shuoming-content">
@@ -1554,6 +1553,7 @@ export default {
             for (var i = 0; i < that.spec_info.all_spec_goodid.length; i++) {
               if (str == that.spec_info.all_spec_goodid[i].spec) {
                 this.nowSelectspec = that.spec_info.all_spec_goodid[i];
+                this.buyValue = this.nowSelectspec.goods_storage < this.buyValue? this.nowSelectspec.goods_storage : this.buyValue;
               }
             }
             this.spaceStorage();
